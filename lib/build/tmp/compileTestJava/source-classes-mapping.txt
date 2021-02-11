@@ -1,2 +1,0 @@
-project/group/LibraryTest.java
- project.group.LibraryTest

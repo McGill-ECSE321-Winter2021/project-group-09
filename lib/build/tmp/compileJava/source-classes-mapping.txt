@@ -1,2 +1,0 @@
-project/group/Library.java
- project.group.Library
