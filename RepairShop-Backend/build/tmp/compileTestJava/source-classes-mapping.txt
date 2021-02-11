@@ -1,2 +1,0 @@
-ca/mcgill/ecse321/repairshop/RepairShopApplicationTests.java
- ca.mcgill.ecse321.repairshop.RepairShopApplicationTests
