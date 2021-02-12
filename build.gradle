@@ -1,3 +1,3 @@
 task stage () {
-    dependsOn ':EventRegistration-Backend:assemble'
+    dependsOn ':RepairShop-Backend:assemble'
 }
