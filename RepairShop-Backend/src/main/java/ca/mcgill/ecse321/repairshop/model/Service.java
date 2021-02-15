@@ -1,5 +1,3 @@
-package ca.mcgill.ecse321.repairshop.model;
-
 public class Service
 {
 
@@ -8,7 +6,8 @@ public class Service
   //------------------------
 
   //Service Attributes
-  private String duration;
+  private Long serviceID;
+  private int duration;
   private String name;
   private String price;
 
@@ -16,8 +15,9 @@ public class Service
   // CONSTRUCTOR
   //------------------------
 
-  public Service(String aDuration, String aName, String aPrice)
+  public Service(Long aServiceID, int aDuration, String aName, String aPrice)
   {
+    serviceID = aServiceID;
     duration = aDuration;
     name = aName;
     price = aPrice;
@@ -27,7 +27,15 @@ public class Service
   // INTERFACE
   //------------------------
 
-  public boolean setDuration(String aDuration)
+  public boolean setServiceID(Long aServiceID)
+  {
+    boolean wasSet = false;
+    serviceID = aServiceID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setDuration(int aDuration)
   {
     boolean wasSet = false;
     duration = aDuration;
@@ -51,7 +59,12 @@ public class Service
     return wasSet;
   }
 
-  public String getDuration()
+  public Long getServiceID()
+  {
+    return serviceID;
+  }
+
+  public int getDuration()
   {
     return duration;
   }
@@ -73,6 +86,7 @@ public class Service
   public String toString()
   {
     return super.toString() + "["+
+            "serviceID" + ":" + getServiceID()+ "," +
             "duration" + ":" + getDuration()+ "," +
             "name" + ":" + getName()+ "," +
             "price" + ":" + getPrice()+ "]";

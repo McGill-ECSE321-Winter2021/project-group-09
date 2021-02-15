@@ -1,11 +1,12 @@
-package ca.mcgill.ecse321.repairshop.model;
-
 public class Admin extends User
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //Admin Attributes
+  private Long adminID;
 
   //Admin Associations
   private RepairShop repairShop;
@@ -14,9 +15,10 @@ public class Admin extends User
   // CONSTRUCTOR
   //------------------------
 
-  public Admin(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, RepairShop aRepairShop)
+  public Admin(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, Long aAdminID, RepairShop aRepairShop)
   {
     super(aEmail, aPassword, aPhoneNumber, aName, aAddress);
+    adminID = aAdminID;
     boolean didAddRepairShop = setRepairShop(aRepairShop);
     if (!didAddRepairShop)
     {
@@ -27,6 +29,19 @@ public class Admin extends User
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setAdminID(Long aAdminID)
+  {
+    boolean wasSet = false;
+    adminID = aAdminID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public Long getAdminID()
+  {
+    return adminID;
+  }
   /* Code from template association_GetOne */
   public RepairShop getRepairShop()
   {
@@ -63,4 +78,11 @@ public class Admin extends User
     super.delete();
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "adminID" + ":" + getAdminID()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "repairShop = "+(getRepairShop()!=null?Integer.toHexString(System.identityHashCode(getRepairShop())):"null");
+  }
 }

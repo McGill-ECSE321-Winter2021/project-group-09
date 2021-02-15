@@ -1,9 +1,7 @@
-package ca.mcgill.ecse321.repairshop.model;
-
 import java.util.*;
 
 // line 2 "model.ump"
-// line 132 "model.ump"
+// line 141 "model.ump"
 public class RepairShop
 {
 
@@ -11,30 +9,43 @@ public class RepairShop
   // MEMBER VARIABLES
   //------------------------
 
+  //RepairShop Attributes
+  private Long repairShopID;
+
   //RepairShop Associations
   private Business business;
   private List<Customer> customers;
   private List<Technician> technicians;
   private List<Admin> admin;
-  private List<Appointment> appointments;
-  private List<Reminder> reminders;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public RepairShop()
+  public RepairShop(Long aRepairShopID)
   {
+    repairShopID = aRepairShopID;
     customers = new ArrayList<Customer>();
     technicians = new ArrayList<Technician>();
     admin = new ArrayList<Admin>();
-    appointments = new ArrayList<Appointment>();
-    reminders = new ArrayList<Reminder>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setRepairShopID(Long aRepairShopID)
+  {
+    boolean wasSet = false;
+    repairShopID = aRepairShopID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public Long getRepairShopID()
+  {
+    return repairShopID;
+  }
   /* Code from template association_GetOne */
   public Business getBusiness()
   {
@@ -136,66 +147,6 @@ public class RepairShop
     int index = admin.indexOf(aAdmin);
     return index;
   }
-  /* Code from template association_GetMany */
-  public Appointment getAppointment(int index)
-  {
-    Appointment aAppointment = appointments.get(index);
-    return aAppointment;
-  }
-
-  public List<Appointment> getAppointments()
-  {
-    List<Appointment> newAppointments = Collections.unmodifiableList(appointments);
-    return newAppointments;
-  }
-
-  public int numberOfAppointments()
-  {
-    int number = appointments.size();
-    return number;
-  }
-
-  public boolean hasAppointments()
-  {
-    boolean has = appointments.size() > 0;
-    return has;
-  }
-
-  public int indexOfAppointment(Appointment aAppointment)
-  {
-    int index = appointments.indexOf(aAppointment);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public Reminder getReminder(int index)
-  {
-    Reminder aReminder = reminders.get(index);
-    return aReminder;
-  }
-
-  public List<Reminder> getReminders()
-  {
-    List<Reminder> newReminders = Collections.unmodifiableList(reminders);
-    return newReminders;
-  }
-
-  public int numberOfReminders()
-  {
-    int number = reminders.size();
-    return number;
-  }
-
-  public boolean hasReminders()
-  {
-    boolean has = reminders.size() > 0;
-    return has;
-  }
-
-  public int indexOfReminder(Reminder aReminder)
-  {
-    int index = reminders.indexOf(aReminder);
-    return index;
-  }
   /* Code from template association_SetOptionalOneToOne */
   public boolean setBusiness(Business aNewBusiness)
   {
@@ -229,9 +180,9 @@ public class RepairShop
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Customer addCustomer(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress)
+  public Customer addCustomer(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, Long aCustomerID)
   {
-    return new Customer(aEmail, aPassword, aPhoneNumber, aName, aAddress, this);
+    return new Customer(aEmail, aPassword, aPhoneNumber, aName, aAddress, aCustomerID, this);
   }
 
   public boolean addCustomer(Customer aCustomer)
@@ -301,9 +252,9 @@ public class RepairShop
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Technician addTechnician(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress)
+  public Technician addTechnician(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, Long aTechnicianID)
   {
-    return new Technician(aEmail, aPassword, aPhoneNumber, aName, aAddress, this);
+    return new Technician(aEmail, aPassword, aPhoneNumber, aName, aAddress, aTechnicianID, this);
   }
 
   public boolean addTechnician(Technician aTechnician)
@@ -373,9 +324,9 @@ public class RepairShop
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Admin addAdmin(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress)
+  public Admin addAdmin(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, Long aAdminID)
   {
-    return new Admin(aEmail, aPassword, aPhoneNumber, aName, aAddress, this);
+    return new Admin(aEmail, aPassword, aPhoneNumber, aName, aAddress, aAdminID, this);
   }
 
   public boolean addAdmin(Admin aAdmin)
@@ -439,150 +390,6 @@ public class RepairShop
     }
     return wasAdded;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAppointments()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Appointment addAppointment(int aAppointmentID, TimeSlot aTimeSlot, Service aService)
-  {
-    return new Appointment(aAppointmentID, aTimeSlot, aService, this);
-  }
-
-  public boolean addAppointment(Appointment aAppointment)
-  {
-    boolean wasAdded = false;
-    if (appointments.contains(aAppointment)) { return false; }
-    RepairShop existingRepairShop = aAppointment.getRepairShop();
-    boolean isNewRepairShop = existingRepairShop != null && !this.equals(existingRepairShop);
-    if (isNewRepairShop)
-    {
-      aAppointment.setRepairShop(this);
-    }
-    else
-    {
-      appointments.add(aAppointment);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeAppointment(Appointment aAppointment)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aAppointment, as it must always have a repairShop
-    if (!this.equals(aAppointment.getRepairShop()))
-    {
-      appointments.remove(aAppointment);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addAppointmentAt(Appointment aAppointment, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAppointment(aAppointment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
-      appointments.remove(aAppointment);
-      appointments.add(index, aAppointment);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveAppointmentAt(Appointment aAppointment, int index)
-  {
-    boolean wasAdded = false;
-    if(appointments.contains(aAppointment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
-      appointments.remove(aAppointment);
-      appointments.add(index, aAppointment);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAppointmentAt(aAppointment, index);
-    }
-    return wasAdded;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfReminders()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Reminder addReminder(String aDateTime, String aType, Reminder.ReminderType aReminderType)
-  {
-    return new Reminder(aDateTime, aType, aReminderType, this);
-  }
-
-  public boolean addReminder(Reminder aReminder)
-  {
-    boolean wasAdded = false;
-    if (reminders.contains(aReminder)) { return false; }
-    RepairShop existingRepairShop = aReminder.getRepairShop();
-    boolean isNewRepairShop = existingRepairShop != null && !this.equals(existingRepairShop);
-    if (isNewRepairShop)
-    {
-      aReminder.setRepairShop(this);
-    }
-    else
-    {
-      reminders.add(aReminder);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeReminder(Reminder aReminder)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aReminder, as it must always have a repairShop
-    if (!this.equals(aReminder.getRepairShop()))
-    {
-      reminders.remove(aReminder);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addReminderAt(Reminder aReminder, int index)
-  {  
-    boolean wasAdded = false;
-    if(addReminder(aReminder))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfReminders()) { index = numberOfReminders() - 1; }
-      reminders.remove(aReminder);
-      reminders.add(index, aReminder);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveReminderAt(Reminder aReminder, int index)
-  {
-    boolean wasAdded = false;
-    if(reminders.contains(aReminder))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfReminders()) { index = numberOfReminders() - 1; }
-      reminders.remove(aReminder);
-      reminders.add(index, aReminder);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addReminderAt(aReminder, index);
-    }
-    return wasAdded;
-  }
 
   public void delete()
   {
@@ -614,20 +421,13 @@ public class RepairShop
       admin.remove(aAdmin);
     }
     
-    while (appointments.size() > 0)
-    {
-      Appointment aAppointment = appointments.get(appointments.size() - 1);
-      aAppointment.delete();
-      appointments.remove(aAppointment);
-    }
-    
-    while (reminders.size() > 0)
-    {
-      Reminder aReminder = reminders.get(reminders.size() - 1);
-      aReminder.delete();
-      reminders.remove(aReminder);
-    }
-    
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "repairShopID" + ":" + getRepairShopID()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "business = "+(getBusiness()!=null?Integer.toHexString(System.identityHashCode(getBusiness())):"null");
+  }
 }

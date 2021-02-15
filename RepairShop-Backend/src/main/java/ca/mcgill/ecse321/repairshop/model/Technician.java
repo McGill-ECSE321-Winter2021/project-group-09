@@ -1,9 +1,7 @@
-package ca.mcgill.ecse321.repairshop.model;
-
 import java.util.*;
 
 // line 17 "model.ump"
-// line 87 "model.ump"
+// line 92 "model.ump"
 public class Technician extends User
 {
 
@@ -11,58 +9,73 @@ public class Technician extends User
   // MEMBER VARIABLES
   //------------------------
 
+  //Technician Attributes
+  private Long technicianID;
+
   //Technician Associations
-  private List<TimeSlot> workshifts;
+  private List<TimeSlot> timeslots;
   private RepairShop repairShop;
-  private List<Appointment> appointments;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Technician(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, RepairShop aRepairShop)
+  public Technician(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress, Long aTechnicianID, RepairShop aRepairShop)
   {
     super(aEmail, aPassword, aPhoneNumber, aName, aAddress);
-    workshifts = new ArrayList<TimeSlot>();
+    technicianID = aTechnicianID;
+    timeslots = new ArrayList<TimeSlot>();
     boolean didAddRepairShop = setRepairShop(aRepairShop);
     if (!didAddRepairShop)
     {
       throw new RuntimeException("Unable to create technician due to repairShop. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    appointments = new ArrayList<Appointment>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setTechnicianID(Long aTechnicianID)
+  {
+    boolean wasSet = false;
+    technicianID = aTechnicianID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public Long getTechnicianID()
+  {
+    return technicianID;
+  }
   /* Code from template association_GetMany */
-  public TimeSlot getWorkshift(int index)
+  public TimeSlot getTimeslot(int index)
   {
-    TimeSlot aWorkshift = workshifts.get(index);
-    return aWorkshift;
+    TimeSlot aTimeslot = timeslots.get(index);
+    return aTimeslot;
   }
 
-  public List<TimeSlot> getWorkshifts()
+  public List<TimeSlot> getTimeslots()
   {
-    List<TimeSlot> newWorkshifts = Collections.unmodifiableList(workshifts);
-    return newWorkshifts;
+    List<TimeSlot> newTimeslots = Collections.unmodifiableList(timeslots);
+    return newTimeslots;
   }
 
-  public int numberOfWorkshifts()
+  public int numberOfTimeslots()
   {
-    int number = workshifts.size();
+    int number = timeslots.size();
     return number;
   }
 
-  public boolean hasWorkshifts()
+  public boolean hasTimeslots()
   {
-    boolean has = workshifts.size() > 0;
+    boolean has = timeslots.size() > 0;
     return has;
   }
 
-  public int indexOfWorkshift(TimeSlot aWorkshift)
+  public int indexOfTimeslot(TimeSlot aTimeslot)
   {
-    int index = workshifts.indexOf(aWorkshift);
+    int index = timeslots.indexOf(aTimeslot);
     return index;
   }
   /* Code from template association_GetOne */
@@ -70,90 +83,75 @@ public class Technician extends User
   {
     return repairShop;
   }
-  /* Code from template association_GetMany */
-  public Appointment getAppointment(int index)
-  {
-    Appointment aAppointment = appointments.get(index);
-    return aAppointment;
-  }
-
-  public List<Appointment> getAppointments()
-  {
-    List<Appointment> newAppointments = Collections.unmodifiableList(appointments);
-    return newAppointments;
-  }
-
-  public int numberOfAppointments()
-  {
-    int number = appointments.size();
-    return number;
-  }
-
-  public boolean hasAppointments()
-  {
-    boolean has = appointments.size() > 0;
-    return has;
-  }
-
-  public int indexOfAppointment(Appointment aAppointment)
-  {
-    int index = appointments.indexOf(aAppointment);
-    return index;
-  }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfWorkshifts()
+  public static int minimumNumberOfTimeslots()
   {
     return 0;
   }
-  /* Code from template association_AddUnidirectionalMany */
-  public boolean addWorkshift(TimeSlot aWorkshift)
+  /* Code from template association_AddManyToOne */
+  public TimeSlot addTimeslot(Long aTimeSlotID, String aStartDateTime, String aEndDateTime)
+  {
+    return new TimeSlot(aTimeSlotID, aStartDateTime, aEndDateTime, this);
+  }
+
+  public boolean addTimeslot(TimeSlot aTimeslot)
   {
     boolean wasAdded = false;
-    if (workshifts.contains(aWorkshift)) { return false; }
-    workshifts.add(aWorkshift);
+    if (timeslots.contains(aTimeslot)) { return false; }
+    Technician existingTechnician = aTimeslot.getTechnician();
+    boolean isNewTechnician = existingTechnician != null && !this.equals(existingTechnician);
+    if (isNewTechnician)
+    {
+      aTimeslot.setTechnician(this);
+    }
+    else
+    {
+      timeslots.add(aTimeslot);
+    }
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeWorkshift(TimeSlot aWorkshift)
+  public boolean removeTimeslot(TimeSlot aTimeslot)
   {
     boolean wasRemoved = false;
-    if (workshifts.contains(aWorkshift))
+    //Unable to remove aTimeslot, as it must always have a technician
+    if (!this.equals(aTimeslot.getTechnician()))
     {
-      workshifts.remove(aWorkshift);
+      timeslots.remove(aTimeslot);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addWorkshiftAt(TimeSlot aWorkshift, int index)
+  public boolean addTimeslotAt(TimeSlot aTimeslot, int index)
   {  
     boolean wasAdded = false;
-    if(addWorkshift(aWorkshift))
+    if(addTimeslot(aTimeslot))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfWorkshifts()) { index = numberOfWorkshifts() - 1; }
-      workshifts.remove(aWorkshift);
-      workshifts.add(index, aWorkshift);
+      if(index > numberOfTimeslots()) { index = numberOfTimeslots() - 1; }
+      timeslots.remove(aTimeslot);
+      timeslots.add(index, aTimeslot);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveWorkshiftAt(TimeSlot aWorkshift, int index)
+  public boolean addOrMoveTimeslotAt(TimeSlot aTimeslot, int index)
   {
     boolean wasAdded = false;
-    if(workshifts.contains(aWorkshift))
+    if(timeslots.contains(aTimeslot))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfWorkshifts()) { index = numberOfWorkshifts() - 1; }
-      workshifts.remove(aWorkshift);
-      workshifts.add(index, aWorkshift);
+      if(index > numberOfTimeslots()) { index = numberOfTimeslots() - 1; }
+      timeslots.remove(aTimeslot);
+      timeslots.add(index, aTimeslot);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addWorkshiftAt(aWorkshift, index);
+      wasAdded = addTimeslotAt(aTimeslot, index);
     }
     return wasAdded;
   }
@@ -176,75 +174,28 @@ public class Technician extends User
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAppointments()
-  {
-    return 0;
-  }
-  /* Code from template association_AddUnidirectionalMany */
-  public boolean addAppointment(Appointment aAppointment)
-  {
-    boolean wasAdded = false;
-    if (appointments.contains(aAppointment)) { return false; }
-    appointments.add(aAppointment);
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeAppointment(Appointment aAppointment)
-  {
-    boolean wasRemoved = false;
-    if (appointments.contains(aAppointment))
-    {
-      appointments.remove(aAppointment);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addAppointmentAt(Appointment aAppointment, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAppointment(aAppointment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
-      appointments.remove(aAppointment);
-      appointments.add(index, aAppointment);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveAppointmentAt(Appointment aAppointment, int index)
-  {
-    boolean wasAdded = false;
-    if(appointments.contains(aAppointment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
-      appointments.remove(aAppointment);
-      appointments.add(index, aAppointment);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAppointmentAt(aAppointment, index);
-    }
-    return wasAdded;
-  }
 
   public void delete()
   {
-    workshifts.clear();
+    for(int i=timeslots.size(); i > 0; i--)
+    {
+      TimeSlot aTimeslot = timeslots.get(i - 1);
+      aTimeslot.delete();
+    }
     RepairShop placeholderRepairShop = repairShop;
     this.repairShop = null;
     if(placeholderRepairShop != null)
     {
       placeholderRepairShop.removeTechnician(this);
     }
-    appointments.clear();
     super.delete();
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "technicianID" + ":" + getTechnicianID()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "repairShop = "+(getRepairShop()!=null?Integer.toHexString(System.identityHashCode(getRepairShop())):"null");
+  }
 }

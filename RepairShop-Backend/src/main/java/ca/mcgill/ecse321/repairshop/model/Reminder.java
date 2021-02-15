@@ -1,5 +1,3 @@
-package ca.mcgill.ecse321.repairshop.model; 
-
 public class Reminder
 {
 
@@ -14,32 +12,42 @@ public class Reminder
   //------------------------
 
   //Reminder Attributes
+  private Long reminderID;
   private String dateTime;
   private String type;
   private ReminderType reminderType;
 
   //Reminder Associations
-  private RepairShop repairShop;
+  private Customer customer;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Reminder(String aDateTime, String aType, ReminderType aReminderType, RepairShop aRepairShop)
+  public Reminder(Long aReminderID, String aDateTime, String aType, ReminderType aReminderType, Customer aCustomer)
   {
+    reminderID = aReminderID;
     dateTime = aDateTime;
     type = aType;
     reminderType = aReminderType;
-    boolean didAddRepairShop = setRepairShop(aRepairShop);
-    if (!didAddRepairShop)
+    boolean didAddCustomer = setCustomer(aCustomer);
+    if (!didAddCustomer)
     {
-      throw new RuntimeException("Unable to create reminder due to repairShop. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create reminder due to customer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setReminderID(Long aReminderID)
+  {
+    boolean wasSet = false;
+    reminderID = aReminderID;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setDateTime(String aDateTime)
   {
@@ -65,6 +73,11 @@ public class Reminder
     return wasSet;
   }
 
+  public Long getReminderID()
+  {
+    return reminderID;
+  }
+
   public String getDateTime()
   {
     return dateTime;
@@ -80,37 +93,37 @@ public class Reminder
     return reminderType;
   }
   /* Code from template association_GetOne */
-  public RepairShop getRepairShop()
+  public Customer getCustomer()
   {
-    return repairShop;
+    return customer;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setRepairShop(RepairShop aRepairShop)
+  public boolean setCustomer(Customer aCustomer)
   {
     boolean wasSet = false;
-    if (aRepairShop == null)
+    if (aCustomer == null)
     {
       return wasSet;
     }
 
-    RepairShop existingRepairShop = repairShop;
-    repairShop = aRepairShop;
-    if (existingRepairShop != null && !existingRepairShop.equals(aRepairShop))
+    Customer existingCustomer = customer;
+    customer = aCustomer;
+    if (existingCustomer != null && !existingCustomer.equals(aCustomer))
     {
-      existingRepairShop.removeReminder(this);
+      existingCustomer.removeReminder(this);
     }
-    repairShop.addReminder(this);
+    customer.addReminder(this);
     wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    RepairShop placeholderRepairShop = repairShop;
-    this.repairShop = null;
-    if(placeholderRepairShop != null)
+    Customer placeholderCustomer = customer;
+    this.customer = null;
+    if(placeholderCustomer != null)
     {
-      placeholderRepairShop.removeReminder(this);
+      placeholderCustomer.removeReminder(this);
     }
   }
 
@@ -118,9 +131,10 @@ public class Reminder
   public String toString()
   {
     return super.toString() + "["+
+            "reminderID" + ":" + getReminderID()+ "," +
             "dateTime" + ":" + getDateTime()+ "," +
             "type" + ":" + getType()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "reminderType" + "=" + (getReminderType() != null ? !getReminderType().equals(this)  ? getReminderType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "repairShop = "+(getRepairShop()!=null?Integer.toHexString(System.identityHashCode(getRepairShop())):"null");
+            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
   }
 }

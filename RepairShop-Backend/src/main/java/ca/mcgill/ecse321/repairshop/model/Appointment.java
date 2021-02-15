@@ -1,5 +1,7 @@
-package ca.mcgill.ecse321.repairshop.model;
+import java.util.*;
 
+// line 41 "model.ump"
+// line 116 "model.ump"
 public class Appointment
 {
 
@@ -8,40 +10,37 @@ public class Appointment
   //------------------------
 
   //Appointment Attributes
-  private int appointmentID;
+  private Long appointmentID;
 
   //Appointment Associations
-  private TimeSlot timeSlot;
   private Service service;
-  private RepairShop repairShop;
+  private Customer customer;
+  private List<TimeSlot> appointments;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Appointment(int aAppointmentID, TimeSlot aTimeSlot, Service aService, RepairShop aRepairShop)
+  public Appointment(Long aAppointmentID, Service aService, Customer aCustomer)
   {
     appointmentID = aAppointmentID;
-    if (!setTimeSlot(aTimeSlot))
-    {
-      throw new RuntimeException("Unable to create Appointment due to aTimeSlot. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
     if (!setService(aService))
     {
       throw new RuntimeException("Unable to create Appointment due to aService. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddRepairShop = setRepairShop(aRepairShop);
-    if (!didAddRepairShop)
+    boolean didAddCustomer = setCustomer(aCustomer);
+    if (!didAddCustomer)
     {
-      throw new RuntimeException("Unable to create appointment due to repairShop. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create appointment due to customer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
+    appointments = new ArrayList<TimeSlot>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setAppointmentID(int aAppointmentID)
+  public boolean setAppointmentID(Long aAppointmentID)
   {
     boolean wasSet = false;
     appointmentID = aAppointmentID;
@@ -49,14 +48,9 @@ public class Appointment
     return wasSet;
   }
 
-  public int getAppointmentID()
+  public Long getAppointmentID()
   {
     return appointmentID;
-  }
-  /* Code from template association_GetOne */
-  public TimeSlot getTimeSlot()
-  {
-    return timeSlot;
   }
   /* Code from template association_GetOne */
   public Service getService()
@@ -64,20 +58,39 @@ public class Appointment
     return service;
   }
   /* Code from template association_GetOne */
-  public RepairShop getRepairShop()
+  public Customer getCustomer()
   {
-    return repairShop;
+    return customer;
   }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setTimeSlot(TimeSlot aNewTimeSlot)
+  /* Code from template association_GetMany */
+  public TimeSlot getAppointment(int index)
   {
-    boolean wasSet = false;
-    if (aNewTimeSlot != null)
-    {
-      timeSlot = aNewTimeSlot;
-      wasSet = true;
-    }
-    return wasSet;
+    TimeSlot aAppointment = appointments.get(index);
+    return aAppointment;
+  }
+
+  public List<TimeSlot> getAppointments()
+  {
+    List<TimeSlot> newAppointments = Collections.unmodifiableList(appointments);
+    return newAppointments;
+  }
+
+  public int numberOfAppointments()
+  {
+    int number = appointments.size();
+    return number;
+  }
+
+  public boolean hasAppointments()
+  {
+    boolean has = appointments.size() > 0;
+    return has;
+  }
+
+  public int indexOfAppointment(TimeSlot aAppointment)
+  {
+    int index = appointments.indexOf(aAppointment);
+    return index;
   }
   /* Code from template association_SetUnidirectionalOne */
   public boolean setService(Service aNewService)
@@ -91,34 +104,108 @@ public class Appointment
     return wasSet;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setRepairShop(RepairShop aRepairShop)
+  public boolean setCustomer(Customer aCustomer)
   {
     boolean wasSet = false;
-    if (aRepairShop == null)
+    if (aCustomer == null)
     {
       return wasSet;
     }
 
-    RepairShop existingRepairShop = repairShop;
-    repairShop = aRepairShop;
-    if (existingRepairShop != null && !existingRepairShop.equals(aRepairShop))
+    Customer existingCustomer = customer;
+    customer = aCustomer;
+    if (existingCustomer != null && !existingCustomer.equals(aCustomer))
     {
-      existingRepairShop.removeAppointment(this);
+      existingCustomer.removeAppointment(this);
     }
-    repairShop.addAppointment(this);
+    customer.addAppointment(this);
     wasSet = true;
     return wasSet;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfAppointments()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOptionalOne */
+  public boolean addAppointment(TimeSlot aAppointment)
+  {
+    boolean wasAdded = false;
+    if (appointments.contains(aAppointment)) { return false; }
+    Appointment existingAppointment = aAppointment.getAppointment();
+    if (existingAppointment == null)
+    {
+      aAppointment.setAppointment(this);
+    }
+    else if (!this.equals(existingAppointment))
+    {
+      existingAppointment.removeAppointment(aAppointment);
+      addAppointment(aAppointment);
+    }
+    else
+    {
+      appointments.add(aAppointment);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeAppointment(TimeSlot aAppointment)
+  {
+    boolean wasRemoved = false;
+    if (appointments.contains(aAppointment))
+    {
+      appointments.remove(aAppointment);
+      aAppointment.setAppointment(null);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addAppointmentAt(TimeSlot aAppointment, int index)
+  {  
+    boolean wasAdded = false;
+    if(addAppointment(aAppointment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
+      appointments.remove(aAppointment);
+      appointments.add(index, aAppointment);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveAppointmentAt(TimeSlot aAppointment, int index)
+  {
+    boolean wasAdded = false;
+    if(appointments.contains(aAppointment))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfAppointments()) { index = numberOfAppointments() - 1; }
+      appointments.remove(aAppointment);
+      appointments.add(index, aAppointment);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addAppointmentAt(aAppointment, index);
+    }
+    return wasAdded;
   }
 
   public void delete()
   {
-    timeSlot = null;
     service = null;
-    RepairShop placeholderRepairShop = repairShop;
-    this.repairShop = null;
-    if(placeholderRepairShop != null)
+    Customer placeholderCustomer = customer;
+    this.customer = null;
+    if(placeholderCustomer != null)
     {
-      placeholderRepairShop.removeAppointment(this);
+      placeholderCustomer.removeAppointment(this);
+    }
+    while( !appointments.isEmpty() )
+    {
+      appointments.get(0).setAppointment(null);
     }
   }
 
@@ -127,8 +214,7 @@ public class Appointment
   {
     return super.toString() + "["+
             "appointmentID" + ":" + getAppointmentID()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "timeSlot = "+(getTimeSlot()!=null?Integer.toHexString(System.identityHashCode(getTimeSlot())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "service = "+(getService()!=null?Integer.toHexString(System.identityHashCode(getService())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "repairShop = "+(getRepairShop()!=null?Integer.toHexString(System.identityHashCode(getRepairShop())):"null");
+            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
   }
 }

@@ -1,5 +1,3 @@
-package ca.mcgill.ecse321.repairshop.model;
-
 public abstract class User
 {
 

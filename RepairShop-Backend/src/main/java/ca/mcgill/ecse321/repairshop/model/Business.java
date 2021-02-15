@@ -1,9 +1,7 @@
-package ca.mcgill.ecse321.repairshop.model;
-
 import java.util.*;
 
 // line 56 "model.ump"
-// line 159 "model.ump"
+// line 172 "model.ump"
 public class Business
 {
 
@@ -12,6 +10,7 @@ public class Business
   //------------------------
 
   //Business Attributes
+  private Long businessID;
   private String name;
   private String address;
   private String phoneNumber;
@@ -26,8 +25,9 @@ public class Business
   // CONSTRUCTOR
   //------------------------
 
-  public Business(String aName, String aAddress, String aPhoneNumber, String aEmail, int aNumberOfRepairSpots, RepairShop aRepairShop)
+  public Business(Long aBusinessID, String aName, String aAddress, String aPhoneNumber, String aEmail, int aNumberOfRepairSpots, RepairShop aRepairShop)
   {
+    businessID = aBusinessID;
     name = aName;
     address = aAddress;
     phoneNumber = aPhoneNumber;
@@ -44,6 +44,14 @@ public class Business
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setBusinessID(Long aBusinessID)
+  {
+    boolean wasSet = false;
+    businessID = aBusinessID;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setName(String aName)
   {
@@ -83,6 +91,11 @@ public class Business
     numberOfRepairSpots = aNumberOfRepairSpots;
     wasSet = true;
     return wasSet;
+  }
+
+  public Long getBusinessID()
+  {
+    return businessID;
   }
 
   public String getName()
@@ -245,6 +258,7 @@ public class Business
   public String toString()
   {
     return super.toString() + "["+
+            "businessID" + ":" + getBusinessID()+ "," +
             "name" + ":" + getName()+ "," +
             "address" + ":" + getAddress()+ "," +
             "phoneNumber" + ":" + getPhoneNumber()+ "," +
