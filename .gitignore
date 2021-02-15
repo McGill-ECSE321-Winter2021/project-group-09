@@ -1,1 +1,4 @@
 .gradle/
+
+# Mac OS Files
+.DS_Store
