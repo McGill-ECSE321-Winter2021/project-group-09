@@ -11,13 +11,13 @@
 💻 [Sandy Lao](https://github.com/sandyl289)
 
 ## Overview Table
-| Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)|
-| :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: |
-| Sandy Lao              | Project Manager, Software Developer  | 00 | -- | -- | -- |
-| Jacek Dziewonski       | Software Developer | 00 | -- | -- | -- |
-| Shaswata Bhattacharyya | Software Developer | 00 | -- | -- | -- |
-| Zhanna Klimanova       | Software Developer | 00 | -- | -- | -- |
-| Tyler Syme             | Software Developer | 00 | -- | -- | -- |
+| Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total Sprint <br/> Efforts<br/> (hours)| 
+| :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
+| Sandy Lao              | Project Manager, Software Developer  | 00 | -- | -- | -- || -- |
+| Jacek Dziewonski       | Software Developer | 00 | -- | -- | -- || -- |
+| Shaswata Bhattacharyya | Software Developer | 00 | -- | -- | -- || -- |
+| Zhanna Klimanova       | Software Developer | 00 | -- | -- | -- || -- |
+| Tyler Syme             | Software Developer | 00 | -- | -- | -- || -- |
 
 ## Sprint 1: Effort Table
 | Name            | Contributions | Efforts (hours)|
