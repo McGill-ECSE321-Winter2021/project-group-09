@@ -201,8 +201,8 @@ public class Customer extends User {
     }
 
     /* Code from template association_AddManyToOne */
-    public Reminder addReminder(Long aReminderID, String aDateTime, String aType, Reminder.ReminderType aReminderType) {
-        return new Reminder(aReminderID, aDateTime, aType, aReminderType, this);
+    public Reminder addReminder(Long aReminderID, String aDateTime, Reminder.ReminderType aReminderType) {
+        return new Reminder(aReminderID, aDateTime,  aReminderType, this);
     }
 
     public boolean addReminder(Reminder aReminder) {
