@@ -1,94 +1,85 @@
-public class Service
-{
+package ca.mcgill.ecse321.repairshop.model;
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+public class Service {
 
-  //Service Attributes
-  private Long serviceID;
-  private int duration;
-  private String name;
-  private String price;
+    //------------------------
+    // MEMBER VARIABLES
+    //------------------------
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
+    //Service Attributes
+    private Long serviceID;
+    private int duration;
+    private String name;
+    private String price;
 
-  public Service(Long aServiceID, int aDuration, String aName, String aPrice)
-  {
-    serviceID = aServiceID;
-    duration = aDuration;
-    name = aName;
-    price = aPrice;
-  }
+    //------------------------
+    // CONSTRUCTOR
+    //------------------------
 
-  //------------------------
-  // INTERFACE
-  //------------------------
+    public Service(Long aServiceID, int aDuration, String aName, String aPrice) {
+        serviceID = aServiceID;
+        duration = aDuration;
+        name = aName;
+        price = aPrice;
+    }
 
-  public boolean setServiceID(Long aServiceID)
-  {
-    boolean wasSet = false;
-    serviceID = aServiceID;
-    wasSet = true;
-    return wasSet;
-  }
+    //------------------------
+    // INTERFACE
+    //------------------------
 
-  public boolean setDuration(int aDuration)
-  {
-    boolean wasSet = false;
-    duration = aDuration;
-    wasSet = true;
-    return wasSet;
-  }
+    public boolean setServiceID(Long aServiceID) {
+        boolean wasSet = false;
+        serviceID = aServiceID;
+        wasSet = true;
+        return wasSet;
+    }
 
-  public boolean setName(String aName)
-  {
-    boolean wasSet = false;
-    name = aName;
-    wasSet = true;
-    return wasSet;
-  }
+    public boolean setDuration(int aDuration) {
+        boolean wasSet = false;
+        duration = aDuration;
+        wasSet = true;
+        return wasSet;
+    }
 
-  public boolean setPrice(String aPrice)
-  {
-    boolean wasSet = false;
-    price = aPrice;
-    wasSet = true;
-    return wasSet;
-  }
+    public boolean setName(String aName) {
+        boolean wasSet = false;
+        name = aName;
+        wasSet = true;
+        return wasSet;
+    }
 
-  public Long getServiceID()
-  {
-    return serviceID;
-  }
+    public boolean setPrice(String aPrice) {
+        boolean wasSet = false;
+        price = aPrice;
+        wasSet = true;
+        return wasSet;
+    }
 
-  public int getDuration()
-  {
-    return duration;
-  }
+    public Long getServiceID() {
+        return serviceID;
+    }
 
-  public String getName()
-  {
-    return name;
-  }
+    public int getDuration() {
+        return duration;
+    }
 
-  public String getPrice()
-  {
-    return price;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void delete()
-  {}
+    public String getPrice() {
+        return price;
+    }
+
+    public void delete() {
+    }
 
 
-  public String toString()
-  {
-    return super.toString() + "["+
-            "serviceID" + ":" + getServiceID()+ "," +
-            "duration" + ":" + getDuration()+ "," +
-            "name" + ":" + getName()+ "," +
-            "price" + ":" + getPrice()+ "]";
-  }
+    public String toString() {
+        return super.toString() + "[" +
+                "serviceID" + ":" + getServiceID() + "," +
+                "duration" + ":" + getDuration() + "," +
+                "name" + ":" + getName() + "," +
+                "price" + ":" + getPrice() + "]";
+    }
 }
