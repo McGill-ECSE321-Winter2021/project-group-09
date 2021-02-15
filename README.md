@@ -11,7 +11,7 @@
 💻 [Sandy Lao](https://github.com/sandyl289)
 
 ## Overview Table
-| Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total Sprint <br/> Efforts<br/> (hours)| 
+| Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total <br/> Effort<br/> (hours)| 
 | :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
 | Sandy Lao              | Project Manager, Software Developer  | 00 | -- | -- | -- || -- |
 | Jacek Dziewonski       | Software Developer | 00 | -- | -- | -- || -- |
