@@ -21,7 +21,8 @@ public class Technician extends User {
     ////////////////////////////////
 
     private List<TimeSlot> timeslots;
-    @OneToMany(targetEntity=TimeSlot.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
+
+    @OneToMany(targetEntity = TimeSlot.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
     public List<TimeSlot> getTimeslots() {
         return timeslots;
     }
@@ -49,9 +50,6 @@ public class Technician extends User {
                 "technicianID" + ":" + getTechnicianID() + "]" + System.getProperties().getProperty("line.separator") +
                 "  " + "repairShop = " + (getRepairShop() != null ? Integer.toHexString(System.identityHashCode(getRepairShop())) : "null");
     }
-
-
-
 
 
 }

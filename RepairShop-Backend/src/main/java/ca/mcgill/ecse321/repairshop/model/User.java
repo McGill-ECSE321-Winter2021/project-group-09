@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
