@@ -16,10 +16,9 @@ public class Service {
         this.serviceID = serviceID;
     }
 
-    ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 
     private int duration;
-
     public int getDuration() {
         return duration;
     }
@@ -27,10 +26,9 @@ public class Service {
         this.duration = duration;
     }
 
-    ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 
     private String name;
-
     public String getName() {
         return name;
     }
@@ -38,10 +36,9 @@ public class Service {
         this.name = name;
     }
 
-    ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 
     private String price;
-
     public String getPrice() {
         return price;
     }
@@ -49,7 +46,7 @@ public class Service {
         this.price = price;
     }
 
-    ///////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
