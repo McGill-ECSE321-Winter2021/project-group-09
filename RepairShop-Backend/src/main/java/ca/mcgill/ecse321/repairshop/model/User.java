@@ -1,92 +1,69 @@
 package ca.mcgill.ecse321.repairshop.model;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class User {
 
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
-
-    //User Attributes
     private String email;
-    private String password;
-    private String phoneNumber;
-    private String name;
-    private String address;
-
-    //------------------------
-    // CONSTRUCTOR
-    //------------------------
-
-    public User(String aEmail, String aPassword, String aPhoneNumber, String aName, String aAddress) {
-        email = aEmail;
-        password = aPassword;
-        phoneNumber = aPhoneNumber;
-        name = aName;
-        address = aAddress;
-    }
-
-    //------------------------
-    // INTERFACE
-    //------------------------
-
-    public boolean setEmail(String aEmail) {
-        boolean wasSet = false;
-        email = aEmail;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setPassword(String aPassword) {
-        boolean wasSet = false;
-        password = aPassword;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setPhoneNumber(String aPhoneNumber) {
-        boolean wasSet = false;
-        phoneNumber = aPhoneNumber;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setName(String aName) {
-        boolean wasSet = false;
-        name = aName;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setAddress(String aAddress) {
-        boolean wasSet = false;
-        address = aAddress;
-        wasSet = true;
-        return wasSet;
-    }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    ////////////////////////////////
+
+    private String password;
+
     public String getPassword() {
         return password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    ////////////////////////////////
+
+    private String phoneNumber;
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    ////////////////////////////////
+
+    private String name;
+
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    ////////////////////////////////
+
+    private String address;
 
     public String getAddress() {
         return address;
     }
 
-    public void delete() {
+    public void setAddress(String address) {
+        this.address = address;
     }
 
+    ////////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
@@ -96,4 +73,6 @@ public abstract class User {
                 "name" + ":" + getName() + "," +
                 "address" + ":" + getAddress() + "]";
     }
+
+
 }
