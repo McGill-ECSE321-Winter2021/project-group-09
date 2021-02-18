@@ -34,7 +34,7 @@ public class Appointment {
     
     private Service service;
     
-    @ManyToOne(targetEntity = Service.class, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     public Service getService() {
         return this.service;
     }
@@ -49,7 +49,7 @@ public class Appointment {
     
     private Customer customer;
     
-    @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     public Customer getCustomer() {
         return this.customer;
     }
@@ -66,7 +66,7 @@ public class Appointment {
     private List<TimeSlot> timeSlots;
 
 
-    @OneToMany(targetEntity = TimeSlot.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "appointment")
     public List<TimeSlot> getTimeSlots() {
         return this.timeSlots;
     }
