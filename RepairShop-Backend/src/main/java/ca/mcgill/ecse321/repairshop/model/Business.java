@@ -1,242 +1,133 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.util.List;
+//IMPORTS for PERSISTENCE
 
-// line 56 "model.ump"
-// line 172 "model.ump"
+@Entity
 public class Business {
 
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
+    /***************** ID ****************/
 
-    //Business Attributes
     private Long businessID;
-    private String name;
-    private String address;
-    private String phoneNumber;
-    private String email;
-    private int numberOfRepairSpots;
 
-    //Business Associations
-    private final List<TimeSlot> vacations;
-    private RepairShop repairShop;
-
-    //------------------------
-    // CONSTRUCTOR
-    //------------------------
-
-    public Business(Long aBusinessID, String aName, String aAddress, String aPhoneNumber, String aEmail, int aNumberOfRepairSpots, RepairShop aRepairShop) {
-        businessID = aBusinessID;
-        name = aName;
-        address = aAddress;
-        phoneNumber = aPhoneNumber;
-        email = aEmail;
-        numberOfRepairSpots = aNumberOfRepairSpots;
-        vacations = new ArrayList<TimeSlot>();
-        boolean didAddRepairShop = setRepairShop(aRepairShop);
-        if (!didAddRepairShop) {
-            throw new RuntimeException("Unable to create business due to repairShop. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-        }
-    }
-
-    //------------------------
-    // INTERFACE
-    //------------------------
-
-    /* Code from template association_MinimumNumberOfMethod */
-    public static int minimumNumberOfVacations() {
-        return 0;
-    }
-
-    public boolean setBusinessID(Long aBusinessID) {
-        boolean wasSet = false;
-        businessID = aBusinessID;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setName(String aName) {
-        boolean wasSet = false;
-        name = aName;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setAddress(String aAddress) {
-        boolean wasSet = false;
-        address = aAddress;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setPhoneNumber(String aPhoneNumber) {
-        boolean wasSet = false;
-        phoneNumber = aPhoneNumber;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setEmail(String aEmail) {
-        boolean wasSet = false;
-        email = aEmail;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setNumberOfRepairSpots(int aNumberOfRepairSpots) {
-        boolean wasSet = false;
-        numberOfRepairSpots = aNumberOfRepairSpots;
-        wasSet = true;
-        return wasSet;
-    }
-
+    @Id
+    @GeneratedValue
     public Long getBusinessID() {
         return businessID;
     }
+
+    public void setBusinessID(Long businessID) {
+        this.businessID = businessID;
+    }
+
+    ///////////////////////////////////////////////////////////////
+
+    /**************** Name ****************/
+
+    private String name;
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    ///////////////////////////////////////////////////////////////
+
+    /**************** Address *****************/
+
+    private String address;
+
     public String getAddress() {
         return address;
     }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    ///////////////////////////////////////////////////////////////
+
+    /*************** Phone Number ****************/
+
+
+    private String phoneNumber;
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    ///////////////////////////////////////////////////////////////
+
+    /**************** Email ****************/
+    private String email;
+
     public String getEmail() {
         return email;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    ///////////////////////////////////////////////////////////////
+
+    /************** Number Of Repair Spots ****************/
+
+    private int numberOfRepairSpots;
 
     public int getNumberOfRepairSpots() {
         return numberOfRepairSpots;
     }
 
-    /* Code from template association_GetMany */
-    public TimeSlot getVacation(int index) {
-        TimeSlot aVacation = vacations.get(index);
-        return aVacation;
+    public void setNumberOfRepairSpots(int numberOfRepairSpots) {
+        this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
+    ///////////////////////////////////////////////////////////////
+
+/** BUSINESS ASSOCIATIONS **/
+
+    /************** TIMESLOT Vacations ****************/
+    // Business 0..1-->* TimeSlots (vacations)
+    //CacadeTupe.ALL: If delete Business, we want to delete ALL related TimeSlot vacations
+
+    private List<TimeSlot> vacations;
+
+    @OneToMany(targetEntity = TimeSlot.class, cascade = CascadeType.ALL, mappedBy = "business")
     public List<TimeSlot> getVacations() {
-        List<TimeSlot> newVacations = Collections.unmodifiableList(vacations);
-        return newVacations;
+        return vacations;
     }
 
-    public int numberOfVacations() {
-        int number = vacations.size();
-        return number;
+    public void setVacations(List<TimeSlot> vacations) {
+        this.vacations = vacations;
     }
 
-    public boolean hasVacations() {
-        boolean has = vacations.size() > 0;
-        return has;
-    }
+    ////////////////////////////////
+    /************** Repair Shop ****************/
 
-    public int indexOfVacation(TimeSlot aVacation) {
-        int index = vacations.indexOf(aVacation);
-        return index;
-    }
+    private RepairShop repairShop;
 
-    /* Code from template association_GetOne */
     public RepairShop getRepairShop() {
         return repairShop;
     }
 
-    /* Code from template association_AddUnidirectionalMany */
-    public boolean addVacation(TimeSlot aVacation) {
-        boolean wasAdded = false;
-        if (vacations.contains(aVacation)) {
-            return false;
-        }
-        vacations.add(aVacation);
-        wasAdded = true;
-        return wasAdded;
+    public void setRepairShop(RepairShop repairShop) {
+        this.repairShop = repairShop;
     }
 
-    public boolean removeVacation(TimeSlot aVacation) {
-        boolean wasRemoved = false;
-        if (vacations.contains(aVacation)) {
-            vacations.remove(aVacation);
-            wasRemoved = true;
-        }
-        return wasRemoved;
-    }
-
-    /* Code from template association_AddIndexControlFunctions */
-    public boolean addVacationAt(TimeSlot aVacation, int index) {
-        boolean wasAdded = false;
-        if (addVacation(aVacation)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfVacations()) {
-                index = numberOfVacations() - 1;
-            }
-            vacations.remove(aVacation);
-            vacations.add(index, aVacation);
-            wasAdded = true;
-        }
-        return wasAdded;
-    }
-
-    public boolean addOrMoveVacationAt(TimeSlot aVacation, int index) {
-        boolean wasAdded = false;
-        if (vacations.contains(aVacation)) {
-            if (index < 0) {
-                index = 0;
-            }
-            if (index > numberOfVacations()) {
-                index = numberOfVacations() - 1;
-            }
-            vacations.remove(aVacation);
-            vacations.add(index, aVacation);
-            wasAdded = true;
-        } else {
-            wasAdded = addVacationAt(aVacation, index);
-        }
-        return wasAdded;
-    }
-
-    /* Code from template association_SetOneToOptionalOne */
-    public boolean setRepairShop(RepairShop aNewRepairShop) {
-        boolean wasSet = false;
-        if (aNewRepairShop == null) {
-            //Unable to setRepairShop to null, as business must always be associated to a repairShop
-            return wasSet;
-        }
-
-        Business existingBusiness = aNewRepairShop.getBusiness();
-        if (existingBusiness != null && !equals(existingBusiness)) {
-            //Unable to setRepairShop, the current repairShop already has a business, which would be orphaned if it were re-assigned
-            return wasSet;
-        }
-
-        RepairShop anOldRepairShop = repairShop;
-        repairShop = aNewRepairShop;
-        repairShop.setBusiness(this);
-
-        if (anOldRepairShop != null) {
-            anOldRepairShop.setBusiness(null);
-        }
-        wasSet = true;
-        return wasSet;
-    }
-
-    public void delete() {
-        vacations.clear();
-        RepairShop existingRepairShop = repairShop;
-        repairShop = null;
-        if (existingRepairShop != null) {
-            existingRepairShop.setBusiness(null);
-        }
-    }
-
+    ////////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
