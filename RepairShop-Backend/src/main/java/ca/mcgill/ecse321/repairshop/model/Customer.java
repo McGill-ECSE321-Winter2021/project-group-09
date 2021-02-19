@@ -1,13 +1,18 @@
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Customer extends User {
+public class Customer extends User implements Serializable{
 
-    private Long customerID;
+   
 
+    /*
+     private Long customerID;
+    
     @Id
     @GeneratedValue
     public Long getCustomerID() {
@@ -19,7 +24,7 @@ public class Customer extends User {
     }
 
     ///////////////////////////////
-    /*
+    
     private RepairShop repairShop;
 
     public RepairShop getRepairShop() {
@@ -57,11 +62,11 @@ public class Customer extends User {
     }
 
     ////////////////////////////////
-
+    /*
     public String toString() {
         return super.toString() + "[" +
                 "customerID" + ":" + getCustomerID() + "]" + System.getProperties().getProperty("line.separator");
     }
-
+	*/
 
 }

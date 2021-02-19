@@ -1,13 +1,16 @@
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Technician extends User {
+public class Technician extends User implements Serializable{
 
-    private Long technicianID;
-
+    /*
+	
+	private Long technicianID;
     @Id
     @GeneratedValue
     public Long getTechnicianID() {
@@ -19,7 +22,7 @@ public class Technician extends User {
     }
 
     ////////////////////////////////
-
+	*/
     private List<TimeSlot> timeslots;
 
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
@@ -34,12 +37,12 @@ public class Technician extends User {
    
   
     ////////////////////////////////
-
+    /*
     public String toString() {
         return super.toString() + "[" +
                 "technicianID" + ":" + getTechnicianID() + "]" + System.getProperties().getProperty("line.separator") +
                 "  " + "repairShop = ";
     }
 
-
+	*/
 }

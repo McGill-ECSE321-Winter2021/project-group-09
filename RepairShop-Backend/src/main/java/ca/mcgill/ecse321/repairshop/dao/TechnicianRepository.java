@@ -16,7 +16,7 @@ public interface TechnicianRepository extends CrudRepository<Technician, Long>{
 	
 	Optional<Technician> findById(Long technicianID);
 	
-	Technician findByTimeSlot(TimeSlot timeSlot);
+	Technician findByTimeslots(TimeSlot timeSlot);
 	
 	List<Technician> findAll();	
 	

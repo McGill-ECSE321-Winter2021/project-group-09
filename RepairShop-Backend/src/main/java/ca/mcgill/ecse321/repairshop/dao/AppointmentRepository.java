@@ -49,7 +49,7 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	 * @return the appointment booked at the timeslot
 	 * A timeSlot has only 1 appointment
 	 */
-	Appointment findByTimeSlot(TimeSlot timeSlot);
+	Appointment findByTimeSlots(TimeSlot timeSlot);
 	
 	
 	
