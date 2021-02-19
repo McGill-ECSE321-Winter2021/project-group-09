@@ -48,16 +48,6 @@ public class Service {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private RepairShop repairShop;
-    public RepairShop getRepairShop() {
-        return repairShop;
-    }
-    public void setRepairShop(RepairShop repairShop) {
-        this.repairShop = repairShop;
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-
     public String toString() {
         return super.toString() + "[" +
                 "serviceID" + ":" + getServiceID() + "," +
