@@ -105,7 +105,7 @@ public class Business {
 
     private List<TimeSlot> vacations;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "business")
+    @OneToMany(cascade = CascadeType.ALL)
     public List<TimeSlot> getVacations() {
         return vacations;
     }
