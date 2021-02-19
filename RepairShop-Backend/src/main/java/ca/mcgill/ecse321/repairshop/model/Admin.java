@@ -21,22 +21,11 @@ public class Admin extends User {
 
     ///////////////////////////////
 
-    private RepairShop repairShop;
 
-    public RepairShop getRepairShop() {
-        return repairShop;
-    }
-
-    public void setRepairShop(RepairShop repairShop) {
-        this.repairShop = repairShop;
-    }
-
-    ///////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
-                "adminID" + ":" + getAdminID() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "repairShop = " + (getRepairShop() != null ? Integer.toHexString(System.identityHashCode(getRepairShop())) : "null");
+                "adminID" + ":" + getAdminID() + "]" + System.getProperties().getProperty("line.separator");
     }
 
 

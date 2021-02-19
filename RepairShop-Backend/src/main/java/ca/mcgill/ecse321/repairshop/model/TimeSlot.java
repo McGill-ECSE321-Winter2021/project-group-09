@@ -4,6 +4,8 @@ package ca.mcgill.ecse321.repairshop.model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
+@Entity
 public class TimeSlot {
 
     private Long timeSlotID;
@@ -39,9 +41,9 @@ public class TimeSlot {
     }
 
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Appointment appointment;
 
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     public Appointment getAppointment() {
         return appointment;
     }
@@ -50,9 +52,10 @@ public class TimeSlot {
         this.appointment = appointment;
     }
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    
     private Technician technician;
 
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     public Technician getTechnician() {
         return technician;
     }

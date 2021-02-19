@@ -19,7 +19,7 @@ public class Customer extends User {
     }
 
     ///////////////////////////////
-
+    /*
     private RepairShop repairShop;
 
     public RepairShop getRepairShop() {
@@ -29,7 +29,7 @@ public class Customer extends User {
     public void setRepairShop(RepairShop repairShop) {
         this.repairShop = repairShop;
     }
-
+	*/
     ////////////////////////////////
 
     private List<Appointment> appointments;
@@ -60,8 +60,7 @@ public class Customer extends User {
 
     public String toString() {
         return super.toString() + "[" +
-                "customerID" + ":" + getCustomerID() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "repairShop = " + (getRepairShop() != null ? Integer.toHexString(System.identityHashCode(getRepairShop())) : "null");
+                "customerID" + ":" + getCustomerID() + "]" + System.getProperties().getProperty("line.separator");
     }
 
 

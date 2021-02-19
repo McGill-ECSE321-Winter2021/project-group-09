@@ -114,19 +114,7 @@ public class Business {
         this.vacations = vacations;
     }
 
-    ////////////////////////////////
-    /************** Repair Shop ****************/
-
-    private RepairShop repairShop;
-
-    public RepairShop getRepairShop() {
-        return repairShop;
-    }
-
-    public void setRepairShop(RepairShop repairShop) {
-        this.repairShop = repairShop;
-    }
-
+    
     ////////////////////////////////
 
     public String toString() {
@@ -136,7 +124,6 @@ public class Business {
                 "address" + ":" + getAddress() + "," +
                 "phoneNumber" + ":" + getPhoneNumber() + "," +
                 "email" + ":" + getEmail() + "," +
-                "numberOfRepairSpots" + ":" + getNumberOfRepairSpots() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "repairShop = " + (getRepairShop() != null ? Integer.toHexString(System.identityHashCode(getRepairShop())) : "null");
+                "numberOfRepairSpots" + ":" + getNumberOfRepairSpots() + "]" + System.getProperties().getProperty("line.separator");
     }
 }

@@ -31,24 +31,14 @@ public class Technician extends User {
         this.timeslots = timeslots;
     }
 
-    ////////////////////////////////
-
-    private RepairShop repairShop;
-
-    public RepairShop getRepairShop() {
-        return repairShop;
-    }
-
-    public void setRepairShop(RepairShop repairShop) {
-        this.repairShop = repairShop;
-    }
-
+   
+  
     ////////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
                 "technicianID" + ":" + getTechnicianID() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "repairShop = " + (getRepairShop() != null ? Integer.toHexString(System.identityHashCode(getRepairShop())) : "null");
+                "  " + "repairShop = ";
     }
 
 

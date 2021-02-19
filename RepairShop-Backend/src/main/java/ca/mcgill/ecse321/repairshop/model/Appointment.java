@@ -71,7 +71,7 @@ public class Appointment {
         return this.timeSlots;
     }
 
-    public void setTechnicians(List<TimeSlot> timeSlots) {
+    public void setTimeSlots(List<TimeSlot> timeSlots) {
         this.timeSlots = timeSlots;
     }
     
