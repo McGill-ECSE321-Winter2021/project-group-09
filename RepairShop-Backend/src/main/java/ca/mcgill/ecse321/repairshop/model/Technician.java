@@ -22,7 +22,7 @@ public class Technician extends User {
 
     private List<TimeSlot> timeslots;
 
-    @OneToMany(targetEntity = TimeSlot.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
+    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
     public List<TimeSlot> getTimeslots() {
         return timeslots;
     }
