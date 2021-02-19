@@ -1,102 +1,88 @@
 package ca.mcgill.ecse321.repairshop.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.ManyToOne;
+import javax.persistence.Id;
+
+@Entity
 public class Reminder {
 
-    //------------------------
-    // ENUMERATIONS
-    //------------------------
-
-    //Reminder Attributes
     private Long reminderID;
-
-    //------------------------
-    // MEMBER VARIABLES
-    //------------------------
-    private String dateTime;
-    private ReminderType reminderType;
-    //Reminder Associations
-    private Customer customer;
-
-    public Reminder(Long aReminderID, String aDateTime, ReminderType aReminderType, Customer aCustomer) {
-        reminderID = aReminderID;
-        dateTime = aDateTime;
-        reminderType = aReminderType;
-        boolean didAddCustomer = setCustomer(aCustomer);
-        if (!didAddCustomer) {
-            throw new RuntimeException("Unable to create reminder due to customer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-        }
-    }
-
-    //------------------------
-    // CONSTRUCTOR
-    //------------------------
-
-    public boolean setReminderID(Long aReminderID) {
-        boolean wasSet = false;
-        reminderID = aReminderID;
-        wasSet = true;
-        return wasSet;
-    }
-
-    //------------------------
-    // INTERFACE
-    //------------------------
-
-    public boolean setDateTime(String aDateTime) {
-        boolean wasSet = false;
-        dateTime = aDateTime;
-        wasSet = true;
-        return wasSet;
-    }
-
-    public boolean setReminderType(ReminderType aReminderType) {
-        boolean wasSet = false;
-        reminderType = aReminderType;
-        wasSet = true;
-        return wasSet;
-    }
-
+    
+    @Id
+    @GeneratedValue
     public Long getReminderID() {
-        return reminderID;
+		return reminderID;
+	}
+
+	public void setReminderID(Long reminderID) {
+		this.reminderID = reminderID;
+	}
+    
+	
+    ///////////////////////////////
+
+    private RepairShop repairShop;
+
+    public RepairShop getRepairShop() {
+        return repairShop;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public void setRepairShop(RepairShop repairShop) {
+        this.repairShop = repairShop;
     }
+    
+    
+	///////////////////////////////
+    
+    private String dateTime;
 
-    public ReminderType getReminderType() {
-        return reminderType;
-    }
+	public String getDateTime() {
+		return dateTime;
+	}
 
-    /* Code from template association_GetOne */
-    public Customer getCustomer() {
-        return customer;
-    }
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
 
-    /* Code from template association_SetOneToMany */
-    public boolean setCustomer(Customer aCustomer) {
-        boolean wasSet = false;
-        if (aCustomer == null) {
-            return wasSet;
-        }
+	
+	///////////////////////////////
+	
+    public enum ReminderType {OilChange, Confirmation, Maintenance, RegularCheckups}
+    
+    ///////////////////////////////
+	
+	private ReminderType reminderType;
+	
+	@Enumerated(EnumType.STRING)
+	public ReminderType getReminderType() {
+		return reminderType;
+	}
 
-        Customer existingCustomer = customer;
-        customer = aCustomer;
-        if (existingCustomer != null && !existingCustomer.equals(aCustomer)) {
-            existingCustomer.removeReminder(this);
-        }
-        customer.addReminder(this);
-        wasSet = true;
-        return wasSet;
-    }
+	public void setReminderType(ReminderType reminderType) {
+		this.reminderType = reminderType;
+	}
 
-    public void delete() {
-        Customer placeholderCustomer = customer;
-        this.customer = null;
-        if (placeholderCustomer != null) {
-            placeholderCustomer.removeReminder(this);
-        }
-    }
+	
+    ///////////////////////////////
+    
+    private Customer customer;
+    
+    @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL)
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+  
+	
+    ///////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
@@ -106,6 +92,4 @@ public class Reminder {
                 "  " + "customer = " + (getCustomer() != null ? Integer.toHexString(System.identityHashCode(getCustomer())) : "null");
     }
 
-
-    public enum ReminderType {OilChange, Confirmation, Maintenance, RegularCheckups}
 }
