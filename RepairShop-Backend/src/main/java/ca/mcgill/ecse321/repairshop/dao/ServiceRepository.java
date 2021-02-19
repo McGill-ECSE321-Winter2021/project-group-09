@@ -7,6 +7,4 @@ public interface ServiceRepository extends CrudRepository<Service, Long> {
 
     Service findServiceByName(String name);
 
-    Service findServiceByServiceID(Long serviceId);
-
 }
