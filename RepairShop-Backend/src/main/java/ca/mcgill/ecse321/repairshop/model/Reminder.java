@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 @Entity
 public class Reminder {
@@ -23,37 +24,20 @@ public class Reminder {
 		this.reminderID = reminderID;
 	}
     
-	
-    ///////////////////////////////
-
-    private RepairShop repairShop;
-
-    public RepairShop getRepairShop() {
-        return repairShop;
-    }
-
-    public void setRepairShop(RepairShop repairShop) {
-        this.repairShop = repairShop;
-    }
-    
     
 	///////////////////////////////
     
-    private String dateTime;
+    private Timestamp dateTime;
 
-	public String getDateTime() {
+	public Timestamp getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(String dateTime) {
+	public void setDateTime(Timestamp dateTime) {
 		this.dateTime = dateTime;
 	}
 
 	
-	///////////////////////////////
-	
-    public enum ReminderType {OilChange, Confirmation, Maintenance, RegularCheckups}
-    
     ///////////////////////////////
 	
 	private ReminderType reminderType;
