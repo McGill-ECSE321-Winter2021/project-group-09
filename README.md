@@ -22,7 +22,7 @@
 ## Sprint 1: Effort Table
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       | Domain Model, Requirements, Create Repository, Gradle and Spring Setups | 00 |
+| Jacek Dziewonski       | Domain Model, Requirements, Create Repository, Gradle and Spring Setups, Add JPA annotations | 00 |
 | Shaswata Bhattacharyya | Domain Model, Requirements, Gradle, Heroku & Travis CI Setups | 00 |
 | Zhanna Klimanova       | Domain Model, Requirements, Kanban board Setup, Create issues and milestones  | 00 |
 | Tyler Syme             | Domain Model, Requirements, Documentation, Wiki  | 00 |
