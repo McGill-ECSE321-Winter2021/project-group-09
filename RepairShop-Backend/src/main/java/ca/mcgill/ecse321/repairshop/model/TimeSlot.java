@@ -1,9 +1,7 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-
 import javax.persistence.*;
 import java.sql.Timestamp;
-
 
 @Entity
 public class TimeSlot {

@@ -10,12 +10,8 @@ import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Service;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
-
-
-
 public interface AppointmentRepository extends CrudRepository<Appointment, Long>{
-	
-	
+
 	/**
 	 * @author Shaswata
 	 * @param customer
@@ -24,7 +20,6 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	 */
 	List<Appointment> findByCustomer(Customer customer);
 
-	
 	/**
 	 * @author Shaswata
 	 * @param customer
@@ -41,8 +36,7 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	 * The customer-service pair is not unique (customer can book multiple appointments with same service) so it returns a list of appointments
 	 */
 	List<Appointment> findByCustomerAndService(Customer customer, Service service);
-	
-	
+
 	/**
 	 * @author Shaswata
 	 * @param timeSlot
@@ -50,9 +44,7 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	 * A timeSlot has only 1 appointment
 	 */
 	Appointment findByTimeSlots(TimeSlot timeSlot);
-	
-	
-	
+
 	Optional<Appointment> findById(Long appointmentID);
 	
 	List<Appointment> findAll();	

@@ -1,10 +1,7 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,7 +26,6 @@ public class Appointment {
         return this.appointmentID;
     }
 
-    
     //////////////////////////////////////////////////////////////////////////////////
     
     private Service service;
@@ -42,9 +38,7 @@ public class Appointment {
     public void setService(Service service) {
     	this.service = service;
     }
-    
-    
-    
+
     ////////////////////////////////////////////////////////////////////////////////
     
     private Customer customer;
@@ -54,17 +48,13 @@ public class Appointment {
         return this.customer;
     }
     
-    
     public void setCustomer(Customer customer) {
     	this.customer = customer;
     }
-
-    
    
     ///////////////////////////////////////////////////////////////////////////////
     
     private List<TimeSlot> timeSlots;
-
 
     @OneToMany(mappedBy = "appointment")
     public List<TimeSlot> getTimeSlots() {
@@ -74,8 +64,7 @@ public class Appointment {
     public void setTimeSlots(List<TimeSlot> timeSlots) {
         this.timeSlots = timeSlots;
     }
-    
-    
+
     //////////////////////////////////////////////////////////////////////////////
     
     public int getRepairSpotNumber() {
@@ -85,8 +74,6 @@ public class Appointment {
     public void setRepairSpotNumber(int n) {
     	this.repairSpotNumber = n;
     }
-
-    
 
     //////////////////////////////////////////////////////////////////////////////
 

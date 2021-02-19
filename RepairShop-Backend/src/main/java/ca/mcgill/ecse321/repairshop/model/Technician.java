@@ -8,21 +8,6 @@ import java.util.List;
 @Entity
 public class Technician extends User implements Serializable{
 
-    /*
-	
-	private Long technicianID;
-    @Id
-    @GeneratedValue
-    public Long getTechnicianID() {
-        return technicianID;
-    }
-
-    public void setTechnicianID(Long technicianID) {
-        this.technicianID = technicianID;
-    }
-
-    ////////////////////////////////
-	*/
     private List<TimeSlot> timeslots;
 
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
@@ -34,15 +19,4 @@ public class Technician extends User implements Serializable{
         this.timeslots = timeslots;
     }
 
-   
-  
-    ////////////////////////////////
-    /*
-    public String toString() {
-        return super.toString() + "[" +
-                "technicianID" + ":" + getTechnicianID() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "repairShop = ";
-    }
-
-	*/
 }

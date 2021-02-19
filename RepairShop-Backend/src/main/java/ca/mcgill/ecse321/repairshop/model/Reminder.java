@@ -23,8 +23,7 @@ public class Reminder {
 	public void setReminderID(Long reminderID) {
 		this.reminderID = reminderID;
 	}
-    
-    
+
 	///////////////////////////////
     
     private Timestamp dateTime;
@@ -37,7 +36,6 @@ public class Reminder {
 		this.dateTime = dateTime;
 	}
 
-	
     ///////////////////////////////
 	
 	private ReminderType reminderType;
@@ -51,7 +49,6 @@ public class Reminder {
 		this.reminderType = reminderType;
 	}
 
-	
     ///////////////////////////////
     
     private Customer customer;
@@ -64,8 +61,7 @@ public class Reminder {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-  
-	
+
     ///////////////////////////////
 
     public String toString() {

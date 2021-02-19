@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class RepairShop {
 
-
     private Long repairShopID;
 
     @Id

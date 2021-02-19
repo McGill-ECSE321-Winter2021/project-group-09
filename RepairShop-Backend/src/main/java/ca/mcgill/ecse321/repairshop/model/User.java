@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -77,6 +76,5 @@ public class User {
                 "name" + ":" + getName() + "," +
                 "address" + ":" + getAddress() + "]";
     }
-
 
 }

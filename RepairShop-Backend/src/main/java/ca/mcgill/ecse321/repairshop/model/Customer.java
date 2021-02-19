@@ -1,41 +1,11 @@
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 public class Customer extends User implements Serializable{
-
-   
-
-    /*
-     private Long customerID;
-    
-    @Id
-    @GeneratedValue
-    public Long getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(Long customerID) {
-        this.customerID = customerID;
-    }
-
-    ///////////////////////////////
-    
-    private RepairShop repairShop;
-
-    public RepairShop getRepairShop() {
-        return repairShop;
-    }
-
-    public void setRepairShop(RepairShop repairShop) {
-        this.repairShop = repairShop;
-    }
-	*/
-    ////////////////////////////////
 
     private List<Appointment> appointments;
 
@@ -60,13 +30,5 @@ public class Customer extends User implements Serializable{
     public void setReminders(List<Reminder> reminders) {
         this.reminders = reminders;
     }
-
-    ////////////////////////////////
-    /*
-    public String toString() {
-        return super.toString() + "[" +
-                "customerID" + ":" + getCustomerID() + "]" + System.getProperties().getProperty("line.separator");
-    }
-	*/
 
 }
