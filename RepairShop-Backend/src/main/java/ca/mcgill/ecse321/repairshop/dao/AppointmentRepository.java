@@ -59,4 +59,6 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	
 	void deleteById(Long appointmentID);
 	
+	void deleteAll();
+	
 }
