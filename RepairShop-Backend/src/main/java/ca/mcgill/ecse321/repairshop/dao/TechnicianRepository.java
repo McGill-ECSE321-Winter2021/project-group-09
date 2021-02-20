@@ -11,7 +11,7 @@ import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
 
-@Repository
+
 public interface TechnicianRepository extends CrudRepository<Technician, String>{
 	
 	Technician findTechnicianByEmail(String email);
