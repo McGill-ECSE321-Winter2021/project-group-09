@@ -7,15 +7,13 @@ import javax.persistence.Id;
 @Entity
 public class Service {
 
-    private Long serviceID;
-
+    private String name;
     @Id
-    @GeneratedValue
-    public Long getServiceID() {
-        return serviceID;
+    public String getName() {
+        return name;
     }
-    public void setServiceID(Long serviceID) {
-        this.serviceID = serviceID;
+    public void setName(String name) {
+        this.name = name;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -30,21 +28,11 @@ public class Service {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private String name;
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    private String price;
-    public String getPrice() {
+    private double price;
+    public double getPrice() {
         return price;
     }
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -52,9 +40,8 @@ public class Service {
 
     public String toString() {
         return super.toString() + "[" +
-                "serviceID" + ":" + getServiceID() + "," +
-                "duration" + ":" + getDuration() + "," +
                 "name" + ":" + getName() + "," +
+                "duration" + ":" + getDuration() + "," +
                 "price" + ":" + getPrice() + "]";
     }
 }

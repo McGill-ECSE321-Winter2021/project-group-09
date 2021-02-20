@@ -1,3 +1,6 @@
+
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
@@ -74,3 +77,5 @@ public class TimeSlot {
 
 
 }
+
+

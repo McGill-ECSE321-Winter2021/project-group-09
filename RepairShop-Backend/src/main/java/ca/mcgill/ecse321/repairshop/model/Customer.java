@@ -1,11 +1,17 @@
+
+
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Customer extends User implements Serializable{
+@Table(name = "customer")
+public class Customer extends User {
 
     private List<Appointment> appointments;
 
@@ -32,3 +38,5 @@ public class Customer extends User implements Serializable{
     }
 
 }
+
+

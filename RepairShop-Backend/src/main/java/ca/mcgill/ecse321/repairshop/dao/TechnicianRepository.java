@@ -4,21 +4,26 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
-public interface TechnicianRepository extends CrudRepository<Technician, Long>{
+
+
+public interface TechnicianRepository extends CrudRepository<Technician, String>{
 	
-	Optional<Technician> findById(Long technicianID);
+	Technician findTechnicianByEmail(String email);
 	
 	Technician findByTimeslots(TimeSlot timeSlot);
 	
 	List<Technician> findAll();	
 	
-	void deleteById(Long technicianID);
+	void deleteByEmail(String email);
 	
-	void deleteAll();
+	//void deleteAll();
+	
+	//Technician save(Technician tech);
 	
 }

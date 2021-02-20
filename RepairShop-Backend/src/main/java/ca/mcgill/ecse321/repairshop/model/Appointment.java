@@ -1,3 +1,6 @@
+
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import java.util.List;
@@ -84,3 +87,5 @@ public class Appointment {
                 "  " + "customer = " + (getCustomer() != null ? Integer.toHexString(System.identityHashCode(getCustomer())) : "null");
     }
 }
+
+
