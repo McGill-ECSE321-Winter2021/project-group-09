@@ -1,3 +1,5 @@
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.Entity;
@@ -11,7 +13,7 @@ import java.util.List;
 @Entity
 public class Business {
 
-    /***************** ID ****************/
+   
 
     private Long businessID;
 
@@ -27,7 +29,7 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////
 
-    /**************** Name ****************/
+   
 
     private String name;
 
@@ -41,7 +43,7 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////
 
-    /**************** Address *****************/
+    
 
     private String address;
 
@@ -55,7 +57,7 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////
 
-    /*************** Phone Number ****************/
+    
 
 
     private String phoneNumber;
@@ -70,7 +72,7 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////
 
-    /**************** Email ****************/
+    
     private String email;
 
     public String getEmail() {
@@ -83,7 +85,7 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////
 
-    /************** Number Of Repair Spots ****************/
+   
 
     private int numberOfRepairSpots;
 
@@ -97,9 +99,9 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////
 
-/** BUSINESS ASSOCIATIONS **/
 
-    /************** TIMESLOT Vacations ****************/
+
+    
     // Business 0..1-->* TimeSlots (vacations)
     //CacadeTupe.ALL: If delete Business, we want to delete ALL related TimeSlot vacations
 
@@ -127,3 +129,5 @@ public class Business {
                 "numberOfRepairSpots" + ":" + getNumberOfRepairSpots() + "]" + System.getProperties().getProperty("line.separator");
     }
 }
+
+

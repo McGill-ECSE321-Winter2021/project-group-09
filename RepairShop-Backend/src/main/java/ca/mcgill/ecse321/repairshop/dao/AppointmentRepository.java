@@ -1,3 +1,6 @@
+
+
+
 package ca.mcgill.ecse321.repairshop.dao;
 
 import java.util.List;
@@ -45,7 +48,7 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	 */
 	Appointment findByTimeSlots(TimeSlot timeSlot);
 
-	Optional<Appointment> findById(Long appointmentID);
+	Appointment findAppointmentByAppointmentID(Long appointmentID);
 	
 	List<Appointment> findAll();	
 	
@@ -54,3 +57,6 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	void deleteAll();
 	
 }
+
+
+

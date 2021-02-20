@@ -1,3 +1,7 @@
+
+
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
@@ -78,3 +82,5 @@ public class RepairShop {
                 "  " + "business = " + (getBusiness() != null ? Integer.toHexString(System.identityHashCode(getBusiness())) : "null");
     }
 }
+
+

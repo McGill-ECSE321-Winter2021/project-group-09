@@ -1,3 +1,5 @@
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.Id;
@@ -5,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 
 
 @MappedSuperclass
-public class User {
+public abstract class User {
 
     private String email;
 
@@ -78,3 +80,4 @@ public class User {
     }
 
 }
+

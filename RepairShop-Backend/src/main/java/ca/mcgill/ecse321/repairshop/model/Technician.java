@@ -6,8 +6,22 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Technician extends User implements Serializable{
+@Table(name = "technician")
+public class Technician extends User {
+	
+	private String email;
 
+    @Id
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    
+    
     private List<TimeSlot> timeslots;
 
     @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
@@ -18,5 +32,6 @@ public class Technician extends User implements Serializable{
     public void setTimeslots(List<TimeSlot> timeslots) {
         this.timeslots = timeslots;
     }
+    
 
 }

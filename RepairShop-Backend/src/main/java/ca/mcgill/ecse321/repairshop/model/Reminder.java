@@ -1,3 +1,6 @@
+
+
+
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.CascadeType;
@@ -73,3 +76,4 @@ public class Reminder {
     }
 
 }
+
