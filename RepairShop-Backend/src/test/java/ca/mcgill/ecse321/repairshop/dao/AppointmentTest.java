@@ -80,7 +80,7 @@ public class AppointmentTest {
 		//create service
 		int duration = 1;
 		String serviceName = "repair";
-		String price = "$20";
+		double price = 20.00;
 		Service service = new Service();
 		service.setName(serviceName);
 		service.setDuration(duration);
