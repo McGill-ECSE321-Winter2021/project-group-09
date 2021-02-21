@@ -1,17 +1,10 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Business {
-	
-	
 
     private Long businessID;
 
@@ -103,7 +96,7 @@ public class Business {
     //CacadeType.ALL: If Business is deleted, then also delete ALL related TimeSlot vacations
     private List<TimeSlot> vacations;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany
     public List<TimeSlot> getVacations() {
         return vacations;
     }
