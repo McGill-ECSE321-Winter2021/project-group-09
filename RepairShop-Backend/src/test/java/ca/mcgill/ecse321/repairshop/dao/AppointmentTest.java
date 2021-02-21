@@ -55,13 +55,7 @@ public class AppointmentTest {
 		
 	}
 
-	
-
-	@Test
-	public void testPersistAndLoadAppointment() {
-		Long appID = null;
-		
-		//create customer
+	public Customer createCustomer() {
 		String customerName = "TestCustomer";
 		String customerEmail = "CustomerEmail";
 		String customerPassword = "CustomerPassword";
@@ -74,10 +68,10 @@ public class AppointmentTest {
 		customer.setPassword(customerPassword);
 		customer.setPhoneNumber(customerPhone);
 		ArrayList<Appointment> apps = new ArrayList<>();
-		customerRepository.save(customer);
-		
-		
-		//create service
+		return customerRepository.save(customer);
+	}
+
+	public Service createService() {
 		int duration = 1;
 		String serviceName = "repair";
 		double price = 20.00;
@@ -85,62 +79,39 @@ public class AppointmentTest {
 		service.setName(serviceName);
 		service.setDuration(duration);
 		service.setPrice(price);
-		serviceRepository.save(service);
-		
-		
-		//create technician
-		String techName = "TestCustomer";
-		String techEmail = "CustomerEmail";
-		String techPassword = "CustomerPassword";
-		String techAddress = "ABCD";
-		String techPhone = "63534525453";
-		Technician technician = new Technician();
-		technician.setName(techName);
-		technician.setAddress(techAddress);
-		technician.setEmail(techEmail);
-		technician.setPassword(techPassword);
-		technician.setPhoneNumber(techPhone);
-		technicianRepository.save(technician);
-		
-		
+		return serviceRepository.save(service);
+	}
+
+	@Test
+	public void testPersistAndLoadAppointment() {
 		//create time slot
 		Timestamp start = Timestamp.valueOf("2021-03-01 10:00:00");
 		Timestamp end = Timestamp.valueOf("2021-03-01 10:30:00");
 		TimeSlot timeSlot = new TimeSlot();
 		timeSlot.setStartDateTime(start);
 		timeSlot.setEndDateTime(end);
-		timeSlot.setTechnician(technician);
 		timeSlotRepository.save(timeSlot);
-		
-		
+
 		//create appointment
 		ArrayList<TimeSlot> timeslots = new ArrayList<>();
 		timeslots.add(timeSlot);
 		Appointment appointment = new Appointment();
-		timeSlot.setAppointment(appointment);
-		
-		
-		appointment.setCustomer(customer);
-		apps.add(appointment);
-		customer.setAppointments(apps);
-		
+		Customer createdCustomer = createCustomer();
+		appointment.setCustomer(createdCustomer);
 		appointment.setRepairSpotNumber(2);
-		appointment.setService(service);
+		Service createdService = createService();
+		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
-		appID = appointment.getAppointmentID();
-		appointmentRepository.save(appointment);
+		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 		
 		appointment = null;
-				
-		
 		
 		//read from database
 		appointment = appointmentRepository.findAppointmentByAppointmentID(appID);
 		assertNotNull(appointment);
-		
-		assertEquals(appID, appointment.getAppointmentID());
-		assertEquals(customer.getName(), appointment.getCustomer().getName());
-		assertEquals(service.getName(), appointment.getService().getName());
+
+		assertEquals(createdCustomer.getName(), appointment.getCustomer().getName());
+		assertEquals(createdService.getName(), appointment.getService().getName());
 	}
 
 
