@@ -1,11 +1,9 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.model;
 
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -14,8 +12,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Appointment {
-
-    private int repairSpotNumber;
+	
 	
     private Long appointmentID;
     
@@ -59,7 +56,7 @@ public class Appointment {
     
     private List<TimeSlot> timeSlots;
 
-    @OneToMany(mappedBy = "appointment")
+    @OneToMany(fetch =  FetchType.LAZY, mappedBy = "appointment")
     public List<TimeSlot> getTimeSlots() {
         return this.timeSlots;
     }
@@ -69,6 +66,10 @@ public class Appointment {
     }
 
     //////////////////////////////////////////////////////////////////////////////
+    
+    // TODO Ask why it's needed and remove along with attribute. b/c its already in business
+    
+    private int repairSpotNumber;
     
     public int getRepairSpotNumber() {
     	return this.repairSpotNumber;

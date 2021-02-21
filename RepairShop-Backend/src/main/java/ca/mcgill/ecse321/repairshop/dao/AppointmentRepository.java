@@ -1,6 +1,3 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.dao;
 
 import java.util.List;

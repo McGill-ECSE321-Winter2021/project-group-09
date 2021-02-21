@@ -1,12 +1,10 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
+@Table(name = "timeslots")
 public class TimeSlot {
 
     private Long timeSlotID;
@@ -21,6 +19,10 @@ public class TimeSlot {
         this.timeSlotID = timeSlotID;
     }
 
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
     private Timestamp startDateTime;
 
     public Timestamp getStartDateTime() {
@@ -31,6 +33,10 @@ public class TimeSlot {
         this.startDateTime = startDateTime;
     }
 
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
     private Timestamp endDateTime;
 
     public Timestamp getEndDateTime() {
@@ -41,7 +47,10 @@ public class TimeSlot {
         this.endDateTime = endDateTime;
     }
 
-
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
     private Appointment appointment;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
@@ -52,7 +61,10 @@ public class TimeSlot {
     public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
-
+    
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
     
     private Technician technician;
 
@@ -65,7 +77,9 @@ public class TimeSlot {
         this.technician = technician;
     }
 
-
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
     public String toString() {
         return super.toString() + "[" +
                 "timeSlotID" + ":" + getTimeSlotID() + "," +

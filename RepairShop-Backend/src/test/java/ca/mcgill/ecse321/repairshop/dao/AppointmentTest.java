@@ -1,7 +1,4 @@
-
-
 package ca.mcgill.ecse321.repairshop.dao;
-
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,7 +8,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +19,6 @@ import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Service;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
-
 
 
 @ExtendWith(SpringExtension.class)
@@ -45,7 +40,7 @@ public class AppointmentTest {
 	@AfterEach
 	@BeforeEach
 	public void clearDatabase() {
-		// Fisrt, we clear registrations to avoid exceptions due to inconsistencies
+		// First, we clear registrations to avoid exceptions due to inconsistencies
 		appointmentRepository.deleteAll();
 		// Then we can clear the other tables
 		customerRepository.deleteAll();

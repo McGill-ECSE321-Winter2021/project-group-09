@@ -1,15 +1,10 @@
-
-
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
 import java.util.List;
-//IMPORTS for PERSISTENCE
 
 @Entity
 public class Business {
-
-   
 
     private Long businessID;
 
@@ -23,9 +18,9 @@ public class Business {
         this.businessID = businessID;
     }
 
-    ///////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
-   
 
     private String name;
 
@@ -36,10 +31,10 @@ public class Business {
     public void setName(String name) {
         this.name = name;
     }
-
-    ///////////////////////////////////////////////////////////////
-
     
+    
+    ///////////////////////////////////////////////////////////////////////////
+
 
     private String address;
 
@@ -51,9 +46,8 @@ public class Business {
         this.address = address;
     }
 
-    ///////////////////////////////////////////////////////////////
-
     
+    ///////////////////////////////////////////////////////////////////////////
 
 
     private String phoneNumber;
@@ -66,7 +60,8 @@ public class Business {
         this.phoneNumber = phoneNumber;
     }
 
-    ///////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
     
     private String email;
@@ -79,9 +74,9 @@ public class Business {
         this.email = email;
     }
 
-    ///////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
-   
 
     private int numberOfRepairSpots;
 
@@ -93,14 +88,12 @@ public class Business {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
-    ///////////////////////////////////////////////////////////////
-
-
+    
+    ///////////////////////////////////////////////////////////////////////////
 
     
     // Business 0..1-->* TimeSlots (vacations)
-    //CacadeTupe.ALL: If delete Business, we want to delete ALL related TimeSlot vacations
-
+    //CacadeType.ALL: If Business is deleted, then also delete ALL related TimeSlot vacations
     private List<TimeSlot> vacations;
 
     @OneToMany
@@ -113,8 +106,9 @@ public class Business {
     }
 
     
-    ////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
 
+    
     public String toString() {
         return super.toString() + "[" +
                 "businessID" + ":" + getBusinessID() + "," +

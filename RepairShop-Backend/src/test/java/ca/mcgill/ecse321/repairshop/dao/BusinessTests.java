@@ -64,7 +64,7 @@ public class BusinessTests {
         //TODO: I'm not sure if I should save the TimeSlots vacation & vacation2.
         timeSlotRepository.save(vacation);
         timeSlotRepository.save(vacation2);
-
+      
         String name = "TestBusinessName";
         String email = "example@server.ca";
         String phoneNumber = "(123)-456-789";
