@@ -50,15 +50,9 @@ public class ReminderTest {
 		customer.setPhoneNumber(customerPhone);
 		customerRepository.save(customer);
 
-		
-		// create reminder time
+		//create reminder
 		Timestamp reminderDay = Timestamp.valueOf("2021-04-20 10:10:10.0");
-		
-		// TODO a whole lot of problems with this enum thing. Fix later
-		// create oil change reminder
 		ReminderType reminderType = ReminderType.OilChange;
-		
-		// create reminder
 		Reminder reminder = new Reminder();
 		reminder.setCustomer(customer);
 		reminder.setDateTime(reminderDay);
