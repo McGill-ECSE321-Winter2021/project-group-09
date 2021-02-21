@@ -71,7 +71,7 @@ public class ReminderTest {
 		
 		reminder = null;
 		
-		reminder = reminderRepository.findByCustomerAndType(customer, reminderType);
+//		reminder = reminderRepository.findByCustomerAndType(customer, reminderType);
 		assertNotNull(reminder);
 		assertEquals(reminderID, reminder.getReminderID());
 		assertEquals(customerName, reminder.getCustomer().getName());
