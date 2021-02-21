@@ -61,7 +61,7 @@ public class Reminder {
 	// targetEntity is REminder.class
     private Customer customer;
     
-    @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL)
+    @ManyToOne
 	public Customer getCustomer() {
 		return customer;
 	}
