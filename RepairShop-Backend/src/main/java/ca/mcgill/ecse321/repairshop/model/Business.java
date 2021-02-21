@@ -2,11 +2,7 @@
 
 package ca.mcgill.ecse321.repairshop.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 import java.util.List;
 //IMPORTS for PERSISTENCE
 
@@ -107,7 +103,7 @@ public class Business {
 
     private List<TimeSlot> vacations;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     public List<TimeSlot> getVacations() {
         return vacations;
     }

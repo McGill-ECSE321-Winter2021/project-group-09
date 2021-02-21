@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class BusinessTests {
     }
 
     @Test
+    @Transactional
     public void testPersistAndLoadBusiness() {
 
         //Create 1st TimeSlot vacation (vacation1)
@@ -63,7 +65,6 @@ public class BusinessTests {
         timeSlotRepository.save(vacation);
         timeSlotRepository.save(vacation2);
 
-        int businessId = 1;
         String name = "TestBusinessName";
         String email = "example@server.ca";
         String phoneNumber = "(123)-456-789";
@@ -81,7 +82,6 @@ public class BusinessTests {
 
         business = businessRepository.findBusinessByName(name);
         assertNotNull(business);
-        assertEquals(businessId, business.getBusinessID());
         assertEquals(name, business.getName());
         assertEquals(email, business.getEmail());
         assertEquals(phoneNumber, business.getPhoneNumber());
