@@ -42,7 +42,7 @@ public class AppointmentTest {
 	private TechnicianRepository technicianRepository;
 	
 	
-
+	@AfterEach
 	@BeforeEach
 	public void clearDatabase() {
 		// Fisrt, we clear registrations to avoid exceptions due to inconsistencies

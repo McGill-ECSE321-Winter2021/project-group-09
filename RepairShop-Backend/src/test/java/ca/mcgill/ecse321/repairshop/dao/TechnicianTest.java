@@ -35,7 +35,7 @@ public class TechnicianTest {
 	private TechnicianRepository technicianRepository;
 	
 	
-
+	@BeforeEach
 	@AfterEach
 	public void clearDatabase() {
 		technicianRepository.deleteAll();
