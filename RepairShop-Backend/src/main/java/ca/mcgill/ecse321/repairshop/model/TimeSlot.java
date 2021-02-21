@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "timeslots")
 public class TimeSlot {
 
     private Long timeSlotID;

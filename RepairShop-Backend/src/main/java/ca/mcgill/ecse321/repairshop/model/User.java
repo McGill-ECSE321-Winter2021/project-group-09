@@ -5,7 +5,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 @MappedSuperclass
-@Table(name = "users")
 public abstract class User {
 
     private String email;
