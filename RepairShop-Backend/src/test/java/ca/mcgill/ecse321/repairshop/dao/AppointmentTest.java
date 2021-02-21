@@ -59,7 +59,8 @@ public class AppointmentTest {
 
 	@Test
 	public void testPersistAndLoadAppointment() {
-		Long appID = null;
+			
+		Long appID = (long) 12345.000;
 		
 		//create customer
 		String customerName = "TestCustomer";
@@ -127,7 +128,7 @@ public class AppointmentTest {
 		appointment.setRepairSpotNumber(2);
 		appointment.setService(service);
 		appointment.setTimeSlots(timeslots);
-		appID = appointment.getAppointmentID();
+		appointment.setAppointmentID(appID);
 		appointmentRepository.save(appointment);
 		
 		appointment = null;
@@ -141,6 +142,11 @@ public class AppointmentTest {
 		assertEquals(appID, appointment.getAppointmentID());
 		assertEquals(customer.getName(), appointment.getCustomer().getName());
 		assertEquals(service.getName(), appointment.getService().getName());
+		
+		
+		
+		
+		
 	}
 
 

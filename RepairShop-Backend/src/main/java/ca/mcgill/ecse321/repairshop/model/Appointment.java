@@ -19,15 +19,16 @@ public class Appointment {
 	
     private Long appointmentID;
     
-    public void setAppointmentID(Long aAppointmentID) {
-        this.appointmentID = aAppointmentID;
-    }
-
     @Id
     @GeneratedValue
     public Long getAppointmentID() {
         return this.appointmentID;
     }
+    
+    public void setAppointmentID(Long aAppointmentID) {
+        this.appointmentID = aAppointmentID;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////
     
