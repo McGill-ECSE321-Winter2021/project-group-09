@@ -10,7 +10,7 @@ import ca.mcgill.ecse321.repairshop.model.ReminderType;
 
 public interface ReminderRepository extends CrudRepository<Reminder, Long> {
 
-	Reminder findReminderByReminderType(Reminder reminderType);
+	Reminder findReminderByReminderType(ReminderType reminderType);
 	
 	Reminder findByCustomer(Customer customer);
 	
