@@ -23,6 +23,7 @@ public class BusinessTests {
 
     @Autowired
     private BusinessRepository businessRepository;
+    @Autowired
     private TimeSlotRepository timeSlotRepository; //???
 
     @AfterEach
