@@ -1,12 +1,11 @@
-
-
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
+import javax.persistence.Table;
 
 @MappedSuperclass
+@Table(name = "users")
 public abstract class User {
 
     private String email;
@@ -20,8 +19,10 @@ public abstract class User {
         this.email = email;
     }
 
-    ////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
+    
     private String password;
 
     public String getPassword() {
@@ -32,7 +33,9 @@ public abstract class User {
         this.password = password;
     }
 
-    ////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
 
     private String phoneNumber;
 
@@ -44,8 +47,10 @@ public abstract class User {
         this.phoneNumber = phoneNumber;
     }
 
-    ////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
+    
     private String name;
 
     public String getName() {
@@ -56,8 +61,10 @@ public abstract class User {
         this.name = name;
     }
 
-    ////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
+    
     private String address;
 
     public String getAddress() {
@@ -68,8 +75,10 @@ public abstract class User {
         this.address = address;
     }
 
-    ////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////////////
 
+    
     public String toString() {
         return super.toString() + "[" +
                 "email" + ":" + getEmail() + "," +

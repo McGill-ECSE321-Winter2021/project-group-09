@@ -1,21 +1,27 @@
-
-
-
-
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
 public class Customer extends User {
 
-    private List<Appointment> appointments;
+    @Id
+    public String getEmail() {
+        return super.getEmail();
+    }
+    
+    public void setEmail(String email) {
+        super.setEmail(email);
+    }
+	
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
+	private List<Appointment> appointments;
 
-    @OneToMany(targetEntity=Appointment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
+    @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
     public List<Appointment> getAppointments() {
         return appointments;
     }
@@ -24,8 +30,10 @@ public class Customer extends User {
         this.appointments = appointments;
     }
 
-    ////////////////////////////////
-
+    
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
     private List<Reminder> reminders;
 
     @OneToMany(targetEntity=Reminder.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
@@ -37,6 +45,7 @@ public class Customer extends User {
         this.reminders = reminders;
     }
 
+    // TODO why are there no toString method for customer, technician, admin??
 }
 
 

@@ -1,6 +1,3 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.CascadeType;
@@ -27,7 +24,9 @@ public class Reminder {
 		this.reminderID = reminderID;
 	}
 
-	///////////////////////////////
+	
+    ///////////////////////////////////////////////////////////////////////////
+	
     
     private Timestamp dateTime;
 
@@ -39,7 +38,9 @@ public class Reminder {
 		this.dateTime = dateTime;
 	}
 
-    ///////////////////////////////
+	
+    ///////////////////////////////////////////////////////////////////////////
+	
 	
 	private ReminderType reminderType;
 	
@@ -52,8 +53,12 @@ public class Reminder {
 		this.reminderType = reminderType;
 	}
 
-    ///////////////////////////////
+	
+    ///////////////////////////////////////////////////////////////////////////
     
+	
+	// TODO is it alright that the targetEntity is Customer.class but in Customer the 
+	// targetEntity is REminder.class
     private Customer customer;
     
     @ManyToOne(targetEntity = Customer.class, cascade = CascadeType.ALL)
@@ -64,9 +69,11 @@ public class Reminder {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
-    ///////////////////////////////
-
+ 
+	
+    ///////////////////////////////////////////////////////////////////////////
+	
+	
     public String toString() {
         return super.toString() + "[" +
                 "reminderID" + ":" + getReminderID() + "," +

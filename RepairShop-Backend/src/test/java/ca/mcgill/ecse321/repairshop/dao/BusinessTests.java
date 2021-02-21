@@ -24,8 +24,8 @@ public class BusinessTests {
     private BusinessRepository businessRepository;
     private TimeSlotRepository timeSlotRepository; //???
 
-    @AfterEach
 
+    @AfterEach
     public void clearDatabase() {
         businessRepository.deleteAll();
         timeSlotRepository.deleteAll();
@@ -61,7 +61,7 @@ public class BusinessTests {
         timeSlotRepository.save(vacation);
         timeSlotRepository.save(vacation2);
 
-        int businessId = 1;
+        int businessId = 1; //TODO check if we need to declare ID specifically if there's a auto generate tag?
         String name = "TestBusinessName";
         String email = "example@server.ca";
         String phoneNumber = "(123)-456-789";
