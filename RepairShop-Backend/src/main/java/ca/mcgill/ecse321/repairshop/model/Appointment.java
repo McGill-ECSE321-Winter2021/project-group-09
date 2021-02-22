@@ -66,20 +66,6 @@ public class Appointment {
     }
 
     //////////////////////////////////////////////////////////////////////////////
-    
-    // TODO Ask why it's needed and remove along with attribute. b/c its already in business
-    
-    private int repairSpotNumber;
-    
-    public int getRepairSpotNumber() {
-    	return this.repairSpotNumber;
-    }
-    
-    public void setRepairSpotNumber(int n) {
-    	this.repairSpotNumber = n;
-    }
-
-    //////////////////////////////////////////////////////////////////////////////
 
     public String toString() {
         return super.toString() + "[" +
