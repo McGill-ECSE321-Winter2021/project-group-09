@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.repairshop.dao;
+package ca.mcgill.ecse321.repairshop.repository;
 
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
