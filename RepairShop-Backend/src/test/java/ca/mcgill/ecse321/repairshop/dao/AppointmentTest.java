@@ -101,7 +101,6 @@ public class AppointmentTest {
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
-		createdCustomer.getAppointments().add(appointment);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
@@ -135,13 +134,19 @@ public class AppointmentTest {
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
-		createdCustomer.getAppointments().add(appointment);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 		
 		appointment = null;
+		
+		//read from database
+		appointment = appointmentRepository.findAppointmentByAppointmentID(appID);
+		assertNotNull(appointment);
+		assertEquals(createdCustomer.getName(), appointment.getCustomer().getName());
+		assertEquals(createdService.getName(), appointment.getService().getName());
+		
 		
 		//delete and try to read from database
 		appointmentRepository.deleteById(appID);

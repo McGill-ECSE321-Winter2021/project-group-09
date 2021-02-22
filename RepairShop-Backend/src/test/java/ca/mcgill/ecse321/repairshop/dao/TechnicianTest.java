@@ -83,7 +83,16 @@ public class TechnicianTest {
 		technicianRepository.save(tech);
 
 		tech = null;
+		
+		//load technician
+		tech = technicianRepository.findTechnicianByEmail(techEmail);
+		assertNotNull(tech);
+		assertEquals(techEmail, tech.getEmail());
+		assertEquals(techName, tech.getName());
+		assertEquals(techPhone, tech.getPhoneNumber());
 
+		
+		
 		//delete and try loading technician
 		technicianRepository.deleteByEmail(techEmail);
 		tech = technicianRepository.findTechnicianByEmail(techEmail);
