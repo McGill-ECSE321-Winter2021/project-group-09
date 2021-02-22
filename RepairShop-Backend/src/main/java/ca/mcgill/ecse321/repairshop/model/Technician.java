@@ -15,6 +15,7 @@ public class Technician extends User {
     }
 
     ///////////////////////////////////////////////////////////////////////////
+
     
     private List<TimeSlot> timeslots;  // workHours
 
