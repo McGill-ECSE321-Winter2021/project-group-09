@@ -1,15 +1,8 @@
 package ca.mcgill.ecse321.repairshop.dao;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import javax.transaction.Transactional;
 
@@ -22,8 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ca.mcgill.ecse321.repairshop.model.Technician;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
-
 
 
 @ExtendWith(SpringExtension.class)
@@ -33,8 +24,7 @@ public class TechnicianTest {
 
 	@Autowired
 	private TechnicianRepository technicianRepository;
-	
-	
+
 	@BeforeEach
 	@AfterEach
 	public void clearDatabase() {
@@ -61,8 +51,7 @@ public class TechnicianTest {
 		technicianRepository.save(tech);
 
 		tech = null;
-		
-		
+
 		//load technician
 		tech = technicianRepository.findTechnicianByEmail(techEmail);
 		assertNotNull(tech);
@@ -71,8 +60,38 @@ public class TechnicianTest {
 		assertEquals(techName, tech.getName());
 		assertEquals(techPhone, tech.getPhoneNumber());
 		
+	}
+	
+	
+	
+	@Test
+	public void testDeleteTechnician() {
+		
+		//create technician
+		String techName = "TestCustomer";
+		String techEmail = "CustomerEmail";
+		String techPassword = "CustomerPassword";
+		String techAddress = "ABCD";
+		String techPhone = "63534525453";
+		Technician tech = new Technician();
+		
+		tech.setName(techName);
+		tech.setAddress(techAddress);
+		tech.setEmail(techEmail);
+		tech.setPassword(techPassword);
+		tech.setPhoneNumber(techPhone);
+		technicianRepository.save(tech);
+
+		tech = null;
+
+		//delete and try loading technician
+		technicianRepository.deleteByEmail(techEmail);
+		tech = technicianRepository.findTechnicianByEmail(techEmail);
+		assertNull(tech);
+		
 		
 	}
+	
 	
 	
 }

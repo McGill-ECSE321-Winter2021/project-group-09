@@ -1,18 +1,25 @@
 package ca.mcgill.ecse321.repairshop.model;
 
 import javax.persistence.*;
-
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "technician")
 public class Technician extends User {
+
+    @Id
+    public String getEmail() {
+        return super.getEmail();
+    }
+    public void setEmail(String email) {
+        super.setEmail(email);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
 
     
     private List<TimeSlot> timeslots;  // workHours
 
-    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
     public List<TimeSlot> getTimeslots() {
         return timeslots;
     }
