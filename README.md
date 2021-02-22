@@ -1,8 +1,8 @@
 # ECSE 321 - Introduction to Software Engineering<br/> Project Group 09
 ## Project Overview
 
-<p align='justify'> As a team of five software developers, we are developing both an online and an Android app for an automobile repair shop (RepairShop). The application will assist the RepairShop clientele in booking their appointments, viewing upcoming appointments, and receiving periodical reminders for checkups/maintenance.<br/> 
-Additionally, the RepairShop's administrators will be able to make a technician profile and weekly work schedule. Customers will then view the technicians’ availability from an appointment-booking calendar. <br/>
+<p align='justify'> As a team of five software developers, we are developing both an online and an Android app for an automobile repair shop (RepairShop). The application will assist the RepairShop clientele in booking their appointments, viewing upcoming appointments, and receiving periodical reminders for checkups/maintenance.<br/> <br/>
+Additionally, the RepairShop's administrators will be able to make a technician profile and weekly work schedule. Customers will then view the technicians’ availability from an appointment-booking calendar before selecting an appointment day/time. <br/> <br/>
 During the development of the RepairShop application software, the team will follow the working structure of the 4 main software engineering activities: specification, development, validation, and evolution.</p>
 
 ## Meet the team! 👋
