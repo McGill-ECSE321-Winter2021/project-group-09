@@ -135,9 +135,7 @@ public class BusinessTests {
         businessRepository.save(business);
 
         //delete business
-        businessRepository.delete(business);
-        // businessRepository.deleteById(business.getBusinessID());
-        //TODO: .deleteById wants a String as an input. Should I make getBusinessID() return a String?
+        businessRepository.deleteById(business.getBusinessID());
 
         //assertion
         assertNull(businessRepository.findBusinessByName(business.getName()));
