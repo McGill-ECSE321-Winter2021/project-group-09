@@ -43,9 +43,7 @@ public class Reminder {
 	}
 
     ///////////////////////////////////////////////////////////////////////////
-	
-	// TODO is it alright that the targetEntity is Customer.class but in Customer the
-	// targetEntity is REminder.class
+
     private Customer customer;
     @ManyToOne
 	public Customer getCustomer() {

@@ -20,53 +20,53 @@ public class RepairShop {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private TimeSlot timeslot;
+    private List<TimeSlot> timeslot;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    public TimeSlot getTimeSlot() {
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<TimeSlot> getTimeSlot() {
         return timeslot;
     }
 
-    public void setTimeSlot(TimeSlot aNewTimeSlot) {
+    public void setTimeSlot(List<TimeSlot> aNewTimeSlot) {
         timeslot = aNewTimeSlot;
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private Appointment appointment;
+    private List<Appointment> appointment;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    public Appointment getAppointment() {
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Appointment> getAppointment() {
         return appointment;
     }
 
-    public void setAppointment(Appointment aNewAppointment) {
+    public void setAppointment(List<Appointment> aNewAppointment) {
         appointment = aNewAppointment;
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private Service service;
+    private List<Service> service;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    public Service getService() {
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Service> getService() {
         return service;
     }
 
-    public void setService(Service aNewService) {
+    public void setService(List<Service> aNewService) {
         service = aNewService;
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private Reminder reminder;
+    private List<Reminder> reminder;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    public Reminder getReminder() {
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Reminder> getReminder() {
         return reminder;
     }
 
-    public void setReminder(Reminder aNewReminder) {
+    public void setReminder(List<Reminder> aNewReminder) {
         reminder = aNewReminder;
     }
 
