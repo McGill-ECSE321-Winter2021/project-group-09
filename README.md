@@ -17,11 +17,11 @@ During the development of the RepairShop application software, the team will fol
 ## Overview Table
 | Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total <br/> Effort<br/> (hours)| 
 | :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
-| Sandy Lao              | Project Manager, Software Developer  | 00 | -- | -- | -- || -- |
-| Jacek Dziewonski       | Software Developer | 00 | -- | -- | -- || -- |
-| Shaswata Bhattacharyya | Software Developer | 00 | -- | -- | -- || -- |
+| Sandy Lao              | Project Manager, Software Developer  | 40 | -- | -- | -- || -- |
+| Jacek Dziewonski       | Software Developer | 35 | -- | -- | -- || -- |
+| Shaswata Bhattacharyya | Software Developer | 30 | -- | -- | -- || -- |
 | Zhanna Klimanova       | Software Developer | 00 | -- | -- | -- || -- |
-| Tyler Syme             | Software Developer | 00 | -- | -- | -- || -- |
+| Tyler Syme             | Software Developer | 35 | -- | -- | -- || -- |
 
 ## Sprint 1: Effort Table
 | Name            | Contributions | Efforts (hours)|
