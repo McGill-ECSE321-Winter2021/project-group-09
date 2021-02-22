@@ -17,11 +17,9 @@ public class RepairShop {
     public void setRepairShopID(Long aRepairShopID) {
         repairShopID = aRepairShopID;
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////////////
 
-    
     private TimeSlot timeslot;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -33,10 +31,8 @@ public class RepairShop {
         timeslot = aNewTimeSlot;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
-    
-    
+
     private Appointment appointment;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -48,10 +44,8 @@ public class RepairShop {
         appointment = aNewAppointment;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
 
-    
     private Service service;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -62,11 +56,9 @@ public class RepairShop {
     public void setService(Service aNewService) {
         service = aNewService;
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////////////
 
-    
     private Reminder reminder;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -78,9 +70,7 @@ public class RepairShop {
         reminder = aNewReminder;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
-    
 
     private Business business;
 
@@ -93,10 +83,8 @@ public class RepairShop {
         business = aNewBusiness;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
 
-    
     private List<Customer> customers;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -107,11 +95,9 @@ public class RepairShop {
     public void setCustomers(List<Customer> newCustomers) {
         customers = newCustomers;
     }
-
     
     ///////////////////////////////////////////////////////////////////////////
 
-    
     private List<Technician> technicians;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -123,10 +109,8 @@ public class RepairShop {
         this.technicians = technicians;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
 
-    
     private List<Admin> admin;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -138,10 +122,8 @@ public class RepairShop {
         this.admin = admin;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
 
-    
     public String toString() {
         return super.toString() + "[" +
                 "repairShopID" + ":" + getRepairShopID() + "]" + System.getProperties().getProperty("line.separator") +

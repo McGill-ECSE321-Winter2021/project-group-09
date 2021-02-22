@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.repairshop.dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,37 +11,17 @@ import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
 public interface AppointmentRepository extends CrudRepository<Appointment, Long>{
 
-	/**
-	 * @author Shaswata
-	 * @param customer
-	 * @return List of appointments the customer has booked 
-	 *  
-	 */
+	//List of appointments the customer has booked
 	List<Appointment> findByCustomer(Customer customer);
 
-	/**
-	 * @author Shaswata
-	 * @param customer
-	 * @param service
-	 * @return returns true if there is at least one appointment booked by the customer for a certain service
-	 */
+	//true if there is at least one appointment booked by the customer for a certain service
 	boolean existsByCustomerAndService(Customer customer, Service service);
 
-	/**
-	 * @author Shaswata
-	 * @param customer
-	 * @param service
-	 * @return a list of appointments booked by a customer for a certain service
-	 * The customer-service pair is not unique (customer can book multiple appointments with same service) so it returns a list of appointments
-	 */
+	 //The customer-service pair is not unique so it returns a list of appointments
+	 //(customer can book multiple appointments with same service)
 	List<Appointment> findByCustomerAndService(Customer customer, Service service);
 
-	/**
-	 * @author Shaswata
-	 * @param timeSlot
-	 * @return the appointment booked at the timeslot
-	 * A timeSlot has only 1 appointment
-	 */
+	//A timeSlot has only 1 appointment
 	Appointment findByTimeSlots(TimeSlot timeSlot);
 
 	Appointment findAppointmentByAppointmentID(Long appointmentID);

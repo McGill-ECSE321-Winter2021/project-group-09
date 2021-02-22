@@ -5,18 +5,14 @@ import javax.persistence.Id;
 
 @Entity
 public class Admin extends User {
-	
 
     @Id
     public String getEmail() {
         return super.getEmail();
     }
-    
     public void setEmail(String email) {
         super.setEmail(email);
     }
     
     // TODO why is there no toString?
 }
-
-

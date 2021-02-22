@@ -10,14 +10,11 @@ public class Technician extends User {
     public String getEmail() {
         return super.getEmail();
     }
-
     public void setEmail(String email) {
         super.setEmail(email);
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////////////
-    
     
     private List<TimeSlot> timeslots;  // workHours
 

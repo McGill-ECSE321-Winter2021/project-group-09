@@ -10,30 +10,24 @@ public class Customer extends User {
     public String getEmail() {
         return super.getEmail();
     }
-    
     public void setEmail(String email) {
         super.setEmail(email);
     }
-	
-    
+
     ///////////////////////////////////////////////////////////////////////////
-    
-    
+
 	private List<Appointment> appointments;
 
     @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
     public List<Appointment> getAppointments() {
         return appointments;
     }
-
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
-    
     ///////////////////////////////////////////////////////////////////////////
-    
-    
+
     private List<Reminder> reminders;
 
     @OneToMany(targetEntity=Reminder.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")

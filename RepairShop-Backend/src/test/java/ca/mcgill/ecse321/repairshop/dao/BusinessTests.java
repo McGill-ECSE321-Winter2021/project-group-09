@@ -25,7 +25,7 @@ public class BusinessTests {
     @Autowired
     private BusinessRepository businessRepository;
     @Autowired
-    private TimeSlotRepository timeSlotRepository; //???
+    private TimeSlotRepository timeSlotRepository;
 
     @AfterEach
     @BeforeEach
@@ -61,7 +61,6 @@ public class BusinessTests {
         vacationsList.add(vacation);
         vacationsList.add(vacation2);
 
-        //TODO: I'm not sure if I should save the TimeSlots vacation & vacation2.
         timeSlotRepository.save(vacation);
         timeSlotRepository.save(vacation2);
       

@@ -17,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Service;
-import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
 @ExtendWith(SpringExtension.class)
