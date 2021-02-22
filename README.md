@@ -26,8 +26,8 @@ During the development of the RepairShop application software, the team will fol
 ## Sprint 1: Effort Table
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       | Domain Model, Requirements, Create Repository, Gradle and Spring Setups, Add JPA annotations | 00 |
-| Shaswata Bhattacharyya | Domain Model, Requirements, Gradle, Heroku & Travis CI Setups | 00 |
-| Zhanna Klimanova       | Domain Model, Requirements, Kanban board Setup, Create issues and milestones  | 00 |
-| Tyler Syme             | Domain Model, Requirements, Documentation, Wiki  | 00 |
-| Sandy Lao              | Domain Model, Requirements, Documentation, Wiki, Meeting minutes   | 00 |
+| Jacek Dziewonski       | Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Create Repository, Gradle, Spring and Travis CI Setups, UML code generation | 35 |
+| Shaswata Bhattacharyya | Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Gradle, Heroku & Travis CI Setups, Add JPA annotations | 30 |
+| Zhanna Klimanova       |Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Kanban board Setup, Create issues and milestones, UML code generation, Kanban board setup, README.md | 00 |
+| Tyler Syme             | Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, "Domain Model" Wiki page, Update Umple UML diagram, Create Google Docs & Google Calendar | 35 |
+| Sandy Lao              |Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Wiki Setup, Use Case Diagrams, Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 40 |
