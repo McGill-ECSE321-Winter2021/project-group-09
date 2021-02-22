@@ -89,7 +89,6 @@ public class AppointmentTest {
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
-		appointment.setRepairSpotNumber(2);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
