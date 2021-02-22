@@ -62,7 +62,7 @@ public class AdminTest {
 		assertEquals(adminPassword, administrator.getPassword());
 		assertEquals(adminPhone, administrator.getPhoneNumber());
 	}
-	
+
     @Test
     void testDeleteAdmin() {
 
@@ -88,3 +88,4 @@ public class AdminTest {
 
     }
 }
+
