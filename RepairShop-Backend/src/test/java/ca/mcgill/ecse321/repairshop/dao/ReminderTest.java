@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.repairshop.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.sql.Timestamp;
 import org.junit.jupiter.api.AfterEach;
@@ -97,8 +97,8 @@ public class ReminderTest {
 		// delete from db 
 		reminderRepository.deleteById(reminderID);
 		
-		// assertion
-		assertNull(reminderRepository.findById(reminderID));
+		// assertion that reminder is not present (false means reminder is null)
+		assertFalse(reminderRepository.findById(reminderID).isPresent());
 		
     }
 
