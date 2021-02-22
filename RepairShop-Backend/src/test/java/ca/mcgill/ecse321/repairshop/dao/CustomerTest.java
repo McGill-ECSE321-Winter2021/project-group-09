@@ -3,9 +3,7 @@ package ca.mcgill.ecse321.repairshop.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.transaction.Transactional;
 
@@ -30,9 +28,6 @@ public class CustomerTest {
 	
 	@Autowired 
 	private AppointmentRepository appointmentRepository;
-
-	@Autowired
-	private TimeSlotRepository timeSlotRepository;
 
 	@Autowired
 	private ServiceRepository serviceRepository;
