@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.repairshop.dao;
 
 import ca.mcgill.ecse321.repairshop.model.Service;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ class ServiceTests {
     @Autowired
     private ServiceRepository serviceRepository;
 
+    @BeforeEach
     @AfterEach
     public void clearDatabase() {
         serviceRepository.deleteAll();
