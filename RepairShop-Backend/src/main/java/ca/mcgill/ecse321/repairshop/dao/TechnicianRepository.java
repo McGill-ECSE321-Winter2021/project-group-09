@@ -21,8 +21,4 @@ public interface TechnicianRepository extends CrudRepository<Technician, String>
 	
 	void deleteByEmail(String email);
 	
-	//void deleteAll();
-	
-	//Technician save(Technician tech);
-	
 }
