@@ -64,6 +64,7 @@ public class AppointmentTest {
 		customer.setPassword(customerPassword);
 		customer.setPhoneNumber(customerPhone);
 		ArrayList<Appointment> apps = new ArrayList<>();
+		customer.setAppointments(apps);
 		return customerRepository.save(customer);
 	}
 
@@ -100,6 +101,7 @@ public class AppointmentTest {
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
+		createdCustomer.getAppointments().add(appointment);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
@@ -112,6 +114,7 @@ public class AppointmentTest {
 		assertNotNull(appointment);
 		assertEquals(createdCustomer.getName(), appointment.getCustomer().getName());
 		assertEquals(createdService.getName(), appointment.getService().getName());
+
 		
 	}
 	
@@ -132,6 +135,7 @@ public class AppointmentTest {
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
+		createdCustomer.getAppointments().add(appointment);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
