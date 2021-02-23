@@ -7,5 +7,5 @@ matrix:
         - ./gradlew build
       deploy:
         provider: heroku
-        api_key: 01fd34c5-23b9-4481-96f4-1290b03df02c
+        api_key: 5e506f90-473b-4ede-8be2-1d11b1f5c4da
         app: repairshop-backend-ecse321-09
