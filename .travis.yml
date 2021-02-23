@@ -5,3 +5,7 @@ matrix:
         - chmod +x gradlew
       script:
         - ./gradlew build
+      deploy:
+        provider: heroku
+        api_key: 01fd34c5-23b9-4481-96f4-1290b03df02c
+        app: repairshop-backend-ecse321-09
