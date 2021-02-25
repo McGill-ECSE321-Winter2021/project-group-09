@@ -31,3 +31,12 @@ During the development of the RepairShop application software, the team will fol
 | Zhanna Klimanova       |Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Kanban board Setup, Create issues and milestones, UML code generation, Kanban board setup, README.md | 35 |
 | Tyler Syme             | Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, "Domain Model" Wiki page, Update Umple UML diagram, Create Google Docs & Google Calendar | 35 |
 | Sandy Lao              |Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Wiki Setup, Use Case Diagrams, Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 40 |
+
+## Sprint 2: Effort Table
+| Name            | Contributions | Efforts (hours)|
+| :-------------         | ------------- | :-------------: |
+| Jacek Dziewonski       |UPDATE THIS LATER |00  |
+| Shaswata Bhattacharyya | UPDATE THIS LATER  | 00 |
+| Zhanna Klimanova       |UPDATE THIS LATER  | 00 |
+| Tyler Syme             |UPDATE THIS LATER  Create Google Docs & Google Calendar | 00 |
+| Sandy Lao              |UPDATE THIS LATER  Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 00 |
