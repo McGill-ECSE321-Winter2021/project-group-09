@@ -67,9 +67,7 @@ public class Business {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    
-    // Business 0..1-->* TimeSlots (vacations)
-    //CacadeType.ALL: If Business is deleted, then also delete ALL related TimeSlot vacations
+
     private List<TimeSlot> vacations;
 
     @OneToMany
