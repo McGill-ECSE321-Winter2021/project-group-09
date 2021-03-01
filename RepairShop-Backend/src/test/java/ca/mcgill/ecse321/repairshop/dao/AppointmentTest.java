@@ -156,6 +156,82 @@ public class AppointmentTest {
 	}
 	
 	
+	@Test
+	public void testGetAppointmentByCustomer() {
+		
+		//create time slot
+		Timestamp start = Timestamp.valueOf("2021-03-01 10:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-01 10:30:00");
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStartDateTime(start);
+		timeSlot.setEndDateTime(end);
+		timeSlotRepository.save(timeSlot);
+
+		//create appointment
+		ArrayList<TimeSlot> timeslots = new ArrayList<>();
+		timeslots.add(timeSlot);
+		Appointment appointment = new Appointment();
+		Customer createdCustomer = createCustomer();
+		timeSlot.setAppointment(appointment);
+		createdCustomer.getAppointments().add(appointment);
+		appointment.setCustomer(createdCustomer);
+		Service createdService = createService();
+		appointment.setService(createdService);
+		appointment.setTimeSlots(timeslots);
+		Long appID = appointmentRepository.save(appointment).getAppointmentID();
+				
+		appointment = null;
+				
+		//read from database
+		appointment = appointmentRepository.findByCustomer(createdCustomer).get(0);
+		assertNotNull(appointment);
+		assertEquals(createdCustomer.getName(), appointment.getCustomer().getName());
+		assertEquals(createdService.getName(), appointment.getService().getName());
+
+		
+	}
+	
+	
+	
+	
+	@Test
+	public void testGetAppointmentByService() {
+		
+		//create time slot
+		Timestamp start = Timestamp.valueOf("2021-03-01 10:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-01 10:30:00");
+		TimeSlot timeSlot = new TimeSlot();
+		timeSlot.setStartDateTime(start);
+		timeSlot.setEndDateTime(end);
+		timeSlotRepository.save(timeSlot);
+
+		//create appointment
+		ArrayList<TimeSlot> timeslots = new ArrayList<>();
+		timeslots.add(timeSlot);
+		Appointment appointment = new Appointment();
+		Customer createdCustomer = createCustomer();
+		timeSlot.setAppointment(appointment);
+		createdCustomer.getAppointments().add(appointment);
+		appointment.setCustomer(createdCustomer);
+		Service createdService = createService();
+		appointment.setService(createdService);
+		appointment.setTimeSlots(timeslots);
+		Long appID = appointmentRepository.save(appointment).getAppointmentID();
+				
+		appointment = null;
+				
+		//read from database
+		appointment = appointmentRepository.findByService(createdService).get(0);
+		assertNotNull(appointment);
+		assertEquals(createdCustomer.getName(), appointment.getCustomer().getName());
+		assertEquals(createdService.getName(), appointment.getService().getName());
+
+		
+	}
+	
+	
+	
+	
 	
 
 
