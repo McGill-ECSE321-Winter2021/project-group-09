@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class ServiceTests {
+class ServiceTest {
 
     @Autowired
     private ServiceRepository serviceRepository;
