@@ -21,21 +21,32 @@ public class TimeSlotService {
     @Autowired
     TechnicianRepository technicianRepository;
 
+    /**
+     * return a single timeslot by id
+     * @param id identifying the timeslot
+     * @return  a single timeslot
+     * @throws Exception timeslot not found by id
+     */
     @Transactional
-    public TimeSlotDto getTimeslotByID(Long id) {
+    public TimeSlotDto getTimeslotByID(Long id) throws Exception {
         Optional<TimeSlot> timeslot = timeSlotRepository.findById(id);
         if (timeslot.isPresent()) {
             return timeslotToDTO(timeslot.get());
-        }
-        else {
+        } else {
             //TODO custom exception type
             throw new Exception("Timeslot not found");
         }
     }
 
+    /**
+     * Get all timeslots associated with a single technician
+     * @param techEmail email of the technuician
+     * @return list of all timeslots
+     * @throws Exception technician doesn't exist
+     */
     @Transactional
-    public List<TimeSlotDto> getTimeslotByEmployee(Long techID) {
-        Optional<Technician> technician = technicianRepository.findById(techID);
+    public List<TimeSlotDto> getTimeslotByTechnician(String techEmail) throws Exception {
+        Optional<Technician> technician = technicianRepository.findById(techEmail);
         if (technician.isPresent()) {
             return timeSlotRepository.findTimeslotsByTechnician(technician.get()).stream().map(this::timeslotToDTO).collect(Collectors.toList());
         } else {
@@ -44,6 +55,10 @@ public class TimeSlotService {
         }
     }
 
+    /**
+     * get all timeslots
+     * @return list of all timeslots
+     */
     @Transactional
     public List<TimeSlotDto> getAllTimeslots() {
         return timeSlotRepository.findAll().stream().map(this::timeslotToDTO).collect(Collectors.toList());
@@ -55,6 +70,11 @@ public class TimeSlotService {
     //deleteTimeslot
     //what else
 
+    /**
+     * helper method to transform an entity into a DTO
+     * @param timeslot entity to turn into DTO
+     * @return input entity in DTO form
+     */
     public TimeSlotDto timeslotToDTO(TimeSlot timeslot) {
         TimeSlotDto dto = new TimeSlotDto();
         //TODO
