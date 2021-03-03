@@ -40,6 +40,7 @@ public class Customer extends User {
     }
 
     // TODO why are there no toString method for customer, technician, admin??
+
 }
 
 

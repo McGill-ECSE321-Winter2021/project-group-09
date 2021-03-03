@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import ca.mcgill.ecse321.repairshop.model.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import ca.mcgill.ecse321.repairshop.model.Appointment;
-import ca.mcgill.ecse321.repairshop.model.Customer;
-import ca.mcgill.ecse321.repairshop.model.Service;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -82,8 +78,23 @@ public class AppointmentTest {
 	}
 	
 	
+	public Technician createTechnician() {
+		String techName = "asd";
+		String techEmail = "jasd@asd.ca";
+		String techPassword = "CustomerPassword";
+		String techAddress = "ABCD";
+		String techPhone = "63534525453";
+		Technician tech = new Technician();
 
-	
+		tech.setName(techName);
+		tech.setAddress(techAddress);
+		tech.setEmail(techEmail);
+		tech.setPassword(techPassword);
+		tech.setPhoneNumber(techPhone);
+		tech = technicianRepository.save(tech);
+		return tech;
+	}
+
 	
 	@Test
 	public void testPersistAndLoadAppointment() {
@@ -104,6 +115,7 @@ public class AppointmentTest {
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
+		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 		
 		appointment = null;
@@ -137,6 +149,7 @@ public class AppointmentTest {
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
+		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 		
 		appointment = null;
