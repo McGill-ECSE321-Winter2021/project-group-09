@@ -63,7 +63,8 @@ public class AppointmentTest {
 		customer.setAppointments(apps);
 		return customerRepository.save(customer);
 	}
-
+	
+	
 	
 	
 	public Service createService() {
@@ -185,12 +186,13 @@ public class AppointmentTest {
 		timeslots.add(timeSlot);
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
-		timeSlot.setAppointment(appointment);
+		
 		createdCustomer.getAppointments().add(appointment);
 		appointment.setCustomer(createdCustomer);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
+		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 				
 		appointment = null;
@@ -223,12 +225,13 @@ public class AppointmentTest {
 		timeslots.add(timeSlot);
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
-		timeSlot.setAppointment(appointment);
+
 		createdCustomer.getAppointments().add(appointment);
 		appointment.setCustomer(createdCustomer);
 		Service createdService = createService();
 		appointment.setService(createdService);
 		appointment.setTimeSlots(timeslots);
+		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 				
 		appointment = null;

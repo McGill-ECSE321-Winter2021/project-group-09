@@ -1,3 +1,6 @@
+
+
+
 package ca.mcgill.ecse321.repairshop.service;
 
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class TechnicianService {
 	
 	
 	@Transactional
-	public TechnicianDto changePassword(String email, String newPassword) {
+	public TechnicianDto changePassword(String email, String newPassword) throws Exception{
 		
 		if(email == null || newPassword == null) {
 			throw new Exception("Email or new password cannot be empty.");
@@ -71,7 +74,7 @@ public class TechnicianService {
 
 	
 	@Transactional
-	public TechnicianDto getTechnicianByEmail(String email) {
+	public TechnicianDto getTechnician(String email) throws Exception{
 		
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
@@ -83,6 +86,20 @@ public class TechnicianService {
 		Technician tech = technicianRepository.findTechnicianByEmail(email);
 		return technicianToDTO(tech);
 	}
+	
+	
+	@Transactional 
+	public void deleteTechnician(String email) throws Exception{
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+		if(technicianRepository.findTechnicianByEmail(email) == null) {
+			throw new Exception("Technician not found.");
+		}
+		
+		technicianRepository.deleteByEmail(email);
+	}
+	
 	
 	
 	@Transactional
@@ -108,14 +125,19 @@ public class TechnicianService {
 
 	@Transactional
 	public List<TechnicianDto> getAllTechnicians() {
+		
 		List<Technician> technicians = technicianRepository.findAll();
 		List<TechnicianDto> techDtos = new ArrayList<>();
 		for (Technician tech : technicians) {
 			techDtos.add(technicianToDTO(tech));
 		}
 		return techDtos;
+		
 	}
 	
 	
 	
 }
+
+
+

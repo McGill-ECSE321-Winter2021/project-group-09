@@ -1,3 +1,6 @@
+
+
+
 package ca.mcgill.ecse321.repairshop.controller;
 
 import java.util.ArrayList;
@@ -66,11 +69,26 @@ public class TechnicianController {
 	
 	
 	@GetMapping(value = { "/technicians/{email}", "/technician/{email}/" })
-	public ResponseEntity<?> getTechnicianByEmail(@PathVariable("email") String email){
+	public ResponseEntity<?> deleteTechnician(@PathVariable("email") String email){
 		
 		try {
 			
-            TechnicianDto techDto = techService.getTechnicianByEmail(email);
+            techService.deleteTechnician(email);
+            return new ResponseEntity<>(HttpStatus.OK);  
+            
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+		
+	}
+	
+	
+	@GetMapping(value = { "/technicians/{email}", "/technician/{email}/" })
+	public ResponseEntity<?> getTechnician(@PathVariable("email") String email){
+		
+		try {
+			
+            TechnicianDto techDto = techService.getTechnician(email);
             return new ResponseEntity<>(techDto, HttpStatus.OK);  
             
         } catch (Exception e) {
@@ -97,8 +115,9 @@ public class TechnicianController {
 	}
 	
 	
-	
 
 	
-	
 }
+
+
+
