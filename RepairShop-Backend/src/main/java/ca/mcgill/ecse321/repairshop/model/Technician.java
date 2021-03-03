@@ -19,7 +19,7 @@ public class Technician extends User {
     
     private List<TimeSlot> timeslots;  // workHours
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<TimeSlot> getTimeslots() {
         return timeslots;
     }
@@ -27,6 +27,17 @@ public class Technician extends User {
     public void setTimeslots(List<TimeSlot> timeslots) {
         this.timeslots = timeslots;
     }
-    
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    private List<Appointment> appointments;
+
+    @OneToMany(targetEntity = Appointment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "technician")
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 
 }

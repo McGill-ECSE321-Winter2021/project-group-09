@@ -52,12 +52,25 @@ public class Appointment {
     public void setCustomer(Customer customer) {
     	this.customer = customer;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    private Technician technician;
+
+    @ManyToOne(optional = false)
+    public Technician getTechnician() {
+        return this.technician;
+    }
+
+    public void setTechnician(Technician technician) {
+        this.technician = technician;
+    }
    
     ///////////////////////////////////////////////////////////////////////////////
     
     private List<TimeSlot> timeSlots;
 
-    @OneToMany(fetch =  FetchType.LAZY, mappedBy = "appointment")
+    @OneToMany(fetch =  FetchType.LAZY)
     public List<TimeSlot> getTimeSlots() {
         return this.timeSlots;
     }
