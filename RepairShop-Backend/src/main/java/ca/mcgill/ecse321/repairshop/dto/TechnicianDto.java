@@ -12,7 +12,8 @@ public class TechnicianDto {
 	private String phoneNumber;
 	private String name;
 	private String address;
-	private List<TimeSlotDto> timeSlots;
+	private List<TimeSlotDto> workHours;
+	
     
     
 	
@@ -53,12 +54,13 @@ public class TechnicianDto {
     
     
     public List<TimeSlotDto> getTimeSlots() {
-		return timeSlots;
+		return workHours;
 	}
 
 	public void setTimeSlots(List<TimeSlotDto> timeslots) {
-		this.timeSlots = timeslots;
+		this.workHours = timeslots;
 	}
+	
     
 
 }

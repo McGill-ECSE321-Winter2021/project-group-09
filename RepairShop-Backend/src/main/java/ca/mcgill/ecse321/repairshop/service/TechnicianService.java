@@ -31,7 +31,7 @@ public class TechnicianService {
 	private TimeSlotService timeService;
 	
 	@Transactional
-	public Technician createTechnician(String email, String password, String phone, String name, String address) throws Exception{
+	public TechnicianDto createTechnician(String email, String password, String phone, String name, String address) throws Exception{
 		
 		if(email == null || password == null) {
 			throw new Exception("Email or password cannot be empty.");
@@ -48,12 +48,12 @@ public class TechnicianService {
 		tech.setAddress(address);
 		
 		technicianRepository.save(tech);
-		return tech;
+		return technicianToDTO(tech);
 	}
 	
 	
 	@Transactional
-	public Technician changePassword(String email, String newPassword) {
+	public TechnicianDto changePassword(String email, String newPassword) {
 		
 		if(email == null || newPassword == null) {
 			throw new Exception("Email or new password cannot be empty.");
@@ -65,13 +65,13 @@ public class TechnicianService {
 		Technician tech = technicianRepository.findTechnicianByEmail(email);
 		tech.setPassword(newPassword);
 		technicianRepository.save(tech);
-		return tech;
+		return technicianToDTO(tech);
 	}
 	
 
 	
 	@Transactional
-	public Technician getTechnician(String email) {
+	public TechnicianDto getTechnicianByEmail(String email) {
 		
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
@@ -81,7 +81,7 @@ public class TechnicianService {
 		}
 		
 		Technician tech = technicianRepository.findTechnicianByEmail(email);
-		return tech;
+		return technicianToDTO(tech);
 	}
 	
 	
@@ -101,33 +101,21 @@ public class TechnicianService {
 		}
 		techDTO.setTimeSlots(timeDto);
 		
-		//TODO (?)
-		//Add a list of appointments to TechnicianDTO
 		
 		return techDTO;
 		
 	}
 
 	@Transactional
-	public List<Technician> getAllTechnicians() {
-		 return technicianRepository.findAll();
+	public List<TechnicianDto> getAllTechnicians() {
+		List<Technician> technicians = technicianRepository.findAll();
+		List<TechnicianDto> techDtos = new ArrayList<>();
+		for (Technician tech : technicians) {
+			techDtos.add(technicianToDTO(tech));
+		}
+		return techDtos;
 	}
 	
 	
-	/*
 	
-	//TODO
-	//this needs to be reviewed
-	
-	@Transactional
-	public List<TimeSlot> viewSchedule(String email){
-		
-		Technician tech = technicianRepository.findTechnicianByEmail(email);
-		List<TimeSlot> timeSlots = tech.getTimeslots();
-		return timeSlots;
-		
-	}
-	
-	*/
-
 }

@@ -29,8 +29,6 @@ public class TechnicianController {
 	@Autowired
 	private TechnicianService techService;
 	
-	//@Autowired
-	//private TimeSlotService timeService;
 	
 	
 	@PostMapping(value = { "/technicians/{email}", "/technicians/{email}/" })
@@ -38,8 +36,8 @@ public class TechnicianController {
 		
 		try {
 
-			Technician tech = techService.createTechnician(email, password, phone, name, address);
-			return new ResponseEntity<>(techService.technicianToDTO(tech), HttpStatus.OK); 
+			TechnicianDto tech = techService.createTechnician(email, password, phone, name, address);
+			return new ResponseEntity<>(tech, HttpStatus.OK); 
 		
 		} catch(Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -56,8 +54,8 @@ public class TechnicianController {
 		
 		try {
 			
-			Technician tech = techService.changePassword(email, newPassword);
-			return new ResponseEntity<>(techService.technicianToDTO(tech), HttpStatus.OK); 
+			TechnicianDto tech = techService.changePassword(email, newPassword);
+			return new ResponseEntity<>(tech, HttpStatus.OK); 
 			
 		} catch(Exception e) {
 			 return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -68,11 +66,11 @@ public class TechnicianController {
 	
 	
 	@GetMapping(value = { "/technicians/{email}", "/technician/{email}/" })
-	public ResponseEntity<?> getTechnician(@PathVariable("email") String email){
+	public ResponseEntity<?> getTechnicianByEmail(@PathVariable("email") String email){
 		
 		try {
 			
-            TechnicianDto techDto = techService.technicianToDTO(techService.getTechnician(email));
+            TechnicianDto techDto = techService.getTechnicianByEmail(email);
             return new ResponseEntity<>(techDto, HttpStatus.OK);  
             
         } catch (Exception e) {
@@ -89,10 +87,7 @@ public class TechnicianController {
 		
 		try {
 			
-			List<TechnicianDto> techDtos = new ArrayList<>();
-			for (Technician tech : techService.getAllTechnicians()) {
-				techDtos.add(techService.technicianToDTO(tech));
-			}
+			List<TechnicianDto> techDtos = techService.getAllTechnicians();
 			return new ResponseEntity<>(techDtos, HttpStatus.OK); 
 			
 		} catch(Exception e) {
@@ -100,23 +95,10 @@ public class TechnicianController {
 		}
 		
 	}
+	
+	
+	
 
 	
-	/*
 	
-	//TODO
-	//this needs to be reviewed
-	
-	@GetMapping(value = { "/technicians/{email}", "/technician/{email}/" })
-	public List<TimeSlotDto> viewTechnicianSchedule(@PathVariable("email") String email) throws IllegalArgumentException {
-		List<TimeSlot> timeSlots = techService.viewSchedule(email);
-		List<TimeSlotDto> timeSlotDtos = new ArrayList<>();
-		for (TimeSlot timeSlot : timeSlots) {
-			timeSlotDtos.add(timeService.timeslotToDTO(timeSlot ));
-		}
-		return timeSlotDtos;
-	}
-	
-	*/
-
 }
