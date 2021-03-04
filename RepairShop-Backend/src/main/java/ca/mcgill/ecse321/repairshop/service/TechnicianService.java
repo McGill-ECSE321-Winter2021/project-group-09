@@ -146,6 +146,10 @@ public class TechnicianService {
 	}
 	
 	
+	//THESE ARE REQUIRED TO RUN TECHNICIAN SERVICE METHODS.
+	//COMMENTED BECAUSE NOT SURE IF THESE WERE ALREADY IMPLEMENTED IN TIMESLOT SERVICES
+	
+	/*
 	 public TimeSlotDto timeslotToDTO(TimeSlot timeslot) {
 	     TimeSlotDto dto = new TimeSlotDto();
 	     dto.setEndDateTime(timeslot.getEndDateTime());
@@ -161,7 +165,7 @@ public class TechnicianService {
 		 return time;
 	 }
 	 
-	
+	*/
 	
 }
 

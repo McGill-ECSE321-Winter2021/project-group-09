@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,12 +29,12 @@ public class CustomerController {
 	
 	
 	
-	@PostMapping(value = { "/customer/{email}", "/customer/{email}/" })
-	public ResponseEntity<?> createCustomer(@PathVariable("email") String email, @RequestParam String password, @RequestParam String name, @RequestParam String address, @RequestParam String phone) throws IllegalArgumentException {
+	@PostMapping(value = { "/customer/register", "/customer/register/" })
+	public ResponseEntity<?> createCustomer(@RequestBody CustomerDto customerDto) throws IllegalArgumentException {
 		
 		try {
 
-			CustomerDto customer = customerService.createCustomer(email, password, phone, name, address);
+			CustomerDto customer = customerService.createCustomer(customerDto.getEmail(), customerDto.getPassword(), customerDto.getPhoneNumber(), customerDto.getName(), customerDto.getAddress());
 			return new ResponseEntity<>(customer, HttpStatus.OK); 
 		
 		} catch(Exception e) {
@@ -43,7 +45,7 @@ public class CustomerController {
 	}
 	
 	
-	
+	/*
 	
 	@PostMapping(value = { "/customers/{email}", "/customers/{email}/" })
 	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword) throws IllegalArgumentException {
@@ -59,9 +61,9 @@ public class CustomerController {
 		
 	}
 	
+	*/
 	
-	
-	@GetMapping(value = { "/customers/{email}", "/customer/{email}/" })
+	@DeleteMapping(value = { "/customer/{email}", "/customer/{email}/" })
 	public ResponseEntity<?> deleteCustomer(@PathVariable("email") String email){
 		
 		try {
@@ -76,7 +78,7 @@ public class CustomerController {
 	}
 	
 	
-	@GetMapping(value = { "/customers/{email}", "/customers/{email}/" })
+	@GetMapping(value = { "/customer/{email}", "/customer/{email}/" })
 	public ResponseEntity<?> getCustomer(@PathVariable("email") String email){
 		
 		try {

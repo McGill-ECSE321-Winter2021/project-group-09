@@ -6,6 +6,8 @@ import com.sun.istack.NotNull;
 
 public class TimeSlotDto {
 	
+	/*
+	
 		
 		@NotNull
 	    private Timestamp startDateTime;
@@ -27,6 +29,9 @@ public class TimeSlotDto {
 	    public void setEndDateTime(Timestamp endDateTime) {
 	        this.endDateTime = endDateTime;
 	    }
+	    
+	    
+	   */
 	    
 
 }
