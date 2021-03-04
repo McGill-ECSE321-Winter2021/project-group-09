@@ -52,6 +52,8 @@ public class ServiceService {
         if (name == null || name.equals("")) throw new Exception("A service name is required");
         else if (serviceRepository.findServiceByName(name) != null) throw new Exception("A service with name \"" + name + "\" already exists");
 
+        // don't need to check duration or price, since they get initialized to 0 by default
+
         Service service = new Service();
         service.setName(name);
         service.setDuration(duration);
