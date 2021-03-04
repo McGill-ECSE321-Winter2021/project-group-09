@@ -31,14 +31,37 @@ public class CustomerTest {
 
 	@Autowired
 	private ServiceRepository serviceRepository;
+
+	@Autowired
+	private TechnicianRepository technicianRepository;
 	
 	@BeforeEach
 	@AfterEach
 	public void clearDatabase() {
 		customerRepository.deleteAll();
+		appointmentRepository.deleteAll();
+		serviceRepository.deleteAll();
+		technicianRepository.deleteAll();;
 	}
-	
-	
+
+
+	public Technician createTechnician() {
+		String techName = "asd";
+		String techEmail = "jasd@asd.ca";
+		String techPassword = "CustomerPassword";
+		String techAddress = "ABCD";
+		String techPhone = "63534525453";
+		Technician tech = new Technician();
+
+		tech.setName(techName);
+		tech.setAddress(techAddress);
+		tech.setEmail(techEmail);
+		tech.setPassword(techPassword);
+		tech.setPhoneNumber(techPhone);
+		tech = technicianRepository.save(tech);
+		return tech;
+	}
+
 	@Test
 	public void testPersistAndLoadCustomer() {
 		
@@ -105,12 +128,15 @@ public class CustomerTest {
 		Appointment appointment1 = new Appointment();
 		appointment1.setCustomer(customer);
 		appointment1.setService(service);
+		appointment1.setTechnician(createTechnician());
 		Appointment appointment2 = new Appointment();
 		appointment2.setCustomer(customer);
 		appointment2.setService(service);
+		appointment2.setTechnician(createTechnician());
 		Appointment appointment3 = new Appointment();
 		appointment3.setCustomer(customer);
 		appointment3.setService(service);
+		appointment3.setTechnician(createTechnician());
 
 		// save appointments
 		appointmentRepository.save(appointment1);

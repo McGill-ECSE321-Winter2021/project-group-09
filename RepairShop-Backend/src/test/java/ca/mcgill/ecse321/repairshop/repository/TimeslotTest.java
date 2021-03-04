@@ -67,13 +67,7 @@ public class TimeslotTest {
         String techAddress = "ABCD";
         String techPhone = "63534525453";
         Technician tech = new Technician();
-
-        tech.setName(techName);
-        tech.setAddress(techAddress);
         tech.setEmail(techEmail);
-        tech.setPassword(techPassword);
-        tech.setPhoneNumber(techPhone);
-        tech = technicianRepo.save(tech);
 
         //create timeslot with tech associated
         Timestamp endDate = Timestamp.valueOf("2021-03-01 10:00:00");
@@ -81,11 +75,13 @@ public class TimeslotTest {
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setEndDateTime(endDate);
         timeSlot.setStartDateTime(startDate);
-        timeSlot.setTechnician(tech);
         Long newTsID = timeslotRepo.save(timeSlot).getTimeSlotID();
         LinkedList<TimeSlot> timeslots = new LinkedList<TimeSlot>();
         timeslots.add(timeSlot);
         tech.setTimeslots(timeslots);
+
+        //save tech
+        technicianRepo.save(tech);
 
         //test appointment was created as expected
         Optional<TimeSlot> foundTimeslot;
@@ -95,7 +91,6 @@ public class TimeslotTest {
         assertTrue(foundTimeslot.isPresent());
         assertEquals(endDate, foundTimeslot.get().getEndDateTime());
         assertEquals(startDate, foundTimeslot.get().getStartDateTime());
-        assertEquals(techEmail, foundTimeslot.get().getTechnician().getEmail());
 
         //delete technician
         technicianRepo.deleteById(techEmail);
