@@ -12,6 +12,7 @@ public class CustomerDto {
 	private String phoneNumber;
 	private String name;
 	private String address;
+	private String password;
 	
 	
 	
@@ -48,6 +49,15 @@ public class CustomerDto {
     
     public void setAddress(String address) {
         this.address = address;
+    }
+    
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setSetPassword(String password) {
+        this.password = password;
     }
     
 	

@@ -17,7 +17,9 @@ import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 public class CustomerService {
 	
 	@Autowired
-	CustomerRepository customerRepository;
+	private CustomerRepository customerRepository;
+	
+	
 	
 	
 	@Transactional
@@ -95,6 +97,7 @@ public class CustomerService {
 		customerDTO.setPhoneNumber(customer.getPhoneNumber());
 		customerDTO.setName(customer.getName());
 		customerDTO.setEmail(customer.getEmail());
+		customerDTO.setSetPassword(customer.getPassword());
 		
 		return customerDTO;
 

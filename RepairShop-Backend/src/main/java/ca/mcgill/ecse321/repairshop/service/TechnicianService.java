@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.sun.istack.NotNull;
 
-import ca.mcgill.ecse321.repairshop.controller.TimeSlotService;
+//import ca.mcgill.ecse321.repairshop.controller.TimeSlotService;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Technician;
@@ -30,8 +30,8 @@ public class TechnicianService {
 	@Autowired
 	TechnicianRepository technicianRepository;
 	
-	@Autowired
-	private TimeSlotService timeService;
+	//@Autowired
+	//private TimeSlotService timeService;
 	
 	@Transactional
 	public TechnicianDto createTechnician(String email, String password, String phone, String name, String address) throws Exception{
@@ -43,12 +43,22 @@ public class TechnicianService {
 			throw new Exception("Email is already taken.");
 		}
 		
+		/*
+		//convert dto work-hours to TimeSlot work-hours
+		List<TimeSlot> timeSlots = new ArrayList<>();
+		for(int i = 0; i < workHours.size(); i++) {
+			timeSlots.add(DtoToTimeslot(workHours.get(i)));
+		}
+		*/
+		
+		List<TimeSlot> timeSlots = new ArrayList<>();
 		Technician tech = new Technician();
 		tech.setEmail(email);
 		tech.setPassword(password);
 		tech.setPhoneNumber(phone);
 		tech.setName(name);
 		tech.setAddress(address);
+		tech.setTimeslots(timeSlots);
 		
 		technicianRepository.save(tech);
 		return technicianToDTO(tech);
@@ -109,14 +119,14 @@ public class TechnicianService {
 		techDTO.setPhoneNumber(tech.getPhoneNumber());
 		techDTO.setName(tech.getName());
 		techDTO.setEmail(tech.getEmail());
-		
+		techDTO.setSetPassword(tech.getPassword());
 		
 		List<TimeSlot> timeSlots = tech.getTimeslots();
-		ArrayList<TimeSlotDto> timeDto = new ArrayList<>();
-		for(TimeSlot timeSlot : timeSlots) {
-			timeDto.add(timeslotToDTO(timeSlot));
+		ArrayList<TimeSlotDto> timeDtos = new ArrayList<>();
+		for(int i = 0; i < timeSlots.size(); i++) {
+			timeDtos.add(timeslotToDTO(timeSlots.get(i)));
 		}
-		techDTO.setTimeSlots(timeDto);
+		techDTO.setTimeSlots(timeDtos);
 		
 		
 		return techDTO;
@@ -136,8 +146,25 @@ public class TechnicianService {
 	}
 	
 	
+	 public TimeSlotDto timeslotToDTO(TimeSlot timeslot) {
+	     TimeSlotDto dto = new TimeSlotDto();
+	     dto.setEndDateTime(timeslot.getEndDateTime());
+	     dto.setStartDateTime(timeslot.getStartDateTime());
+	     return dto;
+	 }
+	 
+	 
+	 private TimeSlot DtoToTimeslot(TimeSlotDto dto) {
+		 TimeSlot time = new TimeSlot();
+		 time.setStartDateTime(dto.getStartDateTime());
+		 time.setEndDateTime(dto.getEndDateTime());
+		 return time;
+	 }
+	 
+	
 	
 }
+
 
 
 

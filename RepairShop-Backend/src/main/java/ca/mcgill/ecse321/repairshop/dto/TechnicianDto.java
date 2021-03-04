@@ -12,6 +12,7 @@ public class TechnicianDto {
 	private String phoneNumber;
 	private String name;
 	private String address;
+	private String password;
 	private List<TimeSlotDto> workHours;
 	
     
@@ -59,6 +60,14 @@ public class TechnicianDto {
 
 	public void setTimeSlots(List<TimeSlotDto> timeslots) {
 		this.workHours = timeslots;
+	}
+	
+	public String getPassword() {
+	    return password;
+	}
+	    
+	public void setSetPassword(String password) {
+	    this.password = password;
 	}
 	
     

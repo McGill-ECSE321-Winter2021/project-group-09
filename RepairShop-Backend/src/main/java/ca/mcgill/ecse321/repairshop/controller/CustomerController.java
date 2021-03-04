@@ -5,15 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
 import ca.mcgill.ecse321.repairshop.service.CustomerService;
 
 
+
+
+@RestController
+@CrossOrigin(origins = "*")
 public class CustomerController {
 	
 	@Autowired
@@ -21,7 +27,7 @@ public class CustomerController {
 	
 	
 	
-	@PostMapping(value = { "/customers/{email}", "/customers/{email}/" })
+	@PostMapping(value = { "/customer/{email}", "/customer/{email}/" })
 	public ResponseEntity<?> createCustomer(@PathVariable("email") String email, @RequestParam String password, @RequestParam String name, @RequestParam String address, @RequestParam String phone) throws IllegalArgumentException {
 		
 		try {
