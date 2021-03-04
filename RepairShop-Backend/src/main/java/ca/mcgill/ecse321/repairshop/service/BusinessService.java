@@ -50,7 +50,7 @@ public class BusinessService {
             throw new Exception("Phone number cannot be empty!");
         }
         if (email == null || email.equals("")) {
-            throw new Exception("Enter email");
+            throw new Exception("Email cannot be empty!");
         }
 
         validateEmail(email); // if email is invalid, an exception will be thrown
@@ -67,6 +67,7 @@ public class BusinessService {
         //3) Create Business
         Business business = new Business();
         business.setName(name);
+        business.setAddress(address);
         business.setEmail(email);
         business.setPhoneNumber(phoneNumber);
         business.setNumberOfRepairSpots(numberOfRepairSpots);

@@ -107,13 +107,13 @@ public class TestBusinessService {
         assertEquals(0, businessService.getAllBusinesses().size());
 
         BusinessDto business = null;
-
+        String businessName = "Best Business in the world";
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             fail();
         }
-        assertEquals(BUSINESS_NAME, business.getName());
+        assertEquals(businessName, business.getName());
         assertEquals(BUSINESS_ADDRESS, business.getAddress());
         assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
         assertEquals(BUSINESS_EMAIL, business.getEmail());
@@ -168,5 +168,64 @@ public class TestBusinessService {
         assertEquals("Phone number cannot be empty!", error);
     }
 
+    @Test
+    public void testMissingEmailCreateBusiness() {
+        String email = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        // check error
+        assertEquals("Email cannot be empty!", error);
+    }
 
+    @Test
+
+    public void testInvalidEmailNoAtSignCreateBusiness() {
+        String email = "bestBusinessgmail.com";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        // check error
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testInvalidEmailCreateBusiness() {
+        String email = "Not an email";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        // check error
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testInvalidEmailNoDotCreateBusiness() {
+        String email = "bestBusiness@gmailcom";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        // check error
+        assertEquals("Invalid email", error);
+    }
 }
