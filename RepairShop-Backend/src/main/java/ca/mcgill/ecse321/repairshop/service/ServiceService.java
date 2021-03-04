@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.repairshop.service;
 import ca.mcgill.ecse321.repairshop.dto.ServiceDto;
 import ca.mcgill.ecse321.repairshop.model.Service;
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
@@ -19,7 +18,7 @@ public class ServiceService {
     /** Finds a service by name and returns a serviceDto
      * @param name of the service to find
      * @return serviceDto object for the corresponding service
-     * @throws InvalidArgumentException if a service with the name was not found
+     * @throws Exception if a service with the name was not found
      */
     @Transactional
     public ServiceDto getServiceByName(String name) throws Exception {
