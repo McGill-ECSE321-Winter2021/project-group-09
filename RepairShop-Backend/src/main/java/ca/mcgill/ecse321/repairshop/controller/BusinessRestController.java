@@ -92,27 +92,25 @@ public class BusinessRestController {
     }
 
 
-
-    /*    //TODO: I assume there's a method to convert TimeSlot -> TimeSlotDto
-     *//**
-     * Get request for all vacations for a business
-     * @return a list of all vacations
-     *//*
-    @GetMapping("/vacations")
-    public ResponseEntity<?> getAllVacations() {
-        try{
-            List<TimeSlotDTO> vacationDtoList = new ArrayList<>();
-
-            //Convert all TimeSlot vacations into TimeSlotDTO
-            for(vacation:businessService.getAllVacations()){
-                vacationList.add(TimeSlotService.timeslotToDTO(vacation));
-            }
-
-            return new ResponseEntity<>(vacationDtoList,HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    } */
+//     /**
+//     * Get request for all vacations for a business
+//     * @return a list of all vacations
+//     */
+//    @GetMapping("/vacations")
+//    public ResponseEntity<?> getAllVacations() {
+//        try{
+//            List<TimeSlotDto> vacationDtoList = new ArrayList<>();
+//
+//            //Convert all TimeSlot vacations into TimeSlotDTO
+//            for (vacation:businessService.getAllVacations()){
+//                vacationList.add(TimeSlotService.timeslotToDTO(vacation));
+//            }
+//
+//            return new ResponseEntity<>(vacationDtoList,HttpStatus.OK);
+//        } catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 
 }
