@@ -11,11 +11,8 @@ public class BusinessDto {
     private int numberOfRepairSpots;
     private List<TimeSlotDto> vacations;
 
-    public BusinessDto(String name) {
-        this(name, "best address", "bestBusiness@example.ca", "(123)-456-7890", 1);
-    }
 
-    public BusinessDto(String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
+    public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
         this.name = name;
         this.address = address;
         this.email = email;

@@ -29,6 +29,7 @@ public class BusinessService {
     /**
      * Creates a business with a name, an address, a phone number, an email and number of repair spot.
      *
+     * @param businessID          businessID (Long ID)
      * @param name                name of the business (String)
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
@@ -38,53 +39,29 @@ public class BusinessService {
      * @throws Exception If at least one of the inputs is invalid
      */
     @Transactional
-    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+    public BusinessDto createBusiness(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
-        //1) Check inputs
-        if (name == null || name.equals("")) {
-            throw new Exception("Business name cannot be empty!");
-        }
-        if (address == null || address.equals("")) {
-            throw new Exception("Address cannot be empty!");
-        }
-        if (phoneNumber == null || phoneNumber.equals("")) {
-            throw new Exception("Phone number cannot be empty!");
-        }
-        if (email == null || email.equals("")) {
-            throw new Exception("Email cannot be empty!");
-        }
+        inputValidation(businessID, name, address, phoneNumber, email, numberOfRepairSpots);
 
-        validateEmail(email); // if email is invalid, an exception will be thrown
-
-        if (numberOfRepairSpots < 0) {
-            throw new Exception("The number of repair spots cannot be negative");
-        }
-
-        //2) Check if there's an existing business with the same name
         if (businessRepository.findBusinessByName(name) != null) {
             throw new Exception("The business name is already taken.");
         }
 
-        //3) Create Business
         Business business = new Business();
+        business.setBusinessID(businessID);
         business.setName(name);
         business.setAddress(address);
         business.setEmail(email);
         business.setPhoneNumber(phoneNumber);
         business.setNumberOfRepairSpots(numberOfRepairSpots);
 
-        //Create empty list of TimeSlot vacations
         List<TimeSlot> vacations = new ArrayList<>();
         business.setVacations(vacations);
 
-        //4) Save Business in backend
         businessRepository.save(business);
 
-        //5) Convert business to BusinessDto and return it
         return businessToDto(business);
     }
-
-
 
 
     /**
@@ -111,6 +88,7 @@ public class BusinessService {
 
     /**
      * Updates business information (address, phone number, email, number of repair spots).
+     *
      * @param name                name of the business (String
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
@@ -120,34 +98,18 @@ public class BusinessService {
      * @throws Exception if there are invalid inputs or the business can't be found
      */
     @Transactional
-    public BusinessDto updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+    public BusinessDto updateBusiness(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
         //1) Check inputs
-        if (name == null || name.equals("")) {
-            throw new Exception("Enter business name");
-        }
-        if (address == null || address.equals("")) {
-            throw new Exception("Enter address");
-        }
-        if (phoneNumber == null || phoneNumber.equals("")) {
-            throw new Exception("Enter phone number");
-        }
-        if (email == null || email.equals("")) {
-            throw new Exception("Enter email");
-        }
 
-        validateEmail(email); // if email is invalid, an exception will be thrown
-
-        if (numberOfRepairSpots < 0) {
-            throw new Exception("The number of repair spots cannot be negative");
-        }
+        inputValidation(businessID, name, address, phoneNumber, email, numberOfRepairSpots);
 
         //2) Find business byt its name
         Business business = businessRepository.findBusinessByName(name);
 
         //3) Check if the business exists
         if (business == null) {
-            throw new Exception("Business with name \""+name+"\" not found");
+            throw new Exception("Business with name \"" + name + "\" not found");
         }
 
         //4) Update the business information
@@ -163,6 +125,30 @@ public class BusinessService {
         return businessToDto(business);// Convert and return business
     }
 
+    private void inputValidation(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+        if (businessID == null) {
+            throw new Exception("Business ID cannot be empty!");
+        }
+        if (name == null || name.equals("")) {
+            throw new Exception("Business name cannot be empty!");
+        }
+        if (address == null || address.equals("")) {
+            throw new Exception("Address cannot be empty!");
+        }
+        if (phoneNumber == null || phoneNumber.equals("")) {
+            throw new Exception("Phone number cannot be empty!");
+        }
+        if (email == null || email.equals("")) {
+            throw new Exception("Email cannot be empty!");
+        }
+
+        validateEmail(email); // if email is invalid, an exception will be thrown
+
+        if (numberOfRepairSpots < 0) {
+            throw new Exception("The number of repair spots cannot be negative");
+        }
+    }
+
 
     /**
      * Gets all businesses from businessRepository
@@ -176,9 +162,10 @@ public class BusinessService {
 
     /**
      * Adds a new TimeSlot vacation to the business.
-     * @param name name of the business (String)
+     *
+     * @param name          name of the business (String)
      * @param startDateTime Start date and time of the new TimeSlot vacation (TimeStamp)
-     * @param endDateTime End date and time of the new TimeSlot vacation (TimeStamp)
+     * @param endDateTime   End date and time of the new TimeSlot vacation (TimeStamp)
      * @return businessDto BusinessDto
      * @throws Exception if the business wasn't found
      */
@@ -189,7 +176,7 @@ public class BusinessService {
 
         //Check if the business exists
         if (business == null) {
-            throw new Exception("Business with name \""+name+"\" not found");
+            throw new Exception("Business with name \"" + name + "\" not found");
         }
         //Create TimeSlot vacation
         TimeSlot newVacation = new TimeSlot();
@@ -208,6 +195,7 @@ public class BusinessService {
 
     /**
      * Gets all vacations.
+     *
      * @return List of vacations (List<TimeSlot>)
      */
     @Transactional
@@ -233,10 +221,10 @@ public class BusinessService {
      * @param business business to be converted to businessDto (Business)
      * @return businessDto (BusinessDTo)
      */
-    public BusinessDto businessToDto(Business business){
+    public BusinessDto businessToDto(Business business) {
 
         //Create businessDto
-        BusinessDto businessDto = new BusinessDto(business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
+        BusinessDto businessDto = new BusinessDto(business.getBusinessID(), business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
 
         return businessDto;
     }
