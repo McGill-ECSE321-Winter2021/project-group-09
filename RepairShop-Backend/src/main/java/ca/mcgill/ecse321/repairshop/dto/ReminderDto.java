@@ -8,8 +8,11 @@ import java.sql.Timestamp;
 
 public class ReminderDto {
 
+    @NotNull
     private Timestamp dateTime;
+    @NotNull
     private ReminderType reminderType;
+    @NotNull
     private Customer customer;
 
     public Timestamp getDateTime() {

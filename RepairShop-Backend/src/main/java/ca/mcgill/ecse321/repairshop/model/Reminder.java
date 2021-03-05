@@ -17,9 +17,6 @@ public class Reminder {
     public Long getReminderID() {
 		return reminderID;
 	}
-	public void setReminderID(Long reminderID) {
-		this.reminderID = reminderID;
-	}
 
     ///////////////////////////////////////////////////////////////////////////
     

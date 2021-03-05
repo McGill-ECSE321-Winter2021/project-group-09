@@ -40,12 +40,21 @@ public class ReminderService {
      * @param customer associated to the appointment
      * @return the reminder object
      */
-    public Reminder createReminder(Timestamp dateTime, ReminderType reminderType, Customer customer) {
+    public ReminderDto createReminder(Timestamp dateTime, ReminderType reminderType, Customer customer) throws Exception {
+
+        if (dateTime == null) throw new Exception("The Timestamp is mandatory");
+        if (reminderType == null) throw new Exception("The ReminderType is mandatory");
+        if (customer == null) throw new Exception("The Customer is mandatory");
+
         Reminder reminder = new Reminder();
         reminder.setDateTime(dateTime);
         reminder.setReminderType(reminderType);
         reminder.setCustomer(customer);
-        return reminder;
+
+        reminderRepository.save(reminder);
+
+        return reminderToDto(reminder);
+
     }
 
     /** Helper method to convert Reminder to ReminderDto
