@@ -3,6 +3,10 @@ package ca.mcgill.ecse321.repairshop.repository;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Reminder;
+import ca.mcgill.ecse321.repairshop.model.Technician;
+
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 public interface CustomerRepository extends CrudRepository<Customer, String> {
@@ -14,6 +18,10 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {
 
     // Get customer by reminder - One customer is associated to many reminders
     Customer findByReminders(Reminder reminder);
+    
+    List<Customer> findAll();	
+    
+    void deleteByEmail(String email);
 
 }
 
