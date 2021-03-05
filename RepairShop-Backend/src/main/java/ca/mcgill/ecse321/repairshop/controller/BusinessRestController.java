@@ -85,7 +85,7 @@ public class BusinessRestController {
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto) {
         try {
             return new ResponseEntity<>(businessService.updateBusiness(businessDto.getName(), businessDto.getAddress(),
-                    businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.CREATED);
+                    businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
