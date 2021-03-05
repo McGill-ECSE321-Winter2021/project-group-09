@@ -32,6 +32,10 @@ During the development of the RepairShop application software, the team will fol
 | Tyler Syme             | Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, "Domain Model" Wiki page, Update Umple UML diagram, Create Google Docs & Google Calendar | 35 |
 | Sandy Lao              |Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Wiki Setup, Use Case Diagrams, Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 40 |
 
+# Sprint 1: Project Report
+See [Sprint 1: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-1:-Project-Report)<br/>
+Jump to [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-1:-Project-Report#sprint-1-meeting-notes-)
+
 ## Sprint 2: Effort Table
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
@@ -40,3 +44,7 @@ During the development of the RepairShop application software, the team will fol
 | Zhanna Klimanova       |UPDATE THIS LATER  | 00 |
 | Tyler Syme             |UPDATE THIS LATER  Create Google Docs & Google Calendar | 00 |
 | Sandy Lao              |UPDATE THIS LATER  Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 00 |
+
+# Sprint 2: Project Report
+See [Sprint 2: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report)<br/>
+Jump to [Sprint 2: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report#sprint-2-meeting-notes-)
