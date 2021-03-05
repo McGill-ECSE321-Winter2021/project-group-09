@@ -340,4 +340,32 @@ public class TestBusinessService {
         assertEquals("BusinessID not found", error);
     }
 
+    @Test
+    public void testUpdateBusiness() {
+
+        assertEquals(0, businessService.getAllBusinesses().size());
+
+        BusinessDto business = null;
+        String newName = "Update name";
+        String newAddress = "Update address";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
+
+
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(BUSINESS_ID, business.getBusinessID());
+            assertEquals(newName, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+
+    }
 }
