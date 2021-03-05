@@ -80,10 +80,9 @@ public class TestBusinessService {
                                 business.setPhoneNumber(BUSINESS_PHONE_NUMBER);
                                 business.setNumberOfRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
 
-                                return Optional.of(business);
-
+                                return business;
                             } else {
-                                return Optional.empty();
+                                return null;
                             }
                         });
 
@@ -304,32 +303,41 @@ public class TestBusinessService {
         BusinessDto businessDto;
         try {
             businessDto = businessService.getBusinessByID(BUSINESS_ID);
-            assertEquals("Could not find a business with ID: " + BUSINESS_ID, error);
+            assertEquals(BUSINESS_ID, businessDto.getBusinessID());
             assertEquals(BUSINESS_NAME, businessDto.getName());
             assertEquals(BUSINESS_ADDRESS, businessDto.getAddress());
             assertEquals(BUSINESS_PHONE_NUMBER, businessDto.getPhoneNumber());
             assertEquals(BUSINESS_EMAIL, businessDto.getEmail());
             assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, businessDto.getNumberOfRepairSpots());
         } catch (Exception e) {
-            error = e.getMessage();
+            fail(e.getMessage());
         }
     }
 
     @Test
-    public void testGetBusinessByID() {
+    public void testMissingGetBusinessByID() {
         String error = null;
+        Long nullBusinessID = null;
         BusinessDto businessDto;
         try {
-            businessDto = businessService.getBusinessByID(BUSINESS_ID);
-            assertEquals("Could not find a business with ID: " + BUSINESS_ID, error);
-            assertEquals(BUSINESS_NAME, businessDto.getName());
-            assertEquals(BUSINESS_ADDRESS, businessDto.getAddress());
-            assertEquals(BUSINESS_PHONE_NUMBER, businessDto.getPhoneNumber());
-            assertEquals(BUSINESS_EMAIL, businessDto.getEmail());
-            assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, businessDto.getNumberOfRepairSpots());
+            businessDto = businessService.getBusinessByID(nullBusinessID);
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertEquals("Enter BusinessID", error);
+    }
+
+    @Test
+    public void testNotFoundGetBusinessByID() {
+        String error = null;
+        long businessID = 4567;
+        BusinessDto businessDto;
+        try {
+            businessDto = businessService.getBusinessByID(businessID);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertEquals("BusinessID not found", error);
     }
 
 }

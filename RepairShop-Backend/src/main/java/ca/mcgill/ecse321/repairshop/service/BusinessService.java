@@ -29,6 +29,7 @@ public class BusinessService {
 
     /**
      * Creates a business with a name, an address, a phone number, an email and number of repair spot.
+     *
      * @param businessID          ID of the business (Long)
      * @param name                name of the business (String)
      * @param address             address of the business (String)
@@ -72,10 +73,11 @@ public class BusinessService {
     public BusinessDto getBusinessByID(Long businessID) throws Exception {
 
         if (businessID == null) {
-            throw new Exception("Could not find a business with ID: " + businessID);
+            throw new Exception("Enter BusinessID");
         }
 
         Business businessFound = businessRepository.findBusinessByBusinessID(businessID);
+        if (businessFound == null) throw new Exception("BusinessID not found");
 
         return businessToDto(businessFound);
     }
@@ -191,13 +193,14 @@ public class BusinessService {
 
     /**
      * Gets all Holidays of the business.
+     *
      * @return List of Holidays (List<TimeSlotDto>)
      * @throws Exception If the business with the input businessID can't be found
      */
     @Transactional
-    public List<TimeSlotDto> getAllHolidays(Long businessID) throws Exception{
+    public List<TimeSlotDto> getAllHolidays(Long businessID) throws Exception {
 
-        if(businessID == null) {
+        if (businessID == null) {
             throw new Exception("BusinessID cannot be empty");
         }
         Business business = businessRepository.findBusinessByBusinessID(businessID);
@@ -207,9 +210,9 @@ public class BusinessService {
         List<TimeSlot> holidays = business.getHolidays();
         List<TimeSlotDto> holidaysDtoList = new ArrayList<>();
 
-                for(TimeSlot currHoliday : holidays){
-                    holidaysDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
-                }
+        for (TimeSlot currHoliday : holidays) {
+            holidaysDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
+        }
 
 
         return holidaysDtoList;
@@ -231,6 +234,7 @@ public class BusinessService {
 
     /**
      * Checks if the inputs are valid.
+     *
      * @param name                name of the business (String)
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
