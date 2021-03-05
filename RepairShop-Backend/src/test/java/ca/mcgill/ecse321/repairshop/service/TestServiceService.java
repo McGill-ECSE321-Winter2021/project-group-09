@@ -43,7 +43,7 @@ public class TestServiceService {
 
     }
 
-    @Test // invalid service
+    @Test // invalid service (string for name)
     public void testCreateServiceEmpty() {
 
         Service service = null;
@@ -51,6 +51,23 @@ public class TestServiceService {
 
         try {
             service = serviceService.createService("", 0, 0);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(service);
+        assertEquals("A service name is required", error);
+
+    }
+
+    @Test // invalid service (null for name)
+    public void testCreateServiceNull() {
+
+        Service service = null;
+        String error = null;
+
+        try {
+            service = serviceService.createService(null, 0, 0);
         } catch (Exception e) {
             error = e.getMessage();
         }
