@@ -81,7 +81,7 @@ public class BusinessRestController {
      * @param businessDto the update to the existing business information
      * @return the updated business if updated successfully
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto) {
         try {
             return new ResponseEntity<>(businessService.updateBusiness(businessDto.getName(), businessDto.getAddress(),
