@@ -23,6 +23,13 @@ public class BusinessDto {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
+    public long getBusinessID() {
+        return this.businessID;
+    }
+
+    public void setBusinessID(long businessID) {
+        this.businessID = businessID;
+    }
 
     public String getName() {
         return this.name;
