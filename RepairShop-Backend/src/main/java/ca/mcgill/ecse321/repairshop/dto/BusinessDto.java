@@ -11,9 +11,6 @@ public class BusinessDto {
     private int numberOfRepairSpots;
     private List<TimeSlotDto> vacations;
 
-//TODO: Do we need TimeSlot vacation ? Add getter and setter for vacations?
-
-    //Create business with default email, phone number and number of repair spots
     public BusinessDto(String name) {
         this(name, "best address", "bestBusiness@example.ca", "(123)-456-7890", 1);
     }
@@ -26,7 +23,7 @@ public class BusinessDto {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
-    //NAME
+
     public String getName() {
         return this.name;
     }
@@ -35,7 +32,7 @@ public class BusinessDto {
         this.name = name;
     }
 
-    //ADDRESS
+
     public String getAddress() {
         return address;
     }
@@ -44,7 +41,6 @@ public class BusinessDto {
         this.address = address;
     }
 
-    //EMAIL
     public String getEmail() {
         return email;
     }
@@ -53,7 +49,6 @@ public class BusinessDto {
         this.email = email;
     }
 
-    //PHONE NUMBER
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -62,7 +57,6 @@ public class BusinessDto {
         this.phoneNumber = phoneNumber;
     }
 
-    //# OF REPAIR SPOTS
     public int getNumberOfRepairSpots() {
         return numberOfRepairSpots;
     }
@@ -71,7 +65,6 @@ public class BusinessDto {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
-    //VACATIONS (TIMESLOT)
     public List<TimeSlotDto> getVacations() {
         return this.vacations;
     }

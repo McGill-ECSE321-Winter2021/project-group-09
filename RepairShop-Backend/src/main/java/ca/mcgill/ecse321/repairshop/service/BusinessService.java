@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.validateEmail;
 import static java.util.regex.Pattern.matches;
 
 @Service
@@ -83,16 +84,7 @@ public class BusinessService {
         return businessToDto(business);
     }
 
-    /**
-     * Validate email using regex pattern
-     *
-     * @param email The email to validate.
-     * @throws Exception Throws exception when email is invalid.
-     * @author Tyler
-     */
-    private static void validateEmail(String email) throws Exception {
-        if (!matches("[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", email)) throw new Exception("Invalid email");
-    }
+
 
 
     /**
@@ -213,15 +205,18 @@ public class BusinessService {
         return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
     }
 
+
     /**
      * Gets all vacations.
      * @return List of vacations (List<TimeSlot>)
      */
     @Transactional
-    public List<TimeSlot> getAllVacations() {
+    public List<TimeSlot> getAllVacations(Long businessId) {
+        //TODO: MODIFY THIS METHOD!!!!!!!!!!!!!
         return timeSlotRepository.findAll();
-        //TODO: not sure if this is the right way to get all the vacations.
-        // We only have one business, so I think we can just get all the vacations stored into timeSlotRepository
+
+        //get instance of business
+
     }
 
     private <T> List<T> toList(Iterable<T> iterable) {
