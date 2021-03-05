@@ -117,6 +117,20 @@ public class TestBusinessService {
 
     }
 
+    @Test
+    public void testNegativeNbRepairSpotsCreateBusiness() {
+        int negativeNb = -10;
+        BusinessDto business = null;
+        String error = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, negativeNb);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(business);
+        assertEquals("The number of repair spots cannot be negative", error);
+    }
 
     @Test
     public void testMissingNameCreateBusiness() {
@@ -546,4 +560,49 @@ public class TestBusinessService {
 
         assertEquals("Email cannot be empty!", error);
     }
+
+    @Test
+    public void testNegativeNbRepairSpotsUpdateBusiness() {
+        int negativeNb = -10;
+        BusinessDto business = null;
+        String error = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, negativeNb);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(business);
+        assertEquals("The number of repair spots cannot be negative", error);
+    }
+
+    @Test
+    public void testUpdateNbRepairSpots() {
+
+        BusinessDto business = null;
+        try {
+            business = businessService.updateNbRepairSpots(BUSINESS_ID, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertNotNull(business);
+        assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, business.getNumberOfRepairSpots());
+    }
+
+    @Test
+    public void testInvalidUpdateNbRepairSpots() {
+        int negativeNb = -20;
+        BusinessDto business = null;
+        String error = null;
+        try {
+            business = businessService.updateNbRepairSpots(BUSINESS_ID, negativeNb);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(business);
+        assertEquals("The number of repair spots cannot be negative", error);
+    }
+
 }
