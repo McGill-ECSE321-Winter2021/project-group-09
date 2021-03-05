@@ -605,4 +605,33 @@ public class TestBusinessService {
         assertEquals("The number of repair spots cannot be negative", error);
     }
 
+    @Test
+    public void testGetAllBusinesses() {
+
+        assertEquals(0, businessService.getAllBusinesses().size());
+        BusinessDto business = null;
+        String error = null;
+        String name = "Hello World Business";
+        //Create 1st business
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            assertEquals(BUSINESS_ID, business.getBusinessID());
+            assertEquals(name, business.getName());
+            assertEquals(BUSINESS_ADDRESS, business.getAddress());
+            assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
+            assertEquals(BUSINESS_EMAIL, business.getEmail());
+            assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, business.getNumberOfRepairSpots());
+            assertNotNull(business);
+
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+
+        List<BusinessDto> businessDtoList = businessService.getAllBusinesses();
+
+        assertEquals(business.getName(), businessDtoList.get(0).getName());
+    }
+
+
 }

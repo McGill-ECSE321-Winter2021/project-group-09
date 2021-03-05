@@ -54,8 +54,8 @@ public class BusinessService {
         business.setPhoneNumber(phoneNumber);
         business.setNumberOfRepairSpots(numberOfRepairSpots);
 
-        List<TimeSlot> Holidays = new ArrayList<>();
-        business.setHolidays(Holidays);
+        List<TimeSlot> holidays = new ArrayList<>();
+        business.setHolidays(holidays);
 
         businessRepository.save(business);
 
