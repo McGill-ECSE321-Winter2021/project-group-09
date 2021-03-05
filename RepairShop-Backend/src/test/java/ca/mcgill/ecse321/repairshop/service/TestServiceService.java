@@ -35,16 +35,15 @@ public class TestServiceService {
         assertEquals(0, serviceService.getAllServices().size());
 
         Service service = null;
-        String name = "TestService2";
 
         try {
-            service = serviceService.createService(name, SERVICE_DURATION, SERVICE_PRICE);
+            service = serviceService.createService(SERVICE_NAME, SERVICE_DURATION, SERVICE_PRICE);
         } catch (Exception e) {
             fail();
         }
 
         assertNotNull(service);
-        assertEquals(name, service.getName());
+        assertEquals(SERVICE_NAME, service.getName());
 
     }
 
