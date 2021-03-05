@@ -8,7 +8,7 @@ public class Business {
 
     private Long businessID;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getBusinessID() {
         return businessID;
     }
