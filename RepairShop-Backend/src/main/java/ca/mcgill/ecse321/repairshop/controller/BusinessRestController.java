@@ -42,13 +42,13 @@ public class BusinessRestController {
     /**
      * Get a business by name
      *
-     * @param name unique business name
+     * @param businessID unique business name
      * @return the requested business if found
      */
-    @GetMapping("/{name}")
-    public ResponseEntity<?> getBusinessByName(@PathVariable("name") String name) {
+    @GetMapping("/id/{businessID}")
+    public ResponseEntity<?> getBusinessById(@PathVariable("businessID") Long businessID) {
         try {
-            BusinessDto businessDto = businessService.getBusinessByName(name);
+            BusinessDto businessDto = businessService.getBusinessByID(businessID);
             return new ResponseEntity<>(businessDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,7 +69,7 @@ public class BusinessRestController {
     public ResponseEntity<?> createBusiness(@PathVariable("ID") Long businessID, @RequestParam String name, @RequestParam String address,
                                             @RequestParam String phoneNumber, @RequestParam String email, @RequestParam int numberOfRepairSpots) {
         try {
-            return new ResponseEntity<>(businessService.createBusiness(businessID, name, address, phoneNumber, email, numberOfRepairSpots), HttpStatus.CREATED);
+            return new ResponseEntity<>(businessService.createBusiness(name, address, phoneNumber, email, numberOfRepairSpots), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }

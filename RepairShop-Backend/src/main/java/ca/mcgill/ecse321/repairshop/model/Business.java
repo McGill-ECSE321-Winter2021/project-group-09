@@ -68,14 +68,14 @@ public class Business {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private List<TimeSlot> vacations;
+    private List<TimeSlot> holidays;
 
     @OneToMany
-    public List<TimeSlot> getVacations() {
-        return vacations;
+    public List<TimeSlot> getHolidays() {
+        return holidays;
     }
-    public void setVacations(List<TimeSlot> vacations) {
-        this.vacations = vacations;
+    public void setHolidays(List<TimeSlot> holidays) {
+        this.holidays = holidays;
     }
 
     ///////////////////////////////////////////////////////////////////////////
