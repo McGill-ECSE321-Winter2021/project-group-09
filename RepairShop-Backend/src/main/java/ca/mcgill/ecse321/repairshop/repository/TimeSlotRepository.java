@@ -11,10 +11,6 @@ public interface TimeSlotRepository extends CrudRepository<TimeSlot, Long> {
 
 	TimeSlot findTimeSlotByTimeSlotID(Long timeSlotID);
 	
-	TimeSlot findByTechnician(Technician technician);
-
-	List<TimeSlot> findTimeslotsByTechnician(Technician technician);
-	
 	List<TimeSlot> findAll();	
 	
 }

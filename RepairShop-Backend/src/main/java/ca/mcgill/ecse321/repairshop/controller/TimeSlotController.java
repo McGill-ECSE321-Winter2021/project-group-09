@@ -49,22 +49,22 @@ public class TimeSlotController {
         }
     }
 
-    /**
-     * GET request to get all timeslots associated to a technician
-     * @param email identifier of the technician
-     * @return a list of associated timeslots
-     */
-    @GetMapping("/technician/{email}")
-    public ResponseEntity<?> getTechniciansTimeslots(@PathVariable String email) {
-        try {
-            List<TimeSlotDto> timeslots = timeSlotService.getTimeslotByTechnician(email);
-            if (timeslots != null) {
-                return new ResponseEntity<>(timeslots, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    /**
+//     * GET request to get all timeslots associated to a technician
+//     * @param email identifier of the technician
+//     * @return a list of associated timeslots
+//     */
+//    @GetMapping("/technician/{email}")
+//    public ResponseEntity<?> getTechniciansTimeslots(@PathVariable String email) {
+//        try {
+//            List<TimeSlotDto> timeslots = timeSlotService.getTimeslotByTechnician(email);
+//            if (timeslots != null) {
+//                return new ResponseEntity<>(timeslots, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

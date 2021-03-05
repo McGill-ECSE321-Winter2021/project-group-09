@@ -38,22 +38,22 @@ public class TimeSlotService {
         }
     }
 
-    /**
-     * Get all timeslots associated with a single technician
-     * @param techEmail email of the technuician
-     * @return list of all timeslots
-     * @throws Exception technician doesn't exist
-     */
-    @Transactional
-    public List<TimeSlotDto> getTimeslotByTechnician(String techEmail) throws Exception {
-        Optional<Technician> technician = technicianRepository.findById(techEmail);
-        if (technician.isPresent()) {
-            return timeSlotRepository.findTimeslotsByTechnician(technician.get()).stream().map(TimeSlotService::timeslotToDTO).collect(Collectors.toList());
-        } else {
-            //TODO custome exception
-            throw new Exception("No such technician.");
-        }
-    }
+//    /**
+//     * Get all timeslots associated with a single technician
+//     * @param techEmail email of the technuician
+//     * @return list of all timeslots
+//     * @throws Exception technician doesn't exist
+//     */
+//    @Transactional
+//    public List<TimeSlotDto> getTimeslotByTechnician(String techEmail) throws Exception {
+//        Optional<Technician> technician = technicianRepository.findById(techEmail);
+//        if (technician.isPresent()) {
+//            return timeSlotRepository.findTimeslotsByTechnician(technician.get()).stream().map(TimeSlotService::timeslotToDTO).collect(Collectors.toList());
+//        } else {
+//            //TODO custome exception
+//            throw new Exception("No such technician.");
+//        }
+//    }
 
     /**
      * get all timeslots
