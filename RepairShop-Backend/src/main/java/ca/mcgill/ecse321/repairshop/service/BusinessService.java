@@ -40,12 +40,10 @@ public class BusinessService {
      */
     @Transactional
     public BusinessDto createBusiness(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
-
-        inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
-
-        if (businessRepository.findBusinessByName(name) != null) {
-            throw new Exception("The business name is already taken.");
+        if (businessID == null) {
+            throw new Exception("Business ID cannot be empty!");
         }
+        inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
 
         Business business = new Business();
         business.setBusinessID(businessID);
@@ -61,27 +59,6 @@ public class BusinessService {
         businessRepository.save(business);
 
         return businessToDto(business);
-    }
-
-
-    /**
-     * Finds a business by name and returns a businessDTO
-     *
-     * @param name name of the business to find (String)
-     * @return businessDto object for the corresponding business (BusinessDto)
-     * @throws Exception If a business with the name was not found
-     */
-    @Transactional
-    public BusinessDto getBusinessByName(String name) throws Exception {
-
-        //Check input
-        if (name == null || name.equals("")) {
-            throw new Exception("Could not find a business with name: " + name);
-        }
-        //Find business with the corresponding name in businessRepository
-        Business businessFound = businessRepository.findBusinessByName(name);
-
-        return businessToDto(businessFound); //Convert Business -> BusinessDto
     }
 
     /**
