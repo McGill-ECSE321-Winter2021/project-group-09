@@ -13,6 +13,7 @@ public class BusinessDto {
 
 
     public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
+        this.businessID = businessID;
         this.name = name;
         this.address = address;
         this.email = email;

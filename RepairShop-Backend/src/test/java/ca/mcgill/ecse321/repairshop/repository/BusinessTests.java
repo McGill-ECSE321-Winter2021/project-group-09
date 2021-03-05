@@ -65,23 +65,24 @@ public class BusinessTests {
         timeSlotRepository.save(vacation);
         timeSlotRepository.save(vacation2);
 
+
         String name = "TestBusinessName";
         String email = "example@server.ca";
         String phoneNumber = "(123)-456-789";
         int numberOfRepairSpots = 10;
         Business business = new Business();
+
         business.setName(name);
         business.setEmail(email);
         business.setPhoneNumber(phoneNumber);
         business.setNumberOfRepairSpots(numberOfRepairSpots);
         business.setVacations(vacationsList);
-
-        //save business in database
-        businessRepository.save(business);
+        Long newBusinessID = businessRepository.save(business).getBusinessID();
 
         business = null;
 
-        business = businessRepository.findBusinessByName(name);
+        business = businessRepository.findBusinessByBusinessID(newBusinessID);
+
         assertNotNull(business);
         assertEquals(name, business.getName());
         assertEquals(email, business.getEmail());
@@ -130,15 +131,24 @@ public class BusinessTests {
         business.setPhoneNumber(phoneNumber);
         business.setNumberOfRepairSpots(numberOfRepairSpots);
         business.setVacations(vacationsList);
+        Long newBusinessID = businessRepository.save(business).getBusinessID();
 
-        //save business in database
-        businessRepository.save(business);
+        assertNotNull(business);
+        assertEquals(name, business.getName());
+        assertEquals(email, business.getEmail());
+        assertEquals(phoneNumber, business.getPhoneNumber());
+        assertEquals(numberOfRepairSpots, business.getNumberOfRepairSpots());
+        assertEquals(vacationsList, business.getVacations());
+
+        business = null;
+
+        business = businessRepository.findBusinessByBusinessID(newBusinessID);
 
         //delete business
         businessRepository.deleteById(business.getBusinessID());
 
         //assertion
-        assertNull(businessRepository.findBusinessByName(business.getName()));
+        assertNull(businessRepository.findBusinessByBusinessID(business.getBusinessID()));
 
     }
 

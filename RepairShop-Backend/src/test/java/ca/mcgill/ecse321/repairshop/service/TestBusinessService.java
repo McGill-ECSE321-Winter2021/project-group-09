@@ -11,8 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 
 import org.mockito.stubbing.Answer;
 
@@ -48,7 +45,7 @@ public class TestBusinessService {
     @InjectMocks
     private BusinessService businessService;
 
-
+    private static final long BUSINESS_ID = 123;
     private static final String BUSINESS_NAME = "TestBusiness";
     private static final String NONEXISTING_KEY = "NotABusiness";
 
@@ -65,10 +62,10 @@ public class TestBusinessService {
     @BeforeEach
     public void setMockOutput() {
         lenient()
-                .when(businessRepository.findBusinessByName(anyString()))
+                .when(businessRepository.findBusinessByBusinessID(anyLong()))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
-                            if (invocation.getArgument(0).equals(BUSINESS_NAME)) {
+                            if (invocation.getArgument(0).equals(BUSINESS_ID)) {
 
                                 //TimeSlot
                                 TimeSlot timeSlot = new TimeSlot();
@@ -79,6 +76,7 @@ public class TestBusinessService {
 
                                 //CREATE BUSINESS
                                 Business business = new Business();
+                                business.setBusinessID(BUSINESS_ID);
                                 business.setVacations(vacationsList);
                                 business.setName(BUSINESS_NAME);
                                 business.setEmail(BUSINESS_EMAIL);
@@ -109,10 +107,11 @@ public class TestBusinessService {
         BusinessDto business = null;
         String businessName = "Best Business in the world";
         try {
-            business = businessService.createBusiness(businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             fail();
         }
+        assertEquals(BUSINESS_ID, business.getBusinessID());
         assertEquals(businessName, business.getName());
         assertEquals(BUSINESS_ADDRESS, business.getAddress());
         assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
@@ -129,7 +128,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -144,7 +143,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -159,7 +158,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -174,7 +173,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -190,7 +189,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -205,7 +204,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -220,7 +219,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }

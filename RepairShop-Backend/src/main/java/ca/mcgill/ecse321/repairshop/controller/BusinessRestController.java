@@ -65,11 +65,11 @@ public class BusinessRestController {
      * @param numberOfRepairSpots number of repair spots of the business (int)
      * @return the new business if created successfully
      */
-    @PostMapping("/create/{name}")
-    public ResponseEntity<?> createBusiness(@PathVariable("name") String name, @RequestParam String address,
+    @PostMapping("/create/{ID}")
+    public ResponseEntity<?> createBusiness(@PathVariable("ID") Long businessID, @RequestParam String name, @RequestParam String address,
                                             @RequestParam String phoneNumber, @RequestParam String email, @RequestParam int numberOfRepairSpots) {
         try {
-            return new ResponseEntity<>(businessService.createBusiness(name, address, phoneNumber, email, numberOfRepairSpots), HttpStatus.CREATED);
+            return new ResponseEntity<>(businessService.createBusiness(businessID, name, address, phoneNumber, email, numberOfRepairSpots), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
@@ -84,7 +84,7 @@ public class BusinessRestController {
     @PutMapping("/update")
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto) {
         try {
-            return new ResponseEntity<>(businessService.updateBusiness(businessDto.getName(), businessDto.getAddress(),
+            return new ResponseEntity<>(businessService.updateBusiness(businessDto.getBusinessID(),businessDto.getName(), businessDto.getAddress(),
                     businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
