@@ -37,36 +37,12 @@ public class TimeSlot {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-
-    private Appointment appointment;
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    public Appointment getAppointment() {
-        return appointment;
-    }
-    public void setAppointment(Appointment appointment) {
-        this.appointment = appointment;
-    }
-    
-    ///////////////////////////////////////////////////////////////////////////
-    
-    private Technician technician;
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    public Technician getTechnician() {
-        return technician;
-    }
-    public void setTechnician(Technician technician) {
-        this.technician = technician;
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
     
     public String toString() {
         return super.toString() + "[" +
                 "timeSlotID" + ":" + getTimeSlotID() + "," +
                 "startDateTime" + ":" + getStartDateTime() + "," +
-                "endDateTime" + ":" + getEndDateTime() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "appointment = " + (getAppointment() != null ? Integer.toHexString(System.identityHashCode(getAppointment())) : "null") + System.getProperties().getProperty("line.separator") +
-                "  " + "technician = " + (getTechnician() != null ? Integer.toHexString(System.identityHashCode(getTechnician())) : "null");
+                "endDateTime" + ":" + getEndDateTime() + "]" + System.getProperties().getProperty("line.separator");
     }
 
 }
