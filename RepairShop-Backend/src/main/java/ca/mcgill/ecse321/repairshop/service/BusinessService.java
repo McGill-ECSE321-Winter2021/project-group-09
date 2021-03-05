@@ -209,7 +209,7 @@ public class BusinessService {
 
         //Save in BusinessRepository
         businessRepository.save(business);
-        timeSlotRepository.save(newVacation);  //TODO: Do we need to save the new vacation to the timeslot repository?
+        timeSlotRepository.save(newVacation);
         return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
     }
 
