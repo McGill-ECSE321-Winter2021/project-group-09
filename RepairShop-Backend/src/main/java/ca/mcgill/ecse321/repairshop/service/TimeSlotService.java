@@ -48,7 +48,7 @@ public class TimeSlotService {
     public List<TimeSlotDto> getTimeslotByTechnician(String techEmail) throws Exception {
         Optional<Technician> technician = technicianRepository.findById(techEmail);
         if (technician.isPresent()) {
-            return timeSlotRepository.findTimeslotsByTechnician(technician.get()).stream().map(this::timeslotToDTO).collect(Collectors.toList());
+            return timeSlotRepository.findTimeslotsByTechnician(technician.get()).stream().map(TimeSlotService::timeslotToDTO).collect(Collectors.toList());
         } else {
             //TODO custome exception
             throw new Exception("No such technician.");
@@ -61,7 +61,7 @@ public class TimeSlotService {
      */
     @Transactional
     public List<TimeSlotDto> getAllTimeslots() {
-        return timeSlotRepository.findAll().stream().map(this::timeslotToDTO).collect(Collectors.toList());
+        return timeSlotRepository.findAll().stream().map(TimeSlotService::timeslotToDTO).collect(Collectors.toList());
     }
 
     //TODO
@@ -75,14 +75,10 @@ public class TimeSlotService {
      * @param timeslot entity to turn into DTO
      * @return input entity in DTO form
      */
-    public TimeSlotDto timeslotToDTO(TimeSlot timeslot) {
+    public static TimeSlotDto timeslotToDTO(TimeSlot timeslot) {
         TimeSlotDto dto = new TimeSlotDto();
-        //TODO
-        dto.setAppointment(appointmentToDTO(timeslot.getAppointment()));
         dto.setEndDateTime(timeslot.getEndDateTime());
         dto.setStartDateTime(timeslot.getStartDateTime());
-        //TODO
-        dto.setTechnician(technicianToDto(timeslot.getTechnician()));
         return dto;
     }
 }

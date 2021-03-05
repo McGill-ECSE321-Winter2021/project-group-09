@@ -9,8 +9,6 @@ public class TimeSlotDto {
     private Timestamp startDateTime;
     @NotNull
     private Timestamp endDateTime;
-    private AppointmentDto appointment;
-    private TechnicianDto technician;
 
     public Timestamp getStartDateTime() {
         return startDateTime;
@@ -28,19 +26,4 @@ public class TimeSlotDto {
         this.endDateTime = endDateTime;
     }
 
-    public AppointmentDto getAppointment() {
-        return appointment;
-    }
-
-    public void setAppointment(AppointmentDto appointment) {
-        this.appointment = appointment;
-    }
-
-    public TechnicianDto getTechnician() {
-        return technician;
-    }
-
-    public void setTechnician(TechnicianDto technician) {
-        this.technician = technician;
-    }
 }
