@@ -95,7 +95,7 @@ public class CustomerController {
 	
 	
 	
-	@GetMapping(value = { "/customers", "/customers/" })
+	@GetMapping(value = { "/customer/all", "/customer/all/" })
 	public ResponseEntity<?> getAllCustomers() {
 		
 		try {

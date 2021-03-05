@@ -43,13 +43,6 @@ public class TechnicianService {
 			throw new Exception("Email is already taken.");
 		}
 		
-		/*
-		//convert dto work-hours to TimeSlot work-hours
-		List<TimeSlot> timeSlots = new ArrayList<>();
-		for(int i = 0; i < workHours.size(); i++) {
-			timeSlots.add(DtoToTimeslot(workHours.get(i)));
-		}
-		*/
 		
 		List<TimeSlot> timeSlots = new ArrayList<>();
 		Technician tech = new Technician();
@@ -113,7 +106,7 @@ public class TechnicianService {
 	
 	
 	@Transactional
-	public TechnicianDto technicianToDTO(Technician tech) {
+	public static TechnicianDto technicianToDTO(Technician tech) {
 		TechnicianDto techDTO = new TechnicianDto();
 		techDTO.setAddress(tech.getAddress());
 		techDTO.setPhoneNumber(tech.getPhoneNumber());
@@ -144,6 +137,39 @@ public class TechnicianService {
 		return techDtos;
 		
 	}
+	
+	
+	
+	@Transactional
+	public List<TimeSlotDto> getWorkHours(String email) throws Exception{
+		
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+		if(technicianRepository.findTechnicianByEmail(email) == null) {
+			throw new Exception("Technician not found.");
+		}
+		
+		Technician tech = technicianRepository.findTechnicianByEmail(email);
+		List<TimeSlot> timeSlots = tech.getTimeslots();
+		List<TimeSlotDto> dtos = new ArrayList<>();
+		for(int i = 0; i < timeSlots.size(); i++) {
+			dtos.add(timeslotToDTO(timeSlots.get(i)));
+		}
+		
+		return dtos;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	//THESE ARE REQUIRED TO RUN TECHNICIAN SERVICE METHODS.

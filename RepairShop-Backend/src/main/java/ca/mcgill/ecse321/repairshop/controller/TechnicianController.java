@@ -104,7 +104,7 @@ public class TechnicianController {
 	
 	
 	
-	@GetMapping(value = { "/technicians", "/technicians/" })
+	@GetMapping(value = { "/technician/all", "/technician/all/" })
 	public ResponseEntity<?> getAllTechnicians() {
 		
 		try {
@@ -115,6 +115,23 @@ public class TechnicianController {
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+	}
+	
+	
+	
+	@GetMapping(value = { "/technician/{email}/work_hours", "/technician/{email}/work_hours/" })
+	public ResponseEntity<?> getTechnicianWorkHours(@PathVariable("email") String email) {
+		
+		try {
+			
+			List<TimeSlotDto> tDtos = techService.getWorkHours(email);
+			return new ResponseEntity<>(tDtos, HttpStatus.OK); 
+			
+		} catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		
 	}
 	
