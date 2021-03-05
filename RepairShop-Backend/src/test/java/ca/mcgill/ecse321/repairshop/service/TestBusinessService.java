@@ -365,7 +365,185 @@ public class TestBusinessService {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void testMissingNameUpdateBusiness() {
+        String newName = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, newName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Business name cannot be empty!", error);
+    }
+
+    @Test
+    public void testMissingAddressUpdateBusiness() {
+        String address = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Address cannot be empty!", error);
+    }
+
+    @Test
+    public void testMissingPhoneNumberUpdateBusiness() {
+        String phoneNumber = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Phone number cannot be empty!", error);
+    }
 
 
+    @Test
+    public void testMissingEmailUpdateBusiness() {
+        String email = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Email cannot be empty!", error);
+    }
+
+    @Test
+
+    public void testInvalidEmailNoAtSignUpdateBusiness() {
+        String email = "bestBusinessgmail.com";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testInvalidEmailUpdateBusiness() {
+        String email = "Not an email";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testInvalidEmailNoDotUpdateBusiness() {
+        String email = "bestBusiness@gmailcom";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testNullIDUpdateBusiness() {
+        Long nullBusinessID = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(nullBusinessID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Business ID cannot be empty!", error);
+    }
+
+
+    @Test
+    public void testNullNameUpdateBusiness() {
+        String nullBusinessName = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Business name cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullAddressUpdateBusiness() {
+        String nullAddress = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Address cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullPhoneNumberUpdateBusiness() {
+        String nullPhoneNumber = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Phone number cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullEmailUpdateBusiness() {
+        String nullEmail = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Email cannot be empty!", error);
     }
 }
