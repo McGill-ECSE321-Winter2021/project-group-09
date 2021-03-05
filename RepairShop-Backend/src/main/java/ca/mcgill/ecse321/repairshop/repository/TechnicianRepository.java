@@ -13,8 +13,6 @@ public interface TechnicianRepository extends CrudRepository<Technician, String>
 	
 	Technician findTechnicianByEmail(String email);
 	
-	Technician findByTimeslots(TimeSlot timeSlot);
-	
 	List<Technician> findAll();	
 	
 	void deleteByEmail(String email);
