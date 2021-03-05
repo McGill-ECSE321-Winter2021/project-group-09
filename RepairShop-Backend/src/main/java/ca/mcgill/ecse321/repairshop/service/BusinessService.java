@@ -106,7 +106,7 @@ public class BusinessService {
     public BusinessDto getBusinessByName(String name) throws Exception {
 
         //Check input
-        if (name == null) {
+        if (name == null || name.equals("")) {
             throw new Exception("Could not find a business with name: " + name);
         }
         //Find business with the corresponding name in businessRepository
