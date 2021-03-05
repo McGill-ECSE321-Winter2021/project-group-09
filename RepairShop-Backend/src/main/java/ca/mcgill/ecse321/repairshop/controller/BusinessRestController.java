@@ -29,7 +29,7 @@ public class BusinessRestController {
      *
      * @return a list of all businesses
      */
-    @GetMapping(value = {"/all", "/all/"})
+    @GetMapping("/all")
     public ResponseEntity<?> getAllBusinesses() {
         try {
             List<BusinessDto> businessDtosList = businessService.getAllBusinesses();
@@ -45,7 +45,7 @@ public class BusinessRestController {
      * @param name unique business name
      * @return the requested business if found
      */
-    @GetMapping(value = {"/{name}", "/{name}/"})
+    @GetMapping("/{name}")
     public ResponseEntity<?> getBusinessByName(@PathVariable("name") String name) {
         try {
             BusinessDto businessDto = businessService.getBusinessByName(name);
@@ -65,7 +65,7 @@ public class BusinessRestController {
      * @param numberOfRepairSpots number of repair spots of the business (int)
      * @return the new business if created successfully
      */
-    @PostMapping(value = {"/create/{name}", "/create/{name}/"})
+    @PostMapping("/create/{name}")
     public ResponseEntity<?> createBusiness(@PathVariable("name") String name, @RequestParam String address,
                                             @RequestParam String phoneNumber, @RequestParam String email, @RequestParam int numberOfRepairSpots) {
         try {
@@ -81,7 +81,7 @@ public class BusinessRestController {
      * @param businessDto the update to the existing business information
      * @return the updated business if updated successfully
      */
-    @PostMapping(value = {"/update", "/update/"})
+    @PostMapping("/update")
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto) {
         try {
             return new ResponseEntity<>(businessService.updateBusiness(businessDto.getName(), businessDto.getAddress(),
@@ -98,7 +98,7 @@ public class BusinessRestController {
      * Get request for all vacations for a business
      * @return a list of all vacations
      *//*
-    @GetMapping(value = {"/vacations", "/vacations/"})
+    @GetMapping("/vacations")
     public ResponseEntity<?> getAllVacations() {
         try{
             List<TimeSlotDTO> vacationDtoList = new ArrayList<>();
