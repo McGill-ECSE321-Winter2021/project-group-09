@@ -1,20 +1,29 @@
 package ca.mcgill.ecse321.repairshop.service;
 
+import ca.mcgill.ecse321.repairshop.dto.ServiceDto;
 import ca.mcgill.ecse321.repairshop.model.Service;
+import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 public class TestServiceService {
+
+    @Mock
+    private ServiceRepository serviceRepository;
 
     @InjectMocks
     private ServiceService serviceService;
@@ -26,40 +35,67 @@ public class TestServiceService {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(serviceService.getAllServices()).thenAnswer((InvocationOnMock invocation) -> Collections.emptyList());
+
+        lenient().when(serviceRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+
+            Service service = new Service();
+            service.setName(SERVICE_NAME);
+            service.setDuration(SERVICE_DURATION);
+            service.setPrice(SERVICE_PRICE);
+
+            List<Service> services = new ArrayList<>();
+            services.add(service);
+            return services;
+
+        });
+
+        lenient().when(serviceRepository.findServiceByName(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+
+            if (invocation.getArgument(0).equals(SERVICE_NAME)) {
+                Service service = new Service();
+                service.setName(SERVICE_NAME);
+                service.setDuration(SERVICE_DURATION);
+                service.setPrice(SERVICE_PRICE);
+                return service;
+            } else return null;
+
+        });
+
+        lenient().when(serviceRepository.save(any(Service.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
     }
 
     @Test // valid service
     public void testCreateService() {
 
-        assertEquals(0, serviceService.getAllServices().size());
-
-        Service service = null;
+        ServiceDto serviceDto = null;
 
         try {
-            service = serviceService.createService(SERVICE_NAME, SERVICE_DURATION, SERVICE_PRICE);
+            serviceDto = serviceService.createService("TestService2", SERVICE_DURATION, SERVICE_PRICE);
         } catch (Exception e) {
             fail();
         }
 
-        assertNotNull(service);
-        assertEquals(SERVICE_NAME, service.getName());
+        assertNotNull(serviceDto);
+        assertEquals("TestService2", serviceDto.getName());
+        assertEquals(SERVICE_DURATION, serviceDto.getDuration());
+        assertEquals(SERVICE_PRICE, serviceDto.getPrice());
 
     }
 
     @Test // invalid service (string for name)
     public void testCreateServiceEmpty() {
 
-        Service service = null;
+        ServiceDto serviceDto = null;
         String error = null;
 
         try {
-            service = serviceService.createService("", 0, 0);
+            serviceDto = serviceService.createService("", 0, 0);
         } catch (Exception e) {
             error = e.getMessage();
         }
 
-        assertNull(service);
+        assertNull(serviceDto);
         assertEquals("A service name is required", error);
 
     }
@@ -67,16 +103,16 @@ public class TestServiceService {
     @Test // invalid service (null for name)
     public void testCreateServiceNull() {
 
-        Service service = null;
+        ServiceDto serviceDto = null;
         String error = null;
 
         try {
-            service = serviceService.createService(null, 0, 0);
+            serviceDto = serviceService.createService(null, 0, 0);
         } catch (Exception e) {
             error = e.getMessage();
         }
 
-        assertNull(service);
+        assertNull(serviceDto);
         assertEquals("A service name is required", error);
 
     }

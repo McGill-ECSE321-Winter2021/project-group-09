@@ -50,7 +50,7 @@ public class ServiceController {
     @PostMapping("/create/{name}")
     public ResponseEntity<?> createService(@PathVariable String name, @RequestParam int duration, @RequestParam double price) {
         try {
-            return new ResponseEntity<>(serviceService.serviceToDto(serviceService.createService(name, duration, price)), HttpStatus.OK);
+            return new ResponseEntity<>(serviceService.createService(name, duration, price), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

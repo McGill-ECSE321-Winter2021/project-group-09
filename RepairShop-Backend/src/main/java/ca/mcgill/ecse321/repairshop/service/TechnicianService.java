@@ -124,7 +124,7 @@ public class TechnicianService {
 		List<TimeSlot> timeSlots = tech.getTimeslots();
 		ArrayList<TimeSlotDto> timeDtos = new ArrayList<>();
 		for(int i = 0; i < timeSlots.size(); i++) {
-			timeDtos.add(timeslotToDTO(timeSlots.get(i)));
+//			timeDtos.add(timeslotToDTO(timeSlots.get(i)));
 		}
 		techDTO.setTimeSlots(timeDtos);
 		

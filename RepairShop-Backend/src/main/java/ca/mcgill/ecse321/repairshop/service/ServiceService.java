@@ -46,7 +46,7 @@ public class ServiceService {
      * @throws Exception if the name of the service is invalid
      */
     @Transactional
-    public Service createService(String name, int duration, double price) throws Exception {
+    public ServiceDto createService(String name, int duration, double price) throws Exception {
 
         // verify that the name is valid
         if (name == null || name.equals("")) throw new Exception("A service name is required");
@@ -61,7 +61,7 @@ public class ServiceService {
 
         serviceRepository.save(service);
 
-        return service;
+        return serviceToDto(service);
 
     }
 
