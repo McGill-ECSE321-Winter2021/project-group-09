@@ -22,7 +22,7 @@ import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
-
+import static  ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
 @Service
 public class TechnicianService {
