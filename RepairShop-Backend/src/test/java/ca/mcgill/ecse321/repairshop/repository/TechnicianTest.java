@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -91,12 +93,53 @@ public class TechnicianTest {
 		assertEquals(techName, tech.getName());
 		assertEquals(techPhone, tech.getPhoneNumber());
 
-		
-		
 		//delete and try loading technician
 		technicianRepository.deleteByEmail(techEmail);
 		tech = technicianRepository.findTechnicianByEmail(techEmail);
 		assertNull(tech);
+		
+		
+	}
+	
+	
+	@Test
+	public void testFindAllTechnician() {
+		//create technician
+		String techName = "TestCustomer1";
+		String techEmail = "CustomerEmail1";
+		String techPassword = "CustomerPassword";
+		String techAddress = "ABCD";
+		String techPhone = "63534525453";
+		Technician tech1 = new Technician();
+				
+		tech1.setName(techName);
+		tech1.setAddress(techAddress);
+		tech1.setEmail(techEmail);
+		tech1.setPassword(techPassword);
+		tech1.setPhoneNumber(techPhone);
+		technicianRepository.save(tech1);
+		
+		
+		//create technician
+		String tech2Name = "TestCustomer2";
+		String tech2Email = "CustomerEmail2";
+		String tech2Password = "CustomerPassword";
+		String tech2Address = "ABCD";
+		String tech2Phone = "63534525453";
+		Technician tech2 = new Technician();
+						
+		tech2.setName(tech2Name);
+		tech2.setAddress(tech2Address);
+		tech2.setEmail(tech2Email);
+		tech2.setPassword(tech2Password);
+		tech2.setPhoneNumber(tech2Phone);
+		technicianRepository.save(tech2);
+		
+		
+		List<Technician> techList = technicianRepository.findAll();
+		assertEquals(2, techList.size());
+		assertEquals("CustomerEmail1", techList.get(0).getEmail());
+		assertEquals("CustomerEmail2", techList.get(1).getEmail());
 		
 		
 	}

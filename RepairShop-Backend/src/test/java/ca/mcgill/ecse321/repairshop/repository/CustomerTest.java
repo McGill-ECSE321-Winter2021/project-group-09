@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -44,7 +45,7 @@ public class CustomerTest {
 		technicianRepository.deleteAll();;
 	}
 
-
+	
 	public Technician createTechnician() {
 		String techName = "asd";
 		String techEmail = "jasd@asd.ca";
@@ -61,6 +62,7 @@ public class CustomerTest {
 		tech = technicianRepository.save(tech);
 		return tech;
 	}
+	
 
 	@Test
 	public void testPersistAndLoadCustomer() {
@@ -161,8 +163,54 @@ public class CustomerTest {
 		//ensure appointments are what is expected
 		for (int i = 0; i < totalAppointments.size(); i++ ) {
 			assertEquals(totalAppointments.get(i), customer.getAppointments().get(i));
-		}
+		}	
+		
+	}
+	
+	
+	@Test
+	public void testFindAllCustomers() {
+		
+		String customerName1 = "TestCustomer1";
+		String customerEmail1 = "CustomerEmail1";
+		String customerPassword1 = "CustomerPassword";
+		String customerAddress1 = "ABCD";
+		String customerPhone1 = "63534525453";
+		
+		Customer customer1 = new Customer();
+				
+		customer1.setName(customerName1);
+		customer1.setEmail(customerEmail1);
+		customer1.setPassword(customerPassword1);
+		customer1.setPhoneNumber(customerPhone1);
+		customer1.setAddress(customerAddress1);
+		customerRepository.save(customer1);
+		
+		
+		String customerName2 = "TestCustomer2";
+		String customerEmail2 = "CustomerEmail2";
+		String customerPassword2 = "CustomerPassword";
+		String customerAddress2 = "ABCD";
+		String customerPhone2 = "63534525453";
+		
+		Customer customer2 = new Customer();
+				
+		customer2.setName(customerName2);
+		customer2.setEmail(customerEmail2);
+		customer2.setPassword(customerPassword2);
+		customer2.setPhoneNumber(customerPhone2);
+		customer2.setAddress(customerAddress2);
+		customerRepository.save(customer2);
+		
+		
+		List<Customer> customerList = customerRepository.findAll();
+		assertEquals(2, customerList.size());
+		assertEquals("CustomerEmail1", customerList.get(0).getEmail());
+		assertEquals("CustomerEmail2", customerList.get(1).getEmail());
 		
 		
 	}
+	
+	
+	
 }
