@@ -12,7 +12,9 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.validateEmail;
 import static java.util.regex.Pattern.matches;
 
 @Service
@@ -24,183 +26,219 @@ public class BusinessService {
     @Autowired
     TimeSlotRepository timeSlotRepository;
 
-/*  //TODO: Remove this if not needed
-    @Transactional
-    public Business createBusiness(String name){
-        Business business = new Business();
-        business.setName(name);
-        businessRepository.save(business);  //save business in backend
-        return business;
-    }
-*/
-
     /**
-     * Create a business with a name, an address, a phone number, an email and number of repair spot.
+     * Creates a business with a name, an address, a phone number, an email and number of repair spot.
      *
-     * @param name                String
-     * @param address             String
-     * @param phoneNumber         String
-     * @param email               String
-     * @param numberOfRepairSpots int
-     * @return business Business (the business created by this method)
+     * @param name                name of the business (String)
+     * @param address             address of the business (String)
+     * @param phoneNumber         phone number of the business (String)
+     * @param email               email of the business (String)
+     * @param numberOfRepairSpots number of repair spots of the business (int)
+     * @return businessDto BusinessDto (the business created by this method)
+     * @throws Exception If at least one of the inputs is invalid
      */
     @Transactional
-    public Business createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) {
-        String error = "";
+    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
-        //int intNumberOfRepairSpots = Integer.parseInt(numberOfRepairSpots); //convert String -> int
+        //1) Check inputs
+        if (name == null || name.equals("")) {
+            throw new Exception("Business name cannot be empty!");
+        }
+        if (address == null || address.equals("")) {
+            throw new Exception("Address cannot be empty!");
+        }
+        if (phoneNumber == null || phoneNumber.equals("")) {
+            throw new Exception("Phone number cannot be empty!");
+        }
+        if (email == null || email.equals("")) {
+            throw new Exception("Email cannot be empty!");
+        }
 
-        //Check inputs
-        if (name.equals("")) {
-            error = error + "Enter Business name";
-        }
-        if (address.equals("")) {
-            error = error + "Enter address";
-        }
-        if (email.equals("")) {
-            error = error + "Enter email";
-        }
-        error = validateEmail(email, error);
+        validateEmail(email); // if email is invalid, an exception will be thrown
 
-        if (phoneNumber.equals("")) {
-            error = error + "Enter phone number";
-        }
         if (numberOfRepairSpots < 0) {
-            error = error + "The number of repair spots cannot be negative";
-        }
-        error = error.trim();
-
-        //Throw exception with error message
-        if (error.length() > 0) {
-            throw new IllegalArgumentException(error);
+            throw new Exception("The number of repair spots cannot be negative");
         }
 
-        //Create Business
+        //2) Check if there's an existing business with the same name
+        if (businessRepository.findBusinessByName(name) != null) {
+            throw new Exception("The business name is already taken.");
+        }
+
+        //3) Create Business
         Business business = new Business();
-        business.setName(name);
-        business.setEmail(email);
-        business.setPhoneNumber(phoneNumber);
-        business.setNumberOfRepairSpots(numberOfRepairSpots);
-
-        //Save Business in backend
-        businessRepository.save(business);
-
-        return business;
-
-    }
-
-    /**
-     * Validate email using regex pattern
-     *
-     * @param email The email to validate.
-     * @throws IllegalArgumentException Throws exception when email is invalid.
-     * @author Tyler
-     */
-    private static String validateEmail(String email, String error) {
-        String newError = "";
-        if (!matches("[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", email))
-            newError = error + "Invalid email";
-        return newError;
-    }
-
-
-    /**
-     * Finds the business with the input name
-     *
-     * @param name Business name
-     * @return business Business
-     */
-    @Transactional
-    public Business getBusiness(String name) {
-        //Check input
-        if (name == null) {
-            throw new IllegalArgumentException("Enter a business name.");
-        }
-        return businessRepository.findBusinessByName(name);
-    }
-
-    //TODO: Instead of one updateBusiness(), would it be best to have updateName, updateAddress, updatePhoneNumber, updateEmail, updateNumberOfRepairSpots?
-
-
-    @Transactional
-    public Business updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) {
-        String error = "";
-        //int intNumberOfRepairSpots = Integer.parseInt(numberOfRepairSpots);
-        if (numberOfRepairSpots < 0) {
-            error = error + "The number of repair spots cannot be negative";
-        }
-        validateEmail(email, error);
-        error = error.trim();
-
-        Business business = businessRepository.findBusinessByName(name);
-
         business.setName(name);
         business.setAddress(address);
         business.setEmail(email);
         business.setPhoneNumber(phoneNumber);
         business.setNumberOfRepairSpots(numberOfRepairSpots);
 
-        //TODO: Do we need to save it again?
-        //Save Business in backend
+        //Create empty list of TimeSlot vacations
+        List<TimeSlot> vacations = new ArrayList<>();
+        business.setVacations(vacations);
+
+        //4) Save Business in backend
         businessRepository.save(business);
 
-        return business;
-
-
+        //5) Convert business to BusinessDto and return it
+        return businessToDto(business);
     }
 
 
-    //TODO: Delete this method if not needed?
 
-/**
-     * Gets all businesses from businessRepository
+
+    /**
+     * Finds a business by name and returns a businessDTO
      *
-     * @return List of businesses : List<Business>
+     * @param name name of the business to find (String)
+     * @return businessDto object for the corresponding business (BusinessDto)
+     * @throws Exception If a business with the name was not found
      */
     @Transactional
-    public List<Business> getAllBusinesses() {
-        return toList(businessRepository.findAll());
+    public BusinessDto getBusinessByName(String name) throws Exception {
+
+        //Check input
+        if (name == null || name.equals("")) {
+            throw new Exception("Could not find a business with name: " + name);
+        }
+        //Find business with the corresponding name in businessRepository
+        Business businessFound = businessRepository.findBusinessByName(name);
+
+        return businessToDto(businessFound); //Convert Business -> BusinessDto
+    }
+
+    //TODO: Instead of one updateBusiness(), would it be best to have updateName, updateAddress, updatePhoneNumber, updateEmail, updateNumberOfRepairSpots?
+
+    /**
+     * Updates business information (address, phone number, email, number of repair spots).
+     * @param name                name of the business (String
+     * @param address             address of the business (String)
+     * @param phoneNumber         phone number of the business (String)
+     * @param email               email of the business (String)
+     * @param numberOfRepairSpots number of repair spots of the business (int)
+     * @return businessDto object for the corresponding business (BusinessDto)
+     * @throws Exception if there are invalid inputs or the business can't be found
+     */
+    @Transactional
+    public BusinessDto updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+
+        //1) Check inputs
+        if (name == null || name.equals("")) {
+            throw new Exception("Enter business name");
+        }
+        if (address == null || address.equals("")) {
+            throw new Exception("Enter address");
+        }
+        if (phoneNumber == null || phoneNumber.equals("")) {
+            throw new Exception("Enter phone number");
+        }
+        if (email == null || email.equals("")) {
+            throw new Exception("Enter email");
+        }
+
+        validateEmail(email); // if email is invalid, an exception will be thrown
+
+        if (numberOfRepairSpots < 0) {
+            throw new Exception("The number of repair spots cannot be negative");
+        }
+
+        //2) Find business byt its name
+        Business business = businessRepository.findBusinessByName(name);
+
+        //3) Check if the business exists
+        if (business == null) {
+            throw new Exception("Business with name \""+name+"\" not found");
+        }
+
+        //4) Update the business information
+        business.setName(name);
+        business.setAddress(address);
+        business.setEmail(email);
+        business.setPhoneNumber(phoneNumber);
+        business.setNumberOfRepairSpots(numberOfRepairSpots);
+
+        //5) Save Business in backend
+        businessRepository.save(business);
+
+        return businessToDto(business);// Convert and return business
     }
 
 
-    public TimeSlot addVacation(String startDateTimeStr, String endDateTimeStr) {
-
-        //Create TimeSlot vacation
-        TimeSlot vacation = new TimeSlot();
-
-        //Convert String -> Timestamp
-        Timestamp startDateTime = Timestamp.valueOf(startDateTimeStr);
-        Timestamp endDateTime = Timestamp.valueOf(endDateTimeStr);
-        vacation.setStartDateTime(startDateTime);
-        vacation.setEndDateTime(endDateTime);
-
-        //TODO: Complete this
-
-        timeSlotRepository.save(vacation);
-        return vacation;
+    /**
+     * Gets all businesses from businessRepository
+     *
+     * @return List of businessesDto objects : List<BusinessDto>
+     */
+    @Transactional
+    public List<BusinessDto> getAllBusinesses() {
+        return businessRepository.findAll().stream().map(this::businessToDto).collect(Collectors.toList());
     }
 
     /**
-     * Gets all vacations from TimeSlotRepository
-     *
-     * @return List of vacations : List<TimeSlot>
+     * Adds a new TimeSlot vacation to the business.
+     * @param name name of the business (String)
+     * @param startDateTime Start date and time of the new TimeSlot vacation (TimeStamp)
+     * @param endDateTime End date and time of the new TimeSlot vacation (TimeStamp)
+     * @return businessDto BusinessDto
+     * @throws Exception if the business wasn't found
      */
     @Transactional
-    public List<TimeSlot> getVacations() {
-        return toList(timeSlotRepository.findAll());
+    public BusinessDto addVacation(String name, Timestamp startDateTime, Timestamp endDateTime) throws Exception {
+        // Find business byt its name
+        Business business = businessRepository.findBusinessByName(name);
+
+        //Check if the business exists
+        if (business == null) {
+            throw new Exception("Business with name \""+name+"\" not found");
+        }
+        //Create TimeSlot vacation
+        TimeSlot newVacation = new TimeSlot();
+        newVacation.setStartDateTime(startDateTime);
+        newVacation.setEndDateTime(endDateTime);
+
+        //Adds the new TimeSlot vacation to the list of vacations
+        business.getVacations().add(newVacation);
+
+        //Save in BusinessRepository
+        businessRepository.save(business);
+        timeSlotRepository.save(newVacation);
+        return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
     }
 
-    //TODO: deleteVacations()
 
+    /**
+     * Gets all vacations.
+     * @return List of vacations (List<TimeSlot>)
+     */
+    @Transactional
+    public List<TimeSlot> getAllVacations(Long businessId) {
+        //TODO: MODIFY THIS METHOD!!!!!!!!!!!!!
+        return timeSlotRepository.findAll();
 
+        //get instance of business
 
-    //TODO: Delete this method if not needed?
+    }
+
     private <T> List<T> toList(Iterable<T> iterable) {
         List<T> resultList = new ArrayList<T>();
         for (T t : iterable) {
             resultList.add(t);
         }
         return resultList;
+    }
+
+    /**
+     * Helper method to convert Business to BusinessDto
+     *
+     * @param business business to be converted to businessDto (Business)
+     * @return businessDto (BusinessDTo)
+     */
+    public BusinessDto businessToDto(Business business){
+
+        //Create businessDto
+        BusinessDto businessDto = new BusinessDto(business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
+
+        return businessDto;
     }
 
 }
