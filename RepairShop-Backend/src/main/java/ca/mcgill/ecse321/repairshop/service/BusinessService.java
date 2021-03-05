@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.repairshop.service;
 
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
+import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Business;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
@@ -28,7 +29,7 @@ public class BusinessService {
 
     /**
      * Creates a business with a name, an address, a phone number, an email and number of repair spot.
-     *
+     * @param businessID          ID of the business (Long)
      * @param name                name of the business (String)
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
@@ -38,8 +39,7 @@ public class BusinessService {
      * @throws Exception If at least one of the inputs is invalid
      */
     @Transactional
-    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
-        Long newBusinessID = (new Business()).getBusinessID(); //TODO: A new businessID will be generated?
+    public BusinessDto createBusiness(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
         inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
 
@@ -48,7 +48,7 @@ public class BusinessService {
         }
 
         Business business = new Business();
-        business.setBusinessID(newBusinessID);
+        business.setBusinessID(businessID);
         business.setName(name);
         business.setAddress(address);
         business.setEmail(email);
@@ -172,9 +172,6 @@ public class BusinessService {
         return businessToDto(business);
     }
 
-
-
-
     /**
      * Gets all businesses from businessRepository
      *
@@ -203,6 +200,7 @@ public class BusinessService {
             throw new Exception("Could not find a business with ID: " + businessID);
         }
 
+
         TimeSlot newHoliday = new TimeSlot();
         newHoliday.setStartDateTime(startDateTime);
         newHoliday.setEndDateTime(endDateTime);
@@ -214,21 +212,30 @@ public class BusinessService {
         return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
     }
 
-
     /**
      * Gets all Holidays of the business.
-     * @return List of Holidays (List<TimeSlot>)
+     * @return List of Holidays (List<TimeSlotDto>)
      * @throws Exception If the business with the input businessID can't be found
      */
     @Transactional
-    public List<TimeSlot> getAllHolidays(Long businessID) throws Exception{
+    public List<TimeSlotDto> getAllHolidays(Long businessID) throws Exception{
 
+        if(businessID == null) {
+            throw new Exception("BusinessID cannot be empty");
+        }
         Business business = businessRepository.findBusinessByBusinessID(businessID);
-
         if (business == null) {
             throw new Exception("Could not find a business with ID: " + businessID);
         }
-        return business.getHolidays();
+        List<TimeSlot> holidays = business.getHolidays();
+        List<TimeSlotDto> holidaysDtoList = new ArrayList<>();
+
+                for(TimeSlot currHoliday : holidays){
+                    holidaysDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
+                }
+
+
+        return holidaysDtoList;
     }
 
     /**

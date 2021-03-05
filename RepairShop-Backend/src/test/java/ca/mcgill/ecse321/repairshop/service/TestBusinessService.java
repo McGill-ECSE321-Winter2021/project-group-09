@@ -57,7 +57,7 @@ public class TestBusinessService {
     private static final Timestamp START_TIME = Timestamp.valueOf("2021-12-02 10:00:00");
     private static final Timestamp END_TIME = Timestamp.valueOf("2021-12-30 11:00:00");
 
-    private static final List<TimeSlotDto> BUSINESS_VACATIONS = new ArrayList<>();
+    private static final List<TimeSlotDto> BUSINESS_HOLIDAYS = new ArrayList<>();
 
     @BeforeEach
     public void setMockOutput() {
@@ -71,13 +71,13 @@ public class TestBusinessService {
                                 TimeSlot timeSlot = new TimeSlot();
                                 timeSlot.setStartDateTime(START_TIME);
                                 timeSlot.setEndDateTime(END_TIME);
-                                List<TimeSlot> vacationsList = new ArrayList<>();
-                                vacationsList.add(timeSlot);
+                                List<TimeSlot> holidaysList = new ArrayList<>();
+                                holidaysList.add(timeSlot);
 
                                 //CREATE BUSINESS
                                 Business business = new Business();
                                 business.setBusinessID(BUSINESS_ID);
-                                business.setVacations(vacationsList);
+                                business.setHolidays(holidaysList);
                                 business.setName(BUSINESS_NAME);
                                 business.setEmail(BUSINESS_EMAIL);
                                 business.setAddress(BUSINESS_ADDRESS);
@@ -108,6 +108,7 @@ public class TestBusinessService {
         String businessName = "Best Business in the world";
         try {
             business = businessService.createBusiness(BUSINESS_ID, businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
         } catch (Exception e) {
             fail();
         }
@@ -128,7 +129,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_ID, name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID,name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
