@@ -5,9 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 public class TestServiceService {
@@ -15,15 +19,15 @@ public class TestServiceService {
     @InjectMocks
     private ServiceService serviceService;
 
+    // Test data
+    private static final String SERVICE_NAME = "TestBusiness";
+    private static final int SERVICE_DURATION = 2;
+    private static final double SERVICE_PRICE = 49.99;
+
     @BeforeEach
     public void setMockOutput() {
-        // TODO: finish setMockOutput for Service
+        lenient().when(serviceService.getAllServices()).thenAnswer((InvocationOnMock invocation) -> Collections.emptyList());
     }
-
-    // Test data
-    private static final String name = "TestService";
-    private static final int duration = 30;
-    private static final double price = 49.99;
 
     @Test // valid service
     public void testCreateService() {
@@ -31,9 +35,10 @@ public class TestServiceService {
         assertEquals(0, serviceService.getAllServices().size());
 
         Service service = null;
+        String name = "TestService2";
 
         try {
-            service = serviceService.createService(name, duration, price);
+            service = serviceService.createService(name, SERVICE_DURATION, SERVICE_PRICE);
         } catch (Exception e) {
             fail();
         }
