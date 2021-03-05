@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.repairshop.dto;
 import java.util.List;
 
 public class BusinessDto {
-
+    private Long businessID;
     private String name;
     private String address;
     private String email;
@@ -14,7 +14,7 @@ public class BusinessDto {
 //TODO: Do we need TimeSlot vacation ? Add getter and setter for vacations?
 
     //Create business with default email, phone number and number of repair spots
-    public BusinessDto(String name){
+    public BusinessDto(String name) {
         this(name, "best address", "bestBusiness@example.ca", "(123)-456-7890", 1);
     }
 
@@ -30,6 +30,7 @@ public class BusinessDto {
     public String getName() {
         return this.name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -38,6 +39,7 @@ public class BusinessDto {
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -46,6 +48,7 @@ public class BusinessDto {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -54,6 +57,7 @@ public class BusinessDto {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -62,18 +66,19 @@ public class BusinessDto {
     public int getNumberOfRepairSpots() {
         return numberOfRepairSpots;
     }
+
     public void setNumberOfRepairSpots(int numberOfRepairSpots) {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
     //VACATIONS (TIMESLOT)
-    public List<TimeSlotDto> getVacations(){
+    public List<TimeSlotDto> getVacations() {
         return this.vacations;
     }
-    public void setVacations(List<TimeSlotDto> vacations){
+
+    public void setVacations(List<TimeSlotDto> vacations) {
         this.vacations = vacations;
     }
-
 
 
 }
