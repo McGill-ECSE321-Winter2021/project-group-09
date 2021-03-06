@@ -228,6 +228,11 @@ public class BusinessService {
         //Create businessDto
         BusinessDto businessDto = new BusinessDto(business.getBusinessID(), business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
 
+       List<TimeSlotDto> holidayDtoList = new ArrayList<>();
+       for(TimeSlot currHoliday:business.getHolidays()){
+           holidayDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
+       }
+        businessDto.setHolidays(holidayDtoList);
         return businessDto;
     }
 

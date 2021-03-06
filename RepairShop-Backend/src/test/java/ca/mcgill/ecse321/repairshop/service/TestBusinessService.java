@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 @ExtendWith(MockitoExtension.class)
 public class TestBusinessService {
     @Mock
@@ -642,9 +641,9 @@ public class TestBusinessService {
             fail(e.getMessage());
         }
         System.out.println(businessDto.getHolidays().toString());
-        assertEquals(startTime, businessDto.getHolidays().get(2).getStartDateTime());
-        assertEquals(endTime, businessDto.getHolidays().get(2).getEndDateTime());
-
+        assertEquals(startTime, businessDto.getHolidays().get(1).getStartDateTime());
+        assertEquals(endTime, businessDto.getHolidays().get(1).getEndDateTime());
+        assertEquals(2, businessDto.getHolidays().size());
     }
 
     @Test
