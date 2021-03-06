@@ -87,16 +87,14 @@ public class TestServiceService {
     public void testCreateServiceEmpty() {
 
         ServiceDto serviceDto = null;
-        String error = null;
 
         try {
             serviceDto = serviceService.createService("", 0, 0);
         } catch (Exception e) {
-            error = e.getMessage();
+            assertEquals("A service name is required", e.getMessage());
         }
 
         assertNull(serviceDto);
-        assertEquals("A service name is required", error);
 
     }
 
@@ -104,33 +102,38 @@ public class TestServiceService {
     public void testCreateServiceNull() {
 
         ServiceDto serviceDto = null;
-        String error = null;
 
         try {
             serviceDto = serviceService.createService(null, 0, 0);
         } catch (Exception e) {
-            error = e.getMessage();
+            assertEquals("A service name is required", e.getMessage());
         }
 
         assertNull(serviceDto);
-        assertEquals("A service name is required", error);
 
     }
 
     @Test
     public void testGetAllServices() {
+
         List<ServiceDto> serviceDtos = serviceService.getAllServices();
-        assertEquals(1, serviceDtos.size()); // List contains a single element.
+
+        // verify the entry
+        assertEquals(1, serviceDtos.size());
+
         ServiceDto serviceDto = (ServiceDto) serviceDtos.toArray()[0];
-        assertEquals(SERVICE_NAME, serviceDto.getName()); // List contains the only comment.
-        assertEquals(SERVICE_DURATION, serviceDto.getDuration()); // List contains the only comment.
-        assertEquals(SERVICE_PRICE, serviceDto.getPrice()); // List contains the only comment.
+
+        assertEquals(SERVICE_NAME, serviceDto.getName());
+        assertEquals(SERVICE_DURATION, serviceDto.getDuration());
+        assertEquals(SERVICE_PRICE, serviceDto.getPrice());
 
     }
 
     @Test //valid service name
     public void testServiceByName() {
+
         ServiceDto serviceDto = null;
+
         try{
             serviceDto = serviceService.getServiceByName(SERVICE_NAME);
         } catch (Exception e) {
@@ -145,16 +148,17 @@ public class TestServiceService {
 
     @Test //invalid service name
     public void testServiceByNameNonExistent() {
-        String error=null;
+
         ServiceDto serviceDto = null;
-        String name = "I don't exist";
+        String name = "inexistant";
+
         try{
             serviceDto = serviceService.getServiceByName(name);
         } catch (Exception e) {
-            error = e.getMessage();
+            assertEquals("Could not find service with name "+name, e.getMessage());
         }
+
         assertNull(serviceDto);
-        assertEquals("Could not find service with name "+name, error);
     }
 
 }
