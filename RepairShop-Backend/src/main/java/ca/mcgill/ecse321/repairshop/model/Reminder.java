@@ -11,11 +11,14 @@ import java.sql.Timestamp;
 @Entity
 public class Reminder {
 
-    private Long reminderID;
+	private Long reminderID;
     @Id
     @GeneratedValue
     public Long getReminderID() {
 		return reminderID;
+	}
+	public void setReminderID(Long reminderID) {
+		this.reminderID = reminderID;
 	}
 
     ///////////////////////////////////////////////////////////////////////////

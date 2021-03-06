@@ -7,12 +7,20 @@ import java.sql.Timestamp;
 
 public class ReminderDto {
 
+    private Long reminderID;
     @NotNull
     private Timestamp dateTime;
     @NotNull
     private ReminderType reminderType;
     @NotNull
     private CustomerDto customerDto;
+
+    public Long getReminderID() {
+        return reminderID;
+    }
+    public void setReminderID(Long reminderID) {
+        this.reminderID = reminderID;
+    }
 
     public Timestamp getDateTime() {
         return dateTime;

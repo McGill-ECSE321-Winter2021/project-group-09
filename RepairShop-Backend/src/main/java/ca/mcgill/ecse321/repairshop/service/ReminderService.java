@@ -28,7 +28,9 @@ public class ReminderService {
     @Transactional
     public List<ReminderDto> getRemindersByCustomer(Customer customer) throws Exception {
 
-        List<Reminder> reminders = reminderRepository.findByCustomer(customer);
+        List<Reminder> reminders;
+        if (customer != null) reminders = reminderRepository.findByCustomer(customer);
+        else throw new Exception("A valid customer is required");
 
         // Check if any were found
         if (reminders != null) return reminders.stream().map(this::reminderToDto).collect(Collectors.toList());
@@ -65,6 +67,7 @@ public class ReminderService {
      */
     public ReminderDto reminderToDto(Reminder reminder) {
         ReminderDto reminderDto = new ReminderDto();
+        reminderDto.setReminderID(reminder.getReminderID());
         reminderDto.setDateTime(reminder.getDateTime());
         reminderDto.setReminderType(reminder.getReminderType());
         reminderDto.setCustomerDto(customerToDTO(reminder.getCustomer()));
