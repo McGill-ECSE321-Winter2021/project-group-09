@@ -54,7 +54,22 @@ public class TestBusinessService {
 
     @BeforeEach
     public void setMockOutput() {
+        lenient().when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 
+            //CREATE BUSINESS
+            Business business = new Business();
+            business.setBusinessID(BUSINESS_ID);
+            business.setName(BUSINESS_NAME);
+            business.setEmail(BUSINESS_EMAIL);
+            business.setAddress(BUSINESS_ADDRESS);
+            business.setPhoneNumber(BUSINESS_PHONE_NUMBER);
+            business.setNumberOfRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
+            List<Business> businesses = new ArrayList<>();
+            businesses.add(business);
+            return businesses;
+
+        });
         lenient()
                 .when(businessRepository.findBusinessByBusinessID(anyLong()))
                 .thenAnswer(
