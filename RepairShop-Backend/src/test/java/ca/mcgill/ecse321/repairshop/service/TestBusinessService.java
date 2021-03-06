@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 
@@ -18,17 +19,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.mockito.stubbing.Answer;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -80,7 +77,6 @@ public class TestBusinessService {
                                 business.setAddress(BUSINESS_ADDRESS);
                                 business.setPhoneNumber(BUSINESS_PHONE_NUMBER);
                                 business.setNumberOfRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-
                                 return business;
                             } else {
                                 return null;
@@ -579,6 +575,7 @@ public class TestBusinessService {
         BusinessDto business = null;
         try {
             business = businessService.updateNbRepairSpots(BUSINESS_ID, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
         } catch (Exception e) {
             fail();
         }
@@ -608,30 +605,39 @@ public class TestBusinessService {
 
         BusinessDto business = null;
 
-        long businessID = 111;
+/*        long businessID = 111;
         String name = "Hello World Business";
         String address = "Montreal";
         String phoneNumber = "(435)-345-3245";
         String email = "abc@gmail.com";
         int nbRepairSpots = 12;
-        //Create 1st business
+        //Create 1st business*/
+
         try {
-            business = businessService.createBusiness(businessID, name, address, phoneNumber, email, nbRepairSpots);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
 
             List<BusinessDto> businessDtoList = businessService.getAllBusinesses();
+
             assertEquals(business.getName(), businessDtoList.get(0).getName());
         } catch (Exception e) {
             fail(e.getMessage());
         }
+
     }
 
 /*    @Test
     public void testAddHoliday() {
 
-        BusinessDto business = null;
-
+        BusinessDto businessDto = null;
+        Timestamp startTime = Timestamp.valueOf("2021-10-02 10:00:00");
+        Timestamp endTime = Timestamp.valueOf("2021-10-14 11:00:00");
+        TimeSlot newHoliday = new TimeSlot();
+        newHoliday.setStartDateTime(startTime);
+        newHoliday.setEndDateTime(endTime);
         try {
-            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
+            business.addHoliday(newHoliday);
+            assertEquals(business);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -681,7 +687,7 @@ public class TestBusinessService {
         }
 
         assertNull(holidaysDtoList);
-        assertEquals("Could not find a business with ID: "+nonExistantBusinessID, error);
+        assertEquals("Could not find a business with ID: " + nonExistantBusinessID, error);
     }
 
 
