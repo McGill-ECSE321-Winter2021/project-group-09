@@ -94,7 +94,6 @@ public class TestBusinessService {
     @Test
     public void testCreateBusiness() {
 
-        assertEquals(0, businessService.getAllBusinesses().size());
         BusinessDto business = null;
         String businessName = "Best Business in the world";
         try {
@@ -115,7 +114,6 @@ public class TestBusinessService {
 
     @Test
     public void testNegativeNbRepairSpotsCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         int negativeNb = -10;
         BusinessDto business = null;
         String error = null;
@@ -131,7 +129,6 @@ public class TestBusinessService {
 
     @Test
     public void testMissingNameCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
 
         String name = "";
         String error = null;
@@ -147,7 +144,6 @@ public class TestBusinessService {
 
     @Test
     public void testMissingAddressCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String address = "";
         String error = null;
         BusinessDto business = null;
@@ -162,7 +158,6 @@ public class TestBusinessService {
 
     @Test
     public void testMissingPhoneNumberCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String phoneNumber = "";
         String error = null;
         BusinessDto business = null;
@@ -177,7 +172,6 @@ public class TestBusinessService {
 
     @Test
     public void testMissingEmailCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String email = "";
         String error = null;
         BusinessDto business = null;
@@ -193,7 +187,6 @@ public class TestBusinessService {
     @Test
 
     public void testInvalidEmailNoAtSignCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String email = "bestBusinessgmail.com";
         String error = null;
         BusinessDto business = null;
@@ -208,7 +201,6 @@ public class TestBusinessService {
 
     @Test
     public void testInvalidEmailCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String email = "Not an email";
         String error = null;
         BusinessDto business = null;
@@ -237,7 +229,6 @@ public class TestBusinessService {
 
     @Test
     public void testNullIDCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         Long nullBusinessID = null;
         String error = null;
         BusinessDto business = null;
@@ -253,7 +244,6 @@ public class TestBusinessService {
 
     @Test
     public void testNullNameCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String nullBusinessName = null;
         String error = null;
         BusinessDto business = null;
@@ -268,7 +258,6 @@ public class TestBusinessService {
 
     @Test
     public void testNullAddressCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String nullAddress = null;
         String error = null;
         BusinessDto business = null;
@@ -283,7 +272,6 @@ public class TestBusinessService {
 
     @Test
     public void testNullPhoneNumberCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String nullPhoneNumber = null;
         String error = null;
         BusinessDto business = null;
@@ -298,7 +286,6 @@ public class TestBusinessService {
 
     @Test
     public void testNullEmailCreateBusiness() {
-        assertEquals(0, businessService.getAllBusinesses().size());
         String nullEmail = null;
         String error = null;
         BusinessDto business = null;
