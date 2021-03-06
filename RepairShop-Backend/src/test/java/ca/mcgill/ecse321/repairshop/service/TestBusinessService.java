@@ -24,8 +24,7 @@ import org.mockito.stubbing.Answer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 
 @ExtendWith(MockitoExtension.class)
@@ -50,15 +49,21 @@ public class TestBusinessService {
     private static final Timestamp START_TIME = Timestamp.valueOf("2021-12-02 10:00:00");
     private static final Timestamp END_TIME = Timestamp.valueOf("2021-12-30 11:00:00");
 
-    private static final List<TimeSlotDto> BUSINESS_HOLIDAYS = new ArrayList<>();
-
     @BeforeEach
     public void setMockOutput() {
         lenient().when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 
+            //TimeSlot
+            TimeSlot timeSlot = new TimeSlot();
+            timeSlot.setStartDateTime(START_TIME);
+            timeSlot.setEndDateTime(END_TIME);
+            List<TimeSlot> holidaysList = new ArrayList<>();
+            holidaysList.add(timeSlot);
+
             //CREATE BUSINESS
             Business business = new Business();
             business.setBusinessID(BUSINESS_ID);
+            business.setHolidays(holidaysList);
             business.setName(BUSINESS_NAME);
             business.setEmail(BUSINESS_EMAIL);
             business.setAddress(BUSINESS_ADDRESS);
@@ -98,7 +103,6 @@ public class TestBusinessService {
                             }
                         });
 
-        // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
         };
@@ -123,6 +127,7 @@ public class TestBusinessService {
         assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
         assertEquals(BUSINESS_EMAIL, business.getEmail());
         assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, business.getNumberOfRepairSpots());
+
         assertNotNull(business);
 
     }
@@ -607,14 +612,6 @@ public class TestBusinessService {
 
         BusinessDto business = null;
 
-/*        long businessID = 111;
-        String name = "Hello World Business";
-        String address = "Montreal";
-        String phoneNumber = "(435)-345-3245";
-        String email = "abc@gmail.com";
-        int nbRepairSpots = 12;
-        //Create 1st business*/
-
         try {
             business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
 
@@ -627,23 +624,28 @@ public class TestBusinessService {
 
     }
 
-/*    @Test
-    public void testAddHoliday() {
 
+    @Test
+    public void testAddHoliday() {
         BusinessDto businessDto = null;
-        Timestamp startTime = Timestamp.valueOf("2021-10-02 10:00:00");
-        Timestamp endTime = Timestamp.valueOf("2021-10-14 11:00:00");
+        Timestamp startTime = Timestamp.valueOf("2021-04-02 10:00:00");
+        Timestamp endTime = Timestamp.valueOf("2021-05-14 09:00:00");
         TimeSlot newHoliday = new TimeSlot();
         newHoliday.setStartDateTime(startTime);
         newHoliday.setEndDateTime(endTime);
-        try {
 
-            business.addHoliday(newHoliday);
-            assertEquals(business);
+        try {
+            businessDto = businessService.addHoliday(BUSINESS_ID, startTime, endTime);
+            System.out.println("BusinessDto: " + businessDto);
+            System.out.println("Holidays: " + businessDto.getHolidays());
         } catch (Exception e) {
             fail(e.getMessage());
         }
-    }*/
+        System.out.println(businessDto.getHolidays().toString());
+        assertEquals(startTime, businessDto.getHolidays().get(2).getStartDateTime());
+        assertEquals(endTime, businessDto.getHolidays().get(2).getEndDateTime());
+
+    }
 
     @Test
     public void testGetHolidays() {
@@ -690,7 +692,6 @@ public class TestBusinessService {
 
         assertNull(holidaysDtoList);
         assertEquals("Could not find a business with ID: " + nonExistantBusinessID, error);
+
     }
-
-
 }

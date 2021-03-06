@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.repairshop.controller;
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Business;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-
-import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
 @CrossOrigin(origins = "*")
 @RestController
