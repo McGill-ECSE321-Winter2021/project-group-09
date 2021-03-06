@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/timeslot")
@@ -17,8 +15,25 @@ public class TimeSlotController {
     @Autowired
     TimeSlotService timeSlotService;
 
+
+    /**
+     * POST to create a timeslot
+     *
+     * @param timeslot DTO with start time and end time
+     * @return HTTP status code
+     */
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody TimeSlotDto timeslot) {
+        try {
+            return new ResponseEntity<>(timeSlotService.createTimeslot(timeslot), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     /**
      * GET request to get all timeslots
+     *
      * @return List of all timeslots
      */
     @GetMapping("/all")
@@ -31,7 +46,8 @@ public class TimeSlotController {
     }
 
     /**
-     *  GET request to get a timeslot by id
+     * GET request to get a timeslot by id
+     *
      * @param id ID of the desired timeslot
      * @return a single timeslot
      */
@@ -49,22 +65,4 @@ public class TimeSlotController {
         }
     }
 
-//    /**
-//     * GET request to get all timeslots associated to a technician
-//     * @param email identifier of the technician
-//     * @return a list of associated timeslots
-//     */
-//    @GetMapping("/technician/{email}")
-//    public ResponseEntity<?> getTechniciansTimeslots(@PathVariable String email) {
-//        try {
-//            List<TimeSlotDto> timeslots = timeSlotService.getTimeslotByTechnician(email);
-//            if (timeslots != null) {
-//                return new ResponseEntity<>(timeslots, HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 }
