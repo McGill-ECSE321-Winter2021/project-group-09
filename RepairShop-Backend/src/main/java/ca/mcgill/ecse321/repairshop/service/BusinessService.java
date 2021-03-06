@@ -214,7 +214,6 @@ public class BusinessService {
             holidaysDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
         }
 
-
         return holidaysDtoList;
     }
 

@@ -9,7 +9,7 @@ public class BusinessDto {
     private String email;
     private String phoneNumber;
     private int numberOfRepairSpots;
-    private List<TimeSlotDto> vacations;
+    private List<TimeSlotDto> holidays;
 
 
     public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
@@ -70,12 +70,12 @@ public class BusinessDto {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
-    public List<TimeSlotDto> getVacations() {
-        return this.vacations;
+    public List<TimeSlotDto> getHolidays() {
+        return this.holidays;
     }
 
-    public void setVacations(List<TimeSlotDto> vacations) {
-        this.vacations = vacations;
+    public void setHolidays(List<TimeSlotDto> holidays) {
+        this.holidays = holidays;
     }
 
 
