@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.repairshop.dto;
 
-import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import com.sun.istack.NotNull;
 
@@ -13,7 +12,7 @@ public class ReminderDto {
     @NotNull
     private ReminderType reminderType;
     @NotNull
-    private Customer customer;
+    private CustomerDto customerDto;
 
     public Timestamp getDateTime() {
         return dateTime;
@@ -29,11 +28,11 @@ public class ReminderDto {
         this.reminderType = reminderType;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public CustomerDto getCustomerDto() {
+        return customerDto;
     }
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerDto(CustomerDto customerDto) {
+        this.customerDto = customerDto;
     }
 
 }

@@ -5,6 +5,8 @@ import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +67,7 @@ public class ReminderService {
         ReminderDto reminderDto = new ReminderDto();
         reminderDto.setDateTime(reminder.getDateTime());
         reminderDto.setReminderType(reminder.getReminderType());
-        reminderDto.setCustomer(reminder.getCustomer());
+        reminderDto.setCustomerDto(customerToDTO(reminder.getCustomer()));
         return reminderDto;
     }
 

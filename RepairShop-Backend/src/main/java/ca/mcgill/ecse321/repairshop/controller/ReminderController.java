@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.repairshop.controller;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
+import ca.mcgill.ecse321.repairshop.service.CustomerService;
 import ca.mcgill.ecse321.repairshop.service.ReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,16 @@ public class ReminderController {
     private ReminderService reminderService;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     /** Get a list of a customer's reminders
-     * @param email the customer's email
+     * @param customer the target customer
      * @return a list of the customer's reminders
      */
-    @GetMapping("/{email}")
-    public ResponseEntity<?> getCustomerReminders(@PathVariable String email) {
+    @GetMapping("/customer")
+    public ResponseEntity<?> getCustomerReminders(@RequestParam Customer customer) {
         try {
-            return new ResponseEntity<>(reminderService.getRemindersByCustomer(customerRepository.findCustomerByEmail(email)), HttpStatus.OK);
+            return new ResponseEntity<>(reminderService.getRemindersByCustomer(customer), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
