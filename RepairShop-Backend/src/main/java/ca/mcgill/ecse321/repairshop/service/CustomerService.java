@@ -93,9 +93,8 @@ public class CustomerService {
 		customerRepository.deleteByEmail(email);
 	}
 	
-	
-	@Transactional
-	public CustomerDto customerToDTO(Customer customer) {
+
+	public static CustomerDto customerToDTO(Customer customer) {
 		CustomerDto customerDTO = new CustomerDto();
 		customerDTO.setAddress(customer.getAddress());
 		customerDTO.setPhoneNumber(customer.getPhoneNumber());
