@@ -4,6 +4,7 @@ import ca.mcgill.ecse321.repairshop.dto.ReminderDto;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
+import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
 import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
 
@@ -21,16 +22,21 @@ public class ReminderService {
     @Autowired
     private ReminderRepository reminderRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     /** Finds all reminders for a given customer and returns them as a list of reminderDtos
-     * @param customer for whom to get the reminders
+     * @param email for the customer for whom to get the reminders
      * @return a list of reminderDtos
      */
     @Transactional
-    public List<ReminderDto> getRemindersByCustomer(Customer customer) throws Exception {
+    public List<ReminderDto> getRemindersByCustomer(String email) throws Exception {
+
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) throw new Exception("A valid customer is required");
 
         List<Reminder> reminders;
-        if (customer != null) reminders = reminderRepository.findByCustomer(customer);
-        else throw new Exception("A valid customer is required");
+        reminders = reminderRepository.findByCustomer(customer);
 
         // Check if any were found
         if (reminders != null) return reminders.stream().map(this::reminderToDto).collect(Collectors.toList());
@@ -40,18 +46,40 @@ public class ReminderService {
 
     /** Creates a reminder object
      * @param dateTime of the reminder (a timestamp that includes date and time)
-     * @param reminderType the type of the reminder
-     * @param customer associated to the appointment
+     * @param type the type of the reminder
+     * @param email of the customer associated to the appointment
      * @return the reminder object
      */
-    public ReminderDto createReminder(Timestamp dateTime, ReminderType reminderType, Customer customer) throws Exception {
+    public ReminderDto createReminder(String dateTime, String type, String email) throws Exception {
 
-        if (dateTime == null) throw new Exception("The Timestamp is mandatory");
-        if (reminderType == null) throw new Exception("The ReminderType is mandatory");
-        if (customer == null) throw new Exception("The Customer is mandatory");
+        if (dateTime == null || dateTime.equals("")) throw new Exception("The Timestamp is mandatory");
+        if (type == null || type.equals("")) throw new Exception("The ReminderType is mandatory");
+        if (email == null || email.equals("")) throw new Exception("The Customer is mandatory");
+
+        Timestamp timestamp = null;
+        ReminderType reminderType = null;
+        Customer customer = null;
+
+        try {
+            timestamp = Timestamp.valueOf(dateTime);
+        } catch (Exception e) {
+            throw new Exception("The provided Timestamp is invalid");
+        }
+
+        try {
+            reminderType = ReminderType.valueOf(type);
+        } catch (Exception e) {
+            throw new Exception("The provided ReminderType is invalid");
+        }
+
+        try {
+            customer = customerRepository.findCustomerByEmail(email);
+        } catch (Exception e) {
+            throw new Exception("The provided Customer does not exist");
+        }
 
         Reminder reminder = new Reminder();
-        reminder.setDateTime(dateTime);
+        reminder.setDateTime(timestamp);
         reminder.setReminderType(reminderType);
         reminder.setCustomer(customer);
 

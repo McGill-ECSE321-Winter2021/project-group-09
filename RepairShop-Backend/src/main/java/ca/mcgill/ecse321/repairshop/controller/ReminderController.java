@@ -20,17 +20,14 @@ public class ReminderController {
     @Autowired
     private ReminderService reminderService;
 
-    @Autowired
-    private CustomerService customerService;
-
     /** Get a list of a customer's reminders
-     * @param customer the target customer
+     * @param email of the target customer
      * @return a list of the customer's reminders
      */
     @GetMapping("/customer")
-    public ResponseEntity<?> getCustomerReminders(@RequestParam Customer customer) {
+    public ResponseEntity<?> getCustomerReminders(@RequestParam String email) {
         try {
-            return new ResponseEntity<>(reminderService.getRemindersByCustomer(customer), HttpStatus.OK);
+            return new ResponseEntity<>(reminderService.getRemindersByCustomer(email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -38,14 +35,14 @@ public class ReminderController {
 
     /** Create a new reminder
      * @param dateTime of the new reminder
-     * @param reminderType of the new reminder
-     * @param customer associated to the new reminder
+     * @param type of the new reminder
+     * @param email of the customer associated to the new reminder
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createReminder(@RequestParam Timestamp dateTime, @RequestParam ReminderType reminderType, @RequestParam Customer customer) {
+    public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String type, @RequestParam String email) {
         try {
-            return new ResponseEntity<>(reminderService.createReminder(dateTime, reminderType, customer), HttpStatus.OK);
+            return new ResponseEntity<>(reminderService.createReminder(dateTime, type, email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
