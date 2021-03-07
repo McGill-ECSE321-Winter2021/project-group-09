@@ -9,13 +9,11 @@ public class BusinessDto {
     private String email;
     private String phoneNumber;
     private int numberOfRepairSpots;
-    private List<TimeSlotDto> vacations;
+    private List<TimeSlotDto> holidays;
 
-    public BusinessDto(String name) {
-        this(name, "best address", "bestBusiness@example.ca", "(123)-456-7890", 1);
-    }
 
-    public BusinessDto(String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
+    public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
+        this.businessID = businessID;
         this.name = name;
         this.address = address;
         this.email = email;
@@ -72,12 +70,12 @@ public class BusinessDto {
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 
-    public List<TimeSlotDto> getVacations() {
-        return this.vacations;
+    public List<TimeSlotDto> getHolidays() {
+        return this.holidays;
     }
 
-    public void setVacations(List<TimeSlotDto> vacations) {
-        this.vacations = vacations;
+    public void setHolidays(List<TimeSlotDto> holidays) {
+        this.holidays = holidays;
     }
 
 
