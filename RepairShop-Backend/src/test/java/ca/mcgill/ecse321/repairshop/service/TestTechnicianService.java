@@ -119,11 +119,6 @@ public class TestTechnicianService {
 		String techAddress = "Somewhere";
 		String techPhone = "5142253789";
 		
-		TimeSlotDto t = new TimeSlotDto();
-		t.setStartDateTime(START_TIME);
-		t.setEndDateTime(END_TIME);
-		List<TimeSlotDto> workHours = new ArrayList<>();
-		workHours.add(t);
 		
 		TechnicianDto tech = null;
 		
@@ -358,6 +353,21 @@ public class TestTechnicianService {
 		
 	}
 	
+	@Test
+	public void testGetTechnicianTimeSlots() {
+		
+		List<TimeSlotDto> slots = null;
+		try {
+			slots = service.getWorkHours(TECHNICIAN_EMAIL);
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+		
+		assertEquals(1, slots.size());
+		assertEquals(START_TIME, slots.get(0).getStartDateTime());
+		assertEquals(END_TIME, slots.get(0).getEndDateTime());
+	}
+	
 
 	
 	
@@ -370,9 +380,9 @@ public class TestTechnicianService {
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
-		
-
+	
 	}
+	
 	
 	
 }

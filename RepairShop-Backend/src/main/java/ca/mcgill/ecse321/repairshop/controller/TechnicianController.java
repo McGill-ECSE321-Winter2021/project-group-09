@@ -36,6 +36,12 @@ public class TechnicianController {
 	
 	
 	
+	/**
+	 * POST request to create a new technician
+	 * @param techDto
+	 * @return A technician Dto
+	 * @throws IllegalArgumentException
+	 */
 	@PostMapping(value = { "/technician/register", "/technician/register/" })
 	public ResponseEntity<?> createTechnician(@RequestBody TechnicianDto techDto) throws IllegalArgumentException {
 		
@@ -72,13 +78,18 @@ public class TechnicianController {
 	
 	
 	
+	/**
+	 * DELETE request to delete a technician account
+	 * @param email
+	 * @return 
+	 */
 	@DeleteMapping(value = { "/technician/{email}", "/technician/{email}/" })
 	public ResponseEntity<?> deleteTechnician(@PathVariable("email") String email){
 		
 		try {
 			
-            techService.deleteTechnician(email);
-            return new ResponseEntity<>(HttpStatus.OK);  
+            String message = techService.deleteTechnician(email);
+            return new ResponseEntity<>(message, HttpStatus.OK);  
             
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -87,6 +98,11 @@ public class TechnicianController {
 	}
 	
 	
+	/**
+	 * GET request to get the technician by email
+	 * @param email
+	 * @return a technician Dto
+	 */
 	@GetMapping(value = { "/technician/{email}", "/technician/{email}/" })
 	public ResponseEntity<?> getTechnician(@PathVariable("email") String email){
 		
@@ -103,8 +119,11 @@ public class TechnicianController {
 	
 	
 	
-	
-	@GetMapping(value = { "/technicians", "/technicians/" })
+	/**
+	 * GET request to get all existing technicians
+	 * @return list of technician Dtos
+	 */
+	@GetMapping(value = { "/technician/all", "/technician/all/" })
 	public ResponseEntity<?> getAllTechnicians() {
 		
 		try {
@@ -115,6 +134,27 @@ public class TechnicianController {
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+	}
+	
+	
+	/**
+	 * GET  request to get the work hours of the technician by email
+	 * @param email
+	 * @return list of timeslot Dtos
+	 */
+	@GetMapping(value = { "/technician/{email}/work_hours", "/technician/{email}/work_hours/" })
+	public ResponseEntity<?> getTechnicianWorkHours(@PathVariable("email") String email) {
+		
+		try {
+			
+			List<TimeSlotDto> tDtos = techService.getWorkHours(email);
+			return new ResponseEntity<>(tDtos, HttpStatus.OK); 
+			
+		} catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 		
 	}
 	

@@ -30,9 +30,19 @@ public class TechnicianService {
 	@Autowired
 	TechnicianRepository technicianRepository;
 	
-	//@Autowired
-	//private TimeSlotService timeService;
 	
+	
+	/**
+	 * Method to create a technician account
+	 * @param email
+	 * @param password
+	 * @param phone
+	 * @param name
+	 * @param address
+	 * @return a technician dto corresponding to the technician object just created
+	 * @throws Exception if email/password is null or a technician already exists with given email
+	 * 
+	 */
 	@Transactional
 	public TechnicianDto createTechnician(String email, String password, String phone, String name, String address) throws Exception{
 		
@@ -43,13 +53,6 @@ public class TechnicianService {
 			throw new Exception("Email is already taken.");
 		}
 		
-		/*
-		//convert dto work-hours to TimeSlot work-hours
-		List<TimeSlot> timeSlots = new ArrayList<>();
-		for(int i = 0; i < workHours.size(); i++) {
-			timeSlots.add(DtoToTimeslot(workHours.get(i)));
-		}
-		*/
 		
 		List<TimeSlot> timeSlots = new ArrayList<>();
 		Technician tech = new Technician();
@@ -65,6 +68,15 @@ public class TechnicianService {
 	}
 	
 	
+	
+	/**
+	 * Method to change password
+	 * @param email
+	 * @param newPassword
+	 * @return a technician dto corresponding to the technician object that was just updated
+	 * @throws Exception if email/new password is null or if no technician exists with given email
+	 * 
+	 */
 	@Transactional
 	public TechnicianDto changePassword(String email, String newPassword) throws Exception{
 		
@@ -83,6 +95,12 @@ public class TechnicianService {
 	
 
 	
+	/**
+	 * Method to get a technician by email
+	 * @param email
+	 * @return the technician with the given email
+	 * @throws Exception if email is null of if no technician exists with given email
+	 */
 	@Transactional
 	public TechnicianDto getTechnician(String email) throws Exception{
 		
@@ -98,8 +116,16 @@ public class TechnicianService {
 	}
 	
 	
+	
+	/**
+	 * Method to delete a technician by email
+	 * @param email
+	 * @throws Exception
+	 * Deletes the technician account with the given email
+	 * 
+	 */
 	@Transactional 
-	public void deleteTechnician(String email) throws Exception{
+	public String deleteTechnician(String email) throws Exception{
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
@@ -108,12 +134,18 @@ public class TechnicianService {
 		}
 		
 		technicianRepository.deleteByEmail(email);
+		return "Technician account with email " + email + " deleted.";
 	}
 	
 	
-	
+	/**
+	 * Method to convert Technician to TechnicianDto
+	 * @param tech
+	 * @return a technician dto corresponding to the technician domain object provided
+	 * 
+	 */
 	@Transactional
-	public TechnicianDto technicianToDTO(Technician tech) {
+	public static TechnicianDto technicianToDTO(Technician tech) {
 		TechnicianDto techDTO = new TechnicianDto();
 		techDTO.setAddress(tech.getAddress());
 		techDTO.setPhoneNumber(tech.getPhoneNumber());
@@ -133,6 +165,12 @@ public class TechnicianService {
 		
 	}
 
+	
+	/**
+	 * Method to get all existing technicians
+	 * @return a list of all the existing technicians as dtos
+	 * 
+	 */
 	@Transactional
 	public List<TechnicianDto> getAllTechnicians() {
 		
@@ -146,8 +184,50 @@ public class TechnicianService {
 	}
 	
 	
-	//THESE ARE REQUIRED TO RUN TECHNICIAN SERVICE METHODS.
-	//COMMENTED BECAUSE NOT SURE IF THESE WERE ALREADY IMPLEMENTED IN TIMESLOT SERVICES
+	
+	/**
+	 * Method to get the work hours of a technician by email
+	 * @param email
+	 * @return a list of timeslots that correspond to the technicain's work hours
+	 * @throws Exception if email is null of if no technician exists with given email
+	 * 
+	 */
+	@Transactional
+	public List<TimeSlotDto> getWorkHours(String email) throws Exception{
+		
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+		
+		Technician tech = technicianRepository.findTechnicianByEmail(email);
+		List<TimeSlotDto> dtos = new ArrayList<>();
+		
+		
+		if(tech == null) {
+			throw new Exception("Technician not found.");
+		} else {
+			List<TimeSlot> timeSlots = tech.getTimeslots();
+			for(int i = 0; i < timeSlots.size(); i++) {
+				dtos.add(timeslotToDTO(timeSlots.get(i)));
+			}
+		}
+		
+		
+		return dtos;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*
 	 public TimeSlotDto timeslotToDTO(TimeSlot timeslot) {

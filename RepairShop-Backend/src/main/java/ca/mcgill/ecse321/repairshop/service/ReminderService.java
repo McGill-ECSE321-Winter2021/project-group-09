@@ -56,9 +56,9 @@ public class ReminderService {
         if (type == null || type.equals("")) throw new Exception("The ReminderType is mandatory");
         if (email == null || email.equals("")) throw new Exception("The customer email is mandatory");
 
-        Timestamp timestamp = null;
-        ReminderType reminderType = null;
-        Customer customer = null;
+        Timestamp timestamp;
+        ReminderType reminderType;
+        Customer customer;
 
         try {
             timestamp = Timestamp.valueOf(dateTime);

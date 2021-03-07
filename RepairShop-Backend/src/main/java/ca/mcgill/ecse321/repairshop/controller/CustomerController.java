@@ -28,7 +28,12 @@ public class CustomerController {
 	private CustomerService customerService;
 	
 	
-	
+	/**
+	 * POST request to create a new customer 
+	 * @param customerDto
+	 * @return a customer dto
+	 * @throws IllegalArgumentException
+	 */
 	@PostMapping(value = { "/customer/register", "/customer/register/" })
 	public ResponseEntity<?> createCustomer(@RequestBody CustomerDto customerDto) throws IllegalArgumentException {
 		
@@ -63,13 +68,19 @@ public class CustomerController {
 	
 	*/
 	
+	
+	/**
+	 * DELETE request to delete a customer account by email
+	 * @param email
+	 * @return
+	 */
 	@DeleteMapping(value = { "/customer/{email}", "/customer/{email}/" })
 	public ResponseEntity<?> deleteCustomer(@PathVariable("email") String email){
 		
 		try {
 			
-			customerService.deleteCustomer(email);
-            return new ResponseEntity<>(HttpStatus.OK);  
+			String message = customerService.deleteCustomer(email);
+            return new ResponseEntity<>(message, HttpStatus.OK);  
             
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -78,6 +89,11 @@ public class CustomerController {
 	}
 	
 	
+	/**
+	 * GET request to get a customer account by email
+	 * @param email
+	 * @return a customer dto
+	 */
 	@GetMapping(value = { "/customer/{email}", "/customer/{email}/" })
 	public ResponseEntity<?> getCustomer(@PathVariable("email") String email){
 		
@@ -94,8 +110,12 @@ public class CustomerController {
 	
 	
 	
-	
-	@GetMapping(value = { "/customers", "/customers/" })
+	/**
+	 * GET request to get all existing customers
+	 * @return list of customerr dtos
+	 * 
+	 */
+	@GetMapping(value = { "/customer/all", "/customer/all/" })
 	public ResponseEntity<?> getAllCustomers() {
 		
 		try {
