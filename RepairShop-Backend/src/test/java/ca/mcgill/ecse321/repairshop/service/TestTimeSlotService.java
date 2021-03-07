@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,9 +105,9 @@ public class TestTimeSlotService {
     @Test
     public void testGetAllTimeslot() {
         List<TimeSlotDto> timeslots = timeSlotService.getAllTimeslots();
-        assertEquals(1, timeslots.size()); // List contains a single element.
+        assertEquals(1, timeslots.size());
         TimeSlotDto timeslot = (TimeSlotDto) timeslots.toArray()[0];
-        assertEquals(ID, timeslot.getID()); // List contains the only comment.
+        assertEquals(ID, timeslot.getID());
     }
 
 }
