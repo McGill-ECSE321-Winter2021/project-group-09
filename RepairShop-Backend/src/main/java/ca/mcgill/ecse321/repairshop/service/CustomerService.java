@@ -34,7 +34,7 @@ public class CustomerService {
 	 * @param address
 	 * @return a customer dto corresponding to the customer object just created
 	 * @throws Exception if email/password is null or a customer already exists with given email
-	 * 
+	 *
 	 */
 	@Transactional
 	public CustomerDto createCustomer(String email, String password, String phone, String name, String address) throws Exception{
@@ -58,14 +58,14 @@ public class CustomerService {
 	}
 	
 	
-	
+
 	/**
 	 * Method to change password
 	 * @param email
 	 * @param newPassword
 	 * @return a customer dto corresponding to the customer object that was just updated
 	 * @throws Exception if email/new password is null or if no customer exists with given email
-	 * 
+	 *
 	 */
 	@Transactional
 	public CustomerDto changePassword(String email, String newPassword) throws Exception{
@@ -90,7 +90,7 @@ public class CustomerService {
 	 * @param email
 	 * @return the customer with the given email
 	 * @throws Exception if email is null or if no customer exists with given email
-	 * 
+	 *
 	 */
 	@Transactional
 	public CustomerDto getCustomer(String email) throws Exception{
@@ -107,15 +107,15 @@ public class CustomerService {
 	}
 	
 	
-	
+
 	/**
 	 * Method to delete a customer by email
 	 * @param email
 	 * @throws Exception if email is null or if no customer exists with given email
 	 * Deletes the customer account corresponding to the email provided
-	 * 
+	 *
 	 */
-	@Transactional 
+	@Transactional
 	public String deleteCustomer(String email) throws Exception{
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
@@ -133,10 +133,10 @@ public class CustomerService {
 	 * Method to convert a Customer to CustomerDto
 	 * @param customer
 	 * @return a customer Dto corresponding to the customer domain object provided
-	 * 
+	 *
 	 */
 	@Transactional
-	public CustomerDto customerToDTO(Customer customer) {
+	public static CustomerDto customerToDTO(Customer customer) {
 		CustomerDto customerDTO = new CustomerDto();
 		customerDTO.setAddress(customer.getAddress());
 		customerDTO.setPhoneNumber(customer.getPhoneNumber());
@@ -147,12 +147,12 @@ public class CustomerService {
 		return customerDTO;
 
 	}
-	
-	
+
+
 	/**
 	 * Method to get all existing customers
 	 * @return a list of all the existing customers as dtos
-	 * 
+	 *
  	 */
 	@Transactional
 	public List<CustomerDto> getAllCustomers() {
