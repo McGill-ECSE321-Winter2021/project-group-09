@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class ServiceTests {
+class ServiceTest {
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -27,9 +27,9 @@ class ServiceTests {
     }
 
     // Test data
-    final String name = "TestService";
-    final int duration = 30;
-    final double price = 49.99;
+    private static final String name = "TestService";
+    private static final int duration = 30;
+    private static final double price = 49.99;
 
     @Test
     void testPersistAndLoadService() {
