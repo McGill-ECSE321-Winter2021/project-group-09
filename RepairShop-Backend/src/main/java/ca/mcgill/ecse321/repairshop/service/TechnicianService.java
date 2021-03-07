@@ -1,6 +1,3 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.service;
 
 import java.util.ArrayList;
@@ -107,7 +104,7 @@ public class TechnicianService {
 			throw new Exception("Technician not found.");
 		}
 		
-		technicianRepository.deleteByEmail(email);
+		technicianRepository.deleteTechnicianByEmail(email);
 	}
 	
 	
