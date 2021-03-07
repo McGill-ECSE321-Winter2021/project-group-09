@@ -84,7 +84,7 @@ public class TestReminderService {
 
                 return customer;
 
-            } else throw new Exception("The provided Customer does not exist");
+            } else throw new Exception("The provided customer email does not exist");
 
         });
 
@@ -178,7 +178,7 @@ public class TestReminderService {
         try {
             reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), REMINDER_TYPE.toString(), null);
         } catch (Exception e) {
-            assertEquals("The Customer is mandatory", e.getMessage());
+            assertEquals("The customer email is mandatory", e.getMessage());
         }
 
         assertNull(reminderDto);
@@ -193,7 +193,7 @@ public class TestReminderService {
         try {
             reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), REMINDER_TYPE.toString(), "notACustomerEmail");
         } catch (Exception e) {
-            assertEquals("The provided Customer does not exist", e.getMessage());
+            assertEquals("The provided customer email does not exist", e.getMessage());
         }
 
         assertNull(reminderDto);
@@ -206,7 +206,7 @@ public class TestReminderService {
         List<ReminderDto> reminderDtos = null;
 
         try {
-            reminderDtos = reminderService.getRemindersByCustomer(CUSTOMER_EMAIL);
+            reminderDtos = reminderService.getRemindersByCustomerEmail(CUSTOMER_EMAIL);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -228,9 +228,9 @@ public class TestReminderService {
         List<ReminderDto> reminderDtos = null;
 
         try {
-            reminderDtos = reminderService.getRemindersByCustomer(null);
+            reminderDtos = reminderService.getRemindersByCustomerEmail(null);
         } catch (Exception e) {
-            assertEquals("A valid customer is required", e.getMessage());
+            assertEquals("A valid customer email is required", e.getMessage());
         }
 
         assertNull(reminderDtos);
@@ -243,9 +243,9 @@ public class TestReminderService {
         List<ReminderDto> reminderDtos = null;
 
         try {
-            reminderDtos = reminderService.getRemindersByCustomer("notACustomerEmail");
+            reminderDtos = reminderService.getRemindersByCustomerEmail("notACustomerEmail");
         } catch (Exception e) {
-            assertEquals("The provided Customer does not exist", e.getMessage());
+            assertEquals("The provided customer email does not exist", e.getMessage());
         }
 
         assertNull(reminderDtos);

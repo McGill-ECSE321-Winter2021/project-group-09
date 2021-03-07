@@ -30,10 +30,10 @@ public class ReminderService {
      * @return a list of reminderDtos
      */
     @Transactional
-    public List<ReminderDto> getRemindersByCustomer(String email) throws Exception {
+    public List<ReminderDto> getRemindersByCustomerEmail(String email) throws Exception {
 
         Customer customer = customerRepository.findCustomerByEmail(email);
-        if (customer == null) throw new Exception("A valid customer is required");
+        if (customer == null) throw new Exception("A valid customer email is required");
 
         List<Reminder> reminders;
         reminders = reminderRepository.findByCustomer(customer);
@@ -54,7 +54,7 @@ public class ReminderService {
 
         if (dateTime == null || dateTime.equals("")) throw new Exception("The Timestamp is mandatory");
         if (type == null || type.equals("")) throw new Exception("The ReminderType is mandatory");
-        if (email == null || email.equals("")) throw new Exception("The Customer is mandatory");
+        if (email == null || email.equals("")) throw new Exception("The customer email is mandatory");
 
         Timestamp timestamp = null;
         ReminderType reminderType = null;
@@ -75,7 +75,7 @@ public class ReminderService {
         try {
             customer = customerRepository.findCustomerByEmail(email);
         } catch (Exception e) {
-            throw new Exception("The provided Customer does not exist");
+            throw new Exception("The provided customer email does not exist");
         }
 
         Reminder reminder = new Reminder();

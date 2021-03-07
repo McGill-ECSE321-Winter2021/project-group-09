@@ -1,16 +1,10 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
-import ca.mcgill.ecse321.repairshop.model.Customer;
-import ca.mcgill.ecse321.repairshop.model.ReminderType;
-import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
-import ca.mcgill.ecse321.repairshop.service.CustomerService;
 import ca.mcgill.ecse321.repairshop.service.ReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
 
 @CrossOrigin("*")
 @RestController
@@ -27,7 +21,7 @@ public class ReminderController {
     @GetMapping("/customer")
     public ResponseEntity<?> getCustomerReminders(@RequestParam String email) {
         try {
-            return new ResponseEntity<>(reminderService.getRemindersByCustomer(email), HttpStatus.OK);
+            return new ResponseEntity<>(reminderService.getRemindersByCustomerEmail(email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
