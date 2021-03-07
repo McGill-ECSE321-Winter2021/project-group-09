@@ -52,12 +52,13 @@ public class TimeSlotService {
      */
     @Transactional
     public TimeSlotDto getTimeslotByID(Long id) throws Exception {
+
         Optional<TimeSlot> timeslot = timeSlotRepository.findById(id);
         if (timeslot.isPresent()) {
             return timeslotToDTO(timeslot.get());
         } else {
             //TODO custom exception type
-            throw new Exception("Timeslot not found");
+            throw new Exception("Timeslot not found...");
         }
     }
 

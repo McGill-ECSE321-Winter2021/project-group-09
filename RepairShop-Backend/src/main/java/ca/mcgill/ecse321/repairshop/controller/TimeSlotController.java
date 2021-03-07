@@ -25,7 +25,7 @@ public class TimeSlotController {
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody TimeSlotDto timeslot) {
         try {
-            return new ResponseEntity<>(timeSlotService.createTimeslot(timeslot), HttpStatus.OK);
+            return new ResponseEntity<>(timeSlotService.createTimeslot(timeslot), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -55,13 +55,9 @@ public class TimeSlotController {
     public ResponseEntity<?> getTimeslot(@PathVariable Long id) {
         try {
             TimeSlotDto timeslot = timeSlotService.getTimeslotByID(id);
-            if (timeslot != null) {
-                return new ResponseEntity<>(timeslot, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            return new ResponseEntity<>(timeslot, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

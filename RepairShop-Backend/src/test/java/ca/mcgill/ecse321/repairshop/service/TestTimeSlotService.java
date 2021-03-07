@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,11 +41,15 @@ public class TestTimeSlotService {
     public void setMockOutputs() {
 
         lenient().when(timeSlotRepository.findById(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-            TimeSlot ts = new TimeSlot();
-            ts.setStartDateTime(START_TIME);
-            ts.setEndDateTime(END_TIME);
-            ts.setTimeSlotID(ID);
-            return Optional.of(ts);
+            if (invocation.getArgument(0).equals(1L)) {
+                TimeSlot ts = new TimeSlot();
+                ts.setStartDateTime(START_TIME);
+                ts.setEndDateTime(END_TIME);
+                ts.setTimeSlotID(ID);
+                return Optional.of(ts);
+            } else {
+                throw new Exception("Timeslot not found...");
+            }
         });
 
         lenient().when(timeSlotRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
@@ -83,6 +88,19 @@ public class TestTimeSlotService {
             assertEquals(foundByID.getStartDateTime(), START_TIME);
         } catch (Exception e) {
             fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGetTimeslotNonExistent() {
+        TimeSlotDto timeslotDto = new TimeSlotDto();
+        timeslotDto.setStartDateTime(START_TIME);
+        timeslotDto.setEndDateTime(END_TIME);
+        try {
+            TimeSlotDto foundByID = timeSlotService.getTimeslotByID(6L);
+            fail("Should not have found anything");
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "Timeslot not found...");
         }
     }
 
