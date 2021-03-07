@@ -10,6 +10,8 @@ public class TimeSlotDto {
     @NotNull
     private Timestamp endDateTime;
 
+    private Long ID;
+
     public Timestamp getStartDateTime() {
         return startDateTime;
     }
@@ -25,5 +27,14 @@ public class TimeSlotDto {
     public void setEndDateTime(Timestamp endDateTime) {
         this.endDateTime = endDateTime;
     }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
 
 }
