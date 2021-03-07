@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 
 public class AppointmentDto {
 
+private Long appointmentID;
 	@NotNull
     private ServiceDto service;
 	@NotNull
@@ -16,7 +17,13 @@ public class AppointmentDto {
 	@NotNull
     private List<TimeSlotDto> timeSlots;
     
-	
+    public Long getAppointmentID() {
+        return this.appointmentID;
+    }
+    
+    public void setAppointmentID(Long aAppointmentID) {
+        this.appointmentID = aAppointmentID;
+    }	
 	public ServiceDto getService() {
 		return service;
 	}
