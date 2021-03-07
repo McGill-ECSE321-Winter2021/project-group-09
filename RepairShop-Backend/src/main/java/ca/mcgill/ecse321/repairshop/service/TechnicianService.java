@@ -33,6 +33,7 @@ public class TechnicianService {
 	
 	
 	/**
+	 * Method to create a technician account
 	 * @param email
 	 * @param password
 	 * @param phone
@@ -69,7 +70,7 @@ public class TechnicianService {
 	
 	
 	/**
-	 * 
+	 * Method to change password
 	 * @param email
 	 * @param newPassword
 	 * @return a technician dto corresponding to the technician object that was just updated
@@ -95,7 +96,7 @@ public class TechnicianService {
 
 	
 	/**
-	 * 
+	 * Method to get a technician by email
 	 * @param email
 	 * @return the technician with the given email
 	 * @throws Exception if email is null of if no technician exists with given email
@@ -117,14 +118,14 @@ public class TechnicianService {
 	
 	
 	/**
-	 * 
+	 * Method to delete a technician by email
 	 * @param email
 	 * @throws Exception
 	 * Deletes the technician account with the given email
 	 * 
 	 */
 	@Transactional 
-	public void deleteTechnician(String email) throws Exception{
+	public String deleteTechnician(String email) throws Exception{
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
@@ -133,11 +134,12 @@ public class TechnicianService {
 		}
 		
 		technicianRepository.deleteByEmail(email);
+		return "Technician account with email " + email + " deleted.";
 	}
 	
 	
 	/**
-	 * 
+	 * Method to convert Technician to TechnicianDto
 	 * @param tech
 	 * @return a technician dto corresponding to the technician domain object provided
 	 * 
@@ -165,7 +167,7 @@ public class TechnicianService {
 
 	
 	/**
-	 * 
+	 * Method to get all existing technicians
 	 * @return a list of all the existing technicians as dtos
 	 * 
 	 */
@@ -184,7 +186,7 @@ public class TechnicianService {
 	
 	
 	/**
-	 * 
+	 * Method to get the work hours of a technician by email
 	 * @param email
 	 * @return a list of timeslots that correspond to the technicain's work hours
 	 * @throws Exception if email is null of if no technician exists with given email

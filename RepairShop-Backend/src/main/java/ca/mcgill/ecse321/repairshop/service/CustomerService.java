@@ -26,6 +26,7 @@ public class CustomerService {
 	
 	
 	/**
+	 * Method to create a customer account
 	 * @param email
 	 * @param password
 	 * @param phone
@@ -59,7 +60,7 @@ public class CustomerService {
 	
 	
 	/**
-	 * 
+	 * Method to change password
 	 * @param email
 	 * @param newPassword
 	 * @return a customer dto corresponding to the customer object that was just updated
@@ -85,6 +86,7 @@ public class CustomerService {
 
 	
 	/**
+	 * Method to get a customer by email
 	 * @param email
 	 * @return the customer with the given email
 	 * @throws Exception if email is null or if no customer exists with given email
@@ -107,14 +109,14 @@ public class CustomerService {
 	
 	
 	/**
-	 * 
+	 * Method to delete a customer by email
 	 * @param email
 	 * @throws Exception if email is null or if no customer exists with given email
 	 * Deletes the customer account corresponding to the email provided
 	 * 
 	 */
 	@Transactional 
-	public void deleteCustomer(String email) throws Exception{
+	public String deleteCustomer(String email) throws Exception{
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
@@ -123,10 +125,12 @@ public class CustomerService {
 		}
 		
 		customerRepository.deleteByEmail(email);
+		return "Customer account with email " + email + " deleted.";
 	}
 	
 	
 	/**
+	 * Method to convert a Customer to CustomerDto
 	 * @param customer
 	 * @return a customer Dto corresponding to the customer domain object provided
 	 * 
@@ -146,7 +150,7 @@ public class CustomerService {
 	
 	
 	/**
-	 * 
+	 * Method to get all existing customers
 	 * @return a list of all the existing customers as dtos
 	 * 
  	 */

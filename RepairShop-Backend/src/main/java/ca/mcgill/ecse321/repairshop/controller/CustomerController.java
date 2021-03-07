@@ -79,8 +79,8 @@ public class CustomerController {
 		
 		try {
 			
-			customerService.deleteCustomer(email);
-            return new ResponseEntity<>(HttpStatus.OK);  
+			String message = customerService.deleteCustomer(email);
+            return new ResponseEntity<>(message, HttpStatus.OK);  
             
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

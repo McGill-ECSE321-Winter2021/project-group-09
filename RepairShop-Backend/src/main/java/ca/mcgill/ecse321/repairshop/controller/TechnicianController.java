@@ -88,8 +88,8 @@ public class TechnicianController {
 		
 		try {
 			
-            techService.deleteTechnician(email);
-            return new ResponseEntity<>(HttpStatus.OK);  
+            String message = techService.deleteTechnician(email);
+            return new ResponseEntity<>(message, HttpStatus.OK);  
             
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
