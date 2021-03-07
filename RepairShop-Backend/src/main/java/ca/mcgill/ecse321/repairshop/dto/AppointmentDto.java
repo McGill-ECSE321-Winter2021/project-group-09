@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 
 public class AppointmentDto {
 
+private Long appointmentID;
 	@NotNull
     private ServiceDto service;
 	@NotNull
