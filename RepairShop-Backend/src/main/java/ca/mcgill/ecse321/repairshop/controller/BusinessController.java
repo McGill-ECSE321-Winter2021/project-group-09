@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/business")
-public class BusinessRestController {
+public class BusinessController {
 
     @Autowired
     BusinessService businessService;

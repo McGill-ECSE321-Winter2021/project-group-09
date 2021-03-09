@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/test")
-public class RepairShopRestController {
+public class RepairShopController {
 
 	@GetMapping("/test")
 	public ResponseEntity<?> getAll() {
