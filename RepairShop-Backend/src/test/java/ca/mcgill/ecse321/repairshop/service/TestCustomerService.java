@@ -29,6 +29,8 @@ import org.mockito.stubbing.Answer;
 
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
 import ca.mcgill.ecse321.repairshop.model.Customer;
+import ca.mcgill.ecse321.repairshop.model.Appointment;
+import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 
 
@@ -75,11 +77,15 @@ public class TestCustomerService {
 		lenient().when(customerRepo.findCustomerByEmail(anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
 				Customer customer = new Customer();
+				List<Appointment> apps = new ArrayList<>();
+				List<Reminder> reminders = new ArrayList<>();
 				customer.setName(CUSTOMER_NAME);
 				customer.setEmail(CUSTOMER_EMAIL);
 				customer.setPassword(CUSTOMER_PASSWORD);
 				customer.setPhoneNumber(CUSTOMER_PHONE);
 				customer.setAddress(CUSTOMER_ADDRESS);
+				customer.setAppointments(apps);
+				customer.setReminders(reminders);
 				return customer;
 			} else {
 				return null;
@@ -217,8 +223,19 @@ public class TestCustomerService {
 			//error should occur
 			assertEquals("Email or new password cannot be empty.", e.getMessage());
 		}
-		
-		
+	}
+	
+	
+	@Test
+	public void testChangePasswordNonExistentCustomer() {
+				
+		try {
+			service.changePassword("someMail@gmail.com", "fdjhyffaskd");
+			fail();
+		} catch (Exception e) {
+			//error should occur
+			assertEquals("Customer not found.", e.getMessage());
+		}
 	}
 	
 	
@@ -256,7 +273,6 @@ public class TestCustomerService {
 			assertEquals("Email cannot be empty.", e.getMessage());
 		}
 		
-		
 	}
 	
 	
@@ -283,30 +299,15 @@ public class TestCustomerService {
 	@Test              //not sure if this test is correct
 	public void testDeleteCustomer() {
 		
-		String customerName = "ABCD";
-		String customerEmail = "some@gmail.com";
-		String customerPassword = "fSHBlfsuesefd";
-		String customerAddress = "Somewhere";
-		String customerPhone = "5142253789";
-		
-		CustomerDto customer = null;
-		
 		try {
-			//create
-			customer = service.createCustomer(customerEmail, customerPassword, customerPhone, customerName, customerAddress);
-			customer = service.getCustomer(customerEmail);
-			assertEquals(customerName, customer.getName());
-			
+		
 			//delete
-			service.deleteCustomer(customerEmail);
-			customer = service.getCustomer(customerEmail);
-			fail();
+			String message = service.deleteCustomer(CUSTOMER_EMAIL);
+			assertEquals("Customer account with email " + CUSTOMER_EMAIL + " deleted.", message);
 			
 		} catch (Exception e) {
-			assertEquals("Customer not found.", e.getMessage());
-			
+			fail(e.getMessage());
 		}
-	
 
 	}
 	

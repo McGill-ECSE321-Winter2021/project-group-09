@@ -198,7 +198,7 @@ public class AppointmentTest {
 		appointment = null;
 				
 		//read from database
-		appointment = appointmentRepository.findByCustomer(createdCustomer).get(0);
+		appointment = appointmentRepository.findAppointmentByCustomer(createdCustomer).get(0);
 		assertNotNull(appointment);
 		assertEquals(createdCustomer.getName(), appointment.getCustomer().getName());
 		assertEquals(createdService.getName(), appointment.getService().getName());

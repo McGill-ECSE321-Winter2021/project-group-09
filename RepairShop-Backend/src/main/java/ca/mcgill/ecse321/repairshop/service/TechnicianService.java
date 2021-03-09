@@ -19,9 +19,14 @@ import com.sun.istack.NotNull;
 //import ca.mcgill.ecse321.repairshop.controller.TimeSlotService;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
+import ca.mcgill.ecse321.repairshop.model.Appointment;
+import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
+import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
+import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
+
 import static  ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
 @Service
@@ -29,6 +34,12 @@ public class TechnicianService {
 	
 	@Autowired
 	TechnicianRepository technicianRepository;
+	
+	@Autowired
+	AppointmentRepository appRepo;
+	
+	@Autowired
+	TimeSlotRepository timeRepo;
 	
 	
 	
@@ -129,9 +140,15 @@ public class TechnicianService {
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
-		if(technicianRepository.findTechnicianByEmail(email) == null) {
+		
+		Technician tech = technicianRepository.findTechnicianByEmail(email);
+		
+		if(tech == null) {
 			throw new Exception("Technician not found.");
 		}
+				
+		//delete technicians's work hours
+		tech.setTimeslots(null);
 		
 		technicianRepository.deleteByEmail(email);
 		return "Technician account with email " + email + " deleted.";
@@ -212,11 +229,9 @@ public class TechnicianService {
 			}
 		}
 		
-		
 		return dtos;
 		
 	}
-	
 	
 	
 	
