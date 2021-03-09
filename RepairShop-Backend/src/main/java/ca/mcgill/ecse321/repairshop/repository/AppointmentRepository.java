@@ -12,7 +12,7 @@ import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 public interface AppointmentRepository extends CrudRepository<Appointment, Long>{
 
 	//List of appointments the customer has booked
-	List<Appointment> findByCustomer(Customer customer);
+	List<Appointment> findAppointmentByCustomer(Customer customer);
 
 	List<Appointment> findByService(Service service);
 

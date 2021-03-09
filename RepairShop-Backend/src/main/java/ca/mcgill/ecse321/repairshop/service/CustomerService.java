@@ -12,8 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
+import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
+import ca.mcgill.ecse321.repairshop.model.Reminder;
+import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
+import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
 
 
 
@@ -22,6 +26,12 @@ public class CustomerService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private AppointmentRepository appointmentRepository;
+	
+	@Autowired
+	private ReminderRepository reminderRepository;
 	
 	
 	
@@ -46,12 +56,17 @@ public class CustomerService {
 			throw new Exception("Email is already taken.");
 		}
 		
+		List<Appointment> apps = new ArrayList<>();
+		List<Reminder> reminders = new ArrayList<>();
+		
 		Customer customer = new Customer();
 		customer.setEmail(email);
 		customer.setPassword(password);
 		customer.setPhoneNumber(phone);
 		customer.setName(name);
 		customer.setAddress(address);
+		customer.setAppointments(apps);
+		customer.setReminders(reminders);
 		
 		customerRepository.save(customer);
 		return customerToDTO(customer);
@@ -120,12 +135,29 @@ public class CustomerService {
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
-		if(customerRepository.findCustomerByEmail(email) == null) {
+		
+		Customer customer = customerRepository.findCustomerByEmail(email);
+		
+		if(customer == null) {
 			throw new Exception("Customer not found.");
+		}
+		
+		//delete customer's appointments
+		List<Appointment> customerApps = customer.getAppointments();
+		for(int i = 0; i < customerApps.size(); i++) {
+			appointmentRepository.deleteById(customerApps.get(i).getAppointmentID());
+		}
+		
+		//delete customr's reminders
+		List<Reminder> customerReminders = customer.getReminders();
+		for(int i = 0; i < customerReminders.size(); i++) {
+			reminderRepository.deleteById(customerReminders.get(i).getReminderID());
 		}
 		
 		customerRepository.deleteByEmail(email);
 		return "Customer account with email " + email + " deleted.";
+		
+		
 	}
 	
 	
@@ -166,8 +198,3 @@ public class CustomerService {
 	
 
 }
-
-
-
-
-

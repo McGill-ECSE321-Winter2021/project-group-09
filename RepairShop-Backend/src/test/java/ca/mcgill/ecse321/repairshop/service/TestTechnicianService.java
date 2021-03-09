@@ -49,9 +49,7 @@ public class TestTechnicianService {
 	private static final String TECHNICIAN_PHONE = "5142253789";
 	private static final Timestamp START_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
 	private static final Timestamp END_TIME = Timestamp.valueOf("2021-03-02 11:00:00");	
-	
-	private static final List<TimeSlotDto> TECHNICIAN_WORKHOURS = new ArrayList<>();
-	
+
 	
 	private Technician TECHNICIAN = new Technician();
 
@@ -229,6 +227,18 @@ public class TestTechnicianService {
 	}
 	
 	
+	@Test
+	public void testChangePasswordNonExistentTechnician() {
+				
+		try {
+			service.changePassword("someMail@gmail.com", "fdjhyffaskd");
+			fail();
+		} catch (Exception e) {
+			//error should occur
+			assertEquals("Technician not found.", e.getMessage());
+		}
+	}
+	
 	
 	@Test
 	public void testGetTechnician() {
@@ -286,33 +296,19 @@ public class TestTechnicianService {
 		
 	}
 	
-	
+
 	
 	@Test              //not sure if this test is correct
 	public void testDeleteTechnician() {
 		
-		String techName = "ABCD";
-		String techEmail = "some@gmail.com";
-		String techPassword = "fSHBlfsuesefd";
-		String techAddress = "Somewhere";
-		String techPhone = "5142253789";
-		
-		TechnicianDto tech = null;
-		
 		try {
-			//create
-			tech = service.createTechnician(techEmail, techPassword, techPhone, techName, techAddress);
-			tech = service.getTechnician(techEmail);
-			assertEquals(techName, tech.getName());
 			
 			//delete
-			service.deleteTechnician(techEmail);
-			tech = service.getTechnician(techEmail);
-			fail();
+			String message = service.deleteTechnician(TECHNICIAN_EMAIL);
+			assertEquals("Technician account with email " + TECHNICIAN_EMAIL + " deleted.", message);
 			
 		} catch (Exception e) {
-			assertEquals("Technician not found.", e.getMessage());
-			
+			fail(e.getMessage());
 		}
 	
 
@@ -353,6 +349,7 @@ public class TestTechnicianService {
 		
 	}
 	
+	
 	@Test
 	public void testGetTechnicianTimeSlots() {
 		
@@ -366,6 +363,39 @@ public class TestTechnicianService {
 		assertEquals(1, slots.size());
 		assertEquals(START_TIME, slots.get(0).getStartDateTime());
 		assertEquals(END_TIME, slots.get(0).getEndDateTime());
+	}
+	
+	@Test
+	public void testGetTechnicianWorkHoursNull() {
+		
+		try {
+			service.getWorkHours(null);
+			fail();
+		} catch (Exception e) {
+			// error should occur
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+		
+		
+	}
+	
+	
+	
+	@Test
+	public void testGetNonExistentTechnicianWorkHours() {
+		
+		String techEmail = "xyz@gmail.com";
+		
+		try {
+			service.getWorkHours(techEmail);
+			fail();
+		} catch (Exception e) {
+			// error should occur
+			assertEquals("Technician not found.", e.getMessage());
+		}
+		
+		
+		
 	}
 	
 
