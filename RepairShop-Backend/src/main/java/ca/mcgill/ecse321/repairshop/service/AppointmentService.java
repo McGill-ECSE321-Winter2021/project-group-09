@@ -1,12 +1,14 @@
 package ca.mcgill.ecse321.repairshop.service;
 
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
-import ca.mcgill.ecse321.repairshop.model.Service;
+import ca.mcgill.ecse321.repairshop.dto.ServiceDto;
+import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
+import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
-import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
@@ -18,37 +20,40 @@ public class AppointmentService {
     AppointmentRepository appointmentRepository;
 
     @Autowired
-    ServiceRepository serviceRepository;
+    ServiceService serviceService;
 
     @Autowired
     TechnicianRepository technicianRepository;
 
-    @Transactional
-    public AppointmentDto bookAppointment(String startTime, String serviceName, String technicianEmails) throws Exception {
+    @Autowired
+    TimeSlotService timeSlotService;
 
-        if (startTime == null || startTime.equals("")) throw new Exception("The Timestamp is mandatory");
+    @Transactional
+    public AppointmentDto bookAppointment(String startTimestamp, String serviceName, String technicianEmails) throws Exception {
+
+        if (startTimestamp == null || startTimestamp.equals("")) throw new Exception("The Timestamp is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
         if (technicianEmails == null || technicianEmails.equals("")) throw new Exception("Technicians are mandatory");
 
-        Timestamp timestamp;
-        Service service;
-        Technician technician;
+        Timestamp startTime;
+        ServiceDto serviceDto;
+        Technician technician = null;
 
         try {
-            timestamp = Timestamp.valueOf(startTime);
+            startTime = Timestamp.valueOf(startTimestamp);
         } catch (Exception e) {
             throw new Exception("The provided Timestamp is invalid");
         }
 
-        service = serviceRepository.findServiceByName(serviceName);
-        if (service == null) throw new Exception("The provided service name is invalid");
+        serviceDto = serviceService.getServiceByName(serviceName);
+        if (serviceDto == null) throw new Exception("The provided service name is invalid");
 
         // input is all available technicians' emails (comma separated), so finding each technician:
         // going to use technician with the least appointments already booked
         // if a technician has 0 appointments, go with that one
 
-        String[] allEmails = technicianEmails.split(",( )?");
-        Technician tempTech = null;
+        String[] allEmails = technicianEmails.split(", ");
+        Technician tempTech;
         int numAppointments = Integer.MAX_VALUE;
 
         for (String email : allEmails) {
@@ -64,11 +69,19 @@ public class AppointmentService {
             }
         }
 
-        return createAppointment();
+        // Create timeslot
+        // the end time is the start time + service duration * 30 minutes * 60 seconds * 1000 milliseconds
+        // (the service duration is the number of blocks of 30 minutes)
+        int durationInMillis = serviceDto.getDuration() * 30 * 60 * 1000;
+        Timestamp endTime = new Timestamp(startTime.getTime() + durationInMillis);
+        TimeSlotDto timeSlotDto = timeSlotService.createTimeslot(startTime, endTime);
+
+        // TODO: create appointment with proper values
+        return createAppointment(timeSlotDto, serviceDto, technicianToDTO(technician));
 
     }
 
-    public AppointmentDto createAppointment() throws Exception {
+    public AppointmentDto createAppointment(TimeSlotDto timeSlotDto, ServiceDto serviceDto, TechnicianDto technicianDto) throws Exception {
         return null;
     }
 
