@@ -14,7 +14,7 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @PostMapping("/book")
-    public ResponseEntity<?> book(@RequestParam String startTime, @RequestParam String serviceName, @RequestParam String technicians) {
+    public ResponseEntity<?> book(@RequestParam String startTime, @RequestParam String serviceName, @RequestParam String technicianEmails) {
 
 
 

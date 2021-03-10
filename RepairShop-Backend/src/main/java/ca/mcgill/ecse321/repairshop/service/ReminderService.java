@@ -72,11 +72,8 @@ public class ReminderService {
             throw new Exception("The provided ReminderType is invalid");
         }
 
-        try {
-            customer = customerRepository.findCustomerByEmail(email);
-        } catch (Exception e) {
-            throw new Exception("The provided customer email does not exist");
-        }
+        customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) throw new Exception("The provided customer email does not exist");
 
         Reminder reminder = new Reminder();
         reminder.setDateTime(timestamp);
