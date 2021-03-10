@@ -4,11 +4,17 @@ import ca.mcgill.ecse321.repairshop.service.utilities.UserType;
 import com.sun.istack.NotNull;
 
 public class LoginDto {
-    
+
     @NotNull
     private String email;
     @NotNull
     private String password;
+    @NotNull
+    private UserType userType;
+
+    public String getPassword() {
+        return password;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -22,10 +28,6 @@ public class LoginDto {
         this.userType = userType;
     }
 
-    @NotNull
-    private UserType userType;
-
-
     public String getEmail() {
         return email;
     }
@@ -34,12 +36,5 @@ public class LoginDto {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setSetPassword(String password) {
-        this.password = password;
-    }
 
 }
