@@ -12,6 +12,7 @@ import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO
 import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
 import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
 import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
@@ -49,6 +50,13 @@ public class AppointmentService {
         if (technician == null) return false;
         // Get technician's work hours
         List<TimeSlot> workHours = technician.getTimeslots();
+
+        // TODO: use adjusted hours. Just testing for now...
+//        List<TimeSlot> adjustedHours = new ArrayList<>();
+//        for (TimeSlot hours : workHours) {
+//            adjustedHours.add(getUpdatedHours(hours));
+//        }
+
         // Get Technician's appointments
         List<Appointment> appointments = technician.getAppointments();
         // Get their corresponding timeslots
@@ -99,7 +107,7 @@ public class AppointmentService {
      * @throws Exception for invalid timestamp, service name or technician's email
      */
     @Transactional
-    public AppointmentDto bookAppointment(String startTimestamp, String serviceName, String technicianEmails, String customerEmail, String businessName) throws Exception {
+    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String technicianEmails, String customerEmail, String businessName) throws Exception {
 
         // Validate all inputs
 
@@ -164,20 +172,6 @@ public class AppointmentService {
         // This should always be good, except if the customer leaves the booking page open for a while and someone else
         // books an appointment while they are looking at it
         if (!isBookable(timeSlot, technician, business)) throw new Exception("The appointment cannot be booked");
-
-        return createAppointment(timeSlot, service, technician, customer);
-
-    }
-
-    /** Method to create an appointment
-     * @param timeSlot for the appointment
-     * @param service for the appointment
-     * @param technician for the appointment
-     * @param customer for the appointment
-     * @return an AppointmentDto object
-     */
-    @Transactional
-    public AppointmentDto createAppointment(TimeSlot timeSlot, Service service, Technician technician, Customer customer) {
 
         Appointment appointment = new Appointment();
         appointment.setTimeSlot(timeSlot);
