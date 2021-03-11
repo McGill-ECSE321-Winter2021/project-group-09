@@ -15,7 +15,6 @@ public class RepairShopController {
 
 	@GetMapping("/test")
 	public ResponseEntity<?> getAll() {
-
 			return new ResponseEntity<>("Test hello", HttpStatus.OK);
 	}
 }
