@@ -16,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
@@ -45,7 +47,7 @@ public class TestAuthenticationService {
                 tech.setPassword(userPassword);
                 return tech;
             } else {
-                throw new Exception();
+                throw new EntityNotFoundException();
             }
         });
 
@@ -56,7 +58,7 @@ public class TestAuthenticationService {
                 cus.setPassword(userPassword);
                 return cus;
             } else {
-                throw new Exception();
+                throw new EntityNotFoundException();
             }
         });
 
@@ -67,7 +69,7 @@ public class TestAuthenticationService {
                 admin.setPassword(userPassword);
                 return admin;
             } else {
-                throw new Exception();
+                throw new EntityNotFoundException();
             }
         });
     }
@@ -83,16 +85,15 @@ public class TestAuthenticationService {
 
     @Test
     public void testInvalidAdminLogin() {
-        LoginDto loginDto = new LoginDto();
-        loginDto.setEmail(badUserEmail);
-        loginDto.setPassword(userPassword);
-        loginDto.setUserType(UserType.Admin);
-        try {
-            authenticationService.logIn(loginDto);
-            fail("Should throw an exception.");
-        } catch (Exception e) {
-            assertNull(e.getMessage());
-        }
+        assertThrows(EntityNotFoundException.class,
+                () -> {
+                    LoginDto loginDto = new LoginDto();
+                    loginDto.setEmail(badUserEmail);
+                    loginDto.setPassword(userPassword);
+                    loginDto.setUserType(UserType.Admin);
+                    authenticationService.logIn(loginDto);
+                }
+            );
     }
 
 
