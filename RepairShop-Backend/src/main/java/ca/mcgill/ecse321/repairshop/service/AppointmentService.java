@@ -47,10 +47,10 @@ public class AppointmentService {
     public static boolean isBookable(TimeSlot timeSlot, Technician technician, Business business) {
 
         if (technician == null) return false;
-
+        // Get technician's work hours
+        List<TimeSlot> workHours = technician.getTimeslots();
         // Get Technician's appointments
         List<Appointment> appointments = technician.getAppointments();
-
         // Get their corresponding timeslots
         List<TimeSlot> appointmentTimeslots = new ArrayList<>();
 
@@ -66,15 +66,28 @@ public class AppointmentService {
         // but not overlapping with other appointments the technician has, and not during holidays
 
         // Within technician's work hours
+        boolean withinHours = false;
 
+        for (TimeSlot hours : workHours) {
+            if (!hours.getStartDateTime().after(timeSlot.getStartDateTime()) && !hours.getEndDateTime().before(timeSlot.getEndDateTime())) {
+                withinHours = true;
+                break;
+            }
+        }
 
-        // Does not overlap with the technician's other appointments
+        if (!withinHours) return false;
 
+        // Does not overlap with the technician's other appointments. If it does, return false
+        for (TimeSlot app : appointmentTimeslots) {
+            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && !timeSlot.getEndDateTime().before(app.getStartDateTime())) return false;
+        }
 
-        // Does not overlap with holidays
-
-
-
+        // Does not overlap with holidays. If it does, return false
+        for (TimeSlot holiday : allHolidays) {
+            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && !timeSlot.getEndDateTime().before(holiday.getStartDateTime())) return false;
+        }
+        
+        // Passed all checks, so can be booked
         return true;
     }
 
