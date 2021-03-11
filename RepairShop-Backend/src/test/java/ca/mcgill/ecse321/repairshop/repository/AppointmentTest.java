@@ -108,14 +108,12 @@ public class AppointmentTest {
 		timeSlotRepository.save(timeSlot);
 
 		//create appointment
-		ArrayList<TimeSlot> timeslots = new ArrayList<>();
-		timeslots.add(timeSlot);
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
 		Service createdService = createService();
 		appointment.setService(createdService);
-		appointment.setTimeSlots(timeslots);
+		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 		
@@ -142,14 +140,13 @@ public class AppointmentTest {
 		timeSlotRepository.save(timeSlot);
 
 		//create appointment
-		ArrayList<TimeSlot> timeslots = new ArrayList<>();
-		timeslots.add(timeSlot);
+
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		appointment.setCustomer(createdCustomer);
 		Service createdService = createService();
 		appointment.setService(createdService);
-		appointment.setTimeSlots(timeslots);
+		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 		
@@ -182,8 +179,7 @@ public class AppointmentTest {
 		timeSlotRepository.save(timeSlot);
 
 		//create appointment
-		ArrayList<TimeSlot> timeslots = new ArrayList<>();
-		timeslots.add(timeSlot);
+
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 		
@@ -191,7 +187,7 @@ public class AppointmentTest {
 		appointment.setCustomer(createdCustomer);
 		Service createdService = createService();
 		appointment.setService(createdService);
-		appointment.setTimeSlots(timeslots);
+		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 				
@@ -221,8 +217,6 @@ public class AppointmentTest {
 		timeSlotRepository.save(timeSlot);
 
 		//create appointment
-		ArrayList<TimeSlot> timeslots = new ArrayList<>();
-		timeslots.add(timeSlot);
 		Appointment appointment = new Appointment();
 		Customer createdCustomer = createCustomer();
 
@@ -230,7 +224,7 @@ public class AppointmentTest {
 		appointment.setCustomer(createdCustomer);
 		Service createdService = createService();
 		appointment.setService(createdService);
-		appointment.setTimeSlots(timeslots);
+		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
 				
