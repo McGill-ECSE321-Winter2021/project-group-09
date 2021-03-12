@@ -38,9 +38,6 @@ public class Customer extends User {
     public void setReminders(List<Reminder> reminders) {
         this.reminders = reminders;
     }
-
-    // TODO why are there no toString method for customer, technician, admin??
-
 }
 
 
