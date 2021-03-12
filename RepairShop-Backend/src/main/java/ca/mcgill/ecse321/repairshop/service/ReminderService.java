@@ -35,8 +35,7 @@ public class ReminderService {
         Customer customer = customerRepository.findCustomerByEmail(email);
         if (customer == null) throw new Exception("A valid customer email is required");
 
-        List<Reminder> reminders;
-        reminders = reminderRepository.findByCustomer(customer);
+        List<Reminder> reminders = reminderRepository.findByCustomer(customer);
 
         // Check if any were found
         if (reminders != null) {
