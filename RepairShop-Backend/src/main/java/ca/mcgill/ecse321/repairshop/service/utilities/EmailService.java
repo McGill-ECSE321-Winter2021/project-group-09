@@ -58,6 +58,7 @@ public class EmailService {
                     "\n\n Your Amazing Group 9 Auto Repair Shop team");
 
         }
+        //TODO: 10 days before appointment confirmation
 
         javaMailSender.send(msg);
         System.out.println("SENT!!!!!!!!!!!!!!!!!!!!!");
