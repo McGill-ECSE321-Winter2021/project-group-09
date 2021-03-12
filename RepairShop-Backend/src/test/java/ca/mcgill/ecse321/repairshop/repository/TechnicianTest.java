@@ -94,7 +94,7 @@ public class TechnicianTest {
 		assertEquals(techPhone, tech.getPhoneNumber());
 
 		//delete and try loading technician
-		technicianRepository.deleteByEmail(techEmail);
+		technicianRepository.deleteTechnicianByEmail(techEmail);
 		tech = technicianRepository.findTechnicianByEmail(techEmail);
 		assertNull(tech);
 		
