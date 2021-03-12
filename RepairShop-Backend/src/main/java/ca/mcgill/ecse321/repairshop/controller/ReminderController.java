@@ -42,4 +42,37 @@ public class ReminderController {
         }
     }
 
+    /**
+     * GET request to get all reminders
+     *
+     * @return List of all reminders
+     */
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll() {
+        try {
+            return new ResponseEntity<>(reminderService.getAllReminders(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    /**
+     * Delete a reminder by the id.
+     *
+     * @param  reminderID ID of the reminder to be deleted
+     * @return message to indicated whether the delete was successful
+     */
+    @DeleteMapping("/{reminderID}")
+    public ResponseEntity<?> deleteReminderByID(@PathVariable Long reminderID) {
+        try {
+
+            String message = reminderService.deleteReminderById(reminderID);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 }
