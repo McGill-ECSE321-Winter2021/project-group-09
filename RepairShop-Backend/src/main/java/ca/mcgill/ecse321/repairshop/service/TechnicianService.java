@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.repairshop.service;
 
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -242,10 +244,18 @@ public class TechnicianService {
 	
 	
 	@Transactional
-	public List<TimeSlotDto> viewTechnicianSchedule(String email) throws Exception{
+	public List<TimeSlotDto> viewTechnicianSchedule(String email, String weekStartDate) throws Exception{
 		
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
+		}
+				
+		//get dates of the week
+		Date startDate = Date.valueOf(weekStartDate);
+		List<String> datesOfWeek = new ArrayList<>();
+		for(int i = 0; i <= 7; i++) {
+			Date thisDate = new Date(startDate.getTime() + (84600000*i));
+			datesOfWeek.add(thisDate.toString());
 		}
 		
 		List<TimeSlotDto> schedule = new ArrayList<>();
@@ -257,8 +267,11 @@ public class TechnicianService {
 		
 		for(int i = 0; i < techAppointments.size(); i++) {
 			Appointment appointment = techAppointments.get(i);
-			TimeSlot timeSlot = appointment.getTimeSlot();
-			schedule.add(timeslotToDTO(timeSlot));
+			Date appDate = new Date(appointment.getTimeSlot().getStartDateTime().getTime());
+			if(datesOfWeek.contains(appDate.toString())) {
+				TimeSlot timeSlot = appointment.getTimeSlot();
+				schedule.add(timeslotToDTO(timeSlot));
+			}
 		}
 		
 		return schedule;

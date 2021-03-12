@@ -161,11 +161,11 @@ public class TechnicianController {
 	
 	
 	@GetMapping(value = { "/technician/{email}/schedule", "/technician/{email}/schedule/" })
-	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email) {
+	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestParam("weekStartDate") String date) {
 		
 		try {
 			
-			List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email);
+			List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email, date);
 			return new ResponseEntity<>(tDtos, HttpStatus.OK); 
 			
 		} catch(Exception e) {
