@@ -15,6 +15,10 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 
 @Service
 public class ReminderService {
@@ -88,6 +92,40 @@ public class ReminderService {
 
     }
 
+    /**
+     * Gets all reminders from reminderRepository
+     * @return List of reminderDto objects : List<ReminderDto>
+     */
+    @Transactional
+    public List<ReminderDto> getAllReminders() {
+        List<Reminder> reminders = toList(reminderRepository.findAll());
+        List<ReminderDto> reminderDtos = new ArrayList<>();
+        for(Reminder reminder:reminders){
+            reminderDtos.add(reminderToDTO(reminder));
+        }
+        return reminderDtos;
+    }
+
+    /**
+     * Delete a reminder by its ID from the reminderRepository
+     * @param reminderID ID of the reminder
+     * @return String that indicates if the delete was successful
+     * @throws Exception
+     */
+    @Transactional
+    public String deleteReminderById(Long reminderID) throws Exception{
+        Optional<Reminder> reminder =  reminderRepository.findById(reminderID);
+
+        if (reminder.isPresent()) {
+            reminderRepository.deleteById(reminderID);
+            return "Reminder with ID " + reminderID + " is deleted.";
+        } else {
+            //TODO custom exception type
+            throw new Exception("Reminder not found...");
+        }
+    }
+
+
     /** Helper method to convert Reminder to ReminderDto
      * @param reminder to convert to dto
      * @return reminderDto object
@@ -99,6 +137,14 @@ public class ReminderService {
         reminderDto.setReminderType(reminder.getReminderType());
         reminderDto.setCustomerDto(customerToDTO(reminder.getCustomer()));
         return reminderDto;
+    }
+
+    private <T> List<T> toList(Iterable<T> iterable){
+        List<T> resultList = new ArrayList<T>();
+        for (T t : iterable) {
+            resultList.add(t);
+        }
+        return resultList;
     }
 
 

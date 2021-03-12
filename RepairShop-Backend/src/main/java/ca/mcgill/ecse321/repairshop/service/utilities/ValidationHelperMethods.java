@@ -55,4 +55,6 @@ public class ValidationHelperMethods {
         return getUpdatedHours(timeSlot, Timestamp.valueOf(LocalDateTime.now()));
     }
 
+
+
 }

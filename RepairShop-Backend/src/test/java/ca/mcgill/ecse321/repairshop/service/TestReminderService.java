@@ -252,4 +252,8 @@ public class TestReminderService {
 
     }
 
+    //TODO: getAllReminders test!!!!
+
+    //TODO: deleteReminderByID test??????
+
 }
