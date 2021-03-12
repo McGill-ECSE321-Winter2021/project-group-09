@@ -191,4 +191,244 @@ public class TestAppointmentService {
 
     }
 
+    @Test // invalid appointment - no technician hour
+    public void testCreateAppointmentTechnicianUnavailable() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The appointment cannot be booked", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (null timestamp)
+    public void testCreateAppointmentInvalidTimestampNull() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(null, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The Timestamp is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (empty timestamp)
+    public void testCreateAppointmentInvalidTimestampEmpty() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment("", SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The Timestamp is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (wrong format for timestamp)
+    public void testCreateAppointmentInvalidTimestamp() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment("notATimestamp", SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided Timestamp is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid service (null service)
+    public void testCreateAppointmentInvalidServiceNull() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, null, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The service name is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid service (empty service)
+    public void testCreateAppointmentInvalidServiceEmpty() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, "", TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The service name is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid service
+    public void testCreateAppointmentInvalidService() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, "notAService", TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided service name is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid technician (null technicians)
+    public void testCreateAppointmentInvalidTechniciansNull() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, null, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("Technicians are mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid technician (empty technician)
+    public void testCreateAppointmentInvalidTechniciansEmpty() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, "", CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("Technicians are mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid technician
+    public void testCreateAppointmentInvalidTechnicians() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, "notTechnicians", CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("A technician's email is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid customer (null customer)
+    public void testCreateAppointmentInvalidCustomerNull() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, null, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The customer is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid customer (empty customer)
+    public void testCreateAppointmentInvalidCustomerEmpty() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, "", BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The customer is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid customer
+    public void testCreateAppointmentInvalidCustomer() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, "notACustomer", BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided customer email is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid business (null business)
+    public void testCreateAppointmentInvalidBusinessNull() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, null);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The business is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid business (empty business)
+    public void testCreateAppointmentInvalidBusinessEmpty() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, "");
+            fail();
+        } catch (Exception e) {
+            assertEquals("The business is mandatory", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid business
+    public void testCreateAppointmentInvalidBusiness() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, "notABusiness");
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided business name is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
 }
