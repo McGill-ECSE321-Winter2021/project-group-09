@@ -53,7 +53,6 @@ public class ReminderDto {
     public String getServiceName() {
         return serviceName;
     }
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
@@ -61,7 +60,6 @@ public class ReminderDto {
     public Timestamp getAppointmentDateTime() {
         return appointmentDateTime;
     }
-
     public void setAppointmentDateTime(Timestamp appointmentDateTime) {
         this.appointmentDateTime = appointmentDateTime;
     }
