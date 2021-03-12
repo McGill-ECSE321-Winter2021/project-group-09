@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.repairshop.dto;
 import com.sun.istack.NotNull;
 public class AppointmentDto {
 
+    @NotNull
     private Long appointmentID;
     @NotNull
     private ServiceDto serviceDto;

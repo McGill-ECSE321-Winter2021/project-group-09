@@ -14,10 +14,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestAppointmentService {
@@ -168,6 +169,49 @@ public class TestAppointmentService {
             } else throw new Exception("A technician's email is invalid");
         });
 
+        lenient().when(technicianRepository.findById(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+
+            if (invocation.getArgument(0).equals(TECHNICIAN_EMAIL)) {
+            Technician tech = new Technician();
+            tech.setEmail(TECHNICIAN_EMAIL);
+            List<Appointment> apps = new ArrayList<>();
+            apps.add(createAppointment(1L));
+            tech.setAppointments(apps);
+            return Optional.of(tech);
+            } else throw new Exception();
+        });
+
+        lenient().when(customerRepository.findById(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+
+            if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
+                Customer customer = new Customer();
+                customer.setEmail(CUSTOMER_EMAIL);
+                List<Appointment> apps = new ArrayList<>();
+                apps.add(createAppointment(1L));
+                customer.setAppointments(apps);
+                return Optional.of(customer);
+            } else throw new Exception();
+        });
+
+        lenient().when(appointmentRepository.findById(any(Long.class))).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(1L)) {
+                //create tech
+                Technician tech = new Technician();
+                tech.setEmail(TECHNICIAN_EMAIL);
+                List<Appointment> apps = new ArrayList<>();
+                apps.add(createAppointment(1L));
+                tech.setAppointments(apps);
+                //create customer
+                Customer customer = new Customer();
+                customer.setEmail(CUSTOMER_EMAIL);
+                customer.setAppointments(apps);
+                Appointment app = createAppointment(1L);
+                app.setTechnician(tech);
+                app.setCustomer(customer);
+                return Optional.of(app);
+            } else throw new Exception("Non-existent appointment ID");
+        });
+
         lenient().when(appointmentRepository.save(any(Appointment.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
     }
@@ -189,6 +233,36 @@ public class TestAppointmentService {
         assertEquals(TECHNICIAN_EMAIL, appointmentDto.getTechnicianDto().getEmail());
         assertEquals(CUSTOMER_EMAIL, appointmentDto.getCustomerDto().getEmail());
 
+    }
+
+    @Test
+    public void testCancelAppointment() {
+        try {
+            appointmentService.cancelAppointment(1L);
+            verify(technicianRepository, times(1)).save(any());
+            verify(customerRepository, times(1)).save(any());
+            verify(appointmentRepository, times(1)).delete(any());
+            verify(technicianRepository, times(1)).findById(TECHNICIAN_EMAIL);
+            verify(customerRepository, times(1)).findById(CUSTOMER_EMAIL);
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testCancelAppointmentWrongAppID() {
+        try {
+            appointmentService.cancelAppointment(2L);
+            fail();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "Non-existent appointment ID");
+        }
+    }
+
+    private Appointment createAppointment(Long id) {
+        Appointment appointment = new Appointment();
+        appointment.setAppointmentID(id);
+        return appointment;
     }
 
 }

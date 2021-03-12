@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -185,12 +186,44 @@ public class AppointmentService {
 
     }
 
+    /**
+     * Deletes an appointment by ID
+     * @param appointmentID ID of appointment
+     * @throws Exception If ID is non existent or if it has no customer/tech (which shouldn't happen)
+     */
+    @Transactional
+    public void cancelAppointment(Long appointmentID) throws Exception {
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
+        if (appointment.isPresent()) {
+            Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
+            Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
+            if (customer.isPresent() && tech.isPresent()) {
+                //delete the appointment and remove it from customer's list
+                appointmentRepository.delete(appointment.get());
+                List<Appointment> cusApps = customer.get().getAppointments();
+                cusApps.removeIf(app -> app.getAppointmentID().equals(appointmentID));
+                customer.get().setAppointments(cusApps);
+                customerRepository.save(customer.get());
+                //remove it from technician's list
+                List<Appointment> techApps = tech.get().getAppointments();
+                techApps.removeIf(app -> app.getAppointmentID().equals(appointmentID));
+                tech.get().setAppointments(techApps);
+                technicianRepository.save(tech.get());
+            } else {
+                throw new Exception("Associated Customer or Technician could not be found");
+            }
+        } else {
+            throw new Exception("Non-existent appointment ID");
+        }
+    }
+
     /** Helper method to convert Appointment to AppointmentDto
      * @param appointment to convert to dto
      * @return appointmentDto object
      */
     public static AppointmentDto appointmentToDto(Appointment appointment) {
         AppointmentDto appointmentDto = new AppointmentDto();
+        appointmentDto.setAppointmentID(appointment.getAppointmentID());
         appointmentDto.setTimeSlotDto(timeslotToDTO(appointment.getTimeSlot()));
         appointmentDto.setServiceDto(serviceToDTO(appointment.getService()));
         appointmentDto.setTechnicianDto(technicianToDTO(appointment.getTechnician()));
