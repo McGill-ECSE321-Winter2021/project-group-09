@@ -35,7 +35,7 @@ public class ServiceService {
      */
     @Transactional
     public List<ServiceDto> getAllServices() {
-        return serviceRepository.findAll().stream().map(this::serviceToDto).collect(Collectors.toList());
+        return serviceRepository.findAll().stream().map(ServiceService::serviceToDto).collect(Collectors.toList());
     }
 
     /** Creates a service object
@@ -69,7 +69,7 @@ public class ServiceService {
      * @param service to convert to dto
      * @return serviceDto object
      */
-    public ServiceDto serviceToDto(Service service) {
+    public static ServiceDto serviceToDto(Service service) {
         ServiceDto serviceDto = new ServiceDto();
         serviceDto.setName(service.getName());
         serviceDto.setDuration(service.getDuration());

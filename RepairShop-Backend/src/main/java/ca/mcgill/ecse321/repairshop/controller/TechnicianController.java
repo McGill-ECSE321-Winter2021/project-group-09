@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Technician;
@@ -159,7 +160,38 @@ public class TechnicianController {
 	}
 	
 	
-
+	@GetMapping(value = { "/technician/{email}/schedule", "/technician/{email}/schedule/" })
+	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email) {
+		
+		try {
+			
+			List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email);
+			return new ResponseEntity<>(tDtos, HttpStatus.OK); 
+			
+		} catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		
+	}
+	
+	/*
+	@GetMapping(value = { "/technician/{email}/appointments", "/technician/{email}/appointments/" })
+	public ResponseEntity<?> viewTechnicianAppointments(@PathVariable("email") String email) {
+		
+		try {
+			
+			List<AppointmentDto> appDtos = techService.viewAppointments(email);
+			return new ResponseEntity<>(appDtos, HttpStatus.OK); 
+			
+		} catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		
+	}
+	
+	*/
 	
 }
 

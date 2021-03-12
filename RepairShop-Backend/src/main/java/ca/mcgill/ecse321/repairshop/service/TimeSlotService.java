@@ -71,4 +71,17 @@ public class TimeSlotService {
     public List<TimeSlotDto> getAllTimeslots() {
         return timeSlotRepository.findAll().stream().map(TimeSlotService::timeslotToDTO).collect(Collectors.toList());
     }
+    
+    
+    
+    public static TimeSlot DtoToTimeSlot(TimeSlotDto timeslot) {
+        TimeSlot newTimeslot = new TimeSlot();
+        newTimeslot.setStartDateTime(timeslot.getStartDateTime());
+        newTimeslot.setEndDateTime(timeslot.getEndDateTime());
+        return newTimeslot;
+    }
+    
+    
+    
+    
 }

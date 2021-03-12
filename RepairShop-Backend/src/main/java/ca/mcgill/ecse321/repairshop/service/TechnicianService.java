@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.sun.istack.NotNull;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 //import ca.mcgill.ecse321.repairshop.controller.TimeSlotService;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
@@ -37,10 +38,6 @@ public class TechnicianService {
 	
 	@Autowired
 	AppointmentRepository appRepo;
-	
-	@Autowired
-	TimeSlotRepository timeRepo;
-	
 	
 	
 	/**
@@ -171,12 +168,13 @@ public class TechnicianService {
 		techDTO.setSetPassword(tech.getPassword());
 		
 		List<TimeSlot> timeSlots = tech.getTimeslots();
-		ArrayList<TimeSlotDto> timeDtos = new ArrayList<>();
-		for(int i = 0; i < timeSlots.size(); i++) {
-			timeDtos.add(timeslotToDTO(timeSlots.get(i)));
+		if(timeSlots != null) {
+			ArrayList<TimeSlotDto> timeDtos = new ArrayList<>();
+			for(int i = 0; i < timeSlots.size(); i++) {
+				timeDtos.add(timeslotToDTO(timeSlots.get(i)));
+			}
+			techDTO.setTimeSlots(timeDtos);
 		}
-		techDTO.setTimeSlots(timeDtos);
-		
 		
 		return techDTO;
 		
@@ -236,11 +234,96 @@ public class TechnicianService {
 	
 	
 	
+	//USE CASES
+	
+	
+	@Transactional
+	public List<TimeSlotDto> viewTechnicianSchedule(String email) throws Exception{
+		
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+		
+		List<TimeSlotDto> schedule = new ArrayList<>();
+		Technician tech = technicianRepository.findTechnicianByEmail(email);
+		if(tech == null) {
+			throw new Exception("Technician not found.");
+		}
+		List<Appointment> techAppointments = tech.getAppointments();
+		
+		for(int i = 0; i < techAppointments.size(); i++) {
+			Appointment appointment = techAppointments.get(i);
+			TimeSlot timeSlot = appointment.getTimeSlot();
+			schedule.add(timeslotToDTO(timeSlot));
+		}
+		
+		return schedule;
+		
+	}
+	
+	
+	
+	@Transactional
+	public String addTechnicianWorkHours(String email, List<TimeSlotDto> dtos) throws Exception{
+		
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+
+		Technician tech = technicianRepository.findTechnicianByEmail(email);
+		if(tech == null) {
+			throw new Exception("Technician not found.");
+		}
+		
+		List<TimeSlot> workHours = new ArrayList<>();
+		for(int i = 0; i < dtos.size(); i++) {
+			TimeSlotDto dto = dtos.get(i);
+			TimeSlot timeSlot = TimeSlotService.DtoToTimeSlot(dto);
+			workHours.add(timeSlot);
+		}
+		tech.setTimeslots(workHours);
+		technicianRepository.save(tech);
+		return "Work hours for technician " + email + " successfully added.";
+	}
 	
 	
 	
 	
+	@Transactional
+	public List<AppointmentDto> viewAppointments(String email) throws Exception{
+		
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+		
+		List<AppointmentDto> appDtos = new ArrayList<>();
+		Technician tech = technicianRepository.findTechnicianByEmail(email);
+		if(tech == null) {
+			throw new Exception("Technician not found.");
+		}
+		List<Appointment> techAppointments = tech.getAppointments();
+		
+		for(int i = 0; i < techAppointments.size(); i++) {
+			AppointmentDto thisAppDto = appointmentToDTO(techAppointments.get(i));		//TODO Convert to Dto
+			appDtos.add(thisAppDto);
+		}
+		
+		return appDtos;
+	}
 	
+	
+	//TODO Remove this. Should have already been implemented in AppointmentService
+	
+	private AppointmentDto appointmentToDTO(Appointment app) {
+			
+		AppointmentDto dto = new AppointmentDto();
+		dto.setCustomer(CustomerService.customerToDTO(app.getCustomer()));
+		dto.setTechnician(technicianToDTO(app.getTechnician()));
+		dto.setTimeSlot(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
+		dto.setService(ServiceService.serviceToDto(app.getService()));
+		return dto;
+			
+	} 
 	
 	
 	

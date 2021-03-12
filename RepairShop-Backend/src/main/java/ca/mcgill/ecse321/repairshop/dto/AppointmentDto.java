@@ -1,5 +1,60 @@
 package ca.mcgill.ecse321.repairshop.dto;
 
+import java.util.List;
+
+import com.sun.istack.NotNull;
+
 public class AppointmentDto {
+	
+	@NotNull
+    private Long appointmentID;
+	@NotNull
+    private ServiceDto service;
+	@NotNull
+    private CustomerDto customer;
+	@NotNull
+    private TechnicianDto technician;
+	@NotNull
+    private TimeSlotDto timeSlot;
+    
+    public Long getAppointmentID() {
+        return this.appointmentID;
+    }
+    
+    public void setAppointmentID(Long aAppointmentID) {
+        this.appointmentID = aAppointmentID;
+    }
+    
+	public ServiceDto getService() {
+		return service;
+	}
+
+	public void setService(ServiceDto service) {
+		this.service = service;
+	}
+	
+	public CustomerDto getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerDto customer) {
+		this.customer = customer;
+	}
+	
+	public TechnicianDto getTechnician() {
+		return technician;
+	}
+
+	public void setTechnician(TechnicianDto technician) {
+		this.technician = technician;
+	}
+	
+    public TimeSlotDto getTimeSlot() {
+		return timeSlot;
+	}
+
+	public void setTimeSlot(TimeSlotDto timeslots) {
+		this.timeSlot = timeslots;
+	}
 
 }
