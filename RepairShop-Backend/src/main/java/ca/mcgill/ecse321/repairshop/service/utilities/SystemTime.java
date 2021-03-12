@@ -11,19 +11,19 @@ public class SystemTime {
     private static boolean isTest = false;
     private static Timestamp testTime = Timestamp.valueOf(LocalDateTime.now());
 
-    public boolean isTest() {
+    public static boolean isTest() {
         return isTest;
     }
 
-    public void setTest(boolean test) {
+    public static void setTest(boolean test) {
         isTest = test;
     }
 
-    public Timestamp getTestTime() {
+    public static Timestamp getTestTime() {
         return testTime;
     }
 
-    public void setTestTime(Timestamp testTime) {
+    public static void setTestTime(Timestamp testTime) {
         SystemTime.testTime = testTime;
     }
 

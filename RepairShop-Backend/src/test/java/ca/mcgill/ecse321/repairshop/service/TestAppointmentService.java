@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.repairshop.service;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
+import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -85,6 +85,9 @@ public class TestAppointmentService {
 
     @BeforeEach
     public void setMockOutput() {
+
+        SystemTime.setTest(true);
+        SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(11)));
 
         lenient().when(serviceRepository.findServiceByName(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 
