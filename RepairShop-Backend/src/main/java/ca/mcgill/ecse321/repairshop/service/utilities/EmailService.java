@@ -38,19 +38,27 @@ public class EmailService {
      */
     public void sendReminderAndConfirmationEmail(String recipientEmail, String recipientName,
                                                  Timestamp appointmentDateTime, ReminderType typeOfReminder, String serviceName, String price) {
-        System.out.println("SENDING.............");
+        System.out.println("SENDING reminder and confirmation............."); //TODO: remove this later
 
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom(systemEmail);
         msg.setTo(recipientEmail);
 
         if (typeOfReminder.equals(ReminderType.Confirmation)) { // BOOKING CONFIRMATION
-            msg.setSubject("Auto Repair Shop 9: Booking Confirmation ");
+            msg.setSubject("Auto Repair Shop 9: Booking Confirmation");
             msg.setText("Hello " + recipientName + ", \nThank you for choosing Auto Repair Shop 9! Your booking is now confirmed.\n" +
                     "Here are the booking details:\n" + appointmentDateTime + "\nService:\n" + typeOfReminder.toString()
                     + "\nPrice:\n" + price + "$\n\n " + "Note: 7 days notice is required to cancel an appointment." +
                     "\n\n Your Amazing Group 9 Auto Repair Shop team");
 
+        } else if (typeOfReminder.equals(ReminderType.AppointmentReminder)) { // 10 days before appointment
+            msg.setSubject("Auto Repair Shop 9: Appointment Reminder");
+            msg.setText("Hello " + recipientName + ", \nYou have an upcoming appointment on " + appointmentDateTime +
+                    "Here are the booking details:\n" + appointmentDateTime + "\nService:\n" + serviceName
+                    + "\nPrice:\n" + price + "$\n\n " + "Note: 7 days notice is required to cancel an appointment." +
+                    "\n\n Your Amazing Group 9 Auto Repair Shop team");
+
+//TODO: If have time, modify messages + make them pretty
         } else { //OTHER TYPE OF SERVICE REMINDER
             msg.setSubject("Auto Repair Shop 9: " + typeOfReminder.toString() + " Reminder");
             msg.setText("Hello " + recipientName + ", \n" + "It has been a few months since your car received a " + typeOfReminder.toString() + ".\n"
@@ -58,11 +66,34 @@ public class EmailService {
                     "\n\n Your Amazing Group 9 Auto Repair Shop team");
 
         }
-        //TODO: 10 days before appointment confirmation
 
         javaMailSender.send(msg);
-        System.out.println("SENT!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(" reminder and confirmation email SENT!!!!!!!!!!!!!!!!!!!!!"); //TODO: remove this later
     }
+
+    /**
+     * Sends a cancel confirmation email.
+     *
+     * @param recipientEmail      email of the recipient (String)
+     * @param recipientName       name of the recipient (String)
+     * @param appointmentDateTime when is the appointment (Timestamp)
+     * @param serviceName         name of the service (String)
+     */
+    public void appointmentCancelled(String recipientEmail, String recipientName,
+                                     Timestamp appointmentDateTime, String serviceName) {
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom(systemEmail);
+        msg.setTo(recipientEmail);
+        msg.setSubject("Auto Repair Shop 9: Cancelled Appointment on " + appointmentDateTime);
+        msg.setText("Dear " + recipientName + ", \nThe following appointment has been cancelled:\n" + appointmentDateTime + "\nService:\n" + serviceName
+                + "\n\n Your Amazing Group 9 Auto Repair Shop team");
+        javaMailSender.send(msg);
+    }
+
+
+}
+
 
 
 }
