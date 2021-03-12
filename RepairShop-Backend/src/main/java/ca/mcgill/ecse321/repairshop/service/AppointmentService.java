@@ -103,18 +103,16 @@ public class AppointmentService {
     /** Method to book an appointment given a valid timeslot
      * @param startTimestamp when the appointment will start
      * @param serviceName the name of the appointment's service
-     * @param technicianEmails the emails of the technicians that can perform the service at the specified start time
      * @return an AppointmentDto for the bookedAppointment
      * @throws Exception for invalid timestamp, service name or technician's email
      */
     @Transactional
-    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String technicianEmails, String customerEmail, String businessName) throws Exception {
+    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail, String businessName) throws Exception {
 
         // Validate all inputs
 
         if (startTimestamp == null || startTimestamp.equals("")) throw new Exception("The Timestamp is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
-        if (technicianEmails == null || technicianEmails.equals("")) throw new Exception("Technicians are mandatory");
         if (customerEmail == null || customerEmail.equals("")) throw new Exception("The customer is mandatory");
         if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
 
@@ -149,30 +147,23 @@ public class AppointmentService {
         timeSlot.setStartDateTime(startTime);
         timeSlot.setEndDateTime(endTime);
 
-        // input is all available technicians' emails (comma separated), so finding each technician:
-        // going to use technician with the least appointments already booked
+        // Going to use technician with the least appointments already booked
         // if a technician has 0 appointments, go with that one
-
-        String[] allEmails = technicianEmails.split(", ");
-        Technician tempTech;
+        List<Technician> allTechnicians = technicianRepository.findAll();
         int numAppointments = Integer.MAX_VALUE;
 
-        for (String email : allEmails) {
-            tempTech = technicianRepository.findTechnicianByEmail(email);
-            if (tempTech == null) throw new Exception("A technician's email is invalid");
-            else {
-                int tempNumApps = tempTech.getAppointments().size();
-                // Make sure that the technician is still available
-                if (numAppointments > tempNumApps && isBookable(timeSlot, tempTech, business)) {
-                    numAppointments = tempNumApps;
-                    technician = tempTech;
-                    if (tempNumApps == 0) break;
-                }
+        for (Technician tempTech : allTechnicians) {
+            int tempNumApps = tempTech.getAppointments().size();
+            // Make sure that the technician is still available
+            if (numAppointments > tempNumApps && isBookable(timeSlot, tempTech, business)) {
+                numAppointments = tempNumApps;
+                technician = tempTech;
+                if (tempNumApps == 0) break;
             }
         }
 
         // if no technician is available
-        if (numAppointments == Integer.MAX_VALUE) throw new Exception("The appointment cannot be booked");
+        if (technician == null) throw new Exception("The appointment cannot be booked");
 
         Appointment appointment = new Appointment();
         appointment.setTimeSlot(timeSlot);
@@ -219,8 +210,10 @@ public class AppointmentService {
 
         List<TimeSlot> allTimeSlots = new ArrayList<>();
         LocalDateTime tempDateTime = startDateTime.toLocalDateTime();
+
+        int durationInMillis = service.getDuration() * 30 * 60 * 1000; // service duration is an int for the number of 30 minute blocks
+
         TimeSlot tempTimeSlot = new TimeSlot();
-        int durationInMillis = service.getDuration() * 30 * 60 * 1000;
         Timestamp startTime = Timestamp.valueOf(tempDateTime);
         Timestamp endTime = new Timestamp(startTime.getTime() + durationInMillis);
         tempTimeSlot.setStartDateTime(startTime);
@@ -229,6 +222,7 @@ public class AppointmentService {
         // loop through all possible start times -> each half hour in a full week = 336 blocks of 30 minutes
         for (int i = 0; i < 336; i++) {
 
+            // Check each technician -> if one is available, add timeslot
             for (Technician technician : technicians) {
                 if (isBookable(tempTimeSlot, technician, business)) {
                     allTimeSlots.add(tempTimeSlot);
