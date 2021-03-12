@@ -54,10 +54,8 @@ public class CustomerDto {
         return password;
     }
     
-    public void setSetPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
-    
-	
 
 }

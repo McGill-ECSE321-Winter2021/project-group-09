@@ -1,6 +1,3 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.service;
 
 import java.util.ArrayList;
@@ -174,7 +171,7 @@ public class CustomerService {
 		customerDTO.setPhoneNumber(customer.getPhoneNumber());
 		customerDTO.setName(customer.getName());
 		customerDTO.setEmail(customer.getEmail());
-		customerDTO.setSetPassword(customer.getPassword());
+		customerDTO.setPassword(customer.getPassword());
 		
 		return customerDTO;
 
