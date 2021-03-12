@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Entity
 public class Reminder {
 
-    private Long reminderID;
+	private Long reminderID;
     @Id
     @GeneratedValue
     public Long getReminderID() {

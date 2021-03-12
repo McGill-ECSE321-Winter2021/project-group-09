@@ -13,6 +13,8 @@ public interface TimeSlotRepository extends CrudRepository<TimeSlot, Long> {
 	
 	List<TimeSlot> findAll();	
 	
+	void deleteById(Long timeSlotID);
+	
 }
 
 

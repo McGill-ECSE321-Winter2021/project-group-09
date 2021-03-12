@@ -2,12 +2,7 @@ package ca.mcgill.ecse321.repairshop.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 
 @Entity
@@ -68,15 +63,15 @@ public class Appointment {
    
     ///////////////////////////////////////////////////////////////////////////////
     
-    private List<TimeSlot> timeSlots;
+    private TimeSlot timeSlot;
 
-    @OneToMany(fetch =  FetchType.LAZY)
-    public List<TimeSlot> getTimeSlots() {
-        return this.timeSlots;
+    @OneToOne(fetch =  FetchType.LAZY)
+    public TimeSlot getTimeSlot() {
+        return this.timeSlot;
     }
 
-    public void setTimeSlots(List<TimeSlot> timeSlots) {
-        this.timeSlots = timeSlots;
+    public void setTimeSlot(TimeSlot timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     //////////////////////////////////////////////////////////////////////////////

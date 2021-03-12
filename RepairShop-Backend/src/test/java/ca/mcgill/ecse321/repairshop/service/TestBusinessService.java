@@ -11,24 +11,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 
 import org.mockito.stubbing.Answer;
 
@@ -48,9 +37,8 @@ public class TestBusinessService {
     @InjectMocks
     private BusinessService businessService;
 
-
+    private static final long BUSINESS_ID = 123;
     private static final String BUSINESS_NAME = "TestBusiness";
-    private static final String NONEXISTING_KEY = "NotABusiness";
 
     //Test data
     private static final String BUSINESS_ADDRESS = "123 Business Street, Montreal";
@@ -60,40 +48,60 @@ public class TestBusinessService {
     private static final Timestamp START_TIME = Timestamp.valueOf("2021-12-02 10:00:00");
     private static final Timestamp END_TIME = Timestamp.valueOf("2021-12-30 11:00:00");
 
-    private static final List<TimeSlotDto> BUSINESS_VACATIONS = new ArrayList<>();
-
     @BeforeEach
     public void setMockOutput() {
+        lenient().when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+
+            //TimeSlot
+            TimeSlot timeSlot = new TimeSlot();
+            timeSlot.setStartDateTime(START_TIME);
+            timeSlot.setEndDateTime(END_TIME);
+            List<TimeSlot> holidaysList = new ArrayList<>();
+            holidaysList.add(timeSlot);
+
+            //CREATE BUSINESS
+            Business business = new Business();
+            business.setBusinessID(BUSINESS_ID);
+            business.setHolidays(holidaysList);
+            business.setName(BUSINESS_NAME);
+            business.setEmail(BUSINESS_EMAIL);
+            business.setAddress(BUSINESS_ADDRESS);
+            business.setPhoneNumber(BUSINESS_PHONE_NUMBER);
+            business.setNumberOfRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
+            List<Business> businesses = new ArrayList<>();
+            businesses.add(business);
+            return businesses;
+
+        });
         lenient()
-                .when(businessRepository.findBusinessByName(anyString()))
+                .when(businessRepository.findBusinessByBusinessID(anyLong()))
                 .thenAnswer(
                         (InvocationOnMock invocation) -> {
-                            if (invocation.getArgument(0).equals(BUSINESS_NAME)) {
+                            if (invocation.getArgument(0).equals(BUSINESS_ID)) {
 
                                 //TimeSlot
                                 TimeSlot timeSlot = new TimeSlot();
                                 timeSlot.setStartDateTime(START_TIME);
                                 timeSlot.setEndDateTime(END_TIME);
-                                List<TimeSlot> vacationsList = new ArrayList<>();
-                                vacationsList.add(timeSlot);
+                                List<TimeSlot> holidaysList = new ArrayList<>();
+                                holidaysList.add(timeSlot);
 
                                 //CREATE BUSINESS
                                 Business business = new Business();
-                                business.setVacations(vacationsList);
+                                business.setBusinessID(BUSINESS_ID);
+                                business.setHolidays(holidaysList);
                                 business.setName(BUSINESS_NAME);
                                 business.setEmail(BUSINESS_EMAIL);
                                 business.setAddress(BUSINESS_ADDRESS);
                                 business.setPhoneNumber(BUSINESS_PHONE_NUMBER);
                                 business.setNumberOfRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-
                                 return business;
-
                             } else {
                                 return null;
                             }
                         });
 
-        // Whenever anything is saved, just return the parameter object
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
         };
@@ -104,37 +112,52 @@ public class TestBusinessService {
     @Test
     public void testCreateBusiness() {
 
-        assertEquals(0, businessService.getAllBusinesses().size());
-
         BusinessDto business = null;
         String businessName = "Best Business in the world";
         try {
-            business = businessService.createBusiness(businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
         } catch (Exception e) {
             fail();
         }
+        assertEquals(BUSINESS_ID, business.getBusinessID());
         assertEquals(businessName, business.getName());
         assertEquals(BUSINESS_ADDRESS, business.getAddress());
         assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
         assertEquals(BUSINESS_EMAIL, business.getEmail());
         assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, business.getNumberOfRepairSpots());
+
         assertNotNull(business);
 
     }
 
+    @Test
+    public void testNegativeNbRepairSpotsCreateBusiness() {
+        int negativeNb = -10;
+        BusinessDto business = null;
+        String error = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, negativeNb);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(business);
+        assertEquals("The number of repair spots cannot be negative", error);
+    }
 
     @Test
     public void testMissingNameCreateBusiness() {
+
         String name = "";
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Business name cannot be empty!", error);
     }
 
@@ -144,12 +167,11 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Address cannot be empty!", error);
     }
 
@@ -159,12 +181,11 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Phone number cannot be empty!", error);
     }
 
@@ -174,12 +195,11 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Email cannot be empty!", error);
     }
 
@@ -190,12 +210,11 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Invalid email", error);
     }
 
@@ -205,12 +224,11 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Invalid email", error);
     }
 
@@ -220,12 +238,459 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
         } catch (Exception e) {
             error = e.getMessage();
         }
         assertNull(business);
-        // check error
         assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testNullIDCreateBusiness() {
+        Long nullBusinessID = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(nullBusinessID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Business ID cannot be empty!", error);
+    }
+
+
+    @Test
+    public void testNullNameCreateBusiness() {
+        String nullBusinessName = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Business name cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullAddressCreateBusiness() {
+        String nullAddress = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Address cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullPhoneNumberCreateBusiness() {
+        String nullPhoneNumber = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Phone number cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullEmailCreateBusiness() {
+        String nullEmail = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Email cannot be empty!", error);
+    }
+
+    @Test
+    public void testGetBusinessByID() {
+        String error = null;
+        BusinessDto businessDto;
+        try {
+            businessDto = businessService.getBusinessByID(BUSINESS_ID);
+            assertEquals(BUSINESS_ID, businessDto.getBusinessID());
+            assertEquals(BUSINESS_NAME, businessDto.getName());
+            assertEquals(BUSINESS_ADDRESS, businessDto.getAddress());
+            assertEquals(BUSINESS_PHONE_NUMBER, businessDto.getPhoneNumber());
+            assertEquals(BUSINESS_EMAIL, businessDto.getEmail());
+            assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, businessDto.getNumberOfRepairSpots());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testMissingGetBusinessByID() {
+        String error = null;
+        Long nullBusinessID = null;
+        BusinessDto businessDto;
+        try {
+            businessDto = businessService.getBusinessByID(nullBusinessID);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertEquals("Enter BusinessID", error);
+    }
+
+    @Test
+    public void testNotFoundGetBusinessByID() {
+        String error = null;
+        long businessID = 4567;
+        BusinessDto businessDto;
+        try {
+            businessDto = businessService.getBusinessByID(businessID);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertEquals("BusinessID not found", error);
+    }
+
+    @Test
+    public void testUpdateBusiness() {
+
+
+        BusinessDto business = null;
+        String newName = "Update name";
+        String newAddress = "Update address";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
+
+
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(BUSINESS_ID, business.getBusinessID());
+            assertEquals(newName, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+    }
+
+    @Test
+    public void testMissingNameUpdateBusiness() {
+        String newName = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, newName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Business name cannot be empty!", error);
+    }
+
+    @Test
+    public void testMissingAddressUpdateBusiness() {
+        String address = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Address cannot be empty!", error);
+    }
+
+    @Test
+    public void testMissingPhoneNumberUpdateBusiness() {
+        String phoneNumber = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Phone number cannot be empty!", error);
+    }
+
+
+    @Test
+    public void testMissingEmailUpdateBusiness() {
+        String email = "";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Email cannot be empty!", error);
+    }
+
+    @Test
+
+    public void testInvalidEmailNoAtSignUpdateBusiness() {
+        String email = "bestBusinessgmail.com";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testInvalidEmailUpdateBusiness() {
+        String email = "Not an email";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testInvalidEmailNoDotUpdateBusiness() {
+        String email = "bestBusiness@gmailcom";
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Invalid email", error);
+    }
+
+    @Test
+    public void testNullIDUpdateBusiness() {
+        Long nullBusinessID = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(nullBusinessID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Business ID cannot be empty!", error);
+    }
+
+
+    @Test
+    public void testNullNameUpdateBusiness() {
+        String nullBusinessName = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Business name cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullAddressUpdateBusiness() {
+        String nullAddress = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Address cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullPhoneNumberUpdateBusiness() {
+        String nullPhoneNumber = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Phone number cannot be empty!", error);
+    }
+
+    @Test
+    public void testNullEmailUpdateBusiness() {
+        String nullEmail = null;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+        assertNull(business);
+        assertEquals("Email cannot be empty!", error);
+    }
+
+    @Test
+    public void testNegativeNbRepairSpotsUpdateBusiness() {
+        int negativeNb = -10;
+        BusinessDto business = null;
+        String error = null;
+        try {
+            business = businessService.updateBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, negativeNb);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(business);
+        assertEquals("The number of repair spots cannot be negative", error);
+    }
+
+    @Test
+    public void testUpdateNbRepairSpots() {
+
+        BusinessDto business = null;
+        try {
+            business = businessService.updateNbRepairSpots(BUSINESS_ID, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertNotNull(business);
+        assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, business.getNumberOfRepairSpots());
+    }
+
+    @Test
+    public void testInvalidUpdateNbRepairSpots() {
+        int negativeNb = -20;
+        BusinessDto business = null;
+        String error = null;
+        try {
+            business = businessService.updateNbRepairSpots(BUSINESS_ID, negativeNb);
+
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(business);
+        assertEquals("The number of repair spots cannot be negative", error);
+    }
+
+    @Test
+    public void testGetAllBusinesses() {
+
+        BusinessDto business = null;
+
+        try {
+            business = businessService.createBusiness(BUSINESS_ID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
+            List<BusinessDto> businessDtoList = businessService.getAllBusinesses();
+
+            assertEquals(business.getName(), businessDtoList.get(0).getName());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+    }
+
+
+    @Test
+    public void testAddHoliday() {
+        BusinessDto businessDto = null;
+        Timestamp startTime = Timestamp.valueOf("2021-04-02 10:00:00");
+        Timestamp endTime = Timestamp.valueOf("2021-05-14 09:00:00");
+        TimeSlot newHoliday = new TimeSlot();
+        newHoliday.setStartDateTime(startTime);
+        newHoliday.setEndDateTime(endTime);
+
+        try {
+            businessDto = businessService.addHoliday(BUSINESS_ID, startTime, endTime);
+            System.out.println("BusinessDto: " + businessDto);
+            System.out.println("Holidays: " + businessDto.getHolidays());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+        System.out.println(businessDto.getHolidays().toString());
+        assertEquals(startTime, businessDto.getHolidays().get(1).getStartDateTime());
+        assertEquals(endTime, businessDto.getHolidays().get(1).getEndDateTime());
+        assertEquals(2, businessDto.getHolidays().size());
+    }
+
+    @Test
+    public void testGetHolidays() {
+
+        List<TimeSlotDto> holidaysDtoList = null;
+        try {
+            holidaysDtoList = businessService.getAllHolidays(BUSINESS_ID);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+        assertEquals(1, holidaysDtoList.size());
+        assertEquals(START_TIME, holidaysDtoList.get(0).getStartDateTime());
+        assertEquals(END_TIME, holidaysDtoList.get(0).getEndDateTime());
+    }
+
+    @Test
+    public void testNullBusinessIDGetHolidays() {
+
+        List<TimeSlotDto> holidaysDtoList = null;
+        Long nullBusinessID = null;
+        String error = null;
+        try {
+            holidaysDtoList = businessService.getAllHolidays(nullBusinessID);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(holidaysDtoList);
+        assertEquals("BusinessID cannot be empty", error);
+    }
+
+    @Test
+    public void testNonExistentBusinessIDBusinessIDGetHolidays() {
+
+        List<TimeSlotDto> holidaysDtoList = null;
+        Long nonExistantBusinessID = 9999l;
+        String error = null;
+        try {
+            holidaysDtoList = businessService.getAllHolidays(nonExistantBusinessID);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
+
+        assertNull(holidaysDtoList);
+        assertEquals("Could not find a business with ID: " + nonExistantBusinessID, error);
+
     }
 }
