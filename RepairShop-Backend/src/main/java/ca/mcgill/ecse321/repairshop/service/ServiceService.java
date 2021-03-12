@@ -6,8 +6,8 @@ import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 public class ServiceService {
@@ -26,7 +26,7 @@ public class ServiceService {
         Service service = serviceRepository.findServiceByName(name);
 
         // Make sure the service was found
-        if (service != null) return serviceToDto(service);
+        if (service != null) return serviceToDTO(service);
         else throw new Exception("Could not find service with name " + name);
     }
 
@@ -35,7 +35,10 @@ public class ServiceService {
      */
     @Transactional
     public List<ServiceDto> getAllServices() {
-        return serviceRepository.findAll().stream().map(ServiceService::serviceToDto).collect(Collectors.toList());
+        List<ServiceDto> serviceDtos = new ArrayList<>();
+        for (Service service : serviceRepository.findAll()) { serviceDtos.add(serviceToDTO(service)); }
+        return serviceDtos;
+
     }
 
     /** Creates a service object
@@ -61,7 +64,7 @@ public class ServiceService {
 
         serviceRepository.save(service);
 
-        return serviceToDto(service);
+        return serviceToDTO(service);
 
     }
 
@@ -69,7 +72,8 @@ public class ServiceService {
      * @param service to convert to dto
      * @return serviceDto object
      */
-    public static ServiceDto serviceToDto(Service service) {
+
+    public static ServiceDto serviceToDTO(Service service) {
         ServiceDto serviceDto = new ServiceDto();
         serviceDto.setName(service.getName());
         serviceDto.setDuration(service.getDuration());

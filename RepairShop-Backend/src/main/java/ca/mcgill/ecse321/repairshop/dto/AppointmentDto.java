@@ -1,60 +1,50 @@
 package ca.mcgill.ecse321.repairshop.dto;
-
-import java.util.List;
-
 import com.sun.istack.NotNull;
-
 public class AppointmentDto {
-	
-	@NotNull
+
     private Long appointmentID;
-	@NotNull
-    private ServiceDto service;
-	@NotNull
-    private CustomerDto customer;
-	@NotNull
-    private TechnicianDto technician;
-	@NotNull
-    private TimeSlotDto timeSlot;
-    
+    @NotNull
+    private ServiceDto serviceDto;
+    @NotNull
+    private CustomerDto customerDto;
+    @NotNull
+    private TechnicianDto technicianDto;
+    @NotNull
+    private TimeSlotDto timeSlotDto;
+
     public Long getAppointmentID() {
-        return this.appointmentID;
+        return appointmentID;
     }
-    
-    public void setAppointmentID(Long aAppointmentID) {
-        this.appointmentID = aAppointmentID;
+    public void setAppointmentID(Long appointmentID) {
+        this.appointmentID = appointmentID;
     }
-    
-	public ServiceDto getService() {
-		return service;
-	}
 
-	public void setService(ServiceDto service) {
-		this.service = service;
-	}
-	
-	public CustomerDto getCustomer() {
-		return customer;
-	}
+    public ServiceDto getServiceDto() {
+        return serviceDto;
+    }
+    public void setServiceDto(ServiceDto serviceDto) {
+        this.serviceDto = serviceDto;
+    }
 
-	public void setCustomer(CustomerDto customer) {
-		this.customer = customer;
-	}
-	
-	public TechnicianDto getTechnician() {
-		return technician;
-	}
+    public CustomerDto getCustomerDto() {
+        return customerDto;
+    }
+    public void setCustomerDto(CustomerDto customerDto) {
+        this.customerDto = customerDto;
+    }
 
-	public void setTechnician(TechnicianDto technician) {
-		this.technician = technician;
-	}
-	
-    public TimeSlotDto getTimeSlot() {
-		return timeSlot;
-	}
+    public TechnicianDto getTechnicianDto() {
+        return technicianDto;
+    }
+    public void setTechnicianDto(TechnicianDto technicianDto) {
+        this.technicianDto = technicianDto;
+    }
 
-	public void setTimeSlot(TimeSlotDto timeslots) {
-		this.timeSlot = timeslots;
-	}
+    public TimeSlotDto getTimeSlotDto() {
+        return timeSlotDto;
+    }
+    public void setTimeSlotDto(TimeSlotDto timeSlotDto) {
+        this.timeSlotDto = timeSlotDto;
+    }
 
 }

@@ -1,6 +1,3 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.service;
 
 import java.util.ArrayList;
@@ -177,7 +174,7 @@ public class CustomerService {
 		customerDTO.setPhoneNumber(customer.getPhoneNumber());
 		customerDTO.setName(customer.getName());
 		customerDTO.setEmail(customer.getEmail());
-		customerDTO.setSetPassword(customer.getPassword());
+		customerDTO.setPassword(customer.getPassword());
 		
 		return customerDTO;
 
@@ -237,10 +234,10 @@ public class CustomerService {
 	private AppointmentDto appointmentToDTO(Appointment app) {
 		
 		AppointmentDto dto = new AppointmentDto();
-		dto.setCustomer(customerToDTO(app.getCustomer()));
-		dto.setTechnician(TechnicianService.technicianToDTO(app.getTechnician()));
-		dto.setTimeSlot(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
-		dto.setService(ServiceService.serviceToDto(app.getService()));
+		dto.setCustomerDto(customerToDTO(app.getCustomer()));
+		dto.setTechnicianDto(TechnicianService.technicianToDTO(app.getTechnician()));
+		dto.setTimeSlotDto(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
+		dto.setServiceDto(ServiceService.serviceToDTO(app.getService()));
 		return dto;
 		
 	} 

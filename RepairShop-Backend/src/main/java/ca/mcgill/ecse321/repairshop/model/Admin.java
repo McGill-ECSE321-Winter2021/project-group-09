@@ -13,6 +13,5 @@ public class Admin extends User {
     public void setEmail(String email) {
         super.setEmail(email);
     }
-    
-    // TODO why is there no toString?
+ 
 }

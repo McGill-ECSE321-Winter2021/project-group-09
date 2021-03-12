@@ -1,7 +1,5 @@
-
-
-
 package ca.mcgill.ecse321.repairshop.service;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,17 +19,23 @@ import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
-import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import static  ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+
+import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
 @Service
 public class TechnicianService {
+
 	
 	@Autowired
 	TechnicianRepository technicianRepository;
@@ -147,7 +151,7 @@ public class TechnicianService {
 		//delete technicians's work hours
 		tech.setTimeslots(null);
 		
-		technicianRepository.deleteByEmail(email);
+		technicianRepository.deleteTechnicianByEmail(email);
 		return "Technician account with email " + email + " deleted.";
 	}
 	
@@ -317,34 +321,23 @@ public class TechnicianService {
 	private AppointmentDto appointmentToDTO(Appointment app) {
 			
 		AppointmentDto dto = new AppointmentDto();
-		dto.setCustomer(CustomerService.customerToDTO(app.getCustomer()));
-		dto.setTechnician(technicianToDTO(app.getTechnician()));
-		dto.setTimeSlot(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
-		dto.setService(ServiceService.serviceToDto(app.getService()));
+		dto.setCustomerDto(CustomerService.customerToDTO(app.getCustomer()));
+		dto.setTechnicianDto(technicianToDTO(app.getTechnician()));
+		dto.setTimeSlotDto(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
+		dto.setServiceDto(ServiceService.serviceToDTO(app.getService()));
 		return dto;
 			
 	} 
 	
 	
-	
-	/*
-	 public TimeSlotDto timeslotToDTO(TimeSlot timeslot) {
-	     TimeSlotDto dto = new TimeSlotDto();
-	     dto.setEndDateTime(timeslot.getEndDateTime());
-	     dto.setStartDateTime(timeslot.getStartDateTime());
-	     return dto;
-	 }
-	 
-	 
-	 private TimeSlot DtoToTimeslot(TimeSlotDto dto) {
-		 TimeSlot time = new TimeSlot();
-		 time.setStartDateTime(dto.getStartDateTime());
-		 time.setEndDateTime(dto.getEndDateTime());
-		 return time;
-	 }
-	 
-	*/
-	
+
+
+
+
+
+
+
+
 }
 
 

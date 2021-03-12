@@ -455,11 +455,11 @@ public class TestTechnicianService {
 			
 			AppointmentDto app = service.viewAppointments(CUSTOMER_EMAIL).get(0);
 			assertEquals(1, service.viewAppointments(CUSTOMER_EMAIL).size());
-			assertEquals(CUSTOMER_EMAIL, app.getCustomer().getEmail());
-			assertEquals(TECHNICIAN_EMAIL, app.getTechnician().getEmail());
-			assertEquals(SERVICE_NAME, app.getService().getName());
-			assertEquals(S_TIME, app.getTimeSlot().getStartDateTime());
-			assertEquals(E_TIME, app.getTimeSlot().getEndDateTime());
+			assertEquals(CUSTOMER_EMAIL, app.getCustomerDto().getEmail());
+			assertEquals(TECHNICIAN_EMAIL, app.getTechnicianDto().getEmail());
+			assertEquals(SERVICE_NAME, app.getServiceDto().getName());
+			assertEquals(S_TIME, app.getTimeSlotDto().getStartDateTime());
+			assertEquals(E_TIME, app.getTimeSlotDto().getEndDateTime());
 			
 		} catch(Exception e) {
 			fail(e.getMessage());
