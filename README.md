@@ -9,7 +9,7 @@ During the development of the RepairShop application software, the team will fol
 |Name            | GitHub|Major| Year|
 | :-------------       | ------- | ------------- | :-------------: |
 |💻 Jacek Dziewonski|[JDziewonski98](https://github.com/JDziewonski98)|Computer Science|U4|
-|💻 Shaswata Bhattacharyya|[Shaswata79](https://github.com/Shaswata79)|Computer Engineering|U1|
+|💻 Shaswata Bhattacharyya|[Shaswata79](https://github.com/Shaswata79)|Computer Engineering|U2|
 |🖥️ Tyler Syme|[T-Syme](https://github.com/T-Syme)   |Software Engineering|U2|
 |💻 Zhanna Klimanova|[zhannaklimanova](https://github.com/zhannaklimanova)|Software Engineering|U2|
 |💻 Sandy Lao|[sandyl289](https://github.com/sandyl289)|Software Engineering|U2|
