@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.repairshop.service;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
+import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +45,7 @@ public class TestAppointmentService {
 
 
     // Test data - only using what is needed for the tests
+    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-03-01T00:00:00.0");
 
     // Target appointment start time
     private static final String APP_START_TIME = "2021-02-02 09:00:00.0";
@@ -70,9 +73,11 @@ public class TestAppointmentService {
     private static final Timestamp HOLIDAY_START = Timestamp.valueOf("2021-04-15 10:00:00.0");
     private static final Timestamp HOLIDAY_END = Timestamp.valueOf("2021-04-15 14:00:00.0");
 
-
     @BeforeEach
     public void setMockOutput() {
+
+        SystemTime.setTest(true);
+        SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(11)));
 
         lenient().when(serviceRepository.findServiceByName(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 
@@ -171,30 +176,34 @@ public class TestAppointmentService {
 
         lenient().when(technicianRepository.findById(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 
-            if (invocation.getArgument(0).equals(TECHNICIAN_EMAIL)) {
             Technician tech = new Technician();
             tech.setEmail(TECHNICIAN_EMAIL);
             List<Appointment> apps = new ArrayList<>();
             apps.add(createAppointment(1L));
             tech.setAppointments(apps);
-            return Optional.of(tech);
-            } else throw new Exception();
+            if (invocation.getArgument(0).equals(TECHNICIAN_EMAIL)) {
+                return Optional.of(tech);
+            } else{
+                return Optional.empty();
+            }
         });
 
         lenient().when(customerRepository.findById(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
 
-            if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
                 Customer customer = new Customer();
                 customer.setEmail(CUSTOMER_EMAIL);
                 List<Appointment> apps = new ArrayList<>();
                 apps.add(createAppointment(1L));
                 customer.setAppointments(apps);
-                return Optional.of(customer);
-            } else throw new Exception();
+                if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
+                    return Optional.of(customer);
+                } else {
+                    return Optional.empty();
+                }
         });
 
         lenient().when(appointmentRepository.findById(any(Long.class))).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(1L)) {
+
                 //create tech
                 Technician tech = new Technician();
                 tech.setEmail(TECHNICIAN_EMAIL);
@@ -208,9 +217,13 @@ public class TestAppointmentService {
                 Appointment app = createAppointment(1L);
                 app.setTechnician(tech);
                 app.setCustomer(customer);
-                return Optional.of(app);
-            } else throw new Exception("Non-existent appointment ID");
+                if (invocation.getArgument(0).equals(1L)) {
+                    return Optional.of(app);
+                } else {
+                    return Optional.empty();
+                }
         });
+
 
         lenient().when(appointmentRepository.save(any(Appointment.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
@@ -245,7 +258,7 @@ public class TestAppointmentService {
             verify(technicianRepository, times(1)).findById(TECHNICIAN_EMAIL);
             verify(customerRepository, times(1)).findById(CUSTOMER_EMAIL);
         } catch (Exception e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -255,14 +268,34 @@ public class TestAppointmentService {
             appointmentService.cancelAppointment(2L);
             fail();
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "Non-existent appointment ID");
+            assertEquals("Cannot find the appointment by ID.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCancelAppointmentTooLate() {
+        //SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(21)));
+        try {
+            appointmentService.cancelAppointment(1L);
+            fail("Should throw an error.");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
     }
 
     private Appointment createAppointment(Long id) {
         Appointment appointment = new Appointment();
         appointment.setAppointmentID(id);
+        appointment.setTimeSlot(createTimeSlot());
         return appointment;
+    }
+
+    private TimeSlot createTimeSlot() {
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setStartDateTime(Timestamp.valueOf(INITIAL_TIME.plusDays(21)));
+        timeSlot.setEndDateTime(Timestamp.valueOf(INITIAL_TIME.plusDays(22)));
+        timeSlot.setTimeSlotID(1L);
+        return timeSlot;
     }
 
 }

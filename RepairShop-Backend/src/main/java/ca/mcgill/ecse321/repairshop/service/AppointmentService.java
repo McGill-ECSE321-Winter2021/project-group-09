@@ -1,24 +1,23 @@
 package ca.mcgill.ecse321.repairshop.service;
 
-import ca.mcgill.ecse321.repairshop.dto.*;
+import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.model.*;
-import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
-import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
-import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
-import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
-import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
+import ca.mcgill.ecse321.repairshop.repository.*;
+import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
+import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
-import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
-import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
-import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
-import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
+import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
+import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -40,10 +39,12 @@ public class AppointmentService {
 
     // TODO: Implement some more methods from the repository
 
-    /** Helper method to determine if an appointment can be booked with certain parameters
-     * @param timeSlot for the target start and end time of the appointment
+    /**
+     * Helper method to determine if an appointment can be booked with certain parameters
+     *
+     * @param timeSlot   for the target start and end time of the appointment
      * @param technician to check for the appointment
-     * @param business to check for conflicting holidays
+     * @param business   to check for conflicting holidays
      * @return a boolean for whether an appointment can be booked then
      */
     public static boolean isBookable(TimeSlot timeSlot, Technician technician, Business business) {
@@ -88,21 +89,41 @@ public class AppointmentService {
 
         // Does not overlap with the technician's other appointments. If it does, return false
         for (TimeSlot app : appointmentTimeslots) {
-            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && !timeSlot.getEndDateTime().before(app.getStartDateTime())) return false;
+            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && !timeSlot.getEndDateTime().before(app.getStartDateTime()))
+                return false;
         }
 
         // Does not overlap with holidays. If it does, return false
         for (TimeSlot holiday : allHolidays) {
-            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && !timeSlot.getEndDateTime().before(holiday.getStartDateTime())) return false;
+            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && !timeSlot.getEndDateTime().before(holiday.getStartDateTime()))
+                return false;
         }
-        
+
         // Passed all checks, so can be booked
         return true;
     }
 
-    /** Method to book an appointment given a valid timeslot
-     * @param startTimestamp when the appointment will start
-     * @param serviceName the name of the appointment's service
+    /**
+     * Helper method to convert Appointment to AppointmentDto
+     *
+     * @param appointment to convert to dto
+     * @return appointmentDto object
+     */
+    public static AppointmentDto appointmentToDto(Appointment appointment) {
+        AppointmentDto appointmentDto = new AppointmentDto();
+        appointmentDto.setAppointmentID(appointment.getAppointmentID());
+        appointmentDto.setTimeSlotDto(timeslotToDTO(appointment.getTimeSlot()));
+        appointmentDto.setServiceDto(serviceToDTO(appointment.getService()));
+        appointmentDto.setTechnicianDto(technicianToDTO(appointment.getTechnician()));
+        appointmentDto.setCustomerDto(customerToDTO(appointment.getCustomer()));
+        return appointmentDto;
+    }
+
+    /**
+     * Method to book an appointment given a valid timeslot
+     *
+     * @param startTimestamp   when the appointment will start
+     * @param serviceName      the name of the appointment's service
      * @param technicianEmails the emails of the technicians that can perform the service at the specified start time
      * @return an AppointmentDto for the bookedAppointment
      * @throws Exception for invalid timestamp, service name or technician's email
@@ -188,6 +209,7 @@ public class AppointmentService {
 
     /**
      * Deletes an appointment by ID
+     *
      * @param appointmentID ID of appointment
      * @throws Exception If ID is non existent or if it has no customer/tech (which shouldn't happen)
      */
@@ -195,6 +217,11 @@ public class AppointmentService {
     public void cancelAppointment(Long appointmentID) throws Exception {
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
         if (appointment.isPresent()) {
+            System.out.println(SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), 7));
+            System.out.println(SystemTime.systemTimestamp());
+            if (SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), 7).compareTo(SystemTime.systemTimestamp()) < 0) {
+                throw new TimeConstraintException("Can only cancel 1 week in advance.");
+            }
             Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
             Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
             if (customer.isPresent() && tech.isPresent()) {
@@ -210,25 +237,11 @@ public class AppointmentService {
                 tech.get().setAppointments(techApps);
                 technicianRepository.save(tech.get());
             } else {
-                throw new Exception("Associated Customer or Technician could not be found");
+                throw new EntityNotFoundException("Cannot find associated customer and technician of appointment.");
             }
         } else {
-            throw new Exception("Non-existent appointment ID");
+            throw new EntityNotFoundException("Cannot find the appointment by ID.");
         }
-    }
-
-    /** Helper method to convert Appointment to AppointmentDto
-     * @param appointment to convert to dto
-     * @return appointmentDto object
-     */
-    public static AppointmentDto appointmentToDto(Appointment appointment) {
-        AppointmentDto appointmentDto = new AppointmentDto();
-        appointmentDto.setAppointmentID(appointment.getAppointmentID());
-        appointmentDto.setTimeSlotDto(timeslotToDTO(appointment.getTimeSlot()));
-        appointmentDto.setServiceDto(serviceToDTO(appointment.getService()));
-        appointmentDto.setTechnicianDto(technicianToDTO(appointment.getTechnician()));
-        appointmentDto.setCustomerDto(customerToDTO(appointment.getCustomer()));
-        return appointmentDto;
     }
 
 }
