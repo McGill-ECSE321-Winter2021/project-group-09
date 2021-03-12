@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReminderService {
@@ -39,8 +39,11 @@ public class ReminderService {
         reminders = reminderRepository.findByCustomer(customer);
 
         // Check if any were found
-        if (reminders != null) return reminders.stream().map(this::reminderToDto).collect(Collectors.toList());
-        else throw new Exception("Could not find reminders for the specified customer");
+        if (reminders != null) {
+            List<ReminderDto> reminderDtos = new ArrayList<>();
+            for (Reminder reminder : reminderRepository.findAll()) { reminderDtos.add(reminderToDTO(reminder)); }
+            return reminderDtos;
+        } else throw new Exception("Could not find reminders for the specified customer");
 
     }
 
@@ -72,11 +75,8 @@ public class ReminderService {
             throw new Exception("The provided ReminderType is invalid");
         }
 
-        try {
-            customer = customerRepository.findCustomerByEmail(email);
-        } catch (Exception e) {
-            throw new Exception("The provided customer email does not exist");
-        }
+        customer = customerRepository.findCustomerByEmail(email);
+        if (customer == null) throw new Exception("The provided customer email does not exist");
 
         Reminder reminder = new Reminder();
         reminder.setDateTime(timestamp);
@@ -85,7 +85,7 @@ public class ReminderService {
 
         reminderRepository.save(reminder);
 
-        return reminderToDto(reminder);
+        return reminderToDTO(reminder);
 
     }
 
@@ -93,7 +93,7 @@ public class ReminderService {
      * @param reminder to convert to dto
      * @return reminderDto object
      */
-    public ReminderDto reminderToDto(Reminder reminder) {
+    public static ReminderDto reminderToDTO(Reminder reminder) {
         ReminderDto reminderDto = new ReminderDto();
         reminderDto.setReminderID(reminder.getReminderID());
         reminderDto.setDateTime(reminder.getDateTime());
