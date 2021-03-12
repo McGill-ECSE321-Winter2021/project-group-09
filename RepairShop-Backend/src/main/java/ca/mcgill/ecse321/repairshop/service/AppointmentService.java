@@ -16,6 +16,7 @@ import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -182,6 +183,67 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
 
         return appointmentToDto(appointment);
+
+    }
+
+    /** Method to return all times that an appointment for a given service can be created for one week
+     * @param startDate The date to start checking for possible appointments (uses Timestamp format)
+     * @param serviceName The name of the service for the appointment
+     * @param businessName The name of the business (to get its holidays)
+     * @return a list of Timestamps for all available appointment start times
+     */
+    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName, String businessName) throws Exception {
+
+        if (startDate == null || startDate.equals("")) throw new Exception("The Timestamp is mandatory");
+        if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
+        if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
+
+        Timestamp startDateTime;
+        Service service;
+        Business business;
+
+        try {
+            startDateTime = Timestamp.valueOf(startDate);
+            if (startDateTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
+        } catch (Exception e) {
+            throw new Exception("The provided Timestamp is invalid");
+        }
+
+        service = serviceRepository.findServiceByName(serviceName);
+        if (service == null) throw new Exception("The provided service name is invalid");
+
+        business = businessRepository.findBusinessByName(businessName);
+        if (business == null) throw new Exception("The provided business name is invalid");
+
+        List<Technician> technicians = technicianRepository.findAll();
+
+        List<TimeSlot> allTimeSlots = new ArrayList<>();
+        LocalDateTime tempDateTime = startDateTime.toLocalDateTime();
+        TimeSlot tempTimeSlot = new TimeSlot();
+        int durationInMillis = service.getDuration() * 30 * 60 * 1000;
+        Timestamp startTime = Timestamp.valueOf(tempDateTime);
+        Timestamp endTime = new Timestamp(startTime.getTime() + durationInMillis);
+        tempTimeSlot.setStartDateTime(startTime);
+        tempTimeSlot.setEndDateTime(endTime);
+
+        // loop through all possible start times -> each half hour in a full week = 336 blocks of 30 minutes
+        for (int i = 0; i < 336; i++) {
+
+            for (Technician technician : technicians) {
+                if (isBookable(tempTimeSlot, technician, business)) {
+                    allTimeSlots.add(tempTimeSlot);
+                    break;
+                }
+            }
+
+            tempDateTime = tempDateTime.plusMinutes(30);
+            startTime = Timestamp.valueOf(tempDateTime);
+            endTime = new Timestamp(startTime.getTime() + durationInMillis);
+            tempTimeSlot.setStartDateTime(startTime);
+            tempTimeSlot.setEndDateTime(endTime);
+        }
+
+        return allTimeSlots;
 
     }
 
