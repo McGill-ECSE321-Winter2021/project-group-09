@@ -139,6 +139,15 @@ public class AppointmentService {
         business = businessRepository.findBusinessByName(businessName);
         if (business == null) throw new Exception("The provided business name is invalid");
 
+        // Create timeslot
+        // the end time is the start time + service duration * 30 minutes * 60 seconds * 1000 milliseconds
+        // (the service duration is the number of blocks of 30 minutes)
+        int durationInMillis = service.getDuration() * 30 * 60 * 1000;
+        Timestamp endTime = new Timestamp(startTime.getTime() + durationInMillis);
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setStartDateTime(startTime);
+        timeSlot.setEndDateTime(endTime);
+
         // input is all available technicians' emails (comma separated), so finding each technician:
         // going to use technician with the least appointments already booked
         // if a technician has 0 appointments, go with that one
@@ -152,7 +161,8 @@ public class AppointmentService {
             if (tempTech == null) throw new Exception("A technician's email is invalid");
             else {
                 int tempNumApps = tempTech.getAppointments().size();
-                if (numAppointments > tempNumApps) {
+                // Make sure that the technician is still available
+                if (numAppointments > tempNumApps && isBookable(timeSlot, tempTech, business)) {
                     numAppointments = tempNumApps;
                     technician = tempTech;
                     if (tempNumApps == 0) break;
@@ -160,19 +170,8 @@ public class AppointmentService {
             }
         }
 
-        // Create timeslot
-        // the end time is the start time + service duration * 30 minutes * 60 seconds * 1000 milliseconds
-        // (the service duration is the number of blocks of 30 minutes)
-        int durationInMillis = service.getDuration() * 30 * 60 * 1000;
-        Timestamp endTime = new Timestamp(startTime.getTime() + durationInMillis);
-        TimeSlot timeSlot = new TimeSlot();
-        timeSlot.setStartDateTime(startTime);
-        timeSlot.setEndDateTime(endTime);
-
-        // Verify that the appointment can still be booked
-        // This should always be good, except if the customer leaves the booking page open for a while and someone else
-        // books an appointment while they are looking at it
-        if (!isBookable(timeSlot, technician, business)) throw new Exception("The appointment cannot be booked");
+        // if no technician is available
+        if (numAppointments == Integer.MAX_VALUE) throw new Exception("The appointment cannot be booked");
 
         Appointment appointment = new Appointment();
         appointment.setTimeSlot(timeSlot);
