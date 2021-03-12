@@ -175,7 +175,7 @@ public class TechnicianController {
 		
 	}
 	
-	/*
+	
 	@GetMapping(value = { "/technician/{email}/appointments", "/technician/{email}/appointments/" })
 	public ResponseEntity<?> viewTechnicianAppointments(@PathVariable("email") String email) {
 		
@@ -191,7 +191,21 @@ public class TechnicianController {
 		
 	}
 	
-	*/
+	
+	@PostMapping(value = { "/technician/{email}/add_work_hours", "/technician/{email}/add_work_hours/" })
+	public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody List<TimeSlotDto> timeDto) throws IllegalArgumentException {
+		
+		try {
+
+			String message = techService.addTechnicianWorkHours(email, timeDto);
+			return new ResponseEntity<>(message, HttpStatus.OK); 
+		
+		} catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		
+	}
 	
 }
 

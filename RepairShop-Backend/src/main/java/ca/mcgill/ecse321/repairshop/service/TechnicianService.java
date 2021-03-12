@@ -317,7 +317,6 @@ public class TechnicianService {
 	
 	
 	//TODO Remove this. Should have already been implemented in AppointmentService
-	
 	private AppointmentDto appointmentToDTO(Appointment app) {
 			
 		AppointmentDto dto = new AppointmentDto();

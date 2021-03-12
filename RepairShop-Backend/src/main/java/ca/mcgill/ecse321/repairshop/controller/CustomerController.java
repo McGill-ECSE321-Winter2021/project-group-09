@@ -130,7 +130,7 @@ public class CustomerController {
 		
 	}
 	
-	/*
+	
 	
 	@GetMapping(value = { "/customer/{email}/appointments", "/customer/{email}/appointments/" })
 	public ResponseEntity<?> viewCustomerAppointments(@PathVariable("email") String email) {
@@ -147,6 +147,6 @@ public class CustomerController {
 		
 	}
 	
-	*/
+	
 
 }
