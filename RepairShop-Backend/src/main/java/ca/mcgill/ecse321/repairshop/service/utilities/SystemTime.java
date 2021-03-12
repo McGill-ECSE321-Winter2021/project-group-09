@@ -46,14 +46,6 @@ public class SystemTime {
     }
 
     /**
-     * Returns system's current timestamp
-     * @return current Timestamp
-     */
-    public static Timestamp systemTimestamp() {
-        return new Timestamp(System.currentTimeMillis());
-    }
-
-    /**
      * Adds or subtracts a number of days to a timestamp.
      *
      * @param initialTimeStamp initial timestamp with date & time (Timestamp)

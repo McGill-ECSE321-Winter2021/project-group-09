@@ -211,15 +211,12 @@ public class AppointmentService {
      * Deletes an appointment by ID
      *
      * @param appointmentID ID of appointment
-     * @throws Exception If ID is non existent or if it has no customer/tech (which shouldn't happen)
      */
     @Transactional
-    public void cancelAppointment(Long appointmentID) throws Exception {
+    public void cancelAppointment(Long appointmentID) {
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
         if (appointment.isPresent()) {
-            System.out.println(SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), 7));
-            System.out.println(SystemTime.systemTimestamp());
-            if (SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), 7).compareTo(SystemTime.systemTimestamp()) < 0) {
+            if (SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), -7).compareTo(SystemTime.getCurrentDateTime()) < 0) {
                 throw new TimeConstraintException("Can only cancel 1 week in advance.");
             }
             Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
