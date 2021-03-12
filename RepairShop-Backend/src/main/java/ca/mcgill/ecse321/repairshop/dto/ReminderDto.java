@@ -14,6 +14,13 @@ public class ReminderDto {
     private ReminderType reminderType;
     @NotNull
     private CustomerDto customerDto;
+    @NotNull
+    private String serviceName;
+
+
+    @NotNull
+    private Timestamp appointmentDateTime;
+
 
     public Long getReminderID() {
         return reminderID;
@@ -42,5 +49,22 @@ public class ReminderDto {
     public void setCustomerDto(CustomerDto customerDto) {
         this.customerDto = customerDto;
     }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public Timestamp getAppointmentDateTime() {
+        return appointmentDateTime;
+    }
+
+    public void setAppointmentDateTime(Timestamp appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
+    }
+
 
 }
