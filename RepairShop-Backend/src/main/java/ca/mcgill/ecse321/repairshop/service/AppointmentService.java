@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
+import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
@@ -16,6 +17,7 @@ import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMet
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +52,10 @@ public class AppointmentService {
         if (technician == null) return false;
         // Get technician's work hours
         List<TimeSlot> workHours = technician.getTimeslots();
-
-        // TODO: use adjusted hours. Just testing for now...
-//        List<TimeSlot> adjustedHours = new ArrayList<>();
-//        for (TimeSlot hours : workHours) {
-//            adjustedHours.add(getUpdatedHours(hours));
-//        }
+        List<TimeSlot> adjustedHours = new ArrayList<>();
+        for (TimeSlot hours : workHours) {
+            adjustedHours.add(getUpdatedHours(hours));
+        }
 
         // Get Technician's appointments
         List<Appointment> appointments = technician.getAppointments();
@@ -76,7 +76,7 @@ public class AppointmentService {
         // Within technician's work hours
         boolean withinHours = false;
 
-        for (TimeSlot hours : workHours) {
+        for (TimeSlot hours : adjustedHours) {
             if (!hours.getStartDateTime().after(timeSlot.getStartDateTime()) && !hours.getEndDateTime().before(timeSlot.getEndDateTime())) {
                 withinHours = true;
                 break;
@@ -125,6 +125,7 @@ public class AppointmentService {
 
         try {
             startTime = Timestamp.valueOf(startTimestamp);
+            if (startTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
         } catch (Exception e) {
             throw new Exception("The provided Timestamp is invalid");
         }

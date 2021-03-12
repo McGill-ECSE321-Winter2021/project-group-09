@@ -11,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,31 +45,42 @@ public class TestAppointmentService {
 
     // Test data - only using what is needed for the tests
 
+    // Going to use times relative to 2021-03-01 00:00:00.0 to make them easier to understand
+    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-03-01T00:00:00.0"); // Monday
+
     // Target appointment start time
-    private static final String APP_START_TIME = "2021-02-02 09:00:00.0";
+    private static final String APP_START_TIME = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(9)).toString(); // Monday
+    private static final String APP_START_TIME2 = Timestamp.valueOf(INITIAL_TIME.minusDays(14)).toString(); // Past time
+    private static final String APP_START_TIME3 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(13)).toString(); // Tuesday - end time out of hours
+    private static final String APP_START_TIME4 = Timestamp.valueOf(INITIAL_TIME.plusDays(18).plusHours(7)).toString(); // Friday - outside hours
+    private static final String APP_START_TIME5 = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(7)).toString(); // Wednesday - during holiday
+    private static final String APP_START_TIME6 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(11)).toString(); // Tuesday - overlaps another appointment
+    private static final String APP_START_TIME7 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(13)).toString(); // Tuesday - during another appointment
 
     // Service
     private static final String SERVICE_NAME = "Service";
-    private static final int SERVICE_DURATION = 2;
+    private static final int SERVICE_DURATION = 4;
     private static final double SERVICE_PRICE = 49.99;
 
     // Technicians
     private static final String TECHNICIAN_EMAIL = "technician@mail.com";
     private static final String TECHNICIAN_EMAIL2 = "technician2@mail.com";
-    private static final Timestamp HOURS_START = Timestamp.valueOf("2021-03-15 10:00:00.0");
-    private static final Timestamp HOURS_END = Timestamp.valueOf("2021-03-15 14:00:00.0");
-    private static final Timestamp HOURS_START2 = Timestamp.valueOf("2021-02-02 08:00:00.0");
-    private static final Timestamp HOURS_END2 = Timestamp.valueOf("2021-02-02 16:00:00.0");
-    private static final Timestamp APP_START = Timestamp.valueOf("2021-02-02 13:00:00.0");
-    private static final Timestamp APP_END = Timestamp.valueOf("2021-02-02 15:00:00.0");
+    private static final Timestamp HOURS_START = Timestamp.valueOf(INITIAL_TIME.plusHours(8)); // Monday
+    private static final Timestamp HOURS_END = Timestamp.valueOf(INITIAL_TIME.plusHours(14)); // Monday
+    private static final Timestamp HOURS_START2 = Timestamp.valueOf(INITIAL_TIME.plusDays(1).plusHours(10)); // Tuesday
+    private static final Timestamp HOURS_END2 = Timestamp.valueOf(INITIAL_TIME.plusDays(1).plusHours(18)); // Tuesday
+    private static final Timestamp HOURS_START3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(18)); // Wednesday
+    private static final Timestamp HOURS_END3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(18)); // Wednesday
+    private static final Timestamp APP_START = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(12)); // Tuesday
+    private static final Timestamp APP_END = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(15)); // Tuesday
 
     // Customer
     private static final String CUSTOMER_EMAIL = "customer@mail.com";
 
     // Business
     private static final String BUSINESS_NAME = "Business";
-    private static final Timestamp HOLIDAY_START = Timestamp.valueOf("2021-04-15 10:00:00.0");
-    private static final Timestamp HOLIDAY_END = Timestamp.valueOf("2021-04-15 14:00:00.0");
+    private static final Timestamp HOLIDAY_START = Timestamp.valueOf(INITIAL_TIME.plusDays(15)); // Wednesday
+    private static final Timestamp HOLIDAY_END = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(23)); // Wednesday
 
 
     @BeforeEach
@@ -138,8 +151,8 @@ public class TestAppointmentService {
                 hours2.setStartDateTime(HOURS_START2);
                 hours2.setEndDateTime(HOURS_END2);
                 List<TimeSlot> workHours = new ArrayList<>();
-                workHours.add(hours);
-                workHours.add(hours2);
+                workHours.add(hours); // Monday
+                workHours.add(hours2); // Tuesday
                 technician.setTimeslots(workHours);
 
                 return technician;
@@ -156,11 +169,15 @@ public class TestAppointmentService {
                 List<Appointment> apps = new ArrayList<>();
                 apps.add(app);
                 technician2.setAppointments(apps);
-                TimeSlot hours = new TimeSlot();
-                hours.setStartDateTime(HOURS_START);
-                hours.setEndDateTime(HOURS_END);
+                TimeSlot hours2 = new TimeSlot();
+                hours2.setStartDateTime(HOURS_START2);
+                hours2.setEndDateTime(HOURS_END2);
+                TimeSlot hours3 = new TimeSlot();
+                hours3.setStartDateTime(HOURS_START3);
+                hours3.setEndDateTime(HOURS_END3);
                 List<TimeSlot> workHours = new ArrayList<>();
-                workHours.add(hours);
+                workHours.add(hours2);
+                workHours.add(hours3);
                 technician2.setTimeslots(workHours);
 
                 return technician2;
@@ -191,7 +208,7 @@ public class TestAppointmentService {
 
     }
 
-    @Test // invalid appointment - no technician hour
+    @Test // invalid appointment - no technician with work hours
     public void testCreateAppointmentTechnicianUnavailable() {
 
         AppointmentDto appointmentDto = null;
@@ -246,6 +263,96 @@ public class TestAppointmentService {
             fail();
         } catch (Exception e) {
             assertEquals("The provided Timestamp is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (time has passed)
+    public void testCreateAppointmentInvalidTimestampInPast() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME2, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided Timestamp is invalid", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (overlaps end of technician's hours)
+    public void testCreateAppointmentInvalidTimestampEndHours() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME3, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The appointment cannot be booked", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (outside of technician's hours)
+    public void testCreateAppointmentInvalidTimestampOutsideHours() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME4, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The appointment cannot be booked", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (during holiday)
+    public void testCreateAppointmentInvalidTimestampDuringHoliday() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME5, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The appointment cannot be booked", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (overlaps with another appointment)
+    public void testCreateAppointmentInvalidTimestampOverlapAppointment() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME6, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The appointment cannot be booked", e.getMessage());
+        }
+
+        assertNull(appointmentDto);
+    }
+
+    @Test // invalid appointment - invalid start time (during another appointment)
+    public void testCreateAppointmentInvalidTimestampDuringAppointment() {
+
+        AppointmentDto appointmentDto = null;
+
+        try {
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME7, SERVICE_NAME, TECHNICIAN_EMAIL + ", " + TECHNICIAN_EMAIL2, CUSTOMER_EMAIL, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The appointment cannot be booked", e.getMessage());
         }
 
         assertNull(appointmentDto);
