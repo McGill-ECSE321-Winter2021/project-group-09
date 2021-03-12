@@ -32,7 +32,7 @@ public class ScheduledTasks {
     /**
      * Everyday at 6 am: send today's service and appointment reminders.
      */
-    @Scheduled(cron = "0 0 6 * * ? *")
+    @Scheduled(cron = "0 0 6 * * ?")
     public void sendAllTodayReminder() {
 
         String today = systemDate();
