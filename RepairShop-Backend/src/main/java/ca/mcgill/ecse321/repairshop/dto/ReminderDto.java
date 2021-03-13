@@ -16,8 +16,6 @@ public class ReminderDto {
     private CustomerDto customerDto;
     @NotNull
     private String serviceName;
-
-
     @NotNull
     private Timestamp appointmentDateTime;
 
@@ -58,7 +56,7 @@ public class ReminderDto {
     }
 
     public Timestamp getAppointmentDateTime() {
-        return appointmentDateTime;
+        return this.appointmentDateTime;
     }
     public void setAppointmentDateTime(Timestamp appointmentDateTime) {
         this.appointmentDateTime = appointmentDateTime;

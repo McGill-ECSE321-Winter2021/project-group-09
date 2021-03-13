@@ -155,6 +155,8 @@ public class ReminderService {
         reminderDto.setDateTime(reminder.getDateTime());
         reminderDto.setReminderType(reminder.getReminderType());
         reminderDto.setCustomerDto(customerToDTO(reminder.getCustomer()));
+        reminderDto.setServiceName(reminder.getServiceName());
+        reminderDto.setAppointmentDateTime(reminder.getAppointmentDateTime());
         return reminderDto;
     }
 

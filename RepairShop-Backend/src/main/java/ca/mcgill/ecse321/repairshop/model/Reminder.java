@@ -27,7 +27,6 @@ public class Reminder {
 	public String getServiceName() {
 		return serviceName;
 	}
-
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
@@ -48,7 +47,7 @@ public class Reminder {
 	public Timestamp getAppointmentDateTime() {
 		return appointmentDateTime;
 	}
-	public void setAppointmentDateTime(Timestamp dateTime) {
+	public void setAppointmentDateTime(Timestamp appointmentDateTime) {
 		this.appointmentDateTime = appointmentDateTime;
 	}
 

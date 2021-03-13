@@ -4,7 +4,8 @@ import ca.mcgill.ecse321.repairshop.dto.ReminderDto;
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
-import static  ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
 
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.mockito.ArgumentMatchers.anyString;
 
 import java.sql.Timestamp;
@@ -123,6 +125,25 @@ public class TestReminderService {
             } else return null;
 
         });
+        lenient().when(reminderRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+            Reminder reminder = new Reminder();
+            reminder.setReminderType(REMINDER_TYPE);
+            reminder.setReminderID(REMINDERID);
+            reminder.setServiceName(SERVICE_NAME);
+            reminder.setDateTime(REMINDER_TIMESTAMP);
+            reminder.setAppointmentDateTime(APPOINTMENT_TIMESTAMP);
+            Customer customer = new Customer();
+            customer.setAddress("somewhere");
+            customer.setEmail("someone@gmail.com");
+            customer.setPassword("notMyPassword");
+            customer.setName("Someone");
+            customer.setPhoneNumber("111-111-1111");
+            reminder.setCustomer(customer);
+            List<Reminder> reminderList = new ArrayList<>();
+            reminderList.add(reminder);
+            return reminderList;
+        });
+
         lenient().when(reminderRepository.save(any(Reminder.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
         lenient().when(serviceRepository.save(any(Service.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
         lenient().when(customerRepository.save(any(Customer.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
@@ -135,9 +156,9 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
-                fail(e.getMessage());
+            fail(e.getMessage());
         }
 
         assertNotNull(reminderDto);
@@ -155,7 +176,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(null, APPOINTMENT_TIMESTAMP.toString(),SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(null, APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The Timestamps are mandatory", e.getMessage());
         }
@@ -170,7 +191,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), null,SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), null, SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The Timestamps are mandatory", e.getMessage());
         }
@@ -186,7 +207,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder("notATimestamp", APPOINTMENT_TIMESTAMP.toString(),SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder("notATimestamp", APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The provided Timestamps are invalid", e.getMessage());
         }
@@ -201,7 +222,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),"notATimestamp",SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), "notATimestamp", SERVICE_NAME, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The provided Timestamps are invalid", e.getMessage());
         }
@@ -217,7 +238,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(),SERVICE_NAME, null, CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, null, CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The ReminderType is mandatory", e.getMessage());
         }
@@ -232,7 +253,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(),SERVICE_NAME, "notAReminderType", CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, "notAReminderType", CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The provided ReminderType is invalid", e.getMessage());
         }
@@ -247,7 +268,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(),null, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), null, REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
         }
@@ -262,7 +283,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(),"notAValidServiceName", REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), "notAValidServiceName", REMINDER_TYPE.toString(), CUSTOMER_EMAIL);
         } catch (Exception e) {
             assertEquals("The provided service name does not exist", e.getMessage());
         }
@@ -277,7 +298,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(),SERVICE_NAME, REMINDER_TYPE.toString(), null);
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, REMINDER_TYPE.toString(), null);
         } catch (Exception e) {
             assertEquals("The customer email is mandatory", e.getMessage());
         }
@@ -292,7 +313,7 @@ public class TestReminderService {
         ReminderDto reminderDto = null;
 
         try {
-            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(),APPOINTMENT_TIMESTAMP.toString(),SERVICE_NAME, REMINDER_TYPE.toString(), "notACustomerEmail");
+            reminderDto = reminderService.createReminder(REMINDER_TIMESTAMP.toString(), APPOINTMENT_TIMESTAMP.toString(), SERVICE_NAME, REMINDER_TYPE.toString(), "notACustomerEmail");
         } catch (Exception e) {
             assertEquals("The provided customer email does not exist", e.getMessage());
         }
@@ -379,10 +400,6 @@ public class TestReminderService {
             fail(e.getMessage());
         }
 
-
     }
-
-
-
 
 }
