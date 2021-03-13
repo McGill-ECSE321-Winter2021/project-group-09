@@ -716,6 +716,8 @@ public class TestAppointmentService {
 
         assertNull(possibleAppointments);
 
+    }
+
     @Test
     public void testCancelAppointment() {
         try {

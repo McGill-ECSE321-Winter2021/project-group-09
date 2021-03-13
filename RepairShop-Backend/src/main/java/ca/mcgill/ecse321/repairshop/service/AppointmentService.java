@@ -19,6 +19,7 @@ import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO
 import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
 import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
+import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {
@@ -120,9 +121,9 @@ public class AppointmentService {
     /**
      * Method to book an appointment given a valid timeslot
      *
-     * @param startTimestamp   when the appointment will start
-     * @param serviceName      the name of the appointment's service
-     * @param technicianEmails the emails of the technicians that can perform the service at the specified start time
+     * @param startTimestamp    when the appointment will start
+     * @param serviceName       the name of the appointment's service
+     * @param customerEmail     the email of the customer for whom to book the appointment
      * @return an AppointmentDto for the bookedAppointment
      * @throws Exception for invalid timestamp, service name or technician's email
      */
