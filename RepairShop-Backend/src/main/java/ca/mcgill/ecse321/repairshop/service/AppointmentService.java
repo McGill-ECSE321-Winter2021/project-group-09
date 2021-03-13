@@ -16,7 +16,6 @@ import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -214,13 +213,15 @@ public class AppointmentService {
         int durationInMillis = service.getDuration() * 30 * 60 * 1000; // service duration is an int for the number of 30 minute blocks
 
         TimeSlot tempTimeSlot = new TimeSlot();
-        Timestamp startTime = Timestamp.valueOf(tempDateTime);
-        Timestamp endTime = new Timestamp(startTime.getTime() + durationInMillis);
-        tempTimeSlot.setStartDateTime(startTime);
-        tempTimeSlot.setEndDateTime(endTime);
+        Timestamp startTime, endTime;
 
         // loop through all possible start times -> each half hour in a full week = 336 blocks of 30 minutes
         for (int i = 0; i < 336; i++) {
+
+            startTime = Timestamp.valueOf(tempDateTime);
+            endTime = new Timestamp(startTime.getTime() + durationInMillis);
+            tempTimeSlot.setStartDateTime(startTime);
+            tempTimeSlot.setEndDateTime(endTime);
 
             // Check each technician -> if one is available, add timeslot
             for (Technician technician : technicians) {
@@ -231,10 +232,6 @@ public class AppointmentService {
             }
 
             tempDateTime = tempDateTime.plusMinutes(30);
-            startTime = Timestamp.valueOf(tempDateTime);
-            endTime = new Timestamp(startTime.getTime() + durationInMillis);
-            tempTimeSlot.setStartDateTime(startTime);
-            tempTimeSlot.setEndDateTime(endTime);
         }
 
         return allTimeSlots;

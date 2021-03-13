@@ -66,7 +66,7 @@ public class TestAppointmentService {
     private static final String TECHNICIAN_EMAIL = "technician@mail.com";
     private static final String TECHNICIAN_EMAIL2 = "technician2@mail.com";
     private static final Timestamp HOURS_START = Timestamp.valueOf(INITIAL_TIME.plusHours(8)); // Monday
-    private static final Timestamp HOURS_END = Timestamp.valueOf(INITIAL_TIME.plusHours(14)); // Monday
+    private static final Timestamp HOURS_END = Timestamp.valueOf(INITIAL_TIME.plusHours(16)); // Monday
     private static final Timestamp HOURS_START2 = Timestamp.valueOf(INITIAL_TIME.plusDays(1).plusHours(10)); // Tuesday
     private static final Timestamp HOURS_END2 = Timestamp.valueOf(INITIAL_TIME.plusDays(1).plusHours(18)); // Tuesday
     private static final Timestamp HOURS_START3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(18)); // Wednesday
@@ -159,7 +159,7 @@ public class TestAppointmentService {
             technician.setTimeslots(workHours);
 
             Technician technician2 = new Technician();
-            technician2.setEmail(TECHNICIAN_EMAIL);
+            technician2.setEmail(TECHNICIAN_EMAIL2);
             TimeSlot appSlot2 = new TimeSlot();
             appSlot2.setStartDateTime(APP_START);
             appSlot2.setEndDateTime(APP_END);
@@ -186,6 +186,9 @@ public class TestAppointmentService {
         lenient().when(appointmentRepository.save(any(Appointment.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
     }
+
+
+    // Test creating an appointment
 
     @Test // valid appointment
     public void testCreateAppointment() {
@@ -474,6 +477,31 @@ public class TestAppointmentService {
         }
 
         assertNull(appointmentDto);
+    }
+
+
+    //  Test getting all possible appointments
+
+    @Test // valid set of appointments
+    public void testGetPossibleAppointments() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, BUSINESS_NAME);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+        assertNotNull(possibleAppointments);
+
+        // temp
+        System.out.println("----------------------");
+        System.out.println("Possible appointments: ");
+        for (TimeSlot slot : possibleAppointments) {
+            System.out.println(slot.getStartDateTime() + " to " + slot.getEndDateTime());
+        }
+        System.out.println("----------------------");
     }
 
 }
