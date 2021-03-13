@@ -5,5 +5,5 @@ public enum ReminderType {
 	Confirmation,
 	Maintenance, 
 	RegularCheckups,
-	AppointmentReminder,  //TODO: add this in domain model customer will get a reminder exactly 10 days before
+	AppointmentReminder  //TODO: add this in domain model customer will get a reminder exactly 10 days before
 }

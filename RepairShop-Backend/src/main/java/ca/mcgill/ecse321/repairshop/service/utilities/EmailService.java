@@ -27,7 +27,10 @@ public class EmailService {
     }
 
     /**
-     * Send an reminder or confirmation to the recipient.
+     * Send a reminder or confirmation email to the recipient.<br/>
+     * - For BOOKING CONFIRMATION (ReminderType.Confirmation): provide all input parameters<br/>
+     * - For 10-DAYS-BEFORE REMINDER (ReminderType.AppointmentReminder): provide all input parameters<br/>
+     * - For SERVICE REMINDERS(ReminderType.OilChange, Maintenance, RegularCheckups): No need to provide appointmentDateTime and price
      *
      * @param recipientEmail      email of the recipient (String)
      * @param recipientName       name of the recipient (String)
@@ -47,7 +50,7 @@ public class EmailService {
         if (typeOfReminder.equals(ReminderType.Confirmation)) { // BOOKING CONFIRMATION
             msg.setSubject("Auto Repair Shop 9: Booking Confirmation");
             msg.setText("Hello " + recipientName + ", \nThank you for choosing Auto Repair Shop 9! Your booking is now confirmed.\n" +
-                    "Here are the booking details:\n" + appointmentDateTime + "\nService:\n" + typeOfReminder.toString()
+                    "Here are the booking details:\n" + appointmentDateTime + "\nService:\n" + serviceName
                     + "\nPrice:\n" + price + "$\n\n " + "Note: 7 days notice is required to cancel an appointment." +
                     "\n\n Your Amazing Group 9 Auto Repair Shop team");
 
@@ -59,10 +62,10 @@ public class EmailService {
                     "\n\n Your Amazing Group 9 Auto Repair Shop team");
 
 //TODO: If have time, modify messages + make them pretty
-        } else { //OTHER TYPE OF SERVICE REMINDER
+        } else { //OTHER TYPE OF SERVICE REMINDER (ReminderType.OilChange, Maintenance, RegularCheckups)
             msg.setSubject("Auto Repair Shop 9: " + typeOfReminder.toString() + " Reminder");
-            msg.setText("Hello " + recipientName + ", \n" + "It has been a few months since your car received a " + typeOfReminder.toString() + ".\n"
-                    + "You can book your next appointment now using our website our application!\n" + "Have a great day!" +
+            msg.setText("Hello " + recipientName + ", \n" + "It has been a few months since your car received a " + serviceName + ".\n"
+                    + "You can book your next appointment now using our website or our application!\n" + "Have a great day!" +
                     "\n\n Your Amazing Group 9 Auto Repair Shop team");
 
         }
