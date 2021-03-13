@@ -527,7 +527,6 @@ public class TestAdminService {
 			//delete
 			String message = adminService.deleteAdmin(ADMIN_EMAIL);
 			assertEquals("Admin account with email " + ADMIN_EMAIL + " was successfully deleted.", message);
-//			assertNull(adminService.getAdmin(ADMIN_EMAIL)); <= this returns the mock but should really  be null. TODO figure out why this is happening later
 			
 		} catch (Exception e) {
 			fail(e.getMessage());
