@@ -14,6 +14,13 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+    /** Endpoint to create an appointment
+     * @param startTimestamp Timestamp for the start time of the appointment as a string
+     * @param serviceName The name of the service for the appointment
+     * @param customerEmail The email of the customer for whom to book the appointment
+     * @param businessName The name of the business (to check holidays)
+     * @return the appointment that's been created
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createAppointment(@RequestParam String startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestParam String businessName) {
         try {
@@ -23,7 +30,13 @@ public class AppointmentController {
         }
     }
 
-    @PostMapping("/possibilities")
+    /** Endpoint to get all possible appointment times for one week
+     * @param startDate The initial date to start the search
+     * @param serviceName The name of the service for the appointment
+     * @param businessName The name of the business (to check holidays)
+     * @return a list of timeslots for all the possible appointments
+     */
+    @GetMapping("/possibilities")
     public ResponseEntity<?> getPossibleAppointments(@RequestParam String startDate, @RequestParam String serviceName, @RequestParam String businessName) {
         try {
             return new ResponseEntity<>(appointmentService.getPossibleAppointments(startDate, serviceName, businessName), HttpStatus.OK);
