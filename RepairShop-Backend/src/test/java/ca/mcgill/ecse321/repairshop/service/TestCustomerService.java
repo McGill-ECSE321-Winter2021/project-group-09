@@ -127,11 +127,15 @@ public class TestCustomerService {
 				CUSTOMER.setAppointments(apps);
 				CUSTOMER.setReminders(reminders);
 				return CUSTOMER;
+
 			} else {
 				return null;
 			}
 			
 		});
+		
+		
+
 		
 		
 		lenient().when(appRepo.findAppointmentByAppointmentID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
@@ -143,7 +147,7 @@ public class TestCustomerService {
 			
 		});
 		
-		
+	
 		
 		
 		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
