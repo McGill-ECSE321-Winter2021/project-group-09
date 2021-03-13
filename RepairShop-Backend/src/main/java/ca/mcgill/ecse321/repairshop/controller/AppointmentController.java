@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
 import ca.mcgill.ecse321.repairshop.service.AppointmentService;
+import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,21 @@ public class AppointmentController {
             return new ResponseEntity<>(appointmentService.getPossibleAppointments(startDate, serviceName, businessName), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Controller to cancel (delete) an appointment
+     * @param id ID of the appointment to be deleted
+     * @return response with a possible error message
+     */
+    @DeleteMapping("/cancel/{id}")
+    public ResponseEntity<?> cancel(@PathVariable("id") Long id) {
+        try {
+            appointmentService.cancelAppointment(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

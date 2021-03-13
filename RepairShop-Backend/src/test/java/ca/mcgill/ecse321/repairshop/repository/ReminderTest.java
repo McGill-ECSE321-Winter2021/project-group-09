@@ -54,17 +54,24 @@ public class ReminderTest {
 
 		//create reminder
 		Timestamp reminderDay = Timestamp.valueOf("2021-04-20 10:10:10.0");
-		ReminderType reminderType = ReminderType.OilChange;
+		Timestamp appointmentDay = Timestamp.valueOf("2021-04-30 10:10:10.0");
+		ReminderType reminderType = ReminderType.UpcomingAppointment;
+		String serviceName = "Oil Change";
 		Reminder reminder = new Reminder();
 		reminder.setCustomer(customer);
 		reminder.setDateTime(reminderDay);
 		reminder.setReminderType(reminderType);
+		reminder.setServiceName("Oil Change");
+		reminder.setAppointmentDateTime(appointmentDay);
 		reminder = reminderRepository.save(reminder);
 
 		assertNotNull(reminder);
 		assertEquals(customerName, reminder.getCustomer().getName());
 		assertEquals(reminderType, reminder.getReminderType());
-		
+		assertEquals(serviceName, reminder.getServiceName());
+		assertEquals(appointmentDay, reminder.getAppointmentDateTime());
+
+
 	}
 	
     @Test
@@ -85,11 +92,18 @@ public class ReminderTest {
 
 		//create reminder
 		Timestamp reminderDay = Timestamp.valueOf("2021-06-20 10:10:10.0");
-		ReminderType reminderType = ReminderType.Maintenance;
+		ReminderType reminderType = ReminderType.ServiceReminder;
+		String serviceName = "Maintenance";
+		Timestamp appointmentDay = Timestamp.valueOf("2021-06-20 10:10:10.0");
+
 		Reminder reminder = new Reminder();
 		reminder.setCustomer(customer);
 		reminder.setDateTime(reminderDay);
 		reminder.setReminderType(reminderType);
+		reminder.setServiceName(serviceName);
+		reminder.setAppointmentDateTime(appointmentDay);
+
+
 		Long reminderID = reminderRepository.save(reminder).getReminderID();
 	
 		assertNotNull(reminderID);

@@ -1,3 +1,5 @@
+
+
 package ca.mcgill.ecse321.repairshop.service.utilities;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,3 +26,4 @@ public class EmailService {
     }
 
 }
+

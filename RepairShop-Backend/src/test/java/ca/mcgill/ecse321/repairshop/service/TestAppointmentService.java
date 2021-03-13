@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.repairshop.service;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
+
+import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
 import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,32 +18,14 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestAppointmentService {
-
-    @Mock
-    private AppointmentRepository appointmentRepository;
-
-    @Mock
-    private ServiceRepository serviceRepository;
-
-    @Mock
-    private TechnicianRepository technicianRepository;
-
-    @Mock
-    private CustomerRepository customerRepository;
-
-    @Mock
-    private BusinessRepository businessRepository;
-
-    @InjectMocks
-    private AppointmentService appointmentService;
-
 
     // Test data - only using what is needed for the tests
 
@@ -61,7 +45,7 @@ public class TestAppointmentService {
     private static final String SERVICE_NAME = "Service";
     private static final int SERVICE_DURATION = 4;
     private static final double SERVICE_PRICE = 49.99;
-
+  
     // Technicians
     private static final String TECHNICIAN_EMAIL = "technician@mail.com";
     private static final String TECHNICIAN_EMAIL2 = "technician2@mail.com";
@@ -76,12 +60,24 @@ public class TestAppointmentService {
 
     // Customer
     private static final String CUSTOMER_EMAIL = "customer@mail.com";
-
+  
     // Business
     private static final String BUSINESS_NAME = "Business";
     private static final Timestamp HOLIDAY_START = Timestamp.valueOf(INITIAL_TIME.plusDays(15)); // Tuesday
     private static final Timestamp HOLIDAY_END = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(23)); // Tuesday
 
+    @Mock
+    private AppointmentRepository appointmentRepository;
+    @Mock
+    private ServiceRepository serviceRepository;
+    @Mock
+    private TechnicianRepository technicianRepository;
+    @Mock
+    private CustomerRepository customerRepository;
+    @Mock
+    private BusinessRepository businessRepository;
+    @InjectMocks
+    private AppointmentService appointmentService;
 
     @BeforeEach
     public void setMockOutput() {
@@ -182,6 +178,57 @@ public class TestAppointmentService {
             return technicians;
 
         });
+
+        lenient().when(technicianRepository.findById(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+
+            Technician tech = new Technician();
+            tech.setEmail(TECHNICIAN_EMAIL);
+            List<Appointment> apps = new ArrayList<>();
+            apps.add(createAppointment(1L));
+            tech.setAppointments(apps);
+            if (invocation.getArgument(0).equals(TECHNICIAN_EMAIL)) {
+                return Optional.of(tech);
+            } else {
+                return Optional.empty();
+            }
+        });
+
+        lenient().when(customerRepository.findById(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+
+            Customer customer = new Customer();
+            customer.setEmail(CUSTOMER_EMAIL);
+            List<Appointment> apps = new ArrayList<>();
+            apps.add(createAppointment(1L));
+            customer.setAppointments(apps);
+            if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
+                return Optional.of(customer);
+            } else {
+                return Optional.empty();
+            }
+        });
+
+        lenient().when(appointmentRepository.findById(any(Long.class))).thenAnswer((InvocationOnMock invocation) -> {
+
+            //create tech
+            Technician tech = new Technician();
+            tech.setEmail(TECHNICIAN_EMAIL);
+            List<Appointment> apps = new ArrayList<>();
+            apps.add(createAppointment(1L));
+            tech.setAppointments(apps);
+            //create customer
+            Customer customer = new Customer();
+            customer.setEmail(CUSTOMER_EMAIL);
+            customer.setAppointments(apps);
+            Appointment app = createAppointment(1L);
+            app.setTechnician(tech);
+            app.setCustomer(customer);
+            if (invocation.getArgument(0).equals(1L)) {
+                return Optional.of(app);
+            } else {
+                return Optional.empty();
+            }
+        });
+
 
         lenient().when(appointmentRepository.save(any(Appointment.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
@@ -668,6 +715,52 @@ public class TestAppointmentService {
         }
 
         assertNull(possibleAppointments);
+
+    @Test
+    public void testCancelAppointment() {
+        try {
+            appointmentService.cancelAppointment(1L);
+            verify(technicianRepository, times(1)).save(any());
+            verify(customerRepository, times(1)).save(any());
+            verify(appointmentRepository, times(1)).delete(any());
+            verify(technicianRepository, times(1)).findById(TECHNICIAN_EMAIL);
+            verify(customerRepository, times(1)).findById(CUSTOMER_EMAIL);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCancelAppointmentWrongAppID() {
+        try {
+            appointmentService.cancelAppointment(2L);
+            fail();
+        } catch (Exception e) {
+            assertEquals("Cannot find the appointment by ID.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testCancelAppointmentTooLate() {
+        SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(21)));
+        assertThrows(TimeConstraintException.class,
+                () -> appointmentService.cancelAppointment(1L)
+        );
+    }
+
+    private Appointment createAppointment(Long id) {
+        Appointment appointment = new Appointment();
+        appointment.setAppointmentID(id);
+        appointment.setTimeSlot(createTimeSlot());
+        return appointment;
+    }
+
+    private TimeSlot createTimeSlot() {
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setStartDateTime(Timestamp.valueOf(INITIAL_TIME.plusDays(21)));
+        timeSlot.setEndDateTime(Timestamp.valueOf(INITIAL_TIME.plusDays(22)));
+        timeSlot.setTimeSlotID(1L);
+        return timeSlot;
     }
 
 }
