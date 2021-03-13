@@ -69,18 +69,18 @@ public class TestAppointmentService {
     private static final Timestamp HOURS_END = Timestamp.valueOf(INITIAL_TIME.plusHours(16)); // Monday
     private static final Timestamp HOURS_START2 = Timestamp.valueOf(INITIAL_TIME.plusDays(1).plusHours(10)); // Tuesday
     private static final Timestamp HOURS_END2 = Timestamp.valueOf(INITIAL_TIME.plusDays(1).plusHours(18)); // Tuesday
-    private static final Timestamp HOURS_START3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(18)); // Wednesday
-    private static final Timestamp HOURS_END3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(18)); // Wednesday
-    private static final Timestamp APP_START = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(12)); // Tuesday
-    private static final Timestamp APP_END = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(15)); // Tuesday
+    private static final Timestamp HOURS_START3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(7)); // Wednesday
+    private static final Timestamp HOURS_END3 = Timestamp.valueOf(INITIAL_TIME.plusDays(2).plusHours(15)); // Wednesday
+    private static final Timestamp APP_START = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(12)); // Monday
+    private static final Timestamp APP_END = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(15)); // Monday
 
     // Customer
     private static final String CUSTOMER_EMAIL = "customer@mail.com";
 
     // Business
     private static final String BUSINESS_NAME = "Business";
-    private static final Timestamp HOLIDAY_START = Timestamp.valueOf(INITIAL_TIME.plusDays(15)); // Wednesday
-    private static final Timestamp HOLIDAY_END = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(23)); // Wednesday
+    private static final Timestamp HOLIDAY_START = Timestamp.valueOf(INITIAL_TIME.plusDays(15)); // Tuesday
+    private static final Timestamp HOLIDAY_END = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(23)); // Tuesday
 
 
     @BeforeEach
@@ -172,8 +172,8 @@ public class TestAppointmentService {
             hours3.setStartDateTime(HOURS_START3);
             hours3.setEndDateTime(HOURS_END3);
             List<TimeSlot> workHours2 = new ArrayList<>();
-            workHours2.add(hours2);
-            workHours2.add(hours3);
+            workHours2.add(hours2); // Tuesday
+            workHours2.add(hours3); // Wednesday
             technician2.setTimeslots(workHours2);
 
             technicians.add(technician);
