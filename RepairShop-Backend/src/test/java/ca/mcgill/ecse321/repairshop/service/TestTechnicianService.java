@@ -167,15 +167,8 @@ public class TestTechnicianService {
 		String techPhone1 = "5142253789";
 		
 		
-		String techName2 = "ABCD";
-		String techEmail2 = "someone@gmail.com";
-		String techPassword2 = "fSHBlfsuesefd";
-		String techAddress2 = "Somewhere";
-		String techPhone2 = "5142253789";
-		
 		try {
 			service.createTechnician(techEmail1, techPassword1, techPhone1, techName1, techAddress1);
-			service.createTechnician(techEmail2, techPassword2, techPhone2, techName2, techAddress2);
 			fail();
 		} catch (Exception e) {
 			//an error should occur

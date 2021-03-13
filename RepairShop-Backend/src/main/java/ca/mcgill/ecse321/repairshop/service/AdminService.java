@@ -22,11 +22,11 @@ public class AdminService {
 	@Transactional
 	public AdminDto createAdmin(String email, String password, String phone, String name, String address) throws Exception {
 		
-		if(email == null || password == null) {
-			throw new Exception("Email or password cannot be empty.");
+		if (email == null || password == null || phone == null || name == null || address == null) {
+			throw new Exception("Admin must have a name, email, password, address, and phone in order to be registered.");
 		}
-		if(adminRepository.findAdminByEmail(email) != null) {
-			throw new Exception("Email is already taken.");
+		if (adminRepository.findAdminByEmail(email) != null) {
+			throw new Exception("Cannot create admin because email is already taken.");
 		}
 		
 		Admin admin = new Admin();
@@ -41,7 +41,7 @@ public class AdminService {
 	}
 
 	@Transactional 
-	public void deleteAdmin(String email) throws Exception{
+	public String deleteAdmin(String email) throws Exception{
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
@@ -50,6 +50,7 @@ public class AdminService {
 		}
 		
 		adminRepository.deleteAdminByEmail(email);
+		return "Admin account with email " + email + " was successfully deleted.";
 	}
 	
 	@Transactional
@@ -81,7 +82,7 @@ public class AdminService {
 	public AdminDto changeAddress(String email, String newAddress) throws Exception{
 		
 		if(email == null || newAddress == null) {
-			throw new Exception("Email or new password cannot be empty.");
+			throw new Exception("Email or new address cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(email) == null) {
 			throw new Exception("Admin not found.");
@@ -97,7 +98,7 @@ public class AdminService {
 	public AdminDto changePhone(String email, String newPhone) throws Exception{
 		
 		if(email == null || newPhone == null) {
-			throw new Exception("Email or new password cannot be empty.");
+			throw new Exception("Email or new phone cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(email) == null) {
 			throw new Exception("Admin not found.");
@@ -113,7 +114,7 @@ public class AdminService {
 	public AdminDto changeEmail(String oldEmail, String newEmail) throws Exception{
 		
 		if(oldEmail == null || newEmail == null) {
-			throw new Exception("Email or new password cannot be empty.");
+			throw new Exception("Email or new email cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(oldEmail) == null) {
 			throw new Exception("Admin not found.");
@@ -128,7 +129,7 @@ public class AdminService {
 	@Transactional
 	public AdminDto changePassword(String email, String newPassword) throws Exception{
 		
-		if (email == null || email == null) {
+		if (email == null || newPassword == null) {
 			throw new Exception("Email or new password cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(email) == null) {
@@ -144,8 +145,8 @@ public class AdminService {
 	@Transactional
 	public AdminDto changeName(String email, String newName) throws Exception{
 		
-		if (email == null || email == null) {
-			throw new Exception("Email or new password cannot be empty.");
+		if (email == null || newName == null) {
+			throw new Exception("Email or new name cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(email) == null) {
 			throw new Exception("Admin not found.");
@@ -158,7 +159,7 @@ public class AdminService {
 	}
 	
 	@Transactional
-	public AdminDto adminToDTO(Admin admin) {
+	public static AdminDto adminToDTO(Admin admin) {
 		AdminDto adminDTO = new AdminDto();
 		
 		adminDTO.setAddress(admin.getAddress());

@@ -142,6 +142,7 @@ public class TestCustomerService {
 		String customerAddress = "Somewhere";
 		String customerPhone = "5142253789";
 		
+		@SuppressWarnings("unused")
 		CustomerDto customer = null;
 		
 		try {
@@ -165,18 +166,13 @@ public class TestCustomerService {
 		String customerAddress1 = "Somewhere";
 		String customerPhone1 = "5142253789";
 		
+		
+		@SuppressWarnings("unused")
 		CustomerDto customer = null;
-		
-		
-		String customerName2 = "ABCD";
-		String customerEmail2 = "someone@gmail.com";
-		String customerPassword2 = "fSHBlfsuesefd";
-		String customerAddress2 = "Somewhere";
-		String customerPhone2 = "5142253789";
+	
 		
 		try {
 			service.createCustomer(customerEmail1, customerPassword1, customerPhone1, customerName1, customerAddress1);
-			customer = service.createCustomer(customerEmail2, customerPassword2, customerPhone2, customerName2, customerAddress2);
 			fail();
 		} catch (Exception e) {
 			//an error should occur
@@ -186,8 +182,6 @@ public class TestCustomerService {
 	
 		
 	}
-	
-	
 	
 	
 	

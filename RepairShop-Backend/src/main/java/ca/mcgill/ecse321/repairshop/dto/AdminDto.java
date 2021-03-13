@@ -57,4 +57,13 @@ public class AdminDto {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public String toString() {
+        return super.toString() + "[" +
+                "email" + ":" + getEmail() + "," +
+                "password" + ":" + getPassword() + "," +
+                "phoneNumber" + ":" + getPhoneNumber() + "," +
+                "name" + ":" + getName() + "," +
+                "address" + ":" + getAddress() + "]";
+    }
 }
