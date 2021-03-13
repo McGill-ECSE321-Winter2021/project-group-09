@@ -226,7 +226,10 @@ public class AppointmentService {
             // Check each technician -> if one is available, add timeslot
             for (Technician technician : technicians) {
                 if (isBookable(tempTimeSlot, technician, business)) {
-                    allTimeSlots.add(tempTimeSlot);
+                    TimeSlot timeSlotToAdd = new TimeSlot();
+                    timeSlotToAdd.setStartDateTime(tempTimeSlot.getStartDateTime());
+                    timeSlotToAdd.setEndDateTime(tempTimeSlot.getEndDateTime());
+                    allTimeSlots.add(timeSlotToAdd);
                     break;
                 }
             }
