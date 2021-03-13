@@ -2,8 +2,38 @@ package ca.mcgill.ecse321.repairshop.service.utilities;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.time.LocalDateTime;
 
 public class SystemTime {
+
+    // When testing, output specified time instead of real system time
+    // Change these with setters
+    private static boolean isTest = false;
+    private static Timestamp testTime = Timestamp.valueOf(LocalDateTime.now());
+
+    public static boolean isTest() {
+        return isTest;
+    }
+
+    public static void setTest(boolean test) {
+        isTest = test;
+    }
+
+    public static Timestamp getTestTime() {
+        return testTime;
+    }
+
+    public static void setTestTime(Timestamp testTime) {
+        SystemTime.testTime = testTime;
+    }
+
+    /** Method to get the current system time
+     * @return either the current time, or the test time
+     */
+    public static Timestamp getCurrentDateTime() {
+        return isTest ? testTime : Timestamp.valueOf(LocalDateTime.now());
+    }
+
 
     /**
      * Gets the current system date without the time value.
