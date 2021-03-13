@@ -494,14 +494,180 @@ public class TestAppointmentService {
         }
 
         assertNotNull(possibleAppointments);
+        // 18 timeslots are expected from the test data for the target week (see visualization and test output)
+        assertEquals(18, possibleAppointments.size());
+    }
 
-        // temp
-        System.out.println("----------------------");
-        System.out.println("Possible appointments: ");
-        for (TimeSlot slot : possibleAppointments) {
-            System.out.println(slot.getStartDateTime() + " to " + slot.getEndDateTime());
+    @Test // valid set of appointments (next week - changes holiday and app)
+    public void testGetPossibleAppointments2() {
+
+        // Modify time for this test (the following week)
+        SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(18)));
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(21)).toString(), SERVICE_NAME, BUSINESS_NAME);
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
-        System.out.println("----------------------");
+
+        assertNotNull(possibleAppointments);
+        // 39 timeslots are expected from the test data for the target week (see visualization and test output)
+        assertEquals(39, possibleAppointments.size());
+
+        // Reset the time
+        SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(11)));
+    }
+
+    @Test // invalid start date (null)
+    public void testGetPossibleAppointmentsInvalidStartDateNull() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(null, SERVICE_NAME, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The start date is mandatory", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid start date (empty)
+    public void testGetPossibleAppointmentsInvalidStartDateEmpty() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments("", SERVICE_NAME, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The start date is mandatory", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid start date (wrong format)
+    public void testGetPossibleAppointmentsInvalidStartDate() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments("notADate", SERVICE_NAME, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided start date is invalid", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid start date (past date)
+    public void testGetPossibleAppointmentsInvalidStartDatePast() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(APP_START_TIME2, SERVICE_NAME, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided start date is invalid", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid service name (null)
+    public void testGetPossibleAppointmentsInvalidServiceNameNull() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), null, BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The service name is mandatory", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid service name (empty)
+    public void testGetPossibleAppointmentsInvalidServiceNameEmpty() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "", BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The service name is mandatory", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid service name (does not exist)
+    public void testGetPossibleAppointmentsInvalidServiceName() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "notAService", BUSINESS_NAME);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided service name is invalid", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid business name (null)
+    public void testGetPossibleAppointmentsInvalidBusinessNameNull() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, null);
+            fail();
+        } catch (Exception e) {
+            assertEquals("The business is mandatory", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid business name (Empty)
+    public void testGetPossibleAppointmentsInvalidBusinessNameEmpty() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, "");
+            fail();
+        } catch (Exception e) {
+            assertEquals("The business is mandatory", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
+    }
+
+    @Test // invalid business name (does not exist)
+    public void testGetPossibleAppointmentsInvalidBusinessName() {
+
+        List<TimeSlot> possibleAppointments = null;
+
+        try {
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, "notABusiness");
+            fail();
+        } catch (Exception e) {
+            assertEquals("The provided business name is invalid", e.getMessage());
+        }
+
+        assertNull(possibleAppointments);
     }
 
 }

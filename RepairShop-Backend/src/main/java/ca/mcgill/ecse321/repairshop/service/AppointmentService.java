@@ -72,6 +72,7 @@ public class AppointmentService {
         // Check if it can be booked at that time
         // Need to check if there is a timeslot that can be booked within the technician's work hours
         // but not overlapping with other appointments the technician has, and not during holidays
+        // Note: using !time.after(time2) to simulate "before" but to include the time if it is equal
 
         // Within technician's work hours
         boolean withinHours = false;
@@ -85,14 +86,14 @@ public class AppointmentService {
 
         if (!withinHours) return false;
 
-        // Does not overlap with the technician's other appointments. If it does, return false
+        // Does not overlap with the technician's other appointments. If it does, return false (not including end time)
         for (TimeSlot app : appointmentTimeslots) {
-            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && !timeSlot.getEndDateTime().before(app.getStartDateTime())) return false;
+            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && timeSlot.getEndDateTime().after(app.getStartDateTime())) return false;
         }
 
-        // Does not overlap with holidays. If it does, return false
+        // Does not overlap with holidays. If it does, return false (not including end time)
         for (TimeSlot holiday : allHolidays) {
-            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && !timeSlot.getEndDateTime().before(holiday.getStartDateTime())) return false;
+            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && timeSlot.getEndDateTime().after(holiday.getStartDateTime())) return false;
         }
         
         // Passed all checks, so can be booked
@@ -184,7 +185,7 @@ public class AppointmentService {
      */
     public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName, String businessName) throws Exception {
 
-        if (startDate == null || startDate.equals("")) throw new Exception("The Timestamp is mandatory");
+        if (startDate == null || startDate.equals("")) throw new Exception("The start date is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
         if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
 
@@ -196,7 +197,7 @@ public class AppointmentService {
             startDateTime = Timestamp.valueOf(startDate);
             if (startDateTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
         } catch (Exception e) {
-            throw new Exception("The provided Timestamp is invalid");
+            throw new Exception("The provided start date is invalid");
         }
 
         service = serviceRepository.findServiceByName(serviceName);
