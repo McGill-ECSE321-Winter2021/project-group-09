@@ -14,7 +14,9 @@ public class ReminderController {
     @Autowired
     private ReminderService reminderService;
 
-    /** Get a list of a customer's reminders
+    /**
+     * Get a list of a customer's reminders
+     *
      * @param email of the target customer
      * @return a list of the customer's reminders
      */
@@ -27,16 +29,21 @@ public class ReminderController {
         }
     }
 
-    /** Create a new reminder
-     * @param dateTime of the new reminder
-     * @param type of the new reminder
-     * @param email of the customer associated to the new reminder
+    /**
+     * Create a new reminder
+     *
+     * @param dateTime            of the new reminder
+     * @param appointmentDateTime date and time of the appointment
+     * @param serviceName         name of the service
+     * @param type                of the new reminder
+     * @param email               of the customer associated to the new reminder
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String type, @RequestParam String email) {
+    public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String appointmentDateTime,
+                                            @RequestParam String serviceName, @RequestParam String type, @RequestParam String email) {
         try {
-            return new ResponseEntity<>(reminderService.createReminder(dateTime, type, email), HttpStatus.OK);
+            return new ResponseEntity<>(reminderService.createReminder(dateTime, appointmentDateTime, serviceName, type, email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -55,10 +62,11 @@ public class ReminderController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     /**
      * Delete a reminder by the id.
      *
-     * @param  reminderID ID of the reminder to be deleted
+     * @param reminderID ID of the reminder to be deleted
      * @return message to indicated whether the delete was successful
      */
     @DeleteMapping("/{reminderID}")
@@ -72,7 +80,6 @@ public class ReminderController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
 
 
 }
