@@ -37,8 +37,8 @@ public class ScheduledTasks {
 
     /**
      * Everyday at 6 am, this method will be called to send all today's:<br/>
-     * - Service reminders (Maintenance, RegularCheckups or Oil change) <br/>
-     * - 10-days-before appointment reminders (AppointmentReminder)
+     * - Service Reminders<br/>
+     * - Upcoming Appointment
      */
     @Scheduled(cron = "0 0 6 * * ?")
     public void sendAllTodayReminder() {
@@ -55,55 +55,18 @@ public class ScheduledTasks {
 
                 String customerEmail = reminderDto.getCustomerDto().getEmail();
                 String customerName = reminderDto.getCustomerDto().getName();
-                Timestamp appointmentDateTime = null;
-                String serviceName = reminderDto.getReminderType().toString(); //TODO: How do I get service name of an appointment???????
-                String price = null;
+                Timestamp appointmentDateTime = reminderDto.getAppointmentDateTime();
                 ReminderType reminderType = reminderDto.getReminderType();
-
-
-                //appointmentDateTime = addOrSubtractDays(reminderDto.getDateTime(),10);
+                String serviceName = reminderDto.getServiceName();
+                String price = null;
 
                 try {
                     price = String.valueOf(serviceService.getServiceByName(serviceName).getPrice());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                emailService.sendReminderAndConfirmationEmail(customerEmail, customerName, appointmentDateTime, reminderType, serviceName, price);
+                emailService.sendReminderEmail(customerEmail, customerName, appointmentDateTime, reminderType, serviceName, price);
             }
         }
-
-
-
     }
-
-    //TODO: remove this later
-    public static void main(String[] args) {
-
-/*        Timestamp startDateTime = Timestamp.valueOf("2021-10-15 00:07:00.00");
-        System.out.println("Timestamp: " + startDateTime.toString());
-        String day1 = startDateTime.toString().substring(0, 10);
-        System.out.println("Extract only year/month/day: " + day1);
-
-        Timestamp startDateTime2 = Timestamp.valueOf("2021-10-15 00:14:40.00");
-        System.out.println("Timestamp: " + startDateTime2.toString());
-        String day2 = startDateTime2.toString().substring(0, 10);
-        System.out.println("Extract only year/month/day: " + startDateTime2.toString().substring(0, 10));
-
-        if (day1.equals(day2)) System.out.println("SAME DAY");
-
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        System.out.println("NOW= " + timestamp.toString().substring(0, 10));*/
-
-        Timestamp startDateTime = Timestamp.valueOf("2021-10-15 00:07:00.00");
-        System.out.println("Timestamp: " + startDateTime.toString());
-
-        Timestamp resultAddDays = addOrSubtractDays(startDateTime, 10);
-        System.out.println("After adding days: " + resultAddDays);
-
-        Timestamp resultSubtractDays = addOrSubtractDays(startDateTime, -10);
-        System.out.println("After removing days: " + resultSubtractDays);
-
-    }
-
 }
