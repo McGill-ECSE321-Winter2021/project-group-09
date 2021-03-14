@@ -8,13 +8,16 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Reminder;
+import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
+import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 
 
 
@@ -192,6 +195,64 @@ public class CustomerService {
 		}
 		return customerDtos;
 	}
+	
+	
+	
+	
+	
+	
+	//USE CASES
+	
+	
+
+	@Transactional
+	public List<AppointmentDto> viewAppointments(String email) throws Exception{
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+		
+		
+		List<AppointmentDto> appDtos = new ArrayList<>();
+		Customer customer = customerRepository.findCustomerByEmail(email);
+		if(customer == null) {
+			throw new Exception("Customer not found.");
+		}
+		List<Appointment> customerAppointments = customer.getAppointments();
+		
+		for(int i = 0; i < customerAppointments.size(); i++) {
+			AppointmentDto thisAppDto = appointmentToDTO(customerAppointments.get(i));		//TODO Convert to Dto
+			appDtos.add(thisAppDto);
+		}
+		
+		return appDtos;
+	}
+	
+	
+	
+	//TODO Remove this. Should have already been implemented in AppointmentService
+	
+	private AppointmentDto appointmentToDTO(Appointment app) {
+		
+		AppointmentDto dto = new AppointmentDto();
+		dto.setCustomerDto(customerToDTO(app.getCustomer()));
+		dto.setTechnicianDto(TechnicianService.technicianToDTO(app.getTechnician()));
+		dto.setTimeSlotDto(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
+		dto.setServiceDto(ServiceService.serviceToDTO(app.getService()));
+		return dto;
+		
+	} 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

@@ -38,6 +38,7 @@ public class ServiceService {
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (Service service : serviceRepository.findAll()) { serviceDtos.add(serviceToDTO(service)); }
         return serviceDtos;
+
     }
 
     /** Creates a service object
@@ -71,6 +72,7 @@ public class ServiceService {
      * @param service to convert to dto
      * @return serviceDto object
      */
+
     public static ServiceDto serviceToDTO(Service service) {
         ServiceDto serviceDto = new ServiceDto();
         serviceDto.setName(service.getName());
