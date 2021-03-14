@@ -40,14 +40,11 @@ public class BusinessService {
      * @throws Exception If at least one of the inputs is invalid
      */
     @Transactional
-    public BusinessDto createBusiness(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
-        if (businessID == null) {
-            throw new Exception("Business ID cannot be empty!");
-        }
+    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+        
         inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
 
-        Business business = new Business();
-        business.setBusinessID(businessID);
+        Business business = businessRepository.findAll().get(0);
         business.setName(name);
         business.setAddress(address);
         business.setEmail(email);
@@ -70,14 +67,10 @@ public class BusinessService {
      * @throws Exception If a business with the businessID was not found
      */
     @Transactional
-    public BusinessDto getBusinessByID(Long businessID) throws Exception {
+    public BusinessDto getBusiness() throws Exception {
 
-        if (businessID == null) {
-            throw new Exception("Enter BusinessID");
-        }
-
-        Business businessFound = businessRepository.findBusinessByBusinessID(businessID);
-        if (businessFound == null) throw new Exception("BusinessID not found");
+        Business businessFound = businessRepository.findAll().get(0);
+        if (businessFound == null) throw new Exception("Business not found");
 
         return businessToDto(businessFound);
     }
@@ -96,18 +89,14 @@ public class BusinessService {
      * @throws Exception if there are invalid inputs or the business can't be found
      */
     @Transactional
-    public BusinessDto updateBusiness(Long businessID, String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
-
-        if (businessID == null) {
-            throw new Exception("Business ID cannot be empty!");
-        }
+    public BusinessDto updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
         inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
 
-        Business business = businessRepository.findBusinessByBusinessID(businessID);
+        Business business = businessRepository.findAll().get(0);
 
         if (business == null) {
-            throw new Exception("Could not find a business with ID: " + businessID);
+            throw new Exception("Could not find a business.");
         }
 
         business.setName(name);
@@ -151,16 +140,18 @@ public class BusinessService {
         return businessToDto(business);
     }
 
+   
     /**
      * Gets all businesses from businessRepository
      *
      * @return List of businessesDto objects : List<BusinessDto>
-     */
+     *
     @Transactional
     public List<BusinessDto> getAllBusinesses() {
         return businessRepository.findAll().stream().map(this::businessToDto).collect(Collectors.toList());
     }
 
+  
     /**
      * Adds a new TimeSlot holiday to the business.
      *
@@ -171,12 +162,12 @@ public class BusinessService {
      * @throws Exception if the business wasn't found
      */
     @Transactional
-    public BusinessDto addHoliday(Long businessID, Timestamp startDateTime, Timestamp endDateTime) throws Exception {
+    public BusinessDto addHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
 
-        Business business = businessRepository.findBusinessByBusinessID(businessID);
+        Business business = businessRepository.findAll().get(0);
 
         if (business == null) {
-            throw new Exception("Could not find a business with ID: " + businessID);
+            throw new Exception("Could not find a business.");
         }
 
 
@@ -198,14 +189,12 @@ public class BusinessService {
      * @throws Exception If the business with the input businessID can't be found
      */
     @Transactional
-    public List<TimeSlotDto> getAllHolidays(Long businessID) throws Exception {
+    public List<TimeSlotDto> getAllHolidays() throws Exception {
 
-        if (businessID == null) {
-            throw new Exception("BusinessID cannot be empty");
-        }
-        Business business = businessRepository.findBusinessByBusinessID(businessID);
+      
+        Business business = businessRepository.findAll().get(0);
         if (business == null) {
-            throw new Exception("Could not find a business with ID: " + businessID);
+            throw new Exception("Could not find a business.");
         }
         List<TimeSlot> holidays = business.getHolidays();
         List<TimeSlotDto> holidaysDtoList = new ArrayList<>();
@@ -226,7 +215,7 @@ public class BusinessService {
     public BusinessDto businessToDto(Business business) {
 
         //Create businessDto
-        BusinessDto businessDto = new BusinessDto(business.getBusinessID(), business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
+       BusinessDto businessDto = new BusinessDto(business.getBusinessID(), business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
 
        List<TimeSlotDto> holidayDtoList = new ArrayList<>();
        for(TimeSlot currHoliday:business.getHolidays()){
