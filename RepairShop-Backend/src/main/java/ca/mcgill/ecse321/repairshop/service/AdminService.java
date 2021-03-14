@@ -110,25 +110,9 @@ public class AdminService {
 	}
 	
 	@Transactional
-	public AdminDto changeEmail(String oldEmail, String newEmail) throws Exception{
-		
-		if(oldEmail == null || newEmail == null) {
-			throw new Exception("Email or new password cannot be empty.");
-		}
-		if(adminRepository.findAdminByEmail(oldEmail) == null) {
-			throw new Exception("Admin not found.");
-		}
-		
-		Admin admin = adminRepository.findAdminByEmail(oldEmail);
-		admin.setEmail(newEmail);
-		adminRepository.save(admin);
-		return adminToDTO(admin);
-	}
-	
-	@Transactional
 	public AdminDto changePassword(String email, String newPassword) throws Exception{
 		
-		if (email == null || email == null) {
+		if (email == null || newPassword == null) {
 			throw new Exception("Email or new password cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(email) == null) {
@@ -144,7 +128,7 @@ public class AdminService {
 	@Transactional
 	public AdminDto changeName(String email, String newName) throws Exception{
 		
-		if (email == null || email == null) {
+		if (email == null || newName == null) {
 			throw new Exception("Email or new password cannot be empty.");
 		}
 		if(adminRepository.findAdminByEmail(email) == null) {
