@@ -36,7 +36,7 @@ public class RepairShopApplication {
                 rootAdmin.setName("root");
                 adminRepository.save(rootAdmin);
             }
-            if(businessRepository.findAll().get(0) == null) {
+            if (businessRepository.findAll().size() == 0) {
             	Business business = new Business();
             	businessRepository.save(business);
             }
