@@ -157,8 +157,7 @@ public class AdminService {
 		adminRepository.save(admin);
 		return adminToDTO(admin);
 	}
-	
-	@Transactional
+
 	public static AdminDto adminToDTO(Admin admin) {
 		AdminDto adminDTO = new AdminDto();
 		

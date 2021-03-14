@@ -20,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import org.junit.jupiter.api.Test;
 
 import ca.mcgill.ecse321.repairshop.dto.AdminDto;
@@ -42,7 +41,7 @@ public class TestAdminService {
 	private static final String ADMIN_ADDRESS = "VillageVanguard";
 	private static final String ADMIN_PHONE = "26-2";
 			
-	private Admin ADMIN = new Admin();
+	private final Admin ADMIN = new Admin();
 	
 	@BeforeEach
 	public void setMockOutput() {
@@ -71,12 +70,8 @@ public class TestAdminService {
 				return null;
 			}
 		});
-		
-		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-		return invocation.getArgument(0);
-	};
-	
-	lenient().when(adminRepo.save(any(Admin.class))).thenAnswer(returnParameterAsAnswer);
+
+		lenient().when(adminRepo.save(any(Admin.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 	
 	}	
 	
@@ -106,6 +101,8 @@ public class TestAdminService {
 		assertNotNull(admin);
 		assertEquals(adminName, admin.getName());
 		assertEquals(adminEmail, admin.getEmail());
+		assertEquals(adminPhone, admin.getPhoneNumber());
+		assertEquals(adminAddress, admin.getAddress());
 		
 	}
 
@@ -117,8 +114,7 @@ public class TestAdminService {
 		String adminPassword = null;
 		String adminAddress = "Stride Master Street";
 		String adminPhone = "ummmm....just find me please";
-		
-		@SuppressWarnings("unused")
+
 		AdminDto admin = null;
 		
 		try {
@@ -127,7 +123,9 @@ public class TestAdminService {
 		} catch (Exception e) {
 			//an error should occur
 			assertEquals("Admin must have a name, email, password, address, and phone in order to be registered.", e.getMessage());
-		}	
+		}
+
+		assertNull(admin);
 	}
 	
 	@Test
@@ -376,7 +374,7 @@ public class TestAdminService {
 	public void testChangePhoneNonExistentAdmin() {
 				
 		try {
-			adminService.changePhone("nobody's phone", "somebody's phone");
+			adminService.changePhone("nonExistentAdmin@nonExistentEmail.com", "somebody's phone");
 			fail();
 		} catch (Exception e) {
 			//error should occur
@@ -460,7 +458,7 @@ public class TestAdminService {
 	
 	
 	@Test
-	public void testChangeNamelNull() {
+	public void testChangeNameNull() {
 				
 		try {
 			adminService.changeName(null, null);
@@ -476,7 +474,7 @@ public class TestAdminService {
 	public void testChangeNameNonExistentAdmin() {
 				
 		try {
-			adminService.changeName("No One", "Some One");
+			adminService.changeName("NoOne@gmail.com", "Some One");
 			fail();
 		} catch (Exception e) {
 			//error should occur
