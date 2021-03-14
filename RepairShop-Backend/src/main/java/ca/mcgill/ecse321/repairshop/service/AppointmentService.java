@@ -217,7 +217,7 @@ public class AppointmentService {
             }
         }
         //If no service reminder yet, create one
-        if (hasServiceReminder == false)
+        if (!hasServiceReminder)
             reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, 180).toString(),
                     startTimestamp, serviceName, ReminderType.ServiceReminder.toString(), customerEmail);
         return appointmentToDto(appointment);
