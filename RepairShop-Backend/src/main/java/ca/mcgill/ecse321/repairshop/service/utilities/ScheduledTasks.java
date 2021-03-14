@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.repairshop.service.utilities;
 
 import ca.mcgill.ecse321.repairshop.dto.ReminderDto;
-import ca.mcgill.ecse321.repairshop.model.Appointment;
-import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import ca.mcgill.ecse321.repairshop.service.ReminderService;
 import ca.mcgill.ecse321.repairshop.service.ServiceService;
@@ -14,8 +12,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import static ca.mcgill.ecse321.repairshop.service.utilities.SystemTime.addOrSubtractDays;
-import static ca.mcgill.ecse321.repairshop.service.utilities.SystemTime.systemDate;
+import static ca.mcgill.ecse321.repairshop.service.utilities.SystemTime.getSystemDate;
 
 @Component
 public class ScheduledTasks {
@@ -43,7 +40,7 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 6 * * ?")
     public void sendAllTodayReminder() {
 
-        String today = systemDate();
+        String today = getSystemDate();
 
         List<ReminderDto> allReminderDtos = reminderService.getAllReminders();
 
