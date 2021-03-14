@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.repairshop.service;
 
+import ca.mcgill.ecse321.repairshop.controller.ReminderController;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
 import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,6 +40,9 @@ public class AppointmentService {
 
     @Autowired
     BusinessRepository businessRepository;
+
+    @Autowired
+    private ReminderService reminderService;
 
     // TODO: Implement some more methods from the repository
 
@@ -90,12 +95,14 @@ public class AppointmentService {
 
         // Does not overlap with the technician's other appointments. If it does, return false (not including end time)
         for (TimeSlot app : appointmentTimeslots) {
-            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && timeSlot.getEndDateTime().after(app.getStartDateTime())) return false;
+            if (!timeSlot.getStartDateTime().after(app.getEndDateTime()) && timeSlot.getEndDateTime().after(app.getStartDateTime()))
+                return false;
         }
 
         // Does not overlap with holidays. If it does, return false (not including end time)
         for (TimeSlot holiday : allHolidays) {
-            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && timeSlot.getEndDateTime().after(holiday.getStartDateTime())) return false;
+            if (!timeSlot.getStartDateTime().after(holiday.getEndDateTime()) && timeSlot.getEndDateTime().after(holiday.getStartDateTime()))
+                return false;
         }
 
         // Passed all checks, so can be booked
@@ -121,9 +128,9 @@ public class AppointmentService {
     /**
      * Method to book an appointment given a valid timeslot
      *
-     * @param startTimestamp    when the appointment will start
-     * @param serviceName       the name of the appointment's service
-     * @param customerEmail     the email of the customer for whom to book the appointment
+     * @param startTimestamp when the appointment will start
+     * @param serviceName    the name of the appointment's service
+     * @param customerEmail  the email of the customer for whom to book the appointment
      * @return an AppointmentDto for the bookedAppointment
      * @throws Exception for invalid timestamp, service name or technician's email
      */
@@ -194,13 +201,34 @@ public class AppointmentService {
 
         appointmentRepository.save(appointment);
 
+        EmailService emailService = new EmailService();
+        emailService.sendConfirmationEmail(customerEmail, customer.getName(), startTime, serviceName, Double.toString(service.getPrice()));
+
+        //Upcoming Appointment Reminder (10 days before appointment date)
+        reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, -10).toString(), startTimestamp, serviceName, ReminderType.UpcomingAppointment.toString(), customerEmail);
+
+        //Service Reminder ( 180 days after appointment date)
+        boolean hasServiceReminder = false;
+        for (Reminder currReminder : customer.getReminders()) {  //If there's already a reminder of the same service, change update the dateTime of the reminder
+            if (currReminder.getReminderType().equals(ReminderType.ServiceReminder) && currReminder.getServiceName().equals(serviceName)) {
+                currReminder.setDateTime(SystemTime.addOrSubtractDays(startTime, 180));
+                hasServiceReminder = true;
+                break;
+            }
+        }
+        //If no service reminder yet, create one
+        if (hasServiceReminder == false)
+            reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, 180).toString(),
+                    startTimestamp, serviceName, ReminderType.ServiceReminder.toString(), customerEmail);
         return appointmentToDto(appointment);
 
     }
 
-    /** Method to return all times that an appointment for a given service can be created for one week
-     * @param startDate The date to start checking for possible appointments (uses Timestamp format)
-     * @param serviceName The name of the service for the appointment
+    /**
+     * Method to return all times that an appointment for a given service can be created for one week
+     *
+     * @param startDate    The date to start checking for possible appointments (uses Timestamp format)
+     * @param serviceName  The name of the service for the appointment
      * @param businessName The name of the business (to get its holidays)
      * @return a list of Timestamps for all available appointment start times
      */
@@ -289,12 +317,33 @@ public class AppointmentService {
                 techApps.removeIf(app -> app.getAppointmentID().equals(appointmentID));
                 tech.get().setAppointments(techApps);
                 technicianRepository.save(tech.get());
+
+                //Send APPOINTMENT CANCELLED email
+                EmailService emailService = new EmailService();
+                emailService.appointmentCancelled(customer.get().getEmail(), customer.get().getName(),
+                        appointment.get().getTimeSlot().getStartDateTime(), appointment.get().getService().getName());
+
+                for (Reminder currReminder : customer.get().getReminders()) {  //Remove all reminders related to this cancelled appointment
+                    if (currReminder.getReminderType().equals(ReminderType.ServiceReminder) //same //REMINDER TYPE
+                            && currReminder.getServiceName().equals(appointment.get().getService().getName()) //same SERVICE NAME
+                            && currReminder.getAppointmentDateTime().toString().equals(appointment.get().getTimeSlot().getStartDateTime().toString())) { //same APPT STARTDATETIME
+
+                        try {
+                            reminderService.deleteReminderById(currReminder.getReminderID()); //delete the reminder
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
             } else {
                 throw new EntityNotFoundException("Cannot find associated customer and technician of appointment.");
             }
         } else {
             throw new EntityNotFoundException("Cannot find the appointment by ID.");
         }
+
     }
 
 }
