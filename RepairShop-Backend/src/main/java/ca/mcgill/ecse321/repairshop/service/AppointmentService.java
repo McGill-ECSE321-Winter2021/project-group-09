@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.repairshop.service;
 
-import ca.mcgill.ecse321.repairshop.controller.ReminderController;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
@@ -42,7 +41,10 @@ public class AppointmentService {
     BusinessRepository businessRepository;
 
     @Autowired
-    private ReminderService reminderService;
+    EmailService emailService;
+
+    @Autowired
+    ReminderService reminderService;
 
     // TODO: Implement some more methods from the repository
 
@@ -201,7 +203,6 @@ public class AppointmentService {
 
         appointmentRepository.save(appointment);
 
-        EmailService emailService = new EmailService();
         emailService.sendConfirmationEmail(customerEmail, customer.getName(), startTime, serviceName, Double.toString(service.getPrice()));
 
         //Upcoming Appointment Reminder (10 days before appointment date)
@@ -319,7 +320,6 @@ public class AppointmentService {
                 technicianRepository.save(tech.get());
 
                 //Send APPOINTMENT CANCELLED email
-                EmailService emailService = new EmailService();
                 emailService.appointmentCancelled(customer.get().getEmail(), customer.get().getName(),
                         appointment.get().getTimeSlot().getStartDateTime(), appointment.get().getService().getName());
 
@@ -345,5 +345,4 @@ public class AppointmentService {
         }
 
     }
-
 }
