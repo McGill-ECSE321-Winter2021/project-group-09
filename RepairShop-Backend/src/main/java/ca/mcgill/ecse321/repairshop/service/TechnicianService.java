@@ -164,7 +164,6 @@ public class TechnicianService {
 	 * @return a technician dto corresponding to the technician domain object provided
 	 * 
 	 */
-	@Transactional
 	public static TechnicianDto technicianToDTO(Technician tech) {
 		TechnicianDto techDTO = new TechnicianDto();
 		techDTO.setAddress(tech.getAddress());
