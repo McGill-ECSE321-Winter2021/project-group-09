@@ -23,14 +23,8 @@ public class ScheduledTasks {
     @Autowired
     private ServiceService serviceService;
 
-    //TODO: Remove this later. This is to test the Scheduled class3
-    @Scheduled(cron = "*/5 * * * * ?")
-    public void testMethod() {
-        System.out.println("Hi! :)  I am testMethod() in ScheduleTasks. I am called every 5 seconds. The CURRENT TIME is :: " + new Date());
-
-
-    }
-
+    @Autowired
+    private EmailService emailService;
 
     /**
      * Everyday at 6 am, this method will be called to send all today's:<br/>
@@ -48,7 +42,6 @@ public class ScheduledTasks {
             String reminderDate = reminderDto.getDateTime().toString().substring(0, 10);
 
             if (reminderDate.equals(today)) {
-                EmailService emailService = new EmailService();
 
                 String customerEmail = reminderDto.getCustomerDto().getEmail();
                 String customerName = reminderDto.getCustomerDto().getName();
