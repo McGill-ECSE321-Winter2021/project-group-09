@@ -127,11 +127,15 @@ public class TestCustomerService {
 				CUSTOMER.setAppointments(apps);
 				CUSTOMER.setReminders(reminders);
 				return CUSTOMER;
+
 			} else {
 				return null;
 			}
 			
 		});
+		
+		
+
 		
 		
 		lenient().when(appRepo.findAppointmentByAppointmentID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
@@ -143,7 +147,7 @@ public class TestCustomerService {
 			
 		});
 		
-		
+	
 		
 		
 		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
@@ -216,20 +220,13 @@ public class TestCustomerService {
 		String customerPassword1 = "fSHBlfsuesefd";
 		String customerAddress1 = "Somewhere";
 		String customerPhone1 = "5142253789";
-		
-		CustomerDto customer = null;
-		
-		
-		String customerName2 = "ABCD";
-		String customerEmail2 = "someone@gmail.com";
-		String customerPassword2 = "fSHBlfsuesefd";
-		String customerAddress2 = "Somewhere";
-		String customerPhone2 = "5142253789";
+
 		
 		try {
+			
 			service.createCustomer(customerEmail1, customerPassword1, customerPhone1, customerName1, customerAddress1);
-			customer = service.createCustomer(customerEmail2, customerPassword2, customerPhone2, customerName2, customerAddress2);
 			fail();
+			
 		} catch (Exception e) {
 			//an error should occur
 			assertEquals("Email is already taken.", e.getMessage());
