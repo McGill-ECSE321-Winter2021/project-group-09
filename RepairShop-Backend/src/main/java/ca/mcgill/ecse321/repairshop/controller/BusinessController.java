@@ -20,30 +20,13 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
-
     /**
-     * Get request for all businesses
+     * Get the business
      *
-     * @return a list of all businesses
-     *
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllBusinesses() {
-        try {
-            List<BusinessDto> businessDtosList = businessService.getAllBusinesses();
-            return new ResponseEntity<>(businessDtosList, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    /**
-     * Get a business by businessID
-     *
-     * @param businessID ID of the business
-     * @return the requested business if found
+     * @return the business if found
      */
-    @GetMapping("/view_business_info")
-    public ResponseEntity<?> getBusinessById() {
+    @GetMapping("/info")
+    public ResponseEntity<?> getBusiness() {
         try {
             BusinessDto businessDto = businessService.getBusiness();
             return new ResponseEntity<>(businessDto, HttpStatus.OK);
@@ -55,17 +38,12 @@ public class BusinessController {
     /**
      * Create a new business
      *
-     * @param name                name of the business (String)
-     * @param address             address of the business (String)
-     * @param phoneNumber         phone number of the business (String)
-     * @param email               email of the business (String)
-     * @param numberOfRepairSpots number of repair spots of the business (int)
+     * @param businessDto The businessDto object from which to create the business
      * @return the new business if created successfully
      */
     @PostMapping("/create")
     public ResponseEntity<?> createBusiness(@RequestBody BusinessDto businessDto) {
         try {
-            //Long newBusinessID = (new Business()).getBusinessID(); //TODO: A new businessID will be generated?
             return new ResponseEntity<>(businessService.createBusiness(businessDto.getName(), businessDto.getAddress(), businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);

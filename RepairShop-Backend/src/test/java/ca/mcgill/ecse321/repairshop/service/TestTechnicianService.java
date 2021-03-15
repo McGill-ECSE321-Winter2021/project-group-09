@@ -504,22 +504,25 @@ public class TestTechnicianService {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	@Test
+	public void testAddTechnicianWorkHoursNull() {
+		Timestamp start = Timestamp.valueOf("2021-03-02 9:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-02 17:00:00");
+		TimeSlotDto dto = new TimeSlotDto();
+		dto.setStartDateTime(start);
+		dto.setEndDateTime(end);
+		List<TimeSlotDto> dtos = new ArrayList<>();
+		dtos.add(dto);
+
+		try {
+			service.addTechnicianWorkHours(null, dtos);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+
+	}
 	
 }

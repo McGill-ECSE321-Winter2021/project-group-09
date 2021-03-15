@@ -586,7 +586,7 @@ public class TestBusinessService {
 
         BusinessDto business = null;
         try {
-            business = businessService.updateNbRepairSpots(BUSINESS_ID, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateNbRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
 
         } catch (Exception e) {
             fail();
@@ -602,7 +602,7 @@ public class TestBusinessService {
         BusinessDto business = null;
         String error = null;
         try {
-            business = businessService.updateNbRepairSpots(BUSINESS_ID, negativeNb);
+            business = businessService.updateNbRepairSpots(negativeNb);
 
         } catch (Exception e) {
             error = e.getMessage();
@@ -668,39 +668,4 @@ public class TestBusinessService {
         assertEquals(END_TIME, holidaysDtoList.get(0).getEndDateTime());
     }
 
-    /*
-    @Test
-    public void testNullBusinessIDGetHolidays() {
-
-        List<TimeSlotDto> holidaysDtoList = null;
-        Long nullBusinessID = null;
-        String error = null;
-        try {
-            holidaysDtoList = businessService.getAllHolidays(nullBusinessID);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-
-        assertNull(holidaysDtoList);
-        assertEquals("BusinessID cannot be empty", error);
-    }
-    
-
-    @Test
-    public void testNonExistentBusinessIDBusinessIDGetHolidays() {
-
-        List<TimeSlotDto> holidaysDtoList = null;
-        Long nonExistantBusinessID = 9999l;
-        String error = null;
-        try {
-            holidaysDtoList = businessService.getAllHolidays(nonExistantBusinessID);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-
-        assertNull(holidaysDtoList);
-        assertEquals("Could not find a business with ID: " + nonExistantBusinessID, error);
-    }
-    
-    */
 }
