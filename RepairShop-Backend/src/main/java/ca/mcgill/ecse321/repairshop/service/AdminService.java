@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import ca.mcgill.ecse321.repairshop.service.utilities.JWTTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class AdminService {
 
 	@Autowired
 	AdminRepository adminRepository;
+
+	@Autowired
+	JWTTokenProvider jwtTokenProvider;
 	
 	@Transactional
 	public AdminDto createAdmin(String email, String password, String phone, String name, String address) throws Exception {
@@ -35,7 +39,6 @@ public class AdminService {
 		admin.setPhoneNumber(phone);
 		admin.setName(name);
 		admin.setAddress(address);
-		
 		adminRepository.save(admin);
 		return adminToDTO(admin);
 	}
@@ -150,6 +153,7 @@ public class AdminService {
 		adminDTO.setName(admin.getName());
 	    adminDTO.setEmail(admin.getEmail());
 		adminDTO.setPassword(admin.getPassword());
+		adminDTO.setToken(admin.getToken());
 		
 		return adminDTO;
 	}
