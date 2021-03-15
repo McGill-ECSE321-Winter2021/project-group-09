@@ -5,8 +5,6 @@ import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -24,9 +22,6 @@ public class TokenProvider {
 
     @Autowired
     private AdminRepository adminRepository;
-
-    @Autowired
-    private MessageSource ms;
 
     @PostConstruct
     protected void init() {
@@ -69,7 +64,7 @@ public class TokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException(ms.getMessage("invalidToken", null, LocaleContextHolder.getLocale()));
+            throw new RuntimeException("Invalid token");
         }
     }
 }
