@@ -128,14 +128,13 @@ public class AppointmentService {
      * @throws Exception for invalid timestamp, service name or technician's email
      */
     @Transactional
-    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail, String businessName) throws Exception {
+    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail) throws Exception {
 
         // Validate all inputs
 
         if (startTimestamp == null || startTimestamp.equals("")) throw new Exception("The Timestamp is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
         if (customerEmail == null || customerEmail.equals("")) throw new Exception("The customer is mandatory");
-        if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
 
         Timestamp startTime;
         Service service;
@@ -156,8 +155,7 @@ public class AppointmentService {
         customer = customerRepository.findCustomerByEmail(customerEmail);
         if (customer == null) throw new Exception("The provided customer email is invalid");
 
-        business = businessRepository.findBusinessByName(businessName);
-        if (business == null) throw new Exception("The provided business name is invalid");
+        business = businessRepository.findAll().get(0); // Should always be one business
 
         // Create timeslot
         // the end time is the start time + service duration * 30 minutes * 60 seconds * 1000 milliseconds
@@ -201,14 +199,12 @@ public class AppointmentService {
     /** Method to return all times that an appointment for a given service can be created for one week
      * @param startDate The date to start checking for possible appointments (uses Timestamp format)
      * @param serviceName The name of the service for the appointment
-     * @param businessName The name of the business (to get its holidays)
      * @return a list of Timestamps for all available appointment start times
      */
-    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName, String businessName) throws Exception {
+    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName) throws Exception {
 
         if (startDate == null || startDate.equals("")) throw new Exception("The start date is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
-        if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
 
         Timestamp startDateTime;
         Service service;
@@ -224,8 +220,7 @@ public class AppointmentService {
         service = serviceRepository.findServiceByName(serviceName);
         if (service == null) throw new Exception("The provided service name is invalid");
 
-        business = businessRepository.findBusinessByName(businessName);
-        if (business == null) throw new Exception("The provided business name is invalid");
+        business = businessRepository.findAll().get(0); // Should always be one business
 
         List<Technician> technicians = technicianRepository.findAll();
 
