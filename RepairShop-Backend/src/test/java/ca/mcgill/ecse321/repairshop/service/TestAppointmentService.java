@@ -45,7 +45,7 @@ public class TestAppointmentService {
     private static final String SERVICE_NAME = "Service";
     private static final int SERVICE_DURATION = 4;
     private static final double SERVICE_PRICE = 49.99;
-  
+
     // Technicians
     private static final String TECHNICIAN_EMAIL = "technician@mail.com";
     private static final String TECHNICIAN_EMAIL2 = "technician2@mail.com";
@@ -60,7 +60,7 @@ public class TestAppointmentService {
 
     // Customer
     private static final String CUSTOMER_EMAIL = "customer@mail.com";
-  
+
     // Business
     private static final String BUSINESS_NAME = "Business";
     private static final Timestamp HOLIDAY_START = Timestamp.valueOf(INITIAL_TIME.plusDays(15)); // Tuesday
@@ -111,23 +111,22 @@ public class TestAppointmentService {
             } else throw new Exception("The provided customer email is invalid");
         });
 
-        lenient().when(businessRepository.findBusinessByName(any(String.class))).thenAnswer((InvocationOnMock invocation) -> {
+        lenient().when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+            List<Business> businesses = new ArrayList<>();
+            Business business = new Business();
+            business.setName(BUSINESS_NAME);
+            TimeSlot holiday = new TimeSlot();
+            holiday.setStartDateTime(HOLIDAY_START);
+            holiday.setEndDateTime(HOLIDAY_END);
+            List<TimeSlot> holidays = new ArrayList<>();
+            holidays.add(holiday);
+            business.setHolidays(holidays);
+            businesses.add(business);
 
-            if (invocation.getArgument(0).equals(BUSINESS_NAME)) {
+            return businesses;
 
-                Business business = new Business();
-                business.setName(BUSINESS_NAME);
-                TimeSlot holiday = new TimeSlot();
-                holiday.setStartDateTime(HOLIDAY_START);
-                holiday.setEndDateTime(HOLIDAY_END);
-                List<TimeSlot> holidays = new ArrayList<>();
-                holidays.add(holiday);
-                business.setHolidays(holidays);
-
-                return business;
-
-            } else throw new Exception("The provided business name is invalid");
         });
+
 
         lenient().when(technicianRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 
