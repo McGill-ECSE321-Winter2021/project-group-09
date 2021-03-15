@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
+import ca.mcgill.ecse321.repairshop.service.utilities.TokenProvider;
 import ca.mcgill.ecse321.repairshop.service.utilities.UserType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 
@@ -34,6 +36,8 @@ public class TestAuthenticationService {
     TechnicianRepository technicianRepository;
     @Mock
     AdminRepository adminRepository;
+    @Mock
+    TokenProvider tokenProvider;
     @InjectMocks
     AuthenticationService authenticationService;
 
@@ -76,11 +80,15 @@ public class TestAuthenticationService {
 
     @Test
     public void testValidAdminLogin() {
-        LoginDto loginDto = new LoginDto();
-        loginDto.setEmail(userEmail);
-        loginDto.setPassword(userPassword);
-        loginDto.setUserType(UserType.Admin);
-        assertTrue(authenticationService.logIn(loginDto));
+        try {
+            LoginDto loginDto = new LoginDto();
+            loginDto.setEmail(userEmail);
+            loginDto.setPassword(userPassword);
+            loginDto.setUserType(UserType.Admin);
+            authenticationService.logIn(loginDto);
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
     }
 
     @Test
@@ -93,7 +101,7 @@ public class TestAuthenticationService {
                     loginDto.setUserType(UserType.Admin);
                     authenticationService.logIn(loginDto);
                 }
-            );
+        );
     }
 
 

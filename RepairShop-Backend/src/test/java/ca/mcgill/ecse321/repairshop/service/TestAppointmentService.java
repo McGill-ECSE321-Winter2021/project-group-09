@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
 
 import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -76,6 +78,10 @@ public class TestAppointmentService {
     private CustomerRepository customerRepository;
     @Mock
     private BusinessRepository businessRepository;
+    @Mock
+    private EmailService emailService;
+    @Mock
+    private ReminderService reminderService;
     @InjectMocks
     private AppointmentService appointmentService;
 
@@ -105,6 +111,8 @@ public class TestAppointmentService {
 
                 Customer customer = new Customer();
                 customer.setEmail(CUSTOMER_EMAIL);
+                List<Reminder> rems = new ArrayList<>();
+                customer.setReminders(rems);
 
                 return customer;
 
@@ -200,6 +208,11 @@ public class TestAppointmentService {
             List<Appointment> apps = new ArrayList<>();
             apps.add(createAppointment(1L));
             customer.setAppointments(apps);
+            List<Reminder> reminders = new ArrayList<>();
+            customer.setReminders(reminders);
+            customer.setAddress("1123");
+            customer.setName("rick");
+            customer.setPassword("123");
             if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
                 return Optional.of(customer);
             } else {
@@ -208,7 +221,11 @@ public class TestAppointmentService {
         });
 
         lenient().when(appointmentRepository.findById(any(Long.class))).thenAnswer((InvocationOnMock invocation) -> {
-
+            //create service
+            Service service = new Service();
+            service.setName(SERVICE_NAME);
+            service.setPrice(SERVICE_PRICE);
+            service.setDuration(SERVICE_DURATION);
             //create tech
             Technician tech = new Technician();
             tech.setEmail(TECHNICIAN_EMAIL);
@@ -222,6 +239,7 @@ public class TestAppointmentService {
             Appointment app = createAppointment(1L);
             app.setTechnician(tech);
             app.setCustomer(customer);
+            app.setService(service);
             if (invocation.getArgument(0).equals(1L)) {
                 return Optional.of(app);
             } else {
@@ -232,7 +250,10 @@ public class TestAppointmentService {
 
         lenient().when(appointmentRepository.save(any(Appointment.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
+
     }
+
+
 
 
     // Test creating an appointment
