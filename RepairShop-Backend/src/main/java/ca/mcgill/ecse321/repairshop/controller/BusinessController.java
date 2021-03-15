@@ -95,6 +95,22 @@ public class BusinessController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    /*
+     * Delete a holiday from the business.
+     * @return a list of all holidays
+     */
+    @GetMapping("delete/holidays/")
+    public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime,
+                                        @RequestParam Timestamp endDateTime) {
+        try {
+            businessService.deleteHoliday(startDateTime, endDateTime);
+            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
+            return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
