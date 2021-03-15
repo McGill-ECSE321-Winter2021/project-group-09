@@ -40,9 +40,9 @@ public class SystemTime {
      *
      * @return current system date in the format yyyy-MM-DD (String)
      */
-    public static String systemDate() {
+    public static String getSystemDate() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        return timestamp.toString().substring(0, 10);
+        return isTest ? testTime.toString() : timestamp.toString().substring(0, 10);
     }
 
     /**
