@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 
+/** We do not know how this class works.
+ * All codes are really similar to this website:
+ * https://daddyprogrammer.org/post/636/springboot2-springsecurity-authentication-authorization/
+ */
 @Component
 public class TokenProvider {
 
@@ -64,7 +68,7 @@ public class TokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("Invalid token");
+            throw new RuntimeException("Invalid Token");
         }
     }
 }
