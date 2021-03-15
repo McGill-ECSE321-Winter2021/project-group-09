@@ -200,17 +200,10 @@ public class TestTechnicianService {
 		String techPassword1 = "fSHBlfsuesefd";
 		String techAddress1 = "Somewhere";
 		String techPhone1 = "5142253789";
-		
-		
-		String techName2 = "ABCD";
-		String techEmail2 = "someone@gmail.com";
-		String techPassword2 = "fSHBlfsuesefd";
-		String techAddress2 = "Somewhere";
-		String techPhone2 = "5142253789";
+
 		
 		try {
 			service.createTechnician(techEmail1, techPassword1, techPhone1, techName1, techAddress1);
-			service.createTechnician(techEmail2, techPassword2, techPhone2, techName2, techAddress2);
 			fail();
 		} catch (Exception e) {
 			//an error should occur
@@ -511,22 +504,25 @@ public class TestTechnicianService {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	@Test
+	public void testAddTechnicianWorkHoursNull() {
+		Timestamp start = Timestamp.valueOf("2021-03-02 9:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-02 17:00:00");
+		TimeSlotDto dto = new TimeSlotDto();
+		dto.setStartDateTime(start);
+		dto.setEndDateTime(end);
+		List<TimeSlotDto> dtos = new ArrayList<>();
+		dtos.add(dto);
+
+		try {
+			service.addTechnicianWorkHours(null, dtos);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+
+	}
 	
 }
