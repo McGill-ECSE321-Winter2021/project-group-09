@@ -113,7 +113,7 @@ public class CustomerController {
 	
 	/**
 	 * GET request to get all existing customers
-	 * @return list of customerr dtos
+	 * @return list of customer dtos
 	 * 
 	 */
 	@GetMapping(value = { "/customer/all", "/customer/all/" })

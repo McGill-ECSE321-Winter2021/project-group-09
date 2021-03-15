@@ -200,7 +200,7 @@ public class TestTechnicianService {
 		String techPassword1 = "fSHBlfsuesefd";
 		String techAddress1 = "Somewhere";
 		String techPhone1 = "5142253789";
-
+		
 		
 		try {
 			service.createTechnician(techEmail1, techPassword1, techPhone1, techName1, techAddress1);

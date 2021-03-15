@@ -198,6 +198,7 @@ public class TestCustomerService {
 		String customerAddress = "Somewhere";
 		String customerPhone = "5142253789";
 		
+		@SuppressWarnings("unused")
 		CustomerDto customer = null;
 		
 		try {
@@ -220,7 +221,6 @@ public class TestCustomerService {
 		String customerPassword1 = "fSHBlfsuesefd";
 		String customerAddress1 = "Somewhere";
 		String customerPhone1 = "5142253789";
-
 		
 		try {
 			
@@ -235,8 +235,6 @@ public class TestCustomerService {
 	
 		
 	}
-	
-	
 	
 	
 	
