@@ -144,14 +144,14 @@ public class CustomerService {
 		
 		//delete customer's appointments
 		List<Appointment> customerApps = customer.getAppointments();
-		for(int i = 0; i < customerApps.size(); i++) {
-			appointmentRepository.deleteById(customerApps.get(i).getAppointmentID());
+		for (Appointment customerApp : customerApps) {
+			appointmentRepository.deleteById(customerApp.getAppointmentID());
 		}
 		
 		//delete customr's reminders
 		List<Reminder> customerReminders = customer.getReminders();
-		for(int i = 0; i < customerReminders.size(); i++) {
-			reminderRepository.deleteById(customerReminders.get(i).getReminderID());
+		for (Reminder customerReminder : customerReminders) {
+			reminderRepository.deleteById(customerReminder.getReminderID());
 		}
 		
 		customerRepository.deleteByEmail(email);
@@ -167,7 +167,6 @@ public class CustomerService {
 	 * @return a customer Dto corresponding to the customer domain object provided
 	 *
 	 */
-	@Transactional
 	public static CustomerDto customerToDTO(Customer customer) {
 		CustomerDto customerDTO = new CustomerDto();
 		customerDTO.setAddress(customer.getAddress());
@@ -175,6 +174,7 @@ public class CustomerService {
 		customerDTO.setName(customer.getName());
 		customerDTO.setEmail(customer.getEmail());
 		customerDTO.setPassword(customer.getPassword());
+		customerDTO.setToken(customer.getToken());
 		
 		return customerDTO;
 
@@ -218,9 +218,9 @@ public class CustomerService {
 			throw new Exception("Customer not found.");
 		}
 		List<Appointment> customerAppointments = customer.getAppointments();
-		
-		for(int i = 0; i < customerAppointments.size(); i++) {
-			AppointmentDto thisAppDto = appointmentToDTO(customerAppointments.get(i));		//TODO Convert to Dto
+
+		for (Appointment customerAppointment : customerAppointments) {
+			AppointmentDto thisAppDto = appointmentToDTO(customerAppointment);        //TODO Convert to Dto
 			appDtos.add(thisAppDto);
 		}
 		

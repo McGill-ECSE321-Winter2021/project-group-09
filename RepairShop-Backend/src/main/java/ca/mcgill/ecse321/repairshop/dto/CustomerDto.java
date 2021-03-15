@@ -11,7 +11,7 @@ public class CustomerDto {
 	private String name;
 	private String address;
 	private String password;
-	
+    private String token;
 	
 	
 	public String getEmail() {
@@ -56,6 +56,14 @@ public class CustomerDto {
     
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }
