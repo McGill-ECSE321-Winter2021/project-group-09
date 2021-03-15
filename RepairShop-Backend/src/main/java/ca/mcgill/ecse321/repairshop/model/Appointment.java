@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.repairshop.model;
 
-import java.util.List;
-
 import javax.persistence.*;
 
 
@@ -76,12 +74,6 @@ public class Appointment {
 
     //////////////////////////////////////////////////////////////////////////////
 
-    public String toString() {
-        return super.toString() + "[" +
-                "appointmentID" + ":" + getAppointmentID() + "]" + System.getProperties().getProperty("line.separator") +
-                "  " + "service = " + (getService() != null ? Integer.toHexString(System.identityHashCode(getService())) : "null") + System.getProperties().getProperty("line.separator") +
-                "  " + "customer = " + (getCustomer() != null ? Integer.toHexString(System.identityHashCode(getCustomer())) : "null");
-    }
 }
 
 

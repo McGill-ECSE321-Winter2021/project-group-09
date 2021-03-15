@@ -12,11 +12,6 @@ public class BusinessDto {
     private List<TimeSlotDto> holidays;
 
     
-    
-    public BusinessDto() {
-    	
-    } 
-    
     public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
         this.businessID = businessID;
         this.name = name;
@@ -84,13 +79,5 @@ public class BusinessDto {
         this.holidays = holidays;
     }
 
-    public String toString() {
-        return super.toString() + "[" +
-                "businessID" + ":" + getBusinessID() + "," +
-                "name" + ":" + getName() + "," +
-                "address" + ":" + getAddress() + "," +
-                "phoneNumber" + ":" + getPhoneNumber() + "," +
-                "email" + ":" + getEmail() + "," +
-                "numberOfRepairSpots" + ":" + getNumberOfRepairSpots() + "]" + System.getProperties().getProperty("line.separator");
-    }
+
 }

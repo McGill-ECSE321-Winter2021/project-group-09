@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.sun.istack.NotNull;
 
-import ca.mcgill.ecse321.repairshop.model.Appointment;
-
 public class TechnicianDto {
 	
 	@NotNull

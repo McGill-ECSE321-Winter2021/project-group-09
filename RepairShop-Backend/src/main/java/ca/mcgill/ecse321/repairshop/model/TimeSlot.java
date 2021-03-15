@@ -37,13 +37,7 @@ public class TimeSlot {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    
-    public String toString() {
-        return super.toString() + "[" +
-                "timeSlotID" + ":" + getTimeSlotID() + "," +
-                "startDateTime" + ":" + getStartDateTime() + "," +
-                "endDateTime" + ":" + getEndDateTime() + "]" + System.getProperties().getProperty("line.separator");
-    }
+
 
 }
 
