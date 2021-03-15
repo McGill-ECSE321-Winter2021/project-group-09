@@ -32,5 +32,12 @@ public class ServiceDto {
     public void setPrice(double price) {
         this.price = price;
     }
+    
+    public String toString() {
+        return super.toString() + "[" +
+                "name" + ":" + getName() + "," +
+                "duration" + ":" + getDuration() + "," +
+                "price" + ":" + getPrice() + "]";
+    }
 
 }

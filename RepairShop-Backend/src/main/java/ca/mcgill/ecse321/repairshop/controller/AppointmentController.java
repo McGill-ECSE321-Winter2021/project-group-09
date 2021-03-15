@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
 import ca.mcgill.ecse321.repairshop.service.AppointmentService;
-import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

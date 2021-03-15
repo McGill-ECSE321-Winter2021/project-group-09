@@ -36,5 +36,11 @@ public class LoginDto {
         this.email = email;
     }
 
+    public String toString() {
+        return super.toString() + "[" +
+                "email" + ":" + getEmail() + "," +
+                "password" + ":" + getPassword() + "," +
+                "usertype" + ":" + getUserType() + "]";
+    }
 
 }

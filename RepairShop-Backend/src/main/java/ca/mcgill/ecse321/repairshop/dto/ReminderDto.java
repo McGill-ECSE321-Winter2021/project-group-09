@@ -62,5 +62,14 @@ public class ReminderDto {
         this.appointmentDateTime = appointmentDateTime;
     }
 
-
+	public String toString()
+	{
+		return super.toString() + "["+
+				"reminderID" + ":" + getReminderID()+ "," +
+				"serviceName" + ":" + getServiceName()+ "]" + System.getProperties().getProperty("line.separator") +
+				"  " + "dateTime" + "=" + (getDateTime() != null ? !getDateTime().equals(this)  ? getDateTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+				"  " + "appointmentDateTime" + "=" + (getAppointmentDateTime() != null ? !getAppointmentDateTime().equals(this)  ? getAppointmentDateTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+				"  " + "reminderType" + "=" + (getReminderType() != null ? !getReminderType().equals(this)  ? getReminderType().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+				"  " + "customer = "+(getCustomerDto()!=null?Integer.toHexString(System.identityHashCode(getCustomerDto())):"null") + System.getProperties().getProperty("line.separator") ;
+	}
 }

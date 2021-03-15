@@ -26,6 +26,7 @@ import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
+import ca.mcgill.ecse321.repairshop.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -252,8 +253,8 @@ public class TechnicianService {
 		//get dates of the week
 		Date startDate = Date.valueOf(weekStartDate);
 		List<String> datesOfWeek = new ArrayList<>();
-		for(int i = 0; i <= 7; i++) {
-			Date thisDate = new Date(startDate.getTime() + (84600000*i));
+		for(int i = 0; i < 7; i++) {
+			Date thisDate = new Date(startDate.getTime() + (86400000*i));
 			datesOfWeek.add(thisDate.toString());
 		}
 		
@@ -277,7 +278,66 @@ public class TechnicianService {
 		
 	}
 	
+	@Transactional // TODO check if this is what is needed for this method: this method supposed to remove absolutely all the timeslots and appointments from technicians shedule
+	public String deleteFullTechnicianWorkSchedule(String email) throws Exception{
+		
+		if(email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		
+		if(technician == null) {
+			throw new Exception("Technician not found.");
+		}
+		
+		// removing all the appointments
+		for (Appointment appointmentToRemove: technician.getAppointments()) {
+			technician.getAppointments().remove(appointmentToRemove);
+		}
+		// removing all the timeslots
+		for (TimeSlot timeSlotToRemove: technician.getTimeslots()) {
+			technician.getTimeslots().remove(timeSlotToRemove);
+		}
+
+		technicianRepository.save(technician);
+		
+		return "All work hour timeslots and associated appointments for technician " + email + " were successfully removed.";
+	}
 	
+	@Transactional // TODO check if this is what is needed for this method: method supposed to remove the specific timeSlot and appointment from technician schedule
+	public String deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(String email, TimeSlot slotToDelete) throws Exception{
+		boolean removedAppointments = false;
+		boolean removedTimeSlot = false;
+		
+		if (email == null) {
+			throw new Exception("Email cannot be empty.");
+		}
+
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		if (technician == null) {
+			throw new Exception("Technician not found.");
+		}
+		// First removing all the appointments within the chosen work time slot
+		for (Appointment appointmentToDelete: technician.getAppointments()) {
+			if (appointmentToDelete.getTimeSlot().equals(slotToDelete)) {
+				technician.getAppointments().remove(appointmentToDelete);
+				removedAppointments = true;
+			}
+		}
+		// Second removing the chosen timeslot itself
+		for (TimeSlotDto timeSlot: getWorkHours(email)) {
+			if (timeSlot.getStartDateTime().equals(slotToDelete.getStartDateTime()) 
+					&& timeSlot.getEndDateTime().equals(slotToDelete.getEndDateTime())) {
+				technician.getTimeslots().remove(slotToDelete);
+				removedTimeSlot = true;
+			}
+		}
+		technicianRepository.save(technician); // saving the newly removed timeslot change to the technician
+		// TODO perhaps the return should be of all the timeslots that are still not removed
+		return "Requested TimeSlot was removed: " + removedTimeSlot + " . " + 
+				"Associate Appointements within the requested TimeSlot were also removed: " + removedAppointments;
+	}
 	
 	@Transactional
 	public String addTechnicianWorkHours(String email, List<TimeSlotDto> dtos) throws Exception{

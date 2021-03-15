@@ -72,6 +72,13 @@ public class TechnicianDto {
 	    this.password = password;
 	}
 	
-    
+    public String toString() {
+        return super.toString() + "[" +
+                "email" + ":" + getEmail() + "," +
+                "password" + ":" + getPassword() + "," +
+                "phoneNumber" + ":" + getPhoneNumber() + "," +
+                "name" + ":" + getName() + "," +
+                "address" + ":" + getAddress() + "]";
+    }
 
 }

@@ -36,5 +36,10 @@ public class TimeSlotDto {
         this.ID = ID;
     }
 
-
+    public String toString() {
+        return super.toString() + "[" +
+                "timeSlotID" + ":" + getID() + "," +
+                "startDateTime" + ":" + getStartDateTime() + "," +
+                "endDateTime" + ":" + getEndDateTime() + "]" + System.getProperties().getProperty("line.separator");
+    }
 }
