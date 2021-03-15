@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import ca.mcgill.ecse321.repairshop.service.utilities.JWTTokenProvider;
+import ca.mcgill.ecse321.repairshop.service.utilities.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class AdminService {
 	AdminRepository adminRepository;
 
 	@Autowired
-	JWTTokenProvider jwtTokenProvider;
+	TokenProvider tokenProvider;
 	
 	@Transactional
 	public AdminDto createAdmin(String email, String password, String phone, String name, String address) throws Exception {

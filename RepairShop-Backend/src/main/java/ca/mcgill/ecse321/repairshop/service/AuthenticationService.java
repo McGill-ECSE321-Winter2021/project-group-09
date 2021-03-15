@@ -7,7 +7,7 @@ import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
-import ca.mcgill.ecse321.repairshop.service.utilities.JWTTokenProvider;
+import ca.mcgill.ecse321.repairshop.service.utilities.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class AuthenticationService {
     TechnicianRepository technicianRepository;
 
     @Autowired
-    JWTTokenProvider jwtTokenProvider;
+    TokenProvider tokenProvider;
 
     /**
      * '
@@ -66,10 +66,14 @@ public class AuthenticationService {
         }
     }
 
+    public Admin validateAdminToken(String token) {
+        return adminRepository.findAdminByToken(token);
+    }
+
     private String authenticateTechnician(String email, String password) throws AuthenticationException {
         Technician tech = technicianRepository.findTechnicianByEmail(email);
         if (tech.getPassword().equals(password)) {
-            tech.setToken(jwtTokenProvider.createToken(tech.getEmail()));
+            tech.setToken(tokenProvider.createToken(tech.getEmail()));
             return tech.getToken();
         } else {
             throw new AuthenticationException("Invalid password.");
@@ -79,7 +83,7 @@ public class AuthenticationService {
     private String authenticateAdmin(String email, String password) throws AuthenticationException {
         Admin admin = adminRepository.findAdminByEmail(email);
         if (admin.getPassword().equals(password)) {
-            admin.setToken(jwtTokenProvider.createToken(admin.getEmail()));
+            admin.setToken(tokenProvider.createToken(admin.getEmail()));
             return admin.getToken();
         } else {
             throw new AuthenticationException("Invalid password.");
@@ -89,7 +93,7 @@ public class AuthenticationService {
     private String authenticateCustomer(String email, String password) throws AuthenticationException {
         Customer customer = customerRepository.findCustomerByEmail(email);
         if (customer.getPassword().equals(password)) {
-            customer.setToken(jwtTokenProvider.createToken(customer.getEmail()));
+            customer.setToken(tokenProvider.createToken(customer.getEmail()));
             return customer.getToken();
         } else {
             throw new AuthenticationException("Invalid password.");

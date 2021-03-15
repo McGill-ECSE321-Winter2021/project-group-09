@@ -6,17 +6,11 @@ package ca.mcgill.ecse321.repairshop.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
@@ -34,6 +28,9 @@ public class TechnicianController {
 	
 	@Autowired
 	private TechnicianService techService;
+
+	@Autowired
+	AuthenticationService authenticationService;
 	
 	
 	
@@ -76,26 +73,26 @@ public class TechnicianController {
 	}
 	
 	*/
-	
-	
-	
+
+
 	/**
-	 * DELETE request to delete a technician account
-	 * @param email
-	 * @return 
+	 * Deletes a technician by email
+	 * @param email id of the technician
+	 * @param token of logged in admin making the request
+	 * @return http response with status or error message
 	 */
 	@DeleteMapping(value = { "/technician/{email}", "/technician/{email}/" })
-	public ResponseEntity<?> deleteTechnician(@PathVariable("email") String email){
-		
+	public ResponseEntity<?> deleteTechnician(@PathVariable String email, @RequestHeader String token){
 		try {
-			
+			if (authenticationService.validateAdminToken(token) == null) {
+				return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+			}
             String message = techService.deleteTechnician(email);
             return new ResponseEntity<>(message, HttpStatus.OK);  
             
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-		
 	}
 	
 	

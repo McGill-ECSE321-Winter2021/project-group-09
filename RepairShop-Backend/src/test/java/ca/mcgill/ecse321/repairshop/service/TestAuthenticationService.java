@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
+import ca.mcgill.ecse321.repairshop.service.utilities.TokenProvider;
 import ca.mcgill.ecse321.repairshop.service.utilities.UserType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,8 @@ public class TestAuthenticationService {
     TechnicianRepository technicianRepository;
     @Mock
     AdminRepository adminRepository;
+    @Mock
+    TokenProvider tokenProvider;
     @InjectMocks
     AuthenticationService authenticationService;
 

@@ -23,5 +23,7 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {
     
     void deleteByEmail(String email);
 
+    Customer findCustomerByToken(String token);
+
 }
 

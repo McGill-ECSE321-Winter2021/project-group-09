@@ -11,6 +11,8 @@ public interface AdminRepository extends CrudRepository<Admin, String> {
 	Admin findAdminByEmail(String email);
 	
 	void deleteAdminByEmail(String email);
+
+	Admin findAdminByToken(String token);
 	
     List<Admin> findAll();	
 

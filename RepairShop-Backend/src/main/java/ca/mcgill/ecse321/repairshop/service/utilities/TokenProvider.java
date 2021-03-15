@@ -1,12 +1,10 @@
 package ca.mcgill.ecse321.repairshop.service.utilities;
 
-
 import ca.mcgill.ecse321.repairshop.model.Admin;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
-import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
-import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,19 +17,13 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
-public class JWTTokenProvider {
-    private String secretKey = "secret";
+public class TokenProvider {
 
-    private final long validityInMilliseconds = 3600000 * 24 * 3;
-
-    @Autowired
-    private CustomerRepository customerRepository;
+    @Value("${secretKey}")
+    private String secretKey;
 
     @Autowired
     private AdminRepository adminRepository;
-
-    @Autowired
-    private TechnicianRepository technicianRepository;
 
     @Autowired
     private MessageSource ms;
@@ -44,6 +36,8 @@ public class JWTTokenProvider {
     public String createToken(String username) {
         Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
+        // valid for 12 hours
+        long validityInMilliseconds = 3600000 * 12;
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
                 .setClaims(claims)
