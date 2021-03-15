@@ -320,7 +320,7 @@ public class AppointmentService {
                 technicianRepository.save(tech.get());
 
                 //Send APPOINTMENT CANCELLED email
-                emailService.appointmentCancelled(customer.get().getEmail(), customer.get().getName(),
+                emailService.appointmentCancelledEmail(customer.get().getEmail(), customer.get().getName(),
                         appointment.get().getTimeSlot().getStartDateTime(), appointment.get().getService().getName());
 
                 for (Reminder currReminder : customer.get().getReminders()) {  //Remove all reminders related to this cancelled appointment
