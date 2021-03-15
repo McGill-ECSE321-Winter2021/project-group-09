@@ -264,7 +264,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, CUSTOMER_EMAIL);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -283,7 +283,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(null, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(null, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The Timestamp is mandatory", e.getMessage());
@@ -298,7 +298,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment("", SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment("", SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The Timestamp is mandatory", e.getMessage());
@@ -313,7 +313,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment("notATimestamp", SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment("notATimestamp", SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The provided Timestamp is invalid", e.getMessage());
@@ -328,7 +328,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME2, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME2, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The provided Timestamp is invalid", e.getMessage());
@@ -343,7 +343,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME3, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME3, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The appointment cannot be booked", e.getMessage());
@@ -358,7 +358,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME4, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME4, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The appointment cannot be booked", e.getMessage());
@@ -373,7 +373,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME5, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME5, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The appointment cannot be booked", e.getMessage());
@@ -388,7 +388,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME6, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME6, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The appointment cannot be booked", e.getMessage());
@@ -403,7 +403,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME7, SERVICE_NAME, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME7, SERVICE_NAME, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The appointment cannot be booked", e.getMessage());
@@ -418,7 +418,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, null, CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, null, CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
@@ -433,7 +433,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, "", CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, "", CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
@@ -448,7 +448,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, "notAService", CUSTOMER_EMAIL, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, "notAService", CUSTOMER_EMAIL);
             fail();
         } catch (Exception e) {
             assertEquals("The provided service name is invalid", e.getMessage());
@@ -463,7 +463,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, null, BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, null);
             fail();
         } catch (Exception e) {
             assertEquals("The customer is mandatory", e.getMessage());
@@ -478,7 +478,7 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, "", BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, "");
             fail();
         } catch (Exception e) {
             assertEquals("The customer is mandatory", e.getMessage());
@@ -493,55 +493,10 @@ public class TestAppointmentService {
         AppointmentDto appointmentDto = null;
 
         try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, "notACustomer", BUSINESS_NAME);
+            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, "notACustomer");
             fail();
         } catch (Exception e) {
             assertEquals("The provided customer email is invalid", e.getMessage());
-        }
-
-        assertNull(appointmentDto);
-    }
-
-    @Test // invalid appointment - invalid business (null business)
-    public void testCreateAppointmentInvalidBusinessNull() {
-
-        AppointmentDto appointmentDto = null;
-
-        try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, CUSTOMER_EMAIL, null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("The business is mandatory", e.getMessage());
-        }
-
-        assertNull(appointmentDto);
-    }
-
-    @Test // invalid appointment - invalid business (empty business)
-    public void testCreateAppointmentInvalidBusinessEmpty() {
-
-        AppointmentDto appointmentDto = null;
-
-        try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, CUSTOMER_EMAIL, "");
-            fail();
-        } catch (Exception e) {
-            assertEquals("The business is mandatory", e.getMessage());
-        }
-
-        assertNull(appointmentDto);
-    }
-
-    @Test // invalid appointment - invalid business
-    public void testCreateAppointmentInvalidBusiness() {
-
-        AppointmentDto appointmentDto = null;
-
-        try {
-            appointmentDto = appointmentService.createAppointment(APP_START_TIME, SERVICE_NAME, CUSTOMER_EMAIL, "notABusiness");
-            fail();
-        } catch (Exception e) {
-            assertEquals("The provided business name is invalid", e.getMessage());
         }
 
         assertNull(appointmentDto);
@@ -556,7 +511,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -575,7 +530,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(21)).toString(), SERVICE_NAME, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(21)).toString(), SERVICE_NAME);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -594,7 +549,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(null, SERVICE_NAME, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(null, SERVICE_NAME);
             fail();
         } catch (Exception e) {
             assertEquals("The start date is mandatory", e.getMessage());
@@ -609,7 +564,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments("", SERVICE_NAME, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments("", SERVICE_NAME);
             fail();
         } catch (Exception e) {
             assertEquals("The start date is mandatory", e.getMessage());
@@ -624,7 +579,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments("notADate", SERVICE_NAME, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments("notADate", SERVICE_NAME);
             fail();
         } catch (Exception e) {
             assertEquals("The provided start date is invalid", e.getMessage());
@@ -639,7 +594,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(APP_START_TIME2, SERVICE_NAME, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(APP_START_TIME2, SERVICE_NAME);
             fail();
         } catch (Exception e) {
             assertEquals("The provided start date is invalid", e.getMessage());
@@ -654,7 +609,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), null, BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), null);
             fail();
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
@@ -669,7 +624,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "", BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "");
             fail();
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
@@ -684,59 +639,13 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "notAService", BUSINESS_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "notAService");
             fail();
         } catch (Exception e) {
             assertEquals("The provided service name is invalid", e.getMessage());
         }
 
         assertNull(possibleAppointments);
-    }
-
-    @Test // invalid business name (null)
-    public void testGetPossibleAppointmentsInvalidBusinessNameNull() {
-
-        List<TimeSlot> possibleAppointments = null;
-
-        try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, null);
-            fail();
-        } catch (Exception e) {
-            assertEquals("The business is mandatory", e.getMessage());
-        }
-
-        assertNull(possibleAppointments);
-    }
-
-    @Test // invalid business name (Empty)
-    public void testGetPossibleAppointmentsInvalidBusinessNameEmpty() {
-
-        List<TimeSlot> possibleAppointments = null;
-
-        try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, "");
-            fail();
-        } catch (Exception e) {
-            assertEquals("The business is mandatory", e.getMessage());
-        }
-
-        assertNull(possibleAppointments);
-    }
-
-    @Test // invalid business name (does not exist)
-    public void testGetPossibleAppointmentsInvalidBusinessName() {
-
-        List<TimeSlot> possibleAppointments = null;
-
-        try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME, "notABusiness");
-            fail();
-        } catch (Exception e) {
-            assertEquals("The provided business name is invalid", e.getMessage());
-        }
-
-        assertNull(possibleAppointments);
-
     }
 
     @Test
