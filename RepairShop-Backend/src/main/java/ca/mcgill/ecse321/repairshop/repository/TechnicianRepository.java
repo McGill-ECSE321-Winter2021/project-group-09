@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 
 import ca.mcgill.ecse321.repairshop.model.Technician;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
 
 public interface TechnicianRepository extends CrudRepository<Technician, String>{
