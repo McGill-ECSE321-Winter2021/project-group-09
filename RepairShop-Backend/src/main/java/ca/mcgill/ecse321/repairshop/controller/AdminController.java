@@ -96,7 +96,7 @@ public class AdminController {
 			return new ResponseEntity<>(adminDtos, HttpStatus.OK); 
 			
 		} catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 	}

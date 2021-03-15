@@ -611,25 +611,7 @@ public class TestBusinessService {
         assertNull(business);
         assertEquals("The number of repair spots cannot be negative", error);
     }
-
-    /*
-    @Test
-    public void testGetAllBusinesses() {
-
-        BusinessDto business = null;
-
-        try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-
-            List<BusinessDto> businessDtoList = businessService.getAllBusinesses();
-
-            assertEquals(business.getName(), businessDtoList.get(0).getName());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-
-    }
-	*/
+    
 
     @Test
     public void testAddHoliday() {
@@ -665,11 +647,7 @@ public class TestBusinessService {
         try {
         	
             businessDto = businessService.addHoliday(startTime, endTime);
-            System.out.println("Holidays before deletion: " + businessDto.getHolidays().toString()); // 2 holidays
-            
             businessDto = businessService.deleteHoliday( startTime, endTime);
-            System.out.println("Holidays after deletion: " + businessDto.getHolidays().toString()); // 1 holiday
-            
         } catch (Exception e) {
             fail(e.getMessage());
         }
