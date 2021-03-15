@@ -13,5 +13,6 @@ public interface ReminderRepository extends CrudRepository<Reminder, Long> {
 	Reminder findReminderByReminderType(ReminderType reminderType);
 	
 	List<Reminder> findByCustomer(Customer customer);
-
+	List<Reminder> findAll();
+	void deleteById(Long reminderID);
 }

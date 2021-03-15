@@ -11,7 +11,12 @@ public class BusinessDto {
     private int numberOfRepairSpots;
     private List<TimeSlotDto> holidays;
 
-
+    
+    
+    public BusinessDto() {
+    	
+    } 
+    
     public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
         this.businessID = businessID;
         this.name = name;
@@ -20,6 +25,7 @@ public class BusinessDto {
         this.phoneNumber = phoneNumber;
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
+    
 
     public long getBusinessID() {
         return this.businessID;

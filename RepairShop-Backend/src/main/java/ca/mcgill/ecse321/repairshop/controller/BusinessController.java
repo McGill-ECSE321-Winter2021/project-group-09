@@ -20,32 +20,15 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
-
     /**
-     * Get request for all businesses
+     * Get the business
      *
-     * @return a list of all businesses
+     * @return the business if found
      */
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllBusinesses() {
+    @GetMapping("/info")
+    public ResponseEntity<?> getBusiness() {
         try {
-            List<BusinessDto> businessDtosList = businessService.getAllBusinesses();
-            return new ResponseEntity<>(businessDtosList, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    /**
-     * Get a business by businessID
-     *
-     * @param businessID ID of the business
-     * @return the requested business if found
-     */
-    @GetMapping("/{businessID}")
-    public ResponseEntity<?> getBusinessById(@PathVariable("businessID") Long businessID) {
-        try {
-            BusinessDto businessDto = businessService.getBusinessByID(businessID);
+            BusinessDto businessDto = businessService.getBusiness();
             return new ResponseEntity<>(businessDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -55,19 +38,13 @@ public class BusinessController {
     /**
      * Create a new business
      *
-     * @param name                name of the business (String)
-     * @param address             address of the business (String)
-     * @param phoneNumber         phone number of the business (String)
-     * @param email               email of the business (String)
-     * @param numberOfRepairSpots number of repair spots of the business (int)
+     * @param businessDto The businessDto object from which to create the business
      * @return the new business if created successfully
      */
-    @PostMapping("/create/{name}")
-    public ResponseEntity<?> createBusiness(@PathVariable("name") String name, @RequestParam String address,
-                                            @RequestParam String phoneNumber, @RequestParam String email, @RequestParam int numberOfRepairSpots) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createBusiness(@RequestBody BusinessDto businessDto) {
         try {
-            Long newBusinessID = (new Business()).getBusinessID(); //TODO: A new businessID will be generated?
-            return new ResponseEntity<>(businessService.createBusiness(newBusinessID,name, address, phoneNumber, email, numberOfRepairSpots), HttpStatus.CREATED);
+            return new ResponseEntity<>(businessService.createBusiness(businessDto.getName(), businessDto.getAddress(), businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
@@ -82,7 +59,7 @@ public class BusinessController {
     @PutMapping("/update")
     public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto) {
         try {
-            return new ResponseEntity<>(businessService.updateBusiness(businessDto.getBusinessID(), businessDto.getName(), businessDto.getAddress(),
+            return new ResponseEntity<>(businessService.updateBusiness(businessDto.getName(), businessDto.getAddress(),
                     businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
@@ -94,10 +71,10 @@ public class BusinessController {
      * Get request for all holidays for a business
      * @return a list of all holidays
      */
-    @GetMapping("/{businessID}/holidays")
+    @GetMapping("/holidays")
     public ResponseEntity<?> getAllHolidays(@PathVariable("businessID") Long businessID) {
         try {
-            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays(businessID);
+            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -108,12 +85,11 @@ public class BusinessController {
      * Add a new holiday to the business.
      * @return a list of all holidays
      */
-    @GetMapping("create/{businessID}/holidays/")
-    public ResponseEntity<?> addHoliday(@PathVariable("businessID") Long businessID, @RequestParam Timestamp startDateTime,
-                                        @RequestParam Timestamp endDateTime) {
+    @PostMapping("create/holidays/")
+    public ResponseEntity<?> addHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime) {
         try {
-            businessService.addHoliday(businessID, startDateTime, endDateTime);
-            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays(businessID);
+            businessService.addHoliday(startDateTime, endDateTime);
+            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

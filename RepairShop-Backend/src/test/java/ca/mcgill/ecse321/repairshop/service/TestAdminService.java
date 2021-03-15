@@ -384,56 +384,6 @@ public class TestAdminService {
 	
     /////////////////////////////////////////////////////////////////////////////////////////
 	
-	////////////////////////// CHANGE EMAIL TEST  ///////////////////////////////////////////
-	
-	@Test
-	public void testChangeEmail() {
-	
-		String newEmail = "gotNewColtraneMail@gmail.com";
-		AdminDto admin = null;
-		try {
-			admin = adminService.changeEmail(ADMIN_EMAIL, newEmail);
-
-		} catch (Exception e) { 
-			// Check that no error occurred
-			fail(e.getMessage());
-		}
-		
-		assertNotNull(admin);
-		assertEquals(newEmail, admin.getEmail());
-		assertNotEquals(ADMIN_EMAIL, admin.getEmail());
-		
-	}
-	
-	
-	
-	@Test
-	public void testChangeEmailNull() {
-				
-		try {
-			adminService.changeEmail(null, null);
-			fail();
-		} catch (Exception e) {
-			//error should occur
-			assertEquals("Email or new email cannot be empty.", e.getMessage());
-		}
-	}
-	
-	
-	@Test
-	public void testChangeEmailNonExistentAdmin() {
-				
-		try {
-			adminService.changeEmail("nobody@mail.com", "somebody@mail.com");
-			fail();
-		} catch (Exception e) {
-			//error should occur
-			assertEquals("Admin not found.", e.getMessage());
-		}
-	}
-	
-    /////////////////////////////////////////////////////////////////////////////////////////
-	
 	////////////////////////// CHANGE NAME TEST  ////////////////////////////////////////////
 	
 	@Test
