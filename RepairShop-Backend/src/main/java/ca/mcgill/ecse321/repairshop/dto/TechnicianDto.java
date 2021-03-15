@@ -16,7 +16,7 @@ public class TechnicianDto {
 	private String address;
 	private String password;
 	private List<TimeSlotDto> workHours;
-	
+	private String token;
     
     
 	
@@ -71,7 +71,13 @@ public class TechnicianDto {
 	public void setSetPassword(String password) {
 	    this.password = password;
 	}
-	
-    
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
 }

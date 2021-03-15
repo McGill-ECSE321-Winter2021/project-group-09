@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import ca.mcgill.ecse321.repairshop.service.utilities.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class AdminService {
 
 	@Autowired
 	AdminRepository adminRepository;
+
+	@Autowired
+	TokenProvider tokenProvider;
 	
 	@Transactional
 	public AdminDto createAdmin(String email, String password, String phone, String name, String address) throws Exception {
@@ -35,7 +39,6 @@ public class AdminService {
 		admin.setPhoneNumber(phone);
 		admin.setName(name);
 		admin.setAddress(address);
-		
 		adminRepository.save(admin);
 		return adminToDTO(admin);
 	}
@@ -111,22 +114,6 @@ public class AdminService {
 	}
 	
 	@Transactional
-	public AdminDto changeEmail(String oldEmail, String newEmail) throws Exception{
-		
-		if(oldEmail == null || newEmail == null) {
-			throw new Exception("Email or new email cannot be empty.");
-		}
-		if(adminRepository.findAdminByEmail(oldEmail) == null) {
-			throw new Exception("Admin not found.");
-		}
-		
-		Admin admin = adminRepository.findAdminByEmail(oldEmail);
-		admin.setEmail(newEmail);
-		adminRepository.save(admin);
-		return adminToDTO(admin);
-	}
-	
-	@Transactional
 	public AdminDto changePassword(String email, String newPassword) throws Exception{
 		
 		if (email == null || newPassword == null) {
@@ -166,6 +153,7 @@ public class AdminService {
 		adminDTO.setName(admin.getName());
 	    adminDTO.setEmail(admin.getEmail());
 		adminDTO.setPassword(admin.getPassword());
+		adminDTO.setToken(admin.getToken());
 		
 		return adminDTO;
 	}

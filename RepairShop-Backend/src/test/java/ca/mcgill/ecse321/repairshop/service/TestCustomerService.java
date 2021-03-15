@@ -10,9 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,10 +29,15 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Reminder;
+import ca.mcgill.ecse321.repairshop.model.Service;
+import ca.mcgill.ecse321.repairshop.model.Technician;
+import ca.mcgill.ecse321.repairshop.model.TimeSlot;
+import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 
 
@@ -40,6 +47,10 @@ public class TestCustomerService {
 	
 	@Mock
 	private CustomerRepository customerRepo;
+	
+	@Mock
+	private AppointmentRepository appRepo;
+	
 	
 	@InjectMocks
 	private CustomerService service;
@@ -53,13 +64,27 @@ public class TestCustomerService {
 	private static final String CUSTOMER_ADDRESS = "Somewhere";
 	private static final String CUSTOMER_PHONE = "5142253789";
 	
+	private static final String SERVICE_NAME = "Repair";
+	private static final int SERVICE_DURATION = 1;
+	private static final double SERVICE_PRICE = 10.0;
+	private static final String TECH_EMAIL = "tech@gmail.com";
+	private static final Timestamp START_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
+	private static final Timestamp END_TIME = Timestamp.valueOf("2021-03-02 10:30:00");	
+	private static final Long APP_ID = (long) 312312;
+	
 	
 	private Customer CUSTOMER = new Customer();
-
+	private Appointment APP = new Appointment();
+	private TimeSlot TIME = new TimeSlot();
+	private Service SERVICE = new Service();
+	private Technician TECHNICIAN = new Technician();
+	
 	
 	
 	@BeforeEach
 	public void setMockOutput() {
+		
+		
 
 		lenient().when(customerRepo.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			CUSTOMER.setName(CUSTOMER_NAME);
@@ -76,22 +101,53 @@ public class TestCustomerService {
 		
 		lenient().when(customerRepo.findCustomerByEmail(anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
-				Customer customer = new Customer();
+				//Customer customer = new Customer();
 				List<Appointment> apps = new ArrayList<>();
 				List<Reminder> reminders = new ArrayList<>();
-				customer.setName(CUSTOMER_NAME);
-				customer.setEmail(CUSTOMER_EMAIL);
-				customer.setPassword(CUSTOMER_PASSWORD);
-				customer.setPhoneNumber(CUSTOMER_PHONE);
-				customer.setAddress(CUSTOMER_ADDRESS);
-				customer.setAppointments(apps);
-				customer.setReminders(reminders);
-				return customer;
+				CUSTOMER.setName(CUSTOMER_NAME);
+				CUSTOMER.setEmail(CUSTOMER_EMAIL);
+				CUSTOMER.setPassword(CUSTOMER_PASSWORD);
+				CUSTOMER.setPhoneNumber(CUSTOMER_PHONE);
+				CUSTOMER.setAddress(CUSTOMER_ADDRESS);
+				
+				//customer appointment
+				TECHNICIAN.setEmail(TECH_EMAIL);
+				SERVICE.setName(SERVICE_NAME);
+				SERVICE.setPrice(SERVICE_PRICE);
+				SERVICE.setDuration(SERVICE_DURATION);
+				TIME.setStartDateTime(START_TIME);
+				TIME.setEndDateTime(END_TIME);
+				APP.setAppointmentID(APP_ID);
+				APP.setCustomer(CUSTOMER);
+				APP.setService(SERVICE);
+				APP.setTechnician(TECHNICIAN);
+				APP.setTimeSlot(TIME);
+				apps.add(APP);
+				
+				CUSTOMER.setAppointments(apps);
+				CUSTOMER.setReminders(reminders);
+				return CUSTOMER;
+
 			} else {
 				return null;
 			}
 			
 		});
+		
+		
+
+		
+		
+		lenient().when(appRepo.findAppointmentByAppointmentID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(APP_ID)) {
+				return APP;
+			} else {
+				return null;
+			}
+			
+		});
+		
+	
 		
 		
 		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
@@ -166,14 +222,11 @@ public class TestCustomerService {
 		String customerAddress1 = "Somewhere";
 		String customerPhone1 = "5142253789";
 		
-		
-		@SuppressWarnings("unused")
-		CustomerDto customer = null;
-	
-		
 		try {
+			
 			service.createCustomer(customerEmail1, customerPassword1, customerPhone1, customerName1, customerAddress1);
 			fail();
+			
 		} catch (Exception e) {
 			//an error should occur
 			assertEquals("Email is already taken.", e.getMessage());
@@ -355,6 +408,31 @@ public class TestCustomerService {
 		
 
 	}
+	
+	
+	
+	
+	@Test
+	public void testViewAppointment() {
+		
+		try {
+			
+			AppointmentDto app = service.viewAppointments(CUSTOMER_EMAIL).get(0);
+			assertEquals(CUSTOMER_EMAIL, app.getCustomerDto().getEmail());
+			assertEquals(TECH_EMAIL, app.getTechnicianDto().getEmail());
+			assertEquals(SERVICE_NAME, app.getServiceDto().getName());
+			assertEquals(START_TIME, app.getTimeSlotDto().getStartDateTime());
+			assertEquals(END_TIME, app.getTimeSlotDto().getEndDateTime());
+			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+		
+	}
+	
+	
+	
+	
 	
 	
 	

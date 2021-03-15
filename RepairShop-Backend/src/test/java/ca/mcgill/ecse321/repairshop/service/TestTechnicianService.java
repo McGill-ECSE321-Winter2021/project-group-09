@@ -22,8 +22,12 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
+import ca.mcgill.ecse321.repairshop.model.Appointment;
+import ca.mcgill.ecse321.repairshop.model.Customer;
+import ca.mcgill.ecse321.repairshop.model.Service;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
@@ -49,6 +53,20 @@ public class TestTechnicianService {
 	private static final String TECHNICIAN_PHONE = "5142253789";
 	private static final Timestamp START_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
 	private static final Timestamp END_TIME = Timestamp.valueOf("2021-03-02 11:00:00");	
+	
+	private static final String CUSTOMER_EMAIL = "someone@gmail.com";
+	private static final String SERVICE_NAME = "Repair";
+	private static final int SERVICE_DURATION = 1;
+	private static final double SERVICE_PRICE = 10.0;
+	private static final Timestamp S_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
+	private static final Timestamp E_TIME = Timestamp.valueOf("2021-03-02 10:30:00");	
+	
+	
+	private Customer CUSTOMER = new Customer();
+	private Appointment APP = new Appointment();
+	private TimeSlot TIME = new TimeSlot();
+	private Service SERVICE = new Service();
+
 
 	
 	private Technician TECHNICIAN = new Technician();
@@ -76,19 +94,36 @@ public class TestTechnicianService {
 		
 		lenient().when(techRepo.findTechnicianByEmail(anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(TECHNICIAN_EMAIL)) {
-				Technician tech = new Technician();
+				
 				TimeSlot t = new TimeSlot();
 				t.setStartDateTime(START_TIME);
 				t.setEndDateTime(END_TIME);
 				List<TimeSlot> slots = new ArrayList<>();
+				List<Appointment> apps = new ArrayList<>();
 				slots.add(t);
-				tech.setName(TECHNICIAN_NAME);
-				tech.setEmail(TECHNICIAN_EMAIL);
-				tech.setPassword(TECHNICIAN_PASSWORD);
-				tech.setPhoneNumber(TECHNICIAN_PHONE);
-				tech.setAddress(TECHNICIAN_ADDRESS);
-				tech.setTimeslots(slots);
-				return tech;
+				TECHNICIAN.setName(TECHNICIAN_NAME);
+				TECHNICIAN.setEmail(TECHNICIAN_EMAIL);
+				TECHNICIAN.setPassword(TECHNICIAN_PASSWORD);
+				TECHNICIAN.setPhoneNumber(TECHNICIAN_PHONE);
+				TECHNICIAN.setAddress(TECHNICIAN_ADDRESS);
+				TECHNICIAN.setTimeslots(slots);
+				
+				//technician appointments
+				CUSTOMER.setEmail(CUSTOMER_EMAIL);
+				SERVICE.setName(SERVICE_NAME);
+				SERVICE.setPrice(SERVICE_PRICE);
+				SERVICE.setDuration(SERVICE_DURATION);
+				TIME.setStartDateTime(S_TIME);
+				TIME.setEndDateTime(E_TIME);
+				
+				APP.setCustomer(CUSTOMER);
+				APP.setService(SERVICE);
+				APP.setTechnician(TECHNICIAN);
+				APP.setTimeSlot(TIME);
+				apps.add(APP);
+				TECHNICIAN.setAppointments(apps);
+				
+				return TECHNICIAN;
 			} else {
 				return null;
 			}
@@ -248,8 +283,6 @@ public class TestTechnicianService {
 		assertNotNull(tech);
 		assertEquals(TECHNICIAN_NAME, tech.getName());
 		assertEquals(TECHNICIAN_EMAIL, tech.getEmail());
-		assertEquals(START_TIME, tech.getTimeSlots().get(0).getStartDateTime());
-		assertEquals(END_TIME, tech.getTimeSlots().get(0).getEndDateTime());
 		
 	}
 	
@@ -358,6 +391,7 @@ public class TestTechnicianService {
 		assertEquals(END_TIME, slots.get(0).getEndDateTime());
 	}
 	
+	
 	@Test
 	public void testGetTechnicianWorkHoursNull() {
 		
@@ -407,5 +441,88 @@ public class TestTechnicianService {
 	}
 	
 	
+	@Test
+	public void testViewAppointment() {
+		
+		try {
+			
+			AppointmentDto app = service.viewAppointments(CUSTOMER_EMAIL).get(0);
+			assertEquals(1, service.viewAppointments(CUSTOMER_EMAIL).size());
+			assertEquals(CUSTOMER_EMAIL, app.getCustomerDto().getEmail());
+			assertEquals(TECHNICIAN_EMAIL, app.getTechnicianDto().getEmail());
+			assertEquals(SERVICE_NAME, app.getServiceDto().getName());
+			assertEquals(S_TIME, app.getTimeSlotDto().getStartDateTime());
+			assertEquals(E_TIME, app.getTimeSlotDto().getEndDateTime());
+			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+		
+	}
+	
+	
+	@Test
+	public void testViewSchedule() {
+		
+		try {
+			
+			List<TimeSlotDto> timeSlots = service.viewTechnicianSchedule(TECHNICIAN_EMAIL, "2021-03-01");
+			TimeSlotDto timeSlot = timeSlots.get(0);
+			assertEquals(1, timeSlots.size());
+			assertEquals(S_TIME, timeSlot.getStartDateTime());
+			assertEquals(E_TIME, timeSlot.getEndDateTime());
+			
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	
+	
+	
+	
+	
+	@Test 
+	public void testAddTechnicianWorkHours() {
+		Timestamp start = Timestamp.valueOf("2021-03-02 9:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-02 17:00:00");
+		TimeSlotDto dto = new TimeSlotDto();
+		dto.setStartDateTime(start);
+		dto.setEndDateTime(end);
+		List<TimeSlotDto> dtos = new ArrayList<>();
+		dtos.add(dto);
+		
+		try {
+			String message = service.addTechnicianWorkHours(TECHNICIAN_EMAIL, dtos);
+			assertEquals("Work hours for technician " + TECHNICIAN_EMAIL + " successfully added.", message);
+			assertEquals(start, TECHNICIAN.getTimeslots().get(0).getStartDateTime());
+			assertEquals(end, TECHNICIAN.getTimeslots().get(0).getEndDateTime());
+			
+		} catch(Exception e) {
+			fail(e.getMessage());
+			
+		}
+		
+	}
+
+
+	@Test
+	public void testAddTechnicianWorkHoursNull() {
+		Timestamp start = Timestamp.valueOf("2021-03-02 9:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-02 17:00:00");
+		TimeSlotDto dto = new TimeSlotDto();
+		dto.setStartDateTime(start);
+		dto.setEndDateTime(end);
+		List<TimeSlotDto> dtos = new ArrayList<>();
+		dtos.add(dto);
+
+		try {
+			service.addTechnicianWorkHours(null, dtos);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+
+	}
 	
 }

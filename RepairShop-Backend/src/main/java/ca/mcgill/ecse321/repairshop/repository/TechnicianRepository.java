@@ -16,5 +16,6 @@ public interface TechnicianRepository extends CrudRepository<Technician, String>
 	List<Technician> findAll();	
 	
 	void deleteTechnicianByEmail(String email);
-	
+
+	String findTechnicianByToken(String token);
 }
