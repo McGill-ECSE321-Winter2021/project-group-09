@@ -623,7 +623,7 @@ public class TestBusinessService {
 
     }
 
-
+    
     @Test
     public void testAddHoliday() {
         BusinessDto businessDto = null;
@@ -635,17 +635,40 @@ public class TestBusinessService {
 
         try {
             businessDto = businessService.addHoliday(BUSINESS_ID, startTime, endTime);
-            System.out.println("BusinessDto: " + businessDto);
-            System.out.println("Holidays: " + businessDto.getHolidays());
+            System.out.println("BusinessDto: " + businessDto.toString());
+            System.out.println("Holidays: " + businessDto.getHolidays().toString());
         } catch (Exception e) {
             fail(e.getMessage());
         }
-        System.out.println(businessDto.getHolidays().toString());
         assertEquals(startTime, businessDto.getHolidays().get(1).getStartDateTime());
         assertEquals(endTime, businessDto.getHolidays().get(1).getEndDateTime());
         assertEquals(2, businessDto.getHolidays().size());
     }
 
+    @Test
+    public void testDeleteHoliday() {
+    	// first creating a holiday before proceeding to delete it
+        BusinessDto businessDto = null;
+        Timestamp startTime = Timestamp.valueOf("2020-12-23 21:00:00");
+        Timestamp endTime = Timestamp.valueOf("2020-12-26 07:00:00");
+        TimeSlot newHoliday = new TimeSlot();
+        newHoliday.setStartDateTime(startTime);
+        newHoliday.setEndDateTime(endTime);
+
+        try {
+        	
+            businessDto = businessService.addHoliday(BUSINESS_ID, startTime, endTime);
+            System.out.println("Holidays before deletion: " + businessDto.getHolidays().toString()); // 2 holidays
+            
+            businessDto = businessService.deleteHoliday(BUSINESS_ID, startTime, endTime); 
+            System.out.println("Holidays after deletion: " + businessDto.getHolidays().toString()); // 1 holiday
+            
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+        assertEquals(1, businessDto.getHolidays().size());
+    }
+    
     @Test
     public void testGetHolidays() {
 

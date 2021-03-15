@@ -190,6 +190,34 @@ public class BusinessService {
         timeSlotRepository.save(newHoliday);
         return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
     }
+    
+    /**
+     * Removes a new TimeSlot holiday from the business.
+     *
+     * @param businessID    ID of the business (Long)
+     * @param startDateTime Start date and time of the new TimeSlot Holiday (TimeStamp)
+     * @param endDateTime   End date and time of the new TimeSlot Holiday (TimeStamp)
+     * @return businessDto BusinessDto
+     * @throws Exception if the business wasn't found
+     */
+    @Transactional
+    public BusinessDto deleteHoliday(Long businessID, Timestamp startDateTime, Timestamp endDateTime) throws Exception {
+
+        Business business = businessRepository.findBusinessByBusinessID(businessID);
+
+        if (business == null) {
+            throw new Exception("Could not find a business with ID: " + businessID);
+        }
+        for (TimeSlotDto holidayToDelete: getAllHolidays(businessID)) {
+        	if (holidayToDelete.getStartDateTime() == startDateTime && holidayToDelete.getEndDateTime() == endDateTime) { 
+        		timeSlotRepository.deleteById(holidayToDelete.getID());
+        		break;
+        	}
+        }
+        
+        businessRepository.save(business);
+        return businessToDto(business);  // returning List<TimeSlotDto> holidays that are still remaining
+    }
 
     /**
      * Gets all Holidays of the business.

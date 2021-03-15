@@ -15,10 +15,6 @@ public class AppointmentController {
 
     @PostMapping("/book")
     public ResponseEntity<?> book(@RequestParam String startTime, @RequestParam String serviceName, @RequestParam String technicianEmails) {
-
-
-
-
         return null; // temp
     }
 
