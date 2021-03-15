@@ -100,12 +100,12 @@ public class BusinessController {
      * Delete a holiday from the business.
      * @return a list of all holidays
      */
-    @GetMapping("delete/{businessID}/holidays/")
-    public ResponseEntity<?> deleteHoliday(@PathVariable("businessID") Long businessID, @RequestParam Timestamp startDateTime,
+    @GetMapping("delete/holidays/")
+    public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime,
                                         @RequestParam Timestamp endDateTime) {
         try {
-            businessService.deleteHoliday(businessID, startDateTime, endDateTime);
-            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays(businessID);
+            businessService.deleteHoliday(startDateTime, endDateTime);
+            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

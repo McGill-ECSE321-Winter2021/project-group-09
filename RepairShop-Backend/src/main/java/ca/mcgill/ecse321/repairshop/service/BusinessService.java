@@ -159,21 +159,16 @@ public class BusinessService {
     /**
      * Removes a new TimeSlot holiday from the business.
      *
-     * @param businessID    ID of the business (Long)
      * @param startDateTime Start date and time of the new TimeSlot Holiday (TimeStamp)
      * @param endDateTime   End date and time of the new TimeSlot Holiday (TimeStamp)
-     * @return businessDto BusinessDto
      * @throws Exception if the business wasn't found
      */
     @Transactional
-    public BusinessDto deleteHoliday(Long businessID, Timestamp startDateTime, Timestamp endDateTime) throws Exception {
+    public BusinessDto deleteHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
 
-        Business business = businessRepository.findBusinessByBusinessID(businessID);
+        Business business = businessRepository.findAll().get(0);
 
-        if (business == null) {
-            throw new Exception("Could not find a business with ID: " + businessID);
-        }
-        for (TimeSlotDto holidayToDelete: getAllHolidays(businessID)) {
+        for (TimeSlotDto holidayToDelete: getAllHolidays()) {
         	if (holidayToDelete.getStartDateTime() == startDateTime && holidayToDelete.getEndDateTime() == endDateTime) { 
         		timeSlotRepository.deleteById(holidayToDelete.getID());
         		break;

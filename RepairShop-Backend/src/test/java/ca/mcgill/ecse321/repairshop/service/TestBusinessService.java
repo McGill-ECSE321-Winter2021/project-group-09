@@ -664,10 +664,10 @@ public class TestBusinessService {
 
         try {
         	
-            businessDto = businessService.addHoliday(BUSINESS_ID, startTime, endTime);
+            businessDto = businessService.addHoliday(startTime, endTime);
             System.out.println("Holidays before deletion: " + businessDto.getHolidays().toString()); // 2 holidays
             
-            businessDto = businessService.deleteHoliday(BUSINESS_ID, startTime, endTime); 
+            businessDto = businessService.deleteHoliday( startTime, endTime);
             System.out.println("Holidays after deletion: " + businessDto.getHolidays().toString()); // 1 holiday
             
         } catch (Exception e) {
