@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -78,6 +77,8 @@ public class TestAppointmentService {
     private CustomerRepository customerRepository;
     @Mock
     private BusinessRepository businessRepository;
+    @Mock
+    private TimeSlotRepository timeSlotRepository;
     @Mock
     private EmailService emailService;
     @Mock
@@ -248,6 +249,7 @@ public class TestAppointmentService {
 
 
         lenient().when(appointmentRepository.save(any(Appointment.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        lenient().when(timeSlotRepository.save(any(TimeSlot.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
 
     }

@@ -2,22 +2,15 @@ package ca.mcgill.ecse321.repairshop.service;
 
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.persistence.Id;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sun.istack.NotNull;
-
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
-//import ca.mcgill.ecse321.repairshop.controller.TimeSlotService;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
@@ -25,13 +18,6 @@ import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
-import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
@@ -48,11 +34,11 @@ public class TechnicianService {
 
 	/**
 	 * Method to create a technician account
-	 * @param email
-	 * @param password
-	 * @param phone
-	 * @param name
-	 * @param address
+	 * @param email of technician
+	 * @param password of technician
+	 * @param phone of technician
+	 * @param name of technician
+	 * @param address of technician
 	 * @return a technician dto corresponding to the technician object just created
 	 * @throws Exception if email/password is null or a technician already exists with given email
 	 *
@@ -78,16 +64,16 @@ public class TechnicianService {
 		tech.setTimeslots(timeSlots);
 
 		technicianRepository.save(tech);
-		return technicianToDTO(tech);
+		return technicianToDto(tech);
 	}
 
 
 
 	/**
 	 * Method to change password
-	 * @param email
-	 * @param newPassword
-	 * @return a technician dto corresponding to the technician object that was just updated
+	 * @param email of technician
+	 * @param newPassword of technician
+	 * @return a technician dto corresponding to the technician object that was just updated (TechnicianDto)
 	 * @throws Exception if email/new password is null or if no technician exists with given email
 	 *
 	 */
@@ -104,15 +90,15 @@ public class TechnicianService {
 		Technician tech = technicianRepository.findTechnicianByEmail(email);
 		tech.setPassword(newPassword);
 		technicianRepository.save(tech);
-		return technicianToDTO(tech);
+		return technicianToDto(tech);
 	}
 
 
 
 	/**
 	 * Method to get a technician by email
-	 * @param email
-	 * @return the technician with the given email
+	 * @param email of technician
+	 * @return the technician with the given email (TechnicianDto)
 	 * @throws Exception if email is null of if no technician exists with given email
 	 */
 	@Transactional
@@ -126,15 +112,15 @@ public class TechnicianService {
 		}
 
 		Technician tech = technicianRepository.findTechnicianByEmail(email);
-		return technicianToDTO(tech);
+		return technicianToDto(tech);
 	}
 
 
 
 	/**
 	 * Method to delete a technician by email
-	 * @param email
-	 * @throws Exception
+	 * @param email of technician
+	 * @throws Exception if the email is empty
 	 * Deletes the technician account with the given email
 	 *
 	 */
@@ -150,7 +136,7 @@ public class TechnicianService {
 			throw new Exception("Technician not found.");
 		}
 
-		//delete technicians's work hours
+		//delete technician's work hours
 		tech.setTimeslots(null);
 
 		technicianRepository.deleteTechnicianByEmail(email);
@@ -160,18 +146,18 @@ public class TechnicianService {
 
 	/**
 	 * Method to convert Technician to TechnicianDto
-	 * @param tech
+	 * @param tech (Technician)
 	 * @return a technician dto corresponding to the technician domain object provided
 	 *
 	 */
-	public static TechnicianDto technicianToDTO(Technician tech) {
-		TechnicianDto techDTO = new TechnicianDto();
-		techDTO.setAddress(tech.getAddress());
-		techDTO.setPhoneNumber(tech.getPhoneNumber());
-		techDTO.setName(tech.getName());
-		techDTO.setEmail(tech.getEmail());
-		techDTO.setSetPassword(tech.getPassword());
-		techDTO.setToken(tech.getToken());
+	public static TechnicianDto technicianToDto(Technician tech) {
+		TechnicianDto techDto = new TechnicianDto();
+		techDto.setAddress(tech.getAddress());
+		techDto.setPhoneNumber(tech.getPhoneNumber());
+		techDto.setName(tech.getName());
+		techDto.setEmail(tech.getEmail());
+		techDto.setSetPassword(tech.getPassword());
+		techDto.setToken(tech.getToken());
 
 		List<TimeSlot> timeSlots = tech.getTimeslots();
 		if(timeSlots != null) {
@@ -179,17 +165,17 @@ public class TechnicianService {
 			for (TimeSlot timeSlot : timeSlots) {
 				timeDtos.add(timeslotToDTO(timeSlot));
 			}
-			techDTO.setTimeSlots(timeDtos);
+			techDto.setTimeSlots(timeDtos);
 		}
 
-		return techDTO;
+		return techDto;
 
 	}
 
 
 	/**
 	 * Method to get all existing technicians
-	 * @return a list of all the existing technicians as dtos
+	 * @return a list of all the existing technicians as dtos (List<TechnicianDto>)
 	 *
 	 */
 	@Transactional
@@ -198,7 +184,7 @@ public class TechnicianService {
 		List<Technician> technicians = technicianRepository.findAll();
 		List<TechnicianDto> techDtos = new ArrayList<>();
 		for (Technician tech : technicians) {
-			techDtos.add(technicianToDTO(tech));
+			techDtos.add(technicianToDto(tech));
 		}
 		return techDtos;
 
@@ -208,8 +194,8 @@ public class TechnicianService {
 
 	/**
 	 * Method to get the work hours of a technician by email
-	 * @param email
-	 * @return a list of timeslots that correspond to the technicain's work hours
+	 * @param email of technician
+	 * @return a list of timeslots that correspond to the technician's work hours
 	 * @throws Exception if email is null of if no technician exists with given email
 	 *
 	 */
@@ -242,7 +228,13 @@ public class TechnicianService {
 
 	//USE CASES
 
-
+	/**
+	 * View a technician's schedule.
+	 * @param email of Technician
+	 * @param weekStartDate starting date of the work schedule to look at from
+	 * @return list of timeslots (List<TimeSlotDto>)
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
 	@Transactional
 	public List<TimeSlotDto> viewTechnicianSchedule(String email, String weekStartDate) throws Exception{
 
@@ -278,7 +270,13 @@ public class TechnicianService {
 	}
 
 
-
+	/**
+	 * Add technician's work schedule.
+	 * @param email of technician
+	 * @param dtos list of work hours of the technician to add (List<TimeSlotDto>)
+	 * @return whether the work hours were added successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
 	@Transactional
 	public String addTechnicianWorkHours(String email, List<TimeSlotDto> dtos) throws Exception{
 
@@ -302,8 +300,12 @@ public class TechnicianService {
 	}
 
 
-
-
+	/**
+	 * View appointments of a technician.
+	 * @param email of the technician
+	 * @return list of appointments of a technician (List<AppointmentDto>)
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
 	@Transactional
 	public List<AppointmentDto> viewAppointments(String email) throws Exception{
 
@@ -319,34 +321,12 @@ public class TechnicianService {
 		List<Appointment> techAppointments = tech.getAppointments();
 
 		for (Appointment techAppointment : techAppointments) {
-			AppointmentDto thisAppDto = appointmentToDTO(techAppointment);        //TODO Convert to Dto
+			AppointmentDto thisAppDto = AppointmentService.appointmentToDto(techAppointment);
 			appDtos.add(thisAppDto);
 		}
 
 		return appDtos;
 	}
-
-
-	//TODO Remove this. Should have already been implemented in AppointmentService
-	private AppointmentDto appointmentToDTO(Appointment app) {
-
-		AppointmentDto dto = new AppointmentDto();
-		dto.setCustomerDto(CustomerService.customerToDTO(app.getCustomer()));
-		dto.setTechnicianDto(technicianToDTO(app.getTechnician()));
-		dto.setTimeSlotDto(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
-		dto.setServiceDto(ServiceService.serviceToDTO(app.getService()));
-		return dto;
-
-	}
-
-
-
-
-
-
-
-
-
 
 }
 

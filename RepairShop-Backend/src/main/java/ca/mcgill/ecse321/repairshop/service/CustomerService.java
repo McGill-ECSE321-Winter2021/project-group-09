@@ -13,11 +13,9 @@ import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Reminder;
-import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
-import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 
 
 
@@ -37,11 +35,11 @@ public class CustomerService {
 	
 	/**
 	 * Method to create a customer account
-	 * @param email
-	 * @param password
-	 * @param phone
-	 * @param name
-	 * @param address
+	 * @param email of customer
+	 * @param password of customer
+	 * @param phone of customer
+	 * @param name of customer
+	 * @param address of customer
 	 * @return a customer dto corresponding to the customer object just created
 	 * @throws Exception if email/password is null or a customer already exists with given email
 	 *
@@ -69,15 +67,15 @@ public class CustomerService {
 		customer.setReminders(reminders);
 		
 		customerRepository.save(customer);
-		return customerToDTO(customer);
+		return customerToDto(customer);
 	}
 	
 	
 
 	/**
 	 * Method to change password
-	 * @param email
-	 * @param newPassword
+	 * @param email of customer
+	 * @param newPassword of customer
 	 * @return a customer dto corresponding to the customer object that was just updated
 	 * @throws Exception if email/new password is null or if no customer exists with given email
 	 *
@@ -95,14 +93,14 @@ public class CustomerService {
 		Customer customer = customerRepository.findCustomerByEmail(email);
 		customer.setPassword(newPassword);
 		customerRepository.save(customer);
-		return customerToDTO(customer);
+		return customerToDto(customer);
 	}
 	
 
 	
 	/**
 	 * Method to get a customer by email
-	 * @param email
+	 * @param email of customer
 	 * @return the customer with the given email
 	 * @throws Exception if email is null or if no customer exists with given email
 	 *
@@ -118,14 +116,14 @@ public class CustomerService {
 		}
 		
 		Customer customer = customerRepository.findCustomerByEmail(email);
-		return customerToDTO(customer);
+		return customerToDto(customer);
 	}
 	
 	
 
 	/**
 	 * Method to delete a customer by email
-	 * @param email
+	 * @param email of customer
 	 * @throws Exception if email is null or if no customer exists with given email
 	 * Deletes the customer account corresponding to the email provided
 	 *
@@ -148,7 +146,7 @@ public class CustomerService {
 			appointmentRepository.deleteById(customerApp.getAppointmentID());
 		}
 		
-		//delete customr's reminders
+		//delete customer's reminders
 		List<Reminder> customerReminders = customer.getReminders();
 		for (Reminder customerReminder : customerReminders) {
 			reminderRepository.deleteById(customerReminder.getReminderID());
@@ -163,20 +161,20 @@ public class CustomerService {
 	
 	/**
 	 * Method to convert a Customer to CustomerDto
-	 * @param customer
+	 * @param customer (Customer)
 	 * @return a customer Dto corresponding to the customer domain object provided
 	 *
 	 */
-	public static CustomerDto customerToDTO(Customer customer) {
-		CustomerDto customerDTO = new CustomerDto();
-		customerDTO.setAddress(customer.getAddress());
-		customerDTO.setPhoneNumber(customer.getPhoneNumber());
-		customerDTO.setName(customer.getName());
-		customerDTO.setEmail(customer.getEmail());
-		customerDTO.setPassword(customer.getPassword());
-		customerDTO.setToken(customer.getToken());
+	public static CustomerDto customerToDto(Customer customer) {
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setAddress(customer.getAddress());
+		customerDto.setPhoneNumber(customer.getPhoneNumber());
+		customerDto.setName(customer.getName());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setPassword(customer.getPassword());
+		customerDto.setToken(customer.getToken());
 		
-		return customerDTO;
+		return customerDto;
 
 	}
 
@@ -191,7 +189,7 @@ public class CustomerService {
 		List<Customer> customers = customerRepository.findAll();
 		List<CustomerDto> customerDtos = new ArrayList<>();
 		for (Customer customer : customers) {
-			customerDtos.add(customerToDTO(customer));
+			customerDtos.add(customerToDto(customer));
 		}
 		return customerDtos;
 	}
@@ -202,9 +200,14 @@ public class CustomerService {
 	
 	
 	//USE CASES
-	
-	
 
+
+	/**
+	 * View all the appointments of a customer by using their email.
+	 * @param email of customer
+	 * @return list of appointments (List<AppointmentDto>)
+	 * @throws Exception if email is empty or the customer's email can't be found
+	 */
 	@Transactional
 	public List<AppointmentDto> viewAppointments(String email) throws Exception{
 		if(email == null) {
@@ -220,39 +223,11 @@ public class CustomerService {
 		List<Appointment> customerAppointments = customer.getAppointments();
 
 		for (Appointment customerAppointment : customerAppointments) {
-			AppointmentDto thisAppDto = appointmentToDTO(customerAppointment);        //TODO Convert to Dto
+			AppointmentDto thisAppDto = AppointmentService.appointmentToDto(customerAppointment);
 			appDtos.add(thisAppDto);
 		}
 		
 		return appDtos;
 	}
-	
-	
-	
-	//TODO Remove this. Should have already been implemented in AppointmentService
-	
-	private AppointmentDto appointmentToDTO(Appointment app) {
-		
-		AppointmentDto dto = new AppointmentDto();
-		dto.setCustomerDto(customerToDTO(app.getCustomer()));
-		dto.setTechnicianDto(TechnicianService.technicianToDTO(app.getTechnician()));
-		dto.setTimeSlotDto(TimeSlotService.timeslotToDTO(app.getTimeSlot()));
-		dto.setServiceDto(ServiceService.serviceToDTO(app.getService()));
-		return dto;
-		
-	} 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

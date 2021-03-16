@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDto;
 import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
-import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
+import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDto;
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
@@ -41,12 +41,14 @@ public class AppointmentService {
     BusinessRepository businessRepository;
 
     @Autowired
+    TimeSlotRepository timeSlotRepository;
+
+    @Autowired
     EmailService emailService;
 
     @Autowired
     ReminderService reminderService;
 
-    // TODO: Implement some more methods from the repository
 
     /**
      * Helper method to determine if an appointment can be booked with certain parameters
@@ -122,8 +124,8 @@ public class AppointmentService {
         appointmentDto.setAppointmentID(appointment.getAppointmentID());
         appointmentDto.setTimeSlotDto(timeslotToDTO(appointment.getTimeSlot()));
         appointmentDto.setServiceDto(serviceToDTO(appointment.getService()));
-        appointmentDto.setTechnicianDto(technicianToDTO(appointment.getTechnician()));
-        appointmentDto.setCustomerDto(customerToDTO(appointment.getCustomer()));
+        appointmentDto.setTechnicianDto(technicianToDto(appointment.getTechnician()));
+        appointmentDto.setCustomerDto(customerToDto(appointment.getCustomer()));
         return appointmentDto;
     }
 
@@ -199,6 +201,7 @@ public class AppointmentService {
         appointment.setTechnician(technician);
         appointment.setCustomer(customer);
 
+        timeSlotRepository.save(timeSlot);
         appointmentRepository.save(appointment);
 
         emailService.sendConfirmationEmail(customerEmail, customer.getName(), startTime, serviceName, Double.toString(service.getPrice()));
@@ -300,6 +303,10 @@ public class AppointmentService {
             Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
             Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
             if (customer.isPresent() && tech.isPresent()) {
+
+                //Remove timeslot from timeslot repository
+                timeSlotRepository.deleteById(appointment.get().getTimeSlot().getTimeSlotID());
+
                 //delete the appointment and remove it from customer's list
                 appointmentRepository.delete(appointment.get());
                 List<Appointment> cusApps = customer.get().getAppointments();

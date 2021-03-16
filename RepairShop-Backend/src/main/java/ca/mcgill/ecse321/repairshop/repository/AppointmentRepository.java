@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.model.Service;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 
 public interface AppointmentRepository extends CrudRepository<Appointment, Long>{
 

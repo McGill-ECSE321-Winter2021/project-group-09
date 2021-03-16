@@ -40,7 +40,7 @@ public class AdminService {
 		admin.setName(name);
 		admin.setAddress(address);
 		adminRepository.save(admin);
-		return adminToDTO(admin);
+		return adminToDto(admin);
 	}
 
 	@Transactional 
@@ -67,7 +67,7 @@ public class AdminService {
 		}
 		
 		Admin admin = adminRepository.findAdminByEmail(email);
-		return adminToDTO(admin);
+		return adminToDto(admin);
 	}
 	
 	@Transactional
@@ -76,7 +76,7 @@ public class AdminService {
 		List<AdminDto> adminDtos = new ArrayList<>();
 		
 		for (Admin admin: admins) {
-			adminDtos.add(adminToDTO(admin));
+			adminDtos.add(adminToDto(admin));
 		}
 		return adminDtos;
 	}
@@ -94,7 +94,7 @@ public class AdminService {
 		Admin admin = adminRepository.findAdminByEmail(email);
 		admin.setAddress(newAddress);
 		adminRepository.save(admin);
-		return adminToDTO(admin);
+		return adminToDto(admin);
 	}
 	
 	@Transactional
@@ -110,7 +110,7 @@ public class AdminService {
 		Admin admin = adminRepository.findAdminByEmail(email);
 		admin.setPhoneNumber(newPhone);
 		adminRepository.save(admin);
-		return adminToDTO(admin);
+		return adminToDto(admin);
 	}
 	
 	@Transactional
@@ -126,7 +126,7 @@ public class AdminService {
 		Admin admin = adminRepository.findAdminByEmail(email);
 		admin.setPassword(newPassword);
 		adminRepository.save(admin);
-		return adminToDTO(admin);
+		return adminToDto(admin);
 	}
 	
 	@Transactional
@@ -142,10 +142,15 @@ public class AdminService {
 		Admin admin = adminRepository.findAdminByEmail(email);
 		admin.setName(newName);
 		adminRepository.save(admin);
-		return adminToDTO(admin);
+		return adminToDto(admin);
 	}
 
-	public static AdminDto adminToDTO(Admin admin) {
+	/**
+	 * Convert Admin to AdminDto
+	 * @param admin (Admin)
+	 * @return adminDTO (AdminDto)
+	 */
+	public static AdminDto adminToDto(Admin admin) {
 		AdminDto adminDTO = new AdminDto();
 		
 		adminDTO.setAddress(admin.getAddress());

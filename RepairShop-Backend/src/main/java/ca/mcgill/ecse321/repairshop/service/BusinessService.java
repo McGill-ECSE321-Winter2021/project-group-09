@@ -13,10 +13,7 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.validateEmail;
-import static java.util.regex.Pattern.matches;
 
 @Service
 public class BusinessService {
@@ -153,7 +150,7 @@ public class BusinessService {
 
         businessRepository.save(business);
         timeSlotRepository.save(newHoliday);
-        return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
+        return businessToDto(business);
     }
     
     /**

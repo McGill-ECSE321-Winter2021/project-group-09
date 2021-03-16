@@ -72,7 +72,6 @@ public class ServiceService {
      * @param service to convert to dto
      * @return serviceDto object
      */
-
     public static ServiceDto serviceToDTO(Service service) {
         ServiceDto serviceDto = new ServiceDto();
         serviceDto.setName(service.getName());

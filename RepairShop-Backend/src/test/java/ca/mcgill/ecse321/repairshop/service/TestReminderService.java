@@ -5,7 +5,7 @@ import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
 
-import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDto;
 
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -166,7 +166,7 @@ public class TestReminderService {
         assertEquals(APPOINTMENT_TIMESTAMP, reminderDto.getAppointmentDateTime());
         assertEquals(REMINDER_TYPE, reminderDto.getReminderType());
         assertEquals(SERVICE_NAME, reminderDto.getServiceName());
-        assertEquals(customerToDTO(customer).getEmail(), reminderDto.getCustomerDto().getEmail());
+        assertEquals(customerToDto(customer).getEmail(), reminderDto.getCustomerDto().getEmail());
 
     }
 
@@ -340,7 +340,7 @@ public class TestReminderService {
 
         assertEquals(REMINDER_TIMESTAMP, reminderDto.getDateTime());
         assertEquals(REMINDER_TYPE, reminderDto.getReminderType());
-        assertEquals(customerToDTO(customer).getEmail(), reminderDto.getCustomerDto().getEmail()); // check same customer
+        assertEquals(customerToDto(customer).getEmail(), reminderDto.getCustomerDto().getEmail()); // check same customer
 
     }
 
