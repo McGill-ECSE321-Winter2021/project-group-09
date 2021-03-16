@@ -36,6 +36,9 @@ public class RepairShopApplication {
         SpringApplication.run(RepairShopApplication.class, args);
     }
 
+    /**
+     * When we start the application we want to make sure there is a business and one root admin.
+     */
     @Bean
     InitializingBean sendDatabase() {
         return () -> {

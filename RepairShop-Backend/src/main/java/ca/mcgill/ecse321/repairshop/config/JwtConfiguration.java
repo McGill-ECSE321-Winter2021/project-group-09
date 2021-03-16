@@ -9,6 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**Not sure how it works
+ * Code inspired by
+ * https://daddyprogrammer.org/post/636/springboot2-springsecurity-authentication-authorization/
+ */
 @Configuration
 public class JwtConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired

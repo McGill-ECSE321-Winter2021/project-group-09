@@ -11,6 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**Not sure how it works
+ * Code inspired by
+ * https://daddyprogrammer.org/post/636/springboot2-springsecurity-authentication-authorization/
+ */
 public class TokenFilter extends GenericFilterBean {
     private final TokenProvider tokenProvider;
 
