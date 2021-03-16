@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableScheduling
 public class RepairShopApplication {
 
+    @Value("${spring.mail.username}")
+    private String rootemail;
+
+    @Value("${spring.mail.password}")
+    private String rootpassword;
+
     @Autowired
     AdminRepository adminRepository;
     
@@ -29,13 +36,16 @@ public class RepairShopApplication {
         SpringApplication.run(RepairShopApplication.class, args);
     }
 
+    /**
+     * When we start the application we want to make sure there is a business and one root admin.
+     */
     @Bean
     InitializingBean sendDatabase() {
         return () -> {
-            if (!adminRepository.findById("${spring.mail.username}").isPresent()) {
+            if (!adminRepository.findById(rootemail).isPresent()) {
                 Admin rootAdmin = new Admin();
-                rootAdmin.setEmail("${spring.mail.username}");
-                rootAdmin.setPassword("${spring.mail.password}");
+                rootAdmin.setEmail(rootemail);
+                rootAdmin.setPassword(rootpassword);
                 rootAdmin.setName("root");
                 adminRepository.save(rootAdmin);
             }

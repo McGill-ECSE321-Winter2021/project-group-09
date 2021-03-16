@@ -79,14 +79,5 @@ public class Business {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    
-    public String toString() {
-        return super.toString() + "[" +
-                "businessID" + ":" + getBusinessID() + "," +
-                "name" + ":" + getName() + "," +
-                "address" + ":" + getAddress() + "," +
-                "phoneNumber" + ":" + getPhoneNumber() + "," +
-                "email" + ":" + getEmail() + "," +
-                "numberOfRepairSpots" + ":" + getNumberOfRepairSpots() + "]" + System.getProperties().getProperty("line.separator");
-    }
+
 }

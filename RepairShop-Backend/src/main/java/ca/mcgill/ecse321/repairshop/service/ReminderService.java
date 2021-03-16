@@ -7,14 +7,13 @@ import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
 
-import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDto;
 
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +114,7 @@ public class ReminderService {
      */
     @Transactional
     public List<ReminderDto> getAllReminders() {
-        List<Reminder> reminders = toList(reminderRepository.findAll());
+        List<Reminder> reminders = reminderRepository.findAll();
         List<ReminderDto> reminderDtos = new ArrayList<>();
         for (Reminder reminder : reminders) {
             reminderDtos.add(reminderToDTO(reminder));
@@ -128,7 +127,7 @@ public class ReminderService {
      *
      * @param reminderID ID of the reminder
      * @return String that indicates if the delete was successful
-     * @throws Exception
+     * @throws Exception if reminder is not found
      */
     @Transactional
     public String deleteReminderById(Long reminderID) throws Exception {
@@ -138,7 +137,6 @@ public class ReminderService {
             reminderRepository.deleteById(reminderID);
             return "Reminder with ID " + reminderID + " is deleted.";
         } else {
-            //TODO custom exception type
             throw new Exception("Reminder not found...");
         }
     }
@@ -154,18 +152,10 @@ public class ReminderService {
         reminderDto.setReminderID(reminder.getReminderID());
         reminderDto.setDateTime(reminder.getDateTime());
         reminderDto.setReminderType(reminder.getReminderType());
-        reminderDto.setCustomerDto(customerToDTO(reminder.getCustomer()));
+        reminderDto.setCustomerDto(customerToDto(reminder.getCustomer()));
         reminderDto.setServiceName(reminder.getServiceName());
         reminderDto.setAppointmentDateTime(reminder.getAppointmentDateTime());
         return reminderDto;
-    }
-
-    private <T> List<T> toList(Iterable<T> iterable) {
-        List<T> resultList = new ArrayList<T>();
-        for (T t : iterable) {
-            resultList.add(t);
-        }
-        return resultList;
     }
 
 }

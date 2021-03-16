@@ -13,10 +13,7 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.validateEmail;
-import static java.util.regex.Pattern.matches;
 
 @Service
 public class BusinessService {
@@ -153,7 +150,30 @@ public class BusinessService {
 
         businessRepository.save(business);
         timeSlotRepository.save(newHoliday);
-        return businessToDto(business);  //TODO: Should we return BusinessDto or TimeSlotDto or List<TimeSlotDto>?
+        return businessToDto(business);
+    }
+    
+    /**
+     * Removes a new TimeSlot holiday from the business.
+     *
+     * @param startDateTime Start date and time of the new TimeSlot Holiday (TimeStamp)
+     * @param endDateTime   End date and time of the new TimeSlot Holiday (TimeStamp)
+     * @throws Exception if the business wasn't found
+     */
+    @Transactional
+    public BusinessDto deleteHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
+
+        Business business = businessRepository.findAll().get(0);
+
+        for (TimeSlotDto holidayToDelete: getAllHolidays()) {
+        	if (holidayToDelete.getStartDateTime() == startDateTime && holidayToDelete.getEndDateTime() == endDateTime) { 
+        		timeSlotRepository.deleteById(holidayToDelete.getID());
+        		break;
+        	}
+        }
+        
+        businessRepository.save(business);
+        return businessToDto(business);  // returning List<TimeSlotDto> holidays that are still remaining
     }
 
     /**

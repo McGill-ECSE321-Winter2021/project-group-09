@@ -36,5 +36,4 @@ public class TimeSlotDto {
         this.ID = ID;
     }
 
-
 }

@@ -611,25 +611,7 @@ public class TestBusinessService {
         assertNull(business);
         assertEquals("The number of repair spots cannot be negative", error);
     }
-
-    /*
-    @Test
-    public void testGetAllBusinesses() {
-
-        BusinessDto business = null;
-
-        try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-
-            List<BusinessDto> businessDtoList = businessService.getAllBusinesses();
-
-            assertEquals(business.getName(), businessDtoList.get(0).getName());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-
-    }
-	*/
+    
 
     @Test
     public void testAddHoliday() {
@@ -647,12 +629,31 @@ public class TestBusinessService {
         } catch (Exception e) {
             fail(e.getMessage());
         }
-        System.out.println(businessDto.getHolidays().toString());
         assertEquals(startTime, businessDto.getHolidays().get(1).getStartDateTime());
         assertEquals(endTime, businessDto.getHolidays().get(1).getEndDateTime());
         assertEquals(2, businessDto.getHolidays().size());
     }
 
+    @Test
+    public void testDeleteHoliday() {
+    	// first creating a holiday before proceeding to delete it
+        BusinessDto businessDto = null;
+        Timestamp startTime = Timestamp.valueOf("2020-12-23 21:00:00");
+        Timestamp endTime = Timestamp.valueOf("2020-12-26 07:00:00");
+        TimeSlot newHoliday = new TimeSlot();
+        newHoliday.setStartDateTime(startTime);
+        newHoliday.setEndDateTime(endTime);
+
+        try {
+        	
+            businessDto = businessService.addHoliday(startTime, endTime);
+            businessDto = businessService.deleteHoliday( startTime, endTime);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+        assertEquals(1, businessDto.getHolidays().size());
+    }
+    
     @Test
     public void testGetHolidays() {
 

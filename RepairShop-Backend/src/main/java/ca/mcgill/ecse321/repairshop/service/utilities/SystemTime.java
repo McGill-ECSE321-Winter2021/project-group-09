@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.repairshop.service.utilities;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.time.LocalDateTime;
 
 public class SystemTime {
 
