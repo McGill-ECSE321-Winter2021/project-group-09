@@ -37,10 +37,4 @@ public class Service {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public String toString() {
-        return super.toString() + "[" +
-                "name" + ":" + getName() + "," +
-                "duration" + ":" + getDuration() + "," +
-                "price" + ":" + getPrice() + "]";
-    }
 }

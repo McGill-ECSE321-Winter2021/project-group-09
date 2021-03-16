@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import static ca.mcgill.ecse321.repairshop.service.utilities.SystemTime.getSystemDate;

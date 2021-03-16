@@ -56,15 +56,13 @@ public abstract class User {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    
-    public String toString() {
-        return super.toString() + "[" +
-                "email" + ":" + getEmail() + "," +
-                "password" + ":" + getPassword() + "," +
-                "phoneNumber" + ":" + getPhoneNumber() + "," +
-                "name" + ":" + getName() + "," +
-                "address" + ":" + getAddress() + "]";
-    }
+
+    private String token;
+    public String getToken() {return token;}
+    public void setToken(String token) {this.token = token;}
+
+    //////////////////////////////////////////////////////////////////////////
+
 
 }
 

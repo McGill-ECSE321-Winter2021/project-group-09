@@ -11,7 +11,7 @@ public class CustomerDto {
 	private String name;
 	private String address;
 	private String password;
-	
+    private String token;
 	
 	
 	public String getEmail() {
@@ -58,13 +58,12 @@ public class CustomerDto {
         this.password = password;
     }
 
-    public String toString() {
-        return super.toString() + "[" +
-                "email" + ":" + getEmail() + "," +
-                "password" + ":" + getPassword() + "," +
-                "phoneNumber" + ":" + getPhoneNumber() + "," +
-                "name" + ":" + getName() + "," +
-                "address" + ":" + getAddress() + "]";
+    public String getToken() {
+        return token;
     }
-    
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 }

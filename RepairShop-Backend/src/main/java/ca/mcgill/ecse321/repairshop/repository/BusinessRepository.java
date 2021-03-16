@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface BusinessRepository extends CrudRepository<Business, Long> {
 	
-    Business findBusinessByName(String name);
     Business findBusinessByBusinessID(Long businessID);
 
     List<Business> findAll();

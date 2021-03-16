@@ -2,27 +2,15 @@
 
 
 package ca.mcgill.ecse321.repairshop.controller;
-
-import java.util.ArrayList;
 import java.util.List;
-
+import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.model.Technician;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.service.TechnicianService;
 
 
@@ -30,24 +18,26 @@ import ca.mcgill.ecse321.repairshop.service.TechnicianService;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/technician")
 public class TechnicianController {
 	
 	@Autowired
 	private TechnicianService techService;
+
+	@Autowired
+	AuthenticationService authenticationService;
 	
 	
 	
 	/**
 	 * POST request to create a new technician
-	 * @param techDto
+	 * @param techDto (TechnicianDto)
 	 * @return A technician Dto
-	 * @throws IllegalArgumentException
 	 */
-	@PostMapping(value = { "/technician/register", "/technician/register/" })
-	public ResponseEntity<?> createTechnician(@RequestBody TechnicianDto techDto) throws IllegalArgumentException {
+	@PostMapping("/register")
+	public ResponseEntity<?> createTechnician(@RequestBody TechnicianDto techDto) {
 		
 		try {
-
 			TechnicianDto tech = techService.createTechnician(techDto.getEmail(), techDto.getPassword(), techDto.getPhoneNumber(), techDto.getName(), techDto.getAddress());
 			return new ResponseEntity<>(tech, HttpStatus.OK); 
 		
@@ -57,12 +47,16 @@ public class TechnicianController {
 		
 		
 	}
-	
-	
-	/*
-	
-	@PostMapping(value = { "/changePassword", "/changePassword/" })
-	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword) throws IllegalArgumentException {
+
+
+	/**
+	 * POST request to change a password for a technician
+	 * @param email of technician
+	 * @param newPassword of technician
+	 * @return a technician dto
+	 */
+	@PostMapping("/changePassword/{email}")
+	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword){
 		
 		try {
 			
@@ -75,36 +69,35 @@ public class TechnicianController {
 		
 	}
 	
-	*/
-	
-	
-	
+
+
 	/**
-	 * DELETE request to delete a technician account
-	 * @param email
-	 * @return 
+	 * Deletes a technician by email
+	 * @param email of the technician
+	 * @param token of logged in admin making the request
+	 * @return http response with status or error message
 	 */
-	@DeleteMapping(value = { "/technician/{email}", "/technician/{email}/" })
-	public ResponseEntity<?> deleteTechnician(@PathVariable("email") String email){
-		
+	@DeleteMapping("/delete/{email}")
+	public ResponseEntity<?> deleteTechnician(@PathVariable String email, @RequestHeader String token){
 		try {
-			
+			if (authenticationService.validateAdminToken(token) == null) {
+				return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+			}
             String message = techService.deleteTechnician(email);
             return new ResponseEntity<>(message, HttpStatus.OK);  
             
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-		
 	}
 	
 	
 	/**
 	 * GET request to get the technician by email
-	 * @param email
+	 * @param email of the technician
 	 * @return a technician Dto
 	 */
-	@GetMapping(value = { "/technician/{email}", "/technician/{email}/" })
+	@GetMapping("/get/{email}")
 	public ResponseEntity<?> getTechnician(@PathVariable("email") String email){
 		
 		try {
@@ -124,7 +117,7 @@ public class TechnicianController {
 	 * GET request to get all existing technicians
 	 * @return list of technician Dtos
 	 */
-	@GetMapping(value = { "/technician/all", "/technician/all/" })
+	@GetMapping("/all")
 	public ResponseEntity<?> getAllTechnicians() {
 		
 		try {
@@ -141,10 +134,10 @@ public class TechnicianController {
 	
 	/**
 	 * GET  request to get the work hours of the technician by email
-	 * @param email
+	 * @param email of technician
 	 * @return list of timeslot Dtos
 	 */
-	@GetMapping(value = { "/technician/{email}/work_hours", "/technician/{email}/work_hours/" })
+	@GetMapping("/{email}/work_hours")
 	public ResponseEntity<?> getTechnicianWorkHours(@PathVariable("email") String email) {
 		
 		try {
@@ -158,14 +151,19 @@ public class TechnicianController {
 		
 		
 	}
-	
-	
-	@GetMapping(value = { "/technician/{email}/schedule", "/technician/{email}/schedule/" })
-	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestParam("weekStartDate") String date) {
+
+	/**
+	 * GET request to get all work schedule of a technician
+	 * @param email of a technician
+	 * @param weekStartDate StarDate of the work week
+	 * @return list of timeslot Dtos
+	 */
+	@GetMapping("/{email}/schedule")
+	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestParam("weekStartDate") String weekStartDate) {
 		
 		try {
 			
-			List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email, date);
+			List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email, weekStartDate);
 			return new ResponseEntity<>(tDtos, HttpStatus.OK); 
 			
 		} catch(Exception e) {
@@ -174,9 +172,13 @@ public class TechnicianController {
 		
 		
 	}
-	
-	
-	@GetMapping(value = { "/technician/{email}/appointments", "/technician/{email}/appointments/" })
+
+	/**
+	 * GET request to get all appointments of a technician
+	 * @param email of a technician
+	 * @return list of timeslot Dtos
+	 */
+	@GetMapping("/{email}/appointments")
 	public ResponseEntity<?> viewTechnicianAppointments(@PathVariable("email") String email) {
 		
 		try {
@@ -187,27 +189,23 @@ public class TechnicianController {
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		
 	}
-	
-	
-	@PostMapping(value = { "/technician/{email}/add_work_hours", "/technician/{email}/add_work_hours/" })
-	public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody List<TimeSlotDto> timeDto) throws IllegalArgumentException {
+
+	/**
+	 * POST request to add a new technician work hours
+	 * @param email of a technician
+	 * @param timeSlotDtoList (List<TimeSlotDto>)
+	 * @return  http response with status or error message
+	 * @throws IllegalArgumentException	 */
+	@PostMapping("/{email}/add_work_hours")
+	public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody List<TimeSlotDto> timeSlotDtoList) {
 		
 		try {
-
-			String message = techService.addTechnicianWorkHours(email, timeDto);
+			String message = techService.addTechnicianWorkHours(email, timeSlotDtoList);
 			return new ResponseEntity<>(message, HttpStatus.OK); 
 		
 		} catch(Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
-		
 	}
-	
 }
-
-
-

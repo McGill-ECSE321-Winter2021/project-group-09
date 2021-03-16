@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDTO;
+import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDto;
 import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
-import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDTO;
+import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDto;
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
 
@@ -41,12 +41,14 @@ public class AppointmentService {
     BusinessRepository businessRepository;
 
     @Autowired
+    TimeSlotRepository timeSlotRepository;
+
+    @Autowired
     EmailService emailService;
 
     @Autowired
     ReminderService reminderService;
 
-    // TODO: Implement some more methods from the repository
 
     /**
      * Helper method to determine if an appointment can be booked with certain parameters
@@ -122,8 +124,8 @@ public class AppointmentService {
         appointmentDto.setAppointmentID(appointment.getAppointmentID());
         appointmentDto.setTimeSlotDto(timeslotToDTO(appointment.getTimeSlot()));
         appointmentDto.setServiceDto(serviceToDTO(appointment.getService()));
-        appointmentDto.setTechnicianDto(technicianToDTO(appointment.getTechnician()));
-        appointmentDto.setCustomerDto(customerToDTO(appointment.getCustomer()));
+        appointmentDto.setTechnicianDto(technicianToDto(appointment.getTechnician()));
+        appointmentDto.setCustomerDto(customerToDto(appointment.getCustomer()));
         return appointmentDto;
     }
 
@@ -137,14 +139,13 @@ public class AppointmentService {
      * @throws Exception for invalid timestamp, service name or technician's email
      */
     @Transactional
-    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail, String businessName) throws Exception {
+    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail) throws Exception {
 
         // Validate all inputs
 
         if (startTimestamp == null || startTimestamp.equals("")) throw new Exception("The Timestamp is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
         if (customerEmail == null || customerEmail.equals("")) throw new Exception("The customer is mandatory");
-        if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
 
         Timestamp startTime;
         Service service;
@@ -165,8 +166,7 @@ public class AppointmentService {
         customer = customerRepository.findCustomerByEmail(customerEmail);
         if (customer == null) throw new Exception("The provided customer email is invalid");
 
-        business = businessRepository.findBusinessByName(businessName);
-        if (business == null) throw new Exception("The provided business name is invalid");
+        business = businessRepository.findAll().get(0); // Should always be one business
 
         // Create timeslot
         // the end time is the start time + service duration * 30 minutes * 60 seconds * 1000 milliseconds
@@ -201,6 +201,7 @@ public class AppointmentService {
         appointment.setTechnician(technician);
         appointment.setCustomer(customer);
 
+        timeSlotRepository.save(timeSlot);
         appointmentRepository.save(appointment);
 
         emailService.sendConfirmationEmail(customerEmail, customer.getName(), startTime, serviceName, Double.toString(service.getPrice()));
@@ -225,19 +226,15 @@ public class AppointmentService {
 
     }
 
-    /**
-     * Method to return all times that an appointment for a given service can be created for one week
-     *
-     * @param startDate    The date to start checking for possible appointments (uses Timestamp format)
-     * @param serviceName  The name of the service for the appointment
-     * @param businessName The name of the business (to get its holidays)
+    /** Method to return all times that an appointment for a given service can be created for one week
+     * @param startDate The date to start checking for possible appointments (uses Timestamp format)
+     * @param serviceName The name of the service for the appointment
      * @return a list of Timestamps for all available appointment start times
      */
-    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName, String businessName) throws Exception {
+    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName) throws Exception {
 
         if (startDate == null || startDate.equals("")) throw new Exception("The start date is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
-        if (businessName == null || businessName.equals("")) throw new Exception("The business is mandatory");
 
         Timestamp startDateTime;
         Service service;
@@ -253,8 +250,7 @@ public class AppointmentService {
         service = serviceRepository.findServiceByName(serviceName);
         if (service == null) throw new Exception("The provided service name is invalid");
 
-        business = businessRepository.findBusinessByName(businessName);
-        if (business == null) throw new Exception("The provided business name is invalid");
+        business = businessRepository.findAll().get(0); // Should always be one business
 
         List<Technician> technicians = technicianRepository.findAll();
 
@@ -307,6 +303,10 @@ public class AppointmentService {
             Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
             Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
             if (customer.isPresent() && tech.isPresent()) {
+
+                //Remove timeslot from timeslot repository
+                timeSlotRepository.deleteById(appointment.get().getTimeSlot().getTimeSlotID());
+
                 //delete the appointment and remove it from customer's list
                 appointmentRepository.delete(appointment.get());
                 List<Appointment> cusApps = customer.get().getAppointments();
