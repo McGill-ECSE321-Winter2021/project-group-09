@@ -166,7 +166,7 @@ public class CustomerController {
             Customer cusToAuth = authenticationService.validateCustomerToken(token);
 
 
-            if (cusToAuth == null || customer == null || !customer.getEmail().equals(cusToAuth.getEmail())|| authenticationService.validateAdminToken(token)==null) {
+            if ((cusToAuth == null || customer == null || !customer.getEmail().equals(cusToAuth.getEmail())) && authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as the correct customer or admin.", HttpStatus.BAD_REQUEST);
             }
 
