@@ -3,9 +3,12 @@ package ca.mcgill.ecse321.repairshop.service;
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Business;
+import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
+import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
+import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,9 @@ public class BusinessService {
 
     @Autowired
     TimeSlotRepository timeSlotRepository;
+
+    @Autowired
+    TechnicianRepository technicianRepository;
 
     /**
      * Creates a business with a name, an address, a phone number, an email and number of repair spot.
@@ -197,6 +203,34 @@ public class BusinessService {
         }
 
         return holidaysDtoList;
+    }
+
+    /** Method to get the number of available repair spots at the current time
+     * @return number of available repair spots
+     * @throws Exception if the business was not found
+     */
+    @Transactional
+    public int getAvailableRepairSpots() throws Exception {
+
+        List<Business> businesses = businessRepository.findAll();
+        if (businesses.size() == 0) throw new Exception("Business not found");
+
+        // Simulate booking an appointment to get availability
+
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setStartDateTime(SystemTime.getCurrentDateTime());
+        timeSlot.setEndDateTime(SystemTime.getCurrentDateTime());
+
+        List<Technician> technicians = technicianRepository.findAll();
+
+        int availableSpots = 0;
+
+        for (Technician technician : technicians) {
+            if (AppointmentService.isBookable(timeSlot, technician, businesses.get(0))) availableSpots += 1;
+        }
+
+        return availableSpots;
+
     }
 
     /**

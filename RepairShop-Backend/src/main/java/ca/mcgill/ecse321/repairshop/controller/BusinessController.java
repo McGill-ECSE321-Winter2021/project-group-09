@@ -134,5 +134,17 @@ public class BusinessController {
         }
     }
 
+    /** Method to get the number of available repair spots at the current time
+     * @return number of available repair spots
+     */
+    @GetMapping("/spots")
+    public ResponseEntity<?> getAvailableSpots() {
+        try {
+            return new ResponseEntity<>(businessService.getAvailableRepairSpots(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

@@ -231,6 +231,7 @@ public class AppointmentService {
      * @param serviceName The name of the service for the appointment
      * @return a list of Timestamps for all available appointment start times
      */
+    @Transactional
     public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName) throws Exception {
 
         if (startDate == null || startDate.equals("")) throw new Exception("The start date is mandatory");
