@@ -51,7 +51,7 @@ public class BusinessController {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(businessService.createBusiness(businessDto.getName(), businessDto.getAddress(), businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.CREATED);
+            return new ResponseEntity<>(businessService.createBusiness(businessDto.getName(), businessDto.getAddress(), businessDto.getPhoneNumber(), businessDto.getEmail()), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
@@ -129,6 +129,18 @@ public class BusinessController {
             businessService.deleteHoliday(startDateTime, endDateTime);
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /** Method to get the number of available repair spots at the current time
+     * @return number of available repair spots
+     */
+    @GetMapping("/spots")
+    public ResponseEntity<?> getAvailableSpots() {
+        try {
+            return new ResponseEntity<>(businessService.getAvailableRepairSpots(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
