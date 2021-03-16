@@ -22,14 +22,14 @@ public class AppointmentController {
      * @param startTimestamp Timestamp for the start time of the appointment as a string
      * @param serviceName The name of the service for the appointment
      * @param customerEmail The email of the customer for whom to book the appointment
-     * @param token for the admin to create an appointment
+     * @param token for the admin or customer to create an appointment
      * @return the appointment that's been created
      */
     @PostMapping("/create")
     public ResponseEntity<?> createAppointment(@RequestParam String startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestHeader String token) {
         try {
-            if (authenticationService.validateAdminToken(token) == null) {
-                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(appointmentService.createAppointment(startTimestamp, serviceName, customerEmail), HttpStatus.OK);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class AppointmentController {
     public ResponseEntity<?> getPossibleAppointments(@RequestParam String startDate, @RequestParam String serviceName, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
-                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(appointmentService.getPossibleAppointments(startDate, serviceName), HttpStatus.OK);
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class AppointmentController {
     public ResponseEntity<?> cancel(@PathVariable("id") Long id, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
-                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
             appointmentService.cancelAppointment(id);
             return new ResponseEntity<>(HttpStatus.OK);

@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.repairshop.controller;
 
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
+import ca.mcgill.ecse321.repairshop.model.Technician;
+import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class BusinessController {
 
     @Autowired
     BusinessService businessService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     /**
      * Get the business
@@ -38,11 +43,15 @@ public class BusinessController {
      * Create a new business
      *
      * @param businessDto The businessDto object from which to create the business
+     * @param token of the admin
      * @return the new business if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createBusiness(@RequestBody BusinessDto businessDto) {
+    public ResponseEntity<?> createBusiness(@RequestBody BusinessDto businessDto, @RequestHeader String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(businessService.createBusiness(businessDto.getName(), businessDto.getAddress(), businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
@@ -53,11 +62,15 @@ public class BusinessController {
      * Updates business information
      *
      * @param businessDto the update to the existing business information
+     * @param token of the admin
      * @return the updated business if updated successfully
      */
     @PutMapping("/update")
-    public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto) {
+    public ResponseEntity<?> updateBusiness(@RequestBody BusinessDto businessDto, @RequestHeader String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(businessService.updateBusiness(businessDto.getName(), businessDto.getAddress(),
                     businessDto.getPhoneNumber(), businessDto.getEmail(), businessDto.getNumberOfRepairSpots()), HttpStatus.OK);
         } catch (Exception e) {
@@ -66,7 +79,7 @@ public class BusinessController {
     }
 
 
-    /*
+    /**
      * Get request for all holidays for a business
      * @return a list of all holidays
      */
@@ -80,13 +93,19 @@ public class BusinessController {
         }
     }
 
-    /*
+    /**
      * Add a new holiday to the business.
+     * @param startDateTime start time of the holiday
+     * @param endDateTime end time of the holiday
+     * @param token of the admin
      * @return a list of all holidays
      */
     @PostMapping("/create/holidays")
-    public ResponseEntity<?> addHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime) {
+    public ResponseEntity<?> addHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime, @RequestParam String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             businessService.addHoliday(startDateTime, endDateTime);
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
@@ -95,14 +114,19 @@ public class BusinessController {
         }
     }
     
-    /*
+    /**
      * Delete a holiday from the business.
+     * @param startDateTime start time of the holiday
+     * @param endDateTime end time of the holiday
+     * @param token of the admin
      * @return a list of all holidays
      */
     @GetMapping("/delete/holidays")
-    public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime,
-                                        @RequestParam Timestamp endDateTime) {
+    public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime, @RequestParam String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             businessService.deleteHoliday(startDateTime, endDateTime);
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);

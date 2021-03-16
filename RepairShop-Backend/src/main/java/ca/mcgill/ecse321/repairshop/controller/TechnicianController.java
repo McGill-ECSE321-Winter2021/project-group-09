@@ -1,5 +1,8 @@
 package ca.mcgill.ecse321.repairshop.controller;
 import java.util.List;
+
+import ca.mcgill.ecse321.repairshop.model.Technician;
+import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,9 @@ import ca.mcgill.ecse321.repairshop.service.TechnicianService;
 @RestController
 @RequestMapping("/api/technician")
 public class TechnicianController {
+
+	@Autowired
+	private TechnicianRepository technicianRepository;
 	
 	@Autowired
 	private TechnicianService techService;
@@ -59,7 +65,9 @@ public class TechnicianController {
 	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword, @RequestHeader String token){
 		
 		try {
-			if (authenticationService.validateTechnicianToken(token) == null) {
+			Technician technician = technicianRepository.findTechnicianByEmail(email);
+			Technician techToAuth = authenticationService.validateTechnicianToken(token);
+			if (techToAuth == null || technician == null || !technician.getEmail().equals(techToAuth.getEmail())) {
 				return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
 			}
 			TechnicianDto tech = techService.changePassword(email, newPassword);
@@ -104,7 +112,9 @@ public class TechnicianController {
 	public ResponseEntity<?> getTechnician(@PathVariable("email") String email, @RequestHeader String token){
 		
 		try {
-			if (authenticationService.validateAdminToken(token) == null && authenticationService.validateTechnicianToken(token) == null) {
+			Technician technician = technicianRepository.findTechnicianByEmail(email);
+			Technician techToAuth = authenticationService.validateTechnicianToken(token);
+			if (authenticationService.validateAdminToken(token) == null && (techToAuth == null || technician == null || !technician.getEmail().equals(techToAuth.getEmail()))) {
 				return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
 			}
             TechnicianDto techDto = techService.getTechnician(email);
@@ -174,7 +184,9 @@ public class TechnicianController {
 	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestParam("weekStartDate") String weekStartDate, @RequestHeader String token) {
 		
 		try {
-			if (authenticationService.validateAdminToken(token) == null && authenticationService.validateTechnicianToken(token) == null) {
+			Technician technician = technicianRepository.findTechnicianByEmail(email);
+			Technician techToAuth = authenticationService.validateTechnicianToken(token);
+			if (authenticationService.validateAdminToken(token) == null && (techToAuth == null || technician == null || !technician.getEmail().equals(techToAuth.getEmail()))) {
 				return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
 			}
 			List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email, weekStartDate);
@@ -197,7 +209,9 @@ public class TechnicianController {
 	public ResponseEntity<?> viewTechnicianAppointments(@PathVariable("email") String email, @RequestHeader String token) {
 		
 		try {
-			if (authenticationService.validateAdminToken(token) == null && authenticationService.validateTechnicianToken(token) == null) {
+			Technician technician = technicianRepository.findTechnicianByEmail(email);
+			Technician techToAuth = authenticationService.validateTechnicianToken(token);
+			if (authenticationService.validateAdminToken(token) == null && (techToAuth == null || technician == null || !technician.getEmail().equals(techToAuth.getEmail()))) {
 				return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
 			}
 			List<AppointmentDto> appDtos = techService.viewAppointments(email);
