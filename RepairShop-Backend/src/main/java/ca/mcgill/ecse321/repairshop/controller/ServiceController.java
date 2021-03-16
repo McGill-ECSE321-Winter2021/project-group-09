@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
 import ca.mcgill.ecse321.repairshop.dto.ServiceDto;
+import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,9 @@ public class ServiceController {
 
     @Autowired
     ServiceService serviceService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     /** Get request for all services
      * @return a list of all services
@@ -45,11 +49,15 @@ public class ServiceController {
      * @param name of the new service
      * @param duration of the new service
      * @param price of the new service
+     * @param token of the admin
      * @return the new service if created successfully
      */
-    @PostMapping("/create/{name}")
-    public ResponseEntity<?> createService(@PathVariable String name, @RequestParam int duration, @RequestParam double price) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createService(@RequestBody String name, @RequestBody int duration, @RequestBody double price, @RequestHeader String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(serviceService.createService(name, duration, price), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
