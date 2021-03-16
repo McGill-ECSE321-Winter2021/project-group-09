@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.repairshop.controller;
 
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.model.Business;
 import ca.mcgill.ecse321.repairshop.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,7 +71,7 @@ public class BusinessController {
      * @return a list of all holidays
      */
     @GetMapping("/holidays")
-    public ResponseEntity<?> getAllHolidays(@PathVariable("businessID") Long businessID) {
+    public ResponseEntity<?> getAllHolidays() {
         try {
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
@@ -85,7 +84,7 @@ public class BusinessController {
      * Add a new holiday to the business.
      * @return a list of all holidays
      */
-    @PostMapping("create/holidays/")
+    @PostMapping("/create/holidays")
     public ResponseEntity<?> addHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime) {
         try {
             businessService.addHoliday(startDateTime, endDateTime);
@@ -100,7 +99,7 @@ public class BusinessController {
      * Delete a holiday from the business.
      * @return a list of all holidays
      */
-    @GetMapping("delete/holidays/")
+    @GetMapping("/delete/holidays")
     public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime,
                                         @RequestParam Timestamp endDateTime) {
         try {

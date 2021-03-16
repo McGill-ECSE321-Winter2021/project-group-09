@@ -5,19 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.repairshop.dto.AdminDto;
 import ca.mcgill.ecse321.repairshop.service.AdminService;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/admin")
 public class AdminController {
 
 	@Autowired
@@ -25,12 +20,11 @@ public class AdminController {
 	
 	/**
 	 * POST request to create a new administrator
-	 * @param adminDto
+	 * @param adminDto (AdminDto)
 	 * @return A administrator Dto
-	 * @throws IllegalArgumentException
 	 */
-	@PostMapping(value = { "/admin/register", "/admin/register/" })
-	public ResponseEntity<?> createAdmin(@RequestBody AdminDto adminDto) throws IllegalArgumentException {
+	@PostMapping("/register")
+	public ResponseEntity<?> createAdmin(@RequestBody AdminDto adminDto) {
 		
 		try {
 
@@ -44,10 +38,10 @@ public class AdminController {
 		
 	/**
 	 * DELETE request to delete a administrator account by email
-	 * @param email
+	 * @param email of admin
 	 * @return an admin dto
 	 */
-	@DeleteMapping(value = { "/admin/{email}", "/admin/{email}/" })
+	@DeleteMapping("/delete/{email}")
 	public ResponseEntity<?> deleteAdmin(@PathVariable("email") String email){
 		
 		try {
@@ -64,10 +58,10 @@ public class AdminController {
 	
 	/**
 	 * GET request to get an administrator account by email
-	 * @param email
+	 * @param email of admin
 	 * @return an admin dto
 	 */
-	@GetMapping(value = { "/admin/{email}", "/admin/{email}/" })
+	@GetMapping("/get/{email}")
 	public ResponseEntity<?> getAdmin(@PathVariable("email") String email){
 		
 		try {
@@ -87,7 +81,7 @@ public class AdminController {
 	 * @return list of admin dtos
 	 * 
 	 */
-	@GetMapping(value = { "/admin/all", "/admin/all/" })
+	@GetMapping("/all")
 	public ResponseEntity<?> getAllAdmins() {
 		
 		try {

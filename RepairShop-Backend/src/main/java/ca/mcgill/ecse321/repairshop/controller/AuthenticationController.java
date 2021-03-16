@@ -24,7 +24,7 @@ public class AuthenticationController {
 
     /**
      * Log in a user
-     *
+     * @param credentials LoginDto
      * @return login token
      */
     @PostMapping("/login")

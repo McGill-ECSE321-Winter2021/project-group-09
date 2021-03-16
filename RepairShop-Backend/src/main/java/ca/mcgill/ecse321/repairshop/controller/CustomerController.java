@@ -5,14 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
@@ -23,6 +16,7 @@ import ca.mcgill.ecse321.repairshop.service.CustomerService;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/customer")
 public class CustomerController {
 	
 	@Autowired
@@ -31,11 +25,11 @@ public class CustomerController {
 	
 	/**
 	 * POST request to create a new customer 
-	 * @param customerDto
+	 * @param customerDto (CustomerDto)
 	 * @return a customer dto
 	 * @throws IllegalArgumentException
 	 */
-	@PostMapping(value = { "/customer/register", "/customer/register/" })
+	@PostMapping("/register")
 	public ResponseEntity<?> createCustomer(@RequestBody CustomerDto customerDto) throws IllegalArgumentException {
 		
 		try {
@@ -49,12 +43,16 @@ public class CustomerController {
 		
 		
 	}
-	
-	
-	/*
-	
-	@PostMapping(value = { "/customers/{email}", "/customers/{email}/" })
-	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword) throws IllegalArgumentException {
+
+
+	/**
+	 * POST request to change a password for a customer
+	 * @param email of customer
+	 * @param newPassword of customer
+	 * @return a customer dto
+	 */
+	@PostMapping( "/changePassword/{email}")
+	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword){
 		
 		try {
 			
@@ -67,15 +65,14 @@ public class CustomerController {
 		
 	}
 	
-	*/
-	
+
 	
 	/**
 	 * DELETE request to delete a customer account by email
-	 * @param email
-	 * @return
+	 * @param email of customer
+	 * @return a customer dto
 	 */
-	@DeleteMapping(value = { "/customer/{email}", "/customer/{email}/" })
+	@DeleteMapping("/delete/{email}")
 	public ResponseEntity<?> deleteCustomer(@PathVariable("email") String email){
 		
 		try {
@@ -92,10 +89,10 @@ public class CustomerController {
 	
 	/**
 	 * GET request to get a customer account by email
-	 * @param email
+	 * @param email of customer
 	 * @return a customer dto
 	 */
-	@GetMapping(value = { "/customer/{email}", "/customer/{email}/" })
+	@GetMapping( "/get/{email}")
 	public ResponseEntity<?> getCustomer(@PathVariable("email") String email){
 		
 		try {
@@ -116,7 +113,7 @@ public class CustomerController {
 	 * @return list of customer dtos
 	 * 
 	 */
-	@GetMapping(value = { "/customer/all", "/customer/all/" })
+	@GetMapping("/all")
 	public ResponseEntity<?> getAllCustomers() {
 		
 		try {
@@ -129,10 +126,14 @@ public class CustomerController {
 		}
 		
 	}
-	
-	
-	
-	@GetMapping(value = { "/customer/{email}/appointments", "/customer/{email}/appointments/" })
+
+
+	/**
+	 * GET request to get all appointments of a customer
+	 * @param email of customer
+	 * @return  a customer dto
+	 */
+	@GetMapping("/{email}/appointments")
 	public ResponseEntity<?> viewCustomerAppointments(@PathVariable("email") String email) {
 		
 		try {
@@ -143,10 +144,5 @@ public class CustomerController {
 		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		
 	}
-	
-	
-
 }
