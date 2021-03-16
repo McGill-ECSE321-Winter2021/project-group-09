@@ -31,21 +31,20 @@ public class BusinessService {
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
      * @param email               email of the business (String)
-     * @param numberOfRepairSpots number of repair spots of the business (int)
      * @return businessDto BusinessDto (the business created by this method)
      * @throws Exception If at least one of the inputs is invalid
      */
     @Transactional
-    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email) throws Exception {
         
-        inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
+        inputValidation(name, address, phoneNumber, email);
 
         Business business = businessRepository.findAll().get(0); // should always exist
         business.setName(name);
         business.setAddress(address);
         business.setEmail(email);
         business.setPhoneNumber(phoneNumber);
-        business.setNumberOfRepairSpots(numberOfRepairSpots);
+        business.setNumberOfRepairSpots(0);
 
         List<TimeSlot> holidays = new ArrayList<>();
         business.setHolidays(holidays);
@@ -84,7 +83,7 @@ public class BusinessService {
     @Transactional
     public BusinessDto updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
-        inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
+        inputValidation(name, address, phoneNumber, email);
 
         List<Business> businesses = businessRepository.findAll();
         if (businesses.size() == 0) throw new Exception("Business not found");
@@ -226,10 +225,9 @@ public class BusinessService {
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
      * @param email               email of the business (String)
-     * @param numberOfRepairSpots number of repair spots of the business (int)
      * @throws Exception if one of the inputs is invalid
      */
-    private void inputValidation(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+    private void inputValidation(String name, String address, String phoneNumber, String email) throws Exception {
 
         if (name == null || name.equals("")) {
             throw new Exception("Business name cannot be empty!");
@@ -245,10 +243,6 @@ public class BusinessService {
         }
 
         validateEmail(email); // if email is invalid, an exception will be thrown
-
-        if (numberOfRepairSpots < 0) {
-            throw new Exception("The number of repair spots cannot be negative");
-        }
     }
 
 }

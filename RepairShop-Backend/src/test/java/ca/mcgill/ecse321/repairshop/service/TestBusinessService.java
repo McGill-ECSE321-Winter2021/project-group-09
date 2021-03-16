@@ -102,9 +102,7 @@ public class TestBusinessService {
                             }
                         });
 
-        Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-            return invocation.getArgument(0);
-        };
+        Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> invocation.getArgument(0);
         lenient().when(businessRepository.save(any(Business.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(timeSlotRepository.save(any(TimeSlot.class))).thenAnswer(returnParameterAsAnswer);
     }
@@ -115,7 +113,7 @@ public class TestBusinessService {
         BusinessDto business = null;
         String businessName = "Best Business in the world";
         try {
-            business = businessService.createBusiness(businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(businessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
 
         } catch (Exception e) {
             fail();
@@ -125,25 +123,10 @@ public class TestBusinessService {
         assertEquals(BUSINESS_ADDRESS, business.getAddress());
         assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
         assertEquals(BUSINESS_EMAIL, business.getEmail());
-        assertEquals(BUSINESS_NUMBER_OF_REPAIR_SPOTS, business.getNumberOfRepairSpots());
+        assertEquals(0, business.getNumberOfRepairSpots()); // new business default is 0 (since there are not technicians)
 
         assertNotNull(business);
 
-    }
-
-    @Test
-    public void testNegativeNbRepairSpotsCreateBusiness() {
-        int negativeNb = -10;
-        BusinessDto business = null;
-        String error = null;
-        try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, negativeNb);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-
-        assertNull(business);
-        assertEquals("The number of repair spots cannot be negative", error);
     }
 
     @Test
@@ -153,7 +136,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(name, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -167,7 +150,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -181,7 +164,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -195,7 +178,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -210,7 +193,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -224,7 +207,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -238,7 +221,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -246,30 +229,13 @@ public class TestBusinessService {
         assertEquals("Invalid email", error);
     }
 
-    
-    /*
-    @Test
-    public void testNullIDCreateBusiness() {
-        Long nullBusinessID = null;
-        String error = null;
-        BusinessDto business = null;
-        try {
-            business = businessService.createBusiness(nullBusinessID, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-        assertNull(business);
-        assertEquals("Business ID cannot be empty!", error);
-    }
-	*/
-
     @Test
     public void testNullNameCreateBusiness() {
         String nullBusinessName = null;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -283,7 +249,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -297,7 +263,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -311,7 +277,7 @@ public class TestBusinessService {
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -321,7 +287,6 @@ public class TestBusinessService {
 
     @Test
     public void testGetBusiness() {
-        String error = null;
         BusinessDto businessDto;
         try {
             businessDto = businessService.getBusiness();
@@ -336,40 +301,11 @@ public class TestBusinessService {
         }
     }
 
-    /*
-    @Test
-    public void testMissingGetBusinessByID() {
-        String error = null;
-        Long nullBusinessID = null;
-        BusinessDto businessDto;
-        try {
-            businessDto = businessService.getBusinessByID(nullBusinessID);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-        assertEquals("Enter BusinessID", error);
-    }
-    
-    
-
-    @Test
-    public void testNotFoundGetBusinessByID() {
-        String error = null;
-        long businessID = 4567;
-        BusinessDto businessDto;
-        try {
-            businessDto = businessService.getBusinessByID(businessID);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-        assertEquals("BusinessID not found", error);
-    }
-	*/
     @Test
     public void testUpdateBusiness() {
 
 
-        BusinessDto business = null;
+        BusinessDto business;
         String newName = "Update name";
         String newAddress = "Update address";
         String newPhoneNumber = "Update phone number";
@@ -564,21 +500,6 @@ public class TestBusinessService {
         }
         assertNull(business);
         assertEquals("Email cannot be empty!", error);
-    }
-
-    @Test
-    public void testNegativeNbRepairSpotsUpdateBusiness() {
-        int negativeNb = -10;
-        BusinessDto business = null;
-        String error = null;
-        try {
-            business = businessService.updateBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, negativeNb);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-
-        assertNull(business);
-        assertEquals("The number of repair spots cannot be negative", error);
     }
 
     @Test
