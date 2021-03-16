@@ -58,7 +58,7 @@ public class CustomerController {
      * @return a customer dto
      */
     @PostMapping("/changePassword/{email}")
-    public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword, @RequestHeader String token) {
+    public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestBody String newPassword, @RequestHeader String token) {
 
         try {
             Customer customer = customerRepository.findCustomerByEmail(email);

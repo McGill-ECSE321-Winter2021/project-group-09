@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.repairshop.controller;
 
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +100,7 @@ public class BusinessController {
      * @return a list of all holidays
      */
     @PostMapping("/create/holidays")
-    public ResponseEntity<?> addHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime, @RequestParam String token) {
+    public ResponseEntity<?> addHoliday(@RequestBody Timestamp startDateTime, @RequestBody Timestamp endDateTime, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
@@ -122,7 +121,7 @@ public class BusinessController {
      * @return a list of all holidays
      */
     @GetMapping("/delete/holidays")
-    public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime, @RequestParam String token) {
+    public ResponseEntity<?> deleteHoliday(@RequestBody Timestamp startDateTime, @RequestBody Timestamp endDateTime, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);

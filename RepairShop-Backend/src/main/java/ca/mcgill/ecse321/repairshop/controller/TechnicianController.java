@@ -62,7 +62,7 @@ public class TechnicianController {
 	 * @return a technician dto
 	 */
 	@PostMapping("/changePassword/{email}")
-	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestParam String newPassword, @RequestHeader String token){
+	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestBody String newPassword, @RequestHeader String token){
 		
 		try {
 			Technician technician = technicianRepository.findTechnicianByEmail(email);
@@ -181,7 +181,7 @@ public class TechnicianController {
 	 * @return list of timeslot Dtos
 	 */
 	@GetMapping("/{email}/schedule")
-	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestParam("weekStartDate") String weekStartDate, @RequestHeader String token) {
+	public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestBody String weekStartDate, @RequestHeader String token) {
 		
 		try {
 			Technician technician = technicianRepository.findTechnicianByEmail(email);

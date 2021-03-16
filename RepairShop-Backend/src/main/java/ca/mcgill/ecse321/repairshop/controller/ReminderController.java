@@ -25,8 +25,8 @@ public class ReminderController {
      * @param token of the admin
      * @return a list of the customer's reminders
      */
-    @GetMapping("/customer")
-    public ResponseEntity<?> getCustomerReminders(@RequestParam String email, @RequestHeader String token) {
+    @GetMapping("/customer/{email}")
+    public ResponseEntity<?> getCustomerReminders(@PathVariable String email, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
@@ -49,8 +49,8 @@ public class ReminderController {
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String appointmentDateTime,
-                                            @RequestParam String serviceName, @RequestParam String type, @RequestParam String email, @RequestHeader String token) {
+    public ResponseEntity<?> createReminder(@RequestBody String dateTime, @RequestBody String appointmentDateTime,
+                                            @RequestBody String serviceName, @RequestBody String type, @RequestBody String email, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
@@ -85,7 +85,7 @@ public class ReminderController {
      * @param token of the admin
      * @return message to indicated whether the delete was successful
      */
-    @DeleteMapping("/{reminderID}")
+    @DeleteMapping("/delete/{reminderID}")
     public ResponseEntity<?> deleteReminderByID(@PathVariable Long reminderID, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
