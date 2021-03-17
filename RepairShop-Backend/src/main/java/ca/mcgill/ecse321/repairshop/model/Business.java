@@ -70,7 +70,7 @@ public class Business {
 
     private List<TimeSlot> holidays;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<TimeSlot> getHolidays() {
         return holidays;
     }

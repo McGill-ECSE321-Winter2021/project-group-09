@@ -100,16 +100,16 @@ public class BusinessController {
      * @return a list of all holidays
      */
     @PostMapping("/create/holidays")
-    public ResponseEntity<?> addHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime, @RequestHeader String token) {
+    public ResponseEntity<?> addHoliday(@RequestBody TimeSlotDto timeSlot, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            businessService.addHoliday(startDateTime, endDateTime);
-            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
+            BusinessDto dto = businessService.addHoliday(timeSlot.getStartDateTime(), timeSlot.getEndDateTime());
+            List<TimeSlotDto> holidaysDtoList = dto.getHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
     
@@ -121,13 +121,14 @@ public class BusinessController {
      * @return a list of all holidays
      */
     @GetMapping("/delete/holidays")
-    public ResponseEntity<?> deleteHoliday(@RequestParam Timestamp startDateTime, @RequestParam Timestamp endDateTime, @RequestHeader String token) {
+    public ResponseEntity<?> deleteHoliday(@RequestBody TimeSlotDto timeSlot, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            businessService.deleteHoliday(startDateTime, endDateTime);
+            businessService.deleteHoliday(timeSlot.getStartDateTime(), timeSlot.getEndDateTime());
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
+            
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

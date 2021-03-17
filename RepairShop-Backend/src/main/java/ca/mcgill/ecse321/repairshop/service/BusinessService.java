@@ -142,19 +142,18 @@ public class BusinessService {
     @Transactional
     public BusinessDto addHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
 
-        List<Business> businesses = businessRepository.findAll();
-        if (businesses.size() == 0) throw new Exception("Business not found");
-
-        Business business = businesses.get(0);
+        Business business = businessRepository.findAll().get(0);
+        if (business == null) throw new Exception("Business not found");
 
         TimeSlot newHoliday = new TimeSlot();
         newHoliday.setStartDateTime(startDateTime);
         newHoliday.setEndDateTime(endDateTime);
 
-        business.getHolidays().add(newHoliday);
+        List<TimeSlot> holidayList = business.getHolidays();
+        holidayList.add(newHoliday);
+        business.setHolidays(holidayList);
 
         businessRepository.save(business);
-        timeSlotRepository.save(newHoliday);
         return businessToDto(business);
     }
     
@@ -242,14 +241,15 @@ public class BusinessService {
     public BusinessDto businessToDto(Business business) {
 
         //Create businessDto
+    	
        BusinessDto businessDto = new BusinessDto(business.getBusinessID(), business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
 
        List<TimeSlotDto> holidayDtoList = new ArrayList<>();
-       for(TimeSlot currHoliday:business.getHolidays()){
+       for(TimeSlot currHoliday : business.getHolidays()){
            holidayDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
        }
-        businessDto.setHolidays(holidayDtoList);
-        return businessDto;
+       businessDto.setHolidays(holidayDtoList);
+       return businessDto;
     }
 
     /**
