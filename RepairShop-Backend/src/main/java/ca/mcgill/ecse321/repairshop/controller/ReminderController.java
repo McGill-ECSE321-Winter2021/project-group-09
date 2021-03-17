@@ -49,8 +49,8 @@ public class ReminderController {
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createReminder(@RequestBody String dateTime, @RequestBody String appointmentDateTime,
-                                            @RequestBody String serviceName, @RequestBody String type, @RequestBody String email, @RequestHeader String token) {
+    public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String appointmentDateTime,
+                                            @RequestParam String serviceName, @RequestParam String type, @RequestParam String email, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);

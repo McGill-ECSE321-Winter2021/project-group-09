@@ -26,7 +26,7 @@ public class AppointmentController {
      * @return the appointment that's been created
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createAppointment(@RequestBody String startTimestamp, @RequestBody String serviceName, @RequestBody String customerEmail, @RequestHeader String token) {
+    public ResponseEntity<?> createAppointment(@RequestParam String startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
@@ -44,7 +44,7 @@ public class AppointmentController {
      * @return a list of timeslots for all the possible appointments
      */
     @GetMapping("/possibilities")
-    public ResponseEntity<?> getPossibleAppointments(@RequestBody String startDate, @RequestBody String serviceName, @RequestHeader String token) {
+    public ResponseEntity<?> getPossibleAppointments(@RequestParam String startDate, @RequestParam String serviceName, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);

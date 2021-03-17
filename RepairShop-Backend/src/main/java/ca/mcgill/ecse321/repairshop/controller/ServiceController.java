@@ -53,7 +53,7 @@ public class ServiceController {
      * @return the new service if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createService(@RequestBody String name, @RequestBody int duration, @RequestBody double price, @RequestHeader String token) {
+    public ResponseEntity<?> createService(@RequestParam String name, @RequestParam int duration, @RequestParam double price, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
