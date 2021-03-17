@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import ca.mcgill.ecse321.repairshop.model.Business;
+import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,9 @@ public class TechnicianService {
 
 	@Autowired
 	AppointmentRepository appRepo;
+
+	@Autowired
+	BusinessRepository businessRepository;
 
 
 	/**
@@ -64,6 +69,11 @@ public class TechnicianService {
 		tech.setTimeslots(timeSlots);
 
 		technicianRepository.save(tech);
+
+		// add a repair spot for the technician
+		Business business = businessRepository.findAll().get(0); // should always be one business
+		business.setNumberOfRepairSpots(business.getNumberOfRepairSpots() + 1);
+
 		return technicianToDto(tech);
 	}
 
@@ -140,6 +150,10 @@ public class TechnicianService {
 		tech.setTimeslots(null);
 
 		technicianRepository.deleteTechnicianByEmail(email);
+
+		Business business = businessRepository.findAll().get(0); // should always be one business
+		business.setNumberOfRepairSpots(business.getNumberOfRepairSpots() - 1);
+
 		return "Technician account with email " + email + " deleted.";
 	}
 

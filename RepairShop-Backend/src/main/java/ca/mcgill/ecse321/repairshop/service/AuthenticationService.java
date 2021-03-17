@@ -70,6 +70,14 @@ public class AuthenticationService {
         return adminRepository.findAdminByToken(token);
     }
 
+    public Technician validateTechnicianToken(String token) {
+        return technicianRepository.findTechnicianByToken(token);
+    }
+
+    public Customer validateCustomerToken(String token) {
+        return customerRepository.findCustomerByToken(token);
+    }
+
     private String authenticateTechnician(String email, String password) throws AuthenticationException {
         Technician tech = technicianRepository.findTechnicianByEmail(email);
         if (tech.getPassword().equals(password)) {

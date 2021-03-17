@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ca.mcgill.ecse321.repairshop.model.*;
+import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,16 +22,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.model.Appointment;
-import ca.mcgill.ecse321.repairshop.model.Customer;
-import ca.mcgill.ecse321.repairshop.model.Service;
-import ca.mcgill.ecse321.repairshop.model.Technician;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 
 
@@ -40,11 +36,13 @@ public class TestTechnicianService {
 	
 	@Mock
 	private TechnicianRepository techRepo;
+
+	@Mock
+	private BusinessRepository businessRepository;
 	
 	@InjectMocks
 	private TechnicianService service;
-	
-	
+
 	
 	private static final String TECHNICIAN_NAME = "ABCD";
 	private static final String TECHNICIAN_EMAIL = "someone@gmail.com";
@@ -59,19 +57,24 @@ public class TestTechnicianService {
 	private static final int SERVICE_DURATION = 1;
 	private static final double SERVICE_PRICE = 10.0;
 	private static final Timestamp S_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
-	private static final Timestamp E_TIME = Timestamp.valueOf("2021-03-02 10:30:00");	
-	
-	
-	private Customer CUSTOMER = new Customer();
-	private Appointment APP = new Appointment();
-	private TimeSlot TIME = new TimeSlot();
-	private Service SERVICE = new Service();
+	private static final Timestamp E_TIME = Timestamp.valueOf("2021-03-02 10:30:00");
 
-
+	// Business for mock
+	private static final String BUSINESS_NAME = "TestBusiness";
+	private static final String BUSINESS_ADDRESS = "123 Business Street, Montreal";
+	private static final String BUSINESS_EMAIL = "bestBusiness@gmail.com";
+	private static final String BUSINESS_PHONE_NUMBER = "(123)-456-7890";
+	private static final int BUSINESS_NUMBER_OF_REPAIR_SPOTS = 2;
+	private static final Timestamp B_START_TIME = Timestamp.valueOf("2021-12-02 10:00:00");
+	private static final Timestamp B_END_TIME = Timestamp.valueOf("2021-12-30 11:00:00");
 	
-	private Technician TECHNICIAN = new Technician();
-
 	
+	private final Customer CUSTOMER = new Customer();
+	private final Appointment APP = new Appointment();
+	private final TimeSlot TIME = new TimeSlot();
+	private final Service SERVICE = new Service();
+	private final Technician TECHNICIAN = new Technician();
+
 	
 	@BeforeEach
 	public void setMockOutput() {
@@ -129,19 +132,35 @@ public class TestTechnicianService {
 			}
 			
 		});
+
+		lenient().when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+
+			//TimeSlot
+			TimeSlot timeSlot = new TimeSlot();
+			timeSlot.setStartDateTime(B_START_TIME);
+			timeSlot.setEndDateTime(B_END_TIME);
+			List<TimeSlot> holidaysList = new ArrayList<>();
+			holidaysList.add(timeSlot);
+
+			//CREATE BUSINESS
+			Business business = new Business();
+			business.setHolidays(holidaysList);
+			business.setName(BUSINESS_NAME);
+			business.setEmail(BUSINESS_EMAIL);
+			business.setAddress(BUSINESS_ADDRESS);
+			business.setPhoneNumber(BUSINESS_PHONE_NUMBER);
+			business.setNumberOfRepairSpots(BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+
+			List<Business> businesses = new ArrayList<>();
+			businesses.add(business);
+			return businesses;
+
+		});
 		
-		
-		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-			return invocation.getArgument(0);
-		};
-		
-		lenient().when(techRepo.save(any(Technician.class))).thenAnswer(returnParameterAsAnswer);
+		lenient().when(techRepo.save(any(Technician.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 		
 	}	
-	
-	
-	
-	
+
 	
 	@Test
 	public void testCreateTechnician() {

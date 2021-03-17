@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
+import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.ReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,15 +15,22 @@ public class ReminderController {
     @Autowired
     private ReminderService reminderService;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     /**
      * Get a list of a customer's reminders
      *
      * @param email of the target customer
+     * @param token of the admin
      * @return a list of the customer's reminders
      */
-    @GetMapping("/customer")
-    public ResponseEntity<?> getCustomerReminders(@RequestParam String email) {
+    @GetMapping("/customer/{email}")
+    public ResponseEntity<?> getCustomerReminders(@PathVariable String email, @RequestHeader String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(reminderService.getRemindersByCustomerEmail(email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -37,12 +45,16 @@ public class ReminderController {
      * @param serviceName         name of the service
      * @param type                of the new reminder
      * @param email               of the customer associated to the new reminder
+     * @param token               of the admin
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
     public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String appointmentDateTime,
-                                            @RequestParam String serviceName, @RequestParam String type, @RequestParam String email) {
+                                            @RequestParam String serviceName, @RequestParam String type, @RequestParam String email, @RequestHeader String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(reminderService.createReminder(dateTime, appointmentDateTime, serviceName, type, email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,12 +63,15 @@ public class ReminderController {
 
     /**
      * GET request to get all reminders
-     *
+     * @param token of the admin
      * @return List of all reminders
      */
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(@RequestHeader String token) {
         try {
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<>(reminderService.getAllReminders(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -67,12 +82,15 @@ public class ReminderController {
      * Delete a reminder by the id.
      *
      * @param reminderID ID of the reminder to be deleted
+     * @param token of the admin
      * @return message to indicated whether the delete was successful
      */
-    @DeleteMapping("/{reminderID}")
-    public ResponseEntity<?> deleteReminderByID(@PathVariable Long reminderID) {
+    @DeleteMapping("/delete/{reminderID}")
+    public ResponseEntity<?> deleteReminderByID(@PathVariable Long reminderID, @RequestHeader String token) {
         try {
-
+            if (authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+            }
             String message = reminderService.deleteReminderById(reminderID);
             return new ResponseEntity<>(message, HttpStatus.OK);
 

@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/test")
 public class RepairShopController {
 
-	@GetMapping("/test")
+	@GetMapping("/")
 	public ResponseEntity<?> getAll() {
-			return new ResponseEntity<>("Test hello", HttpStatus.OK);
+			return new ResponseEntity<>("Hello World", HttpStatus.OK);
 	}
 }
