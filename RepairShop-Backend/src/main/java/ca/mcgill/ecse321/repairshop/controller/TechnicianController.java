@@ -2,6 +2,7 @@
 
 
 package ca.mcgill.ecse321.repairshop.controller;
+import java.sql.Timestamp;
 import java.util.List;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,6 +203,42 @@ public class TechnicianController {
 		
 		try {
 			String message = techService.addTechnicianWorkHours(email, timeSlotDtoList);
+			return new ResponseEntity<>(message, HttpStatus.OK); 
+		
+		} catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	 /* DELETE request to delete a specific technician work hour
+	 * @param email of technician
+	 * @param startTimeSlot is beginning timeslot time to be removed
+	 * @param endTimeSlot is the end timeslot time to be removed
+	 * @return whether the specific work schedule was removed successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
+	@DeleteMapping("/delete/{email}")
+	public ResponseEntity<?> deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(@PathVariable("email") String email, @RequestParam Timestamp startTimeSlot, @RequestParam Timestamp endTimeSlot) {
+		
+		try {
+			String message = techService.deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(email, startTimeSlot, endTimeSlot);
+			return new ResponseEntity<>(message, HttpStatus.OK); 
+		
+		} catch(Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	 /* DELETE request to delete the entire technician work schedule
+	 * @param email of technician
+	 * @return whether the specific work schedule was removed successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
+	@DeleteMapping("/delete/{email}")
+	public ResponseEntity<?> deleteFullTechnicianWorkSchedule(@PathVariable("email") String email) {
+		
+		try {
+			String message = techService.deleteFullTechnicianWorkSchedule(email);
 			return new ResponseEntity<>(message, HttpStatus.OK); 
 		
 		} catch(Exception e) {

@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.repairshop.service;
 
 
+import java.security.Timestamp;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,9 @@ public class TechnicianService {
 
 	@Autowired
 	AppointmentRepository appRepo;
+	
+	@Autowired
+	TimeSlotRepository timeSlotRepository;
 
 
 	/**
@@ -277,7 +281,13 @@ public class TechnicianService {
 
 	}
 	
-	@Transactional // TODO check if this is what is needed for this method: this method supposed to remove absolutely all the timeslots and appointments from technicians shedule
+	/**
+	 * 
+	 * @param email of technician
+	 * @return whether the work schedule was removed successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
+	@Transactional 
 	public String deleteFullTechnicianWorkSchedule(String email) throws Exception{
 		
 		if(email == null) {
@@ -291,12 +301,12 @@ public class TechnicianService {
 		}
 		
 		// removing all the appointments
-		for (Appointment appointmentToRemove: technician.getAppointments()) {
-			technician.getAppointments().remove(appointmentToRemove);
+		for (int appointmentIndex = 0; appointmentIndex < technician.getAppointments().size(); appointmentIndex++) {
+			technician.getAppointments().remove(technician.getAppointments().get(appointmentIndex));
 		}
 		// removing all the timeslots
-		for (TimeSlot timeSlotToRemove: technician.getTimeslots()) {
-			technician.getTimeslots().remove(timeSlotToRemove);
+		for (int timeSlotIndex = 0; timeSlotIndex < technician.getTimeslots().size(); timeSlotIndex++) {
+			technician.getTimeslots().remove(technician.getTimeslots().get(timeSlotIndex));
 		}
 
 		technicianRepository.save(technician);
@@ -304,10 +314,16 @@ public class TechnicianService {
 		return "All work hour timeslots and associated appointments for technician " + email + " were successfully removed.";
 	}
 	
-	@Transactional // TODO check if this is what is needed for this method: method supposed to remove the specific timeSlot and appointment from technician schedule
-	public String deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(String email, TimeSlot slotToDelete) throws Exception{
-		boolean removedAppointments = false;
-		boolean removedTimeSlot = false;
+	/**
+	 * 
+	 * @param email of technician
+	 * @param startTimeSlot is beginning timeslot time to be removed
+	 * @param endTimeSlot is the end timeslot time to be removed
+	 * @return whether the specific work schedule was removed successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
+	@Transactional 
+	public String deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(String email, java.sql.Timestamp startTimeSlot, java.sql.Timestamp endTimeSlot) throws Exception{
 		
 		if (email == null) {
 			throw new Exception("Email cannot be empty.");
@@ -317,25 +333,26 @@ public class TechnicianService {
 		if (technician == null) {
 			throw new Exception("Technician not found.");
 		}
-		// First removing all the appointments within the chosen work time slot
-		for (Appointment appointmentToDelete: technician.getAppointments()) {
-			if (appointmentToDelete.getTimeSlot().equals(slotToDelete)) {
-				technician.getAppointments().remove(appointmentToDelete);
-				removedAppointments = true;
+
+		for (int timeSlotIndex = 0; timeSlotIndex < technician.getTimeslots().size(); timeSlotIndex++) {
+			if ((startTimeSlot.equals(technician.getTimeslots().get(timeSlotIndex).getStartDateTime())) 
+					&& (endTimeSlot.equals(technician.getTimeslots().get(timeSlotIndex).getEndDateTime()))) {
+				for (int appointmentIndex = 0; appointmentIndex < technician.getAppointments().size(); appointmentIndex++) {
+					if (technician.getAppointments().get(appointmentIndex).getTimeSlot().getStartDateTime().equals(startTimeSlot) 
+							&& technician.getAppointments().get(appointmentIndex).getTimeSlot().getEndDateTime().equals(endTimeSlot)) {
+						technician.getAppointments().remove(technician.getAppointments().get(appointmentIndex));
+					}
+				}
+				technician.getTimeslots().remove(technician.getTimeslots().get(timeSlotIndex));
+				technicianRepository.save(technician); // saving the newly removed timeslot change to the technician
+				
+			}
+			else {
+				return "Time slot not found.";
 			}
 		}
-		// Second removing the chosen timeslot itself
-		for (TimeSlotDto timeSlot: getWorkHours(email)) {
-			if (timeSlot.getStartDateTime().equals(slotToDelete.getStartDateTime()) 
-					&& timeSlot.getEndDateTime().equals(slotToDelete.getEndDateTime())) {
-				technician.getTimeslots().remove(slotToDelete);
-				removedTimeSlot = true;
-			}
-		}
-		technicianRepository.save(technician); // saving the newly removed timeslot change to the technician
-		// TODO perhaps the return should be of all the timeslots that are still not removed
-		return "Requested TimeSlot was removed: " + removedTimeSlot + " . " + 
-				"Associate Appointements within the requested TimeSlot were also removed: " + removedAppointments;
+	
+		return "Requested TimeSlot and associate Appointements within the requested TimeSlot were removed.";
 	}
 	
 
