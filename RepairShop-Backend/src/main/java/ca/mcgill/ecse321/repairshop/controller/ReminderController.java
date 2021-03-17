@@ -33,7 +33,7 @@ public class ReminderController {
             }
             return new ResponseEntity<>(reminderService.getRemindersByCustomerEmail(email), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -57,7 +57,7 @@ public class ReminderController {
             }
             return new ResponseEntity<>(reminderService.createReminder(dateTime, appointmentDateTime, serviceName, type, email), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

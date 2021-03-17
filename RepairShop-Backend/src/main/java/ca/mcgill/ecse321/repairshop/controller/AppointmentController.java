@@ -33,7 +33,7 @@ public class AppointmentController {
             }
             return new ResponseEntity<>(appointmentService.createAppointment(startTimestamp, serviceName, customerEmail), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -51,7 +51,7 @@ public class AppointmentController {
             }
             return new ResponseEntity<>(appointmentService.getPossibleAppointments(startDate, serviceName), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
