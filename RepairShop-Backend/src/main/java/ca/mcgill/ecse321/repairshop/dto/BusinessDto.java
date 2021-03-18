@@ -76,5 +76,13 @@ public class BusinessDto {
         this.holidays = holidays;
     }
 
+    public String toString() {
+        return super.toString() + "[" +
+                "name" + ":" + getName() + "," +
+                "address" + ":" + getAddress() + "," +
+                "phoneNumber" + ":" + getPhoneNumber() + "," +
+                "email" + ":" + getEmail() + "," +
+                "numberOfRepairSpots" + ":" + getNumberOfRepairSpots() + "]" + System.getProperties().getProperty("line.separator");
+    }
 
 }

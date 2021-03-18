@@ -47,5 +47,12 @@ public class AppointmentDto {
     public void setTimeSlotDto(TimeSlotDto timeSlotDto) {
         this.timeSlotDto = timeSlotDto;
     }
+    
+    public String toString() {
+        return super.toString() + "[" +
+                "appointmentID" + ":" + getAppointmentID() + "]" + System.getProperties().getProperty("line.separator") +
+                "  " + "service = " + (getServiceDto() != null ? Integer.toHexString(System.identityHashCode(getServiceDto())) : "null") + System.getProperties().getProperty("line.separator") +
+                "  " + "customer = " + (getCustomerDto() != null ? Integer.toHexString(System.identityHashCode(getCustomerDto())) : "null");
+    }
 
 }

@@ -2,7 +2,9 @@ package ca.mcgill.ecse321.repairshop.service;
 
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -20,6 +22,7 @@ import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
+import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
 
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
@@ -32,6 +35,9 @@ public class TechnicianService {
 
 	@Autowired
 	AppointmentRepository appRepo;
+	
+	@Autowired
+	TimeSlotRepository timeSlotRepository;
 
 	@Autowired
 	BusinessRepository businessRepository;
@@ -259,7 +265,7 @@ public class TechnicianService {
 		//get dates of the week
 		Date startDate = Date.valueOf(weekStartDate);
 		List<String> datesOfWeek = new ArrayList<>();
-		for(int i = 0; i <= 7; i++) {
+		for(int i = 0; i < 7; i++) {
 			Date thisDate = new Date(startDate.getTime() + (86400000*i));
 			datesOfWeek.add(thisDate.toString());
 		}
@@ -281,6 +287,60 @@ public class TechnicianService {
 
 		return schedule;
 
+	}
+	
+	/**
+	 * Delete a technician's schedule
+	 * @param email of technician
+	 * @return whether the work schedule was removed successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
+	@Transactional 
+	public String deleteSchedule(String email) throws Exception{
+
+		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
+
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		if (technician == null) throw new Exception("Technician not found.");
+
+		technician.setTimeslots(Collections.emptyList());
+
+		technicianRepository.save(technician);
+		
+		return email + "'s schedule has been removed.";
+	}
+
+	/**
+	 * Delete specific set of work hours from the technician's schedule (and their appointments within the work hours)
+	 * @param email of technician
+	 * @param startTimeSlot is beginning timeslot time to be removed
+	 * @param endTimeSlot is the end timeslot time to be removed
+	 * @return whether the specific work schedule was removed successfully
+	 * @throws Exception if email is empty or technician cannot be found
+	 */
+	@Transactional
+	public String deleteSpecificWorkHours(String email, Timestamp startTimeSlot, Timestamp endTimeSlot) throws Exception {
+
+		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
+
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		if (technician == null) throw new Exception("Technician not found.");
+
+		List<TimeSlot> workHours = technician.getTimeslots();
+
+		// Remove all appointments within timeslot and the timeslot itself
+		for (TimeSlot hours : workHours) {
+			// Find target timeslot
+			if (hours.getStartDateTime().equals(startTimeSlot) && hours.getEndDateTime().equals(endTimeSlot)) {
+				// Remove timeslot
+				workHours.remove(hours);
+				technician.setTimeslots(workHours);
+				technicianRepository.save(technician);
+				return "Requested work hours were removed.";
+			}
+		}
+
+		return "Could not find provided work hours";
 	}
 
 
