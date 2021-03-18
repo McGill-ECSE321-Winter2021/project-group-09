@@ -18,10 +18,10 @@ During the development of the RepairShop application software, the team will fol
 | Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total <br/> Effort<br/> (hours)| 
 | :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
 | Sandy Lao              | Project Manager, Software Developer  | 40 | -- | -- | -- || -- |
-| Jacek Dziewonski       | Software Developer | 35 | -- | -- | -- || -- |
-| Shaswata Bhattacharyya | Software Developer | 30 | -- | -- | -- || -- |
+| Jacek Dziewonski       | Software Developer | 35 | 45 | -- | -- || -- |
+| Shaswata Bhattacharyya | Software Developer | 30 | 50 | -- | -- || -- |
 | Zhanna Klimanova       | Software Developer | 35 | -- | -- | -- || -- |
-| Tyler Syme             | Software Developer | 35 | -- | -- | -- || -- |
+| Tyler Syme             | Software Developer | 35 | 55 | -- | -- || -- |
 
 ## Sprint 1: Effort Table
 | Name            | Contributions | Efforts (hours)|
@@ -39,11 +39,11 @@ Jump to [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2
 ## Sprint 2: Effort Table
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       |UPDATE THIS LATER |00  |
-| Shaswata Bhattacharyya | UPDATE THIS LATER  | 00 |
-| Zhanna Klimanova       |UPDATE THIS LATER  | 00 |
-| Tyler Syme             |UPDATE THIS LATER  Create Google Docs & Google Calendar | 00 |
-| Sandy Lao              |UPDATE THIS LATER  Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 00 |
+| Jacek Dziewonski       |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Fixing the team's bugs, authentication, Testing on Postman, Endpoint documentation |00  |
+| Shaswata Bhattacharyya | Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Fixing the team's bugs, QA report, Testing on Postman, Endpoint documentation| 50 |
+| Zhanna Klimanova       |Implementation of Service methods, Service tests, Controller, DTO, review & modify QA report | 00 |
+| Tyler Syme             |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Modified Google Calendar, Postman Setup, Create issues, Fixing the team's bugs, meeting minutes	| 55 |
+| Sandy Lao              |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Meeting planning, Meeting minutes, README.md, Create issues, Testing on Postman, Endpoint documentation| 45 |
 
 # Sprint 2: Project Report
 See [Sprint 2: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report)<br/>
