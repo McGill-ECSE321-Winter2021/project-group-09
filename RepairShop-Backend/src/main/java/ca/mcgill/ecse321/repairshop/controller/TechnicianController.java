@@ -259,7 +259,6 @@ public class TechnicianController {
      * @param timeSlotDto work hours (TimeSlotDto)
      * @param token         of the admin
      * @return whether the specific work schedule was removed successfully
-     * @throws Exception if email is empty or technician cannot be found
      */
     @DeleteMapping("/delete/hours/{email}")
     public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotDto timeSlotDto, @RequestHeader String token) {
@@ -282,7 +281,6 @@ public class TechnicianController {
      * @param email of technician
      * @param token of the admin
      * @return whether the specific work schedule was removed successfully
-     * @throws Exception if email is empty or technician cannot be found
      */
     @DeleteMapping("/delete/schedule/{email}")
     public ResponseEntity<?> deleteSchedule(@PathVariable("email") String email, @RequestHeader String token) {
