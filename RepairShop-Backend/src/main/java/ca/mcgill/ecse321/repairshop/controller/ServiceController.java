@@ -41,7 +41,7 @@ public class ServiceController {
             ServiceDto serviceDto = serviceService.getServiceByName(name); // throws exception if not found
             return new ResponseEntity<>(serviceDto, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -60,7 +60,7 @@ public class ServiceController {
             }
             return new ResponseEntity<>(serviceService.createService(name, duration, price), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
