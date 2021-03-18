@@ -370,7 +370,6 @@ public class TestBusinessService {
         BusinessDto businessDto;
         try {
             businessDto = businessService.getBusiness();
-            assertEquals(BUSINESS_ID, businessDto.getBusinessID());
             assertEquals(BUSINESS_NAME, businessDto.getName());
             assertEquals(BUSINESS_ADDRESS, businessDto.getAddress());
             assertEquals(BUSINESS_PHONE_NUMBER, businessDto.getPhoneNumber());
@@ -395,7 +394,6 @@ public class TestBusinessService {
 
         try {
             business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
-            assertEquals(BUSINESS_ID, business.getBusinessID());
             assertEquals(newName, business.getName());
             assertEquals(newAddress, business.getAddress());
             assertEquals(newPhoneNumber, business.getPhoneNumber());
@@ -619,9 +617,6 @@ public class TestBusinessService {
         BusinessDto businessDto = null;
         Timestamp startTime = Timestamp.valueOf("2021-04-02 10:00:00");
         Timestamp endTime = Timestamp.valueOf("2021-05-14 09:00:00");
-        TimeSlot newHoliday = new TimeSlot();
-        newHoliday.setStartDateTime(startTime);
-        newHoliday.setEndDateTime(endTime);
 
         try {
             businessDto = businessService.addHoliday(startTime, endTime);

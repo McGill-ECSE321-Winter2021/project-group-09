@@ -260,7 +260,7 @@ public class TechnicianService {
 		Date startDate = Date.valueOf(weekStartDate);
 		List<String> datesOfWeek = new ArrayList<>();
 		for(int i = 0; i <= 7; i++) {
-			Date thisDate = new Date(startDate.getTime() + (84600000*i));
+			Date thisDate = new Date(startDate.getTime() + (86400000*i));
 			datesOfWeek.add(thisDate.toString());
 		}
 
