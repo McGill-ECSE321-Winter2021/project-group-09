@@ -221,7 +221,7 @@ public class TechnicianController {
 	public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestParam Timestamp startTimeSlot, @RequestParam Timestamp endTimeSlot) {
 		
 		try {
-			String message = techService.deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(email, startTimeSlot, endTimeSlot);
+			String message = techService.deleteSpecificWorkHours(email, startTimeSlot, endTimeSlot);
 			return new ResponseEntity<>(message, HttpStatus.OK); 
 		
 		} catch(Exception e) {
@@ -238,7 +238,7 @@ public class TechnicianController {
 	public ResponseEntity<?> deleteSchedule(@PathVariable("email") String email) {
 		
 		try {
-			String message = techService.deleteFullTechnicianWorkSchedule(email);
+			String message = techService.deleteSchedule(email);
 			return new ResponseEntity<>(message, HttpStatus.OK); 
 		
 		} catch(Exception e) {

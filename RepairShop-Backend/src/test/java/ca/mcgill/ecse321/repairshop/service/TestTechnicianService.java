@@ -529,7 +529,7 @@ public class TestTechnicianService {
 	public void testDeleteFullTechnicianWorkSchedule() {
 
 		try {
-			String message = service.deleteFullTechnicianWorkSchedule(TECHNICIAN_EMAIL);
+			String message = service.deleteSchedule(TECHNICIAN_EMAIL);
 			
 			assertEquals("All work hour timeslots and associated appointments for technician " + TECHNICIAN_EMAIL + " were successfully removed.", message);	
 			
@@ -543,7 +543,7 @@ public class TestTechnicianService {
 	public void testDeleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule() {
 
 		try {
-			String message = service.deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(TECHNICIAN_EMAIL, START_TIME, END_TIME);
+			String message = service.deleteSpecificWorkHours(TECHNICIAN_EMAIL, START_TIME, END_TIME);
 			
 			assertEquals("Requested TimeSlot and associate Appointements within the requested TimeSlot were removed.", message);	
 			
@@ -557,7 +557,7 @@ public class TestTechnicianService {
 	public void testDeleteIncorrectSpecificTechnicianTimeSlotAndAppointmentsFromSchedule() {
 
 		try {
-			String message = service.deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(TECHNICIAN_EMAIL, S_TIME, E_TIME);
+			String message = service.deleteSpecificWorkHours(TECHNICIAN_EMAIL, S_TIME, E_TIME);
 			assertEquals("Time slot not found.", message);
 		} catch(Exception e) {
 			fail(e.getMessage());

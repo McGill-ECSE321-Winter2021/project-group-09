@@ -274,13 +274,13 @@ public class TechnicianService {
 	}
 	
 	/**
-	 * 
+	 * Delete a technician's schedule
 	 * @param email of technician
 	 * @return whether the work schedule was removed successfully
 	 * @throws Exception if email is empty or technician cannot be found
 	 */
 	@Transactional 
-	public String deleteFullTechnicianWorkSchedule(String email) throws Exception{
+	public String deleteSchedule(String email) throws Exception{
 		
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
@@ -307,7 +307,7 @@ public class TechnicianService {
 	}
 
 	/**
-	 * 
+	 * Delete specific set of work hours from the technician's schedule (and their appointments within the work hours)
 	 * @param email of technician
 	 * @param startTimeSlot is beginning timeslot time to be removed
 	 * @param endTimeSlot is the end timeslot time to be removed
@@ -315,7 +315,7 @@ public class TechnicianService {
 	 * @throws Exception if email is empty or technician cannot be found
 	 */
 	@Transactional 
-	public String deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(String email, java.sql.Timestamp startTimeSlot, java.sql.Timestamp endTimeSlot) throws Exception{
+	public String deleteSpecificWorkHours(String email, java.sql.Timestamp startTimeSlot, java.sql.Timestamp endTimeSlot) throws Exception{
 		
 		if (email == null) {
 			throw new Exception("Email cannot be empty.");
