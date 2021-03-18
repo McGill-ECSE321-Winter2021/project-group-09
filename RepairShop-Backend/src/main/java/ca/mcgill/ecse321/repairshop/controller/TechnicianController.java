@@ -256,20 +256,19 @@ public class TechnicianController {
      * DELETE request to delete a specific technician work hour
      *
      * @param email         of technician
-     * @param startTimeSlot is beginning timeslot time to be removed
-     * @param endTimeSlot   is the end timeslot time to be removed
+     * @param timeSlotDto work hours (TimeSlotDto)
      * @param token         of the admin
      * @return whether the specific work schedule was removed successfully
      * @throws Exception if email is empty or technician cannot be found
      */
     @DeleteMapping("/delete/hours/{email}")
-    public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestParam Timestamp startTimeSlot, @RequestParam Timestamp endTimeSlot, @RequestHeader String token) {
+    public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotDto timeSlotDto, @RequestHeader String token) {
 
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            String message = techService.deleteSpecificWorkHours(email, startTimeSlot, endTimeSlot);
+            String message = techService.deleteSpecificWorkHours(email, timeSlotDto.getStartDateTime(), timeSlotDto.getEndDateTime());
             return new ResponseEntity<>(message, HttpStatus.OK);
 
         } catch (Exception e) {
