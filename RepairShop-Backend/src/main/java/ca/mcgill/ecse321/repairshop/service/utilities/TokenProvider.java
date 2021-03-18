@@ -1,21 +1,16 @@
 package ca.mcgill.ecse321.repairshop.service.utilities;
 
-import ca.mcgill.ecse321.repairshop.model.Admin;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 
-/** We do not know how this class works.
- * All codes are really similar to this website:
+/** Code inspired by this source:
  * https://daddyprogrammer.org/post/636/springboot2-springsecurity-authentication-authorization/
  */
 @Component
@@ -46,29 +41,4 @@ public class TokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
-        Admin userDetails = adminRepository.findAdminByEmail(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", null);
-    }
-
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("Invalid Token");
-        }
-    }
 }
