@@ -44,17 +44,6 @@ public class TimeSlotService {
         return timeslotToDTO(timeSlotRepository.save(newTimeslot));
     }
 
-    /** Creates a new timeslot and stores it in db
-     * @param startTime of the Timeslot
-     * @param endTime of the Timeslot
-     */
-    @Transactional
-    public TimeSlotDto createTimeslot(Timestamp startTime, Timestamp endTime) {
-        TimeSlot newTimeslot = new TimeSlot();
-        newTimeslot.setStartDateTime(startTime);
-        newTimeslot.setEndDateTime(endTime);
-        return timeslotToDTO(timeSlotRepository.save(newTimeslot));
-    }
 
     /**
      * return a single timeslot by id
