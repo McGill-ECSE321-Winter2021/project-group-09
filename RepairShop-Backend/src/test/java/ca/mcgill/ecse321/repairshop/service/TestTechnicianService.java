@@ -545,15 +545,45 @@ public class TestTechnicianService {
 		}
 
 	}
-	
-	@Test
-	public void testTechnicianWorkSchedule() {
 
+
+	@Test // Valid
+	public void testDeleteSchedule() {
 		try {
 			String message = service.deleteSchedule(TECHNICIAN_EMAIL);
-			assertEquals("All work hour timeslots and associated appointments for technician " + TECHNICIAN_EMAIL + " were successfully removed.", message);
+			assertEquals(TECHNICIAN_EMAIL + "'s schedule has been removed.", message);
 		} catch(Exception e) {
 			fail(e.getMessage());
+		}
+	}
+
+	@Test // Invalid
+	public void testDeleteScheduleNull() {
+		try {
+			service.deleteSchedule(null);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+	}
+
+	@Test // Invalid
+	public void testDeleteScheduleEmpty() {
+		try {
+			service.deleteSchedule("");
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+	}
+
+	@Test // Invalid
+	public void testDeleteScheduleNonExistentTechnician() {
+		try {
+			service.deleteSchedule("notATechnician");
+			fail();
+		} catch(Exception e) {
+			assertEquals("Technician not found.", e.getMessage());
 		}
 	}
 

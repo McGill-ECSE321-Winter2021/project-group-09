@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.repairshop.service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -296,29 +297,17 @@ public class TechnicianService {
 	 */
 	@Transactional 
 	public String deleteSchedule(String email) throws Exception{
-		
-		if(email == null) {
-			throw new Exception("Email cannot be empty.");
-		}
+
+		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
 
 		Technician technician = technicianRepository.findTechnicianByEmail(email);
-		
-		if(technician == null) {
-			throw new Exception("Technician not found.");
-		}
-		
-		// removing all the appointments
-		for (int appointmentIndex = 0; appointmentIndex < technician.getAppointments().size(); appointmentIndex++) {
-			technician.getAppointments().remove(technician.getAppointments().get(appointmentIndex));
-		}
-		// removing all the timeslots
-		for (int timeSlotIndex = 0; timeSlotIndex < technician.getTimeslots().size(); timeSlotIndex++) {
-			technician.getTimeslots().remove(technician.getTimeslots().get(timeSlotIndex));
-		}
+		if (technician == null) throw new Exception("Technician not found.");
+
+		technician.setTimeslots(Collections.emptyList());
 
 		technicianRepository.save(technician);
 		
-		return "All work hour timeslots and associated appointments for technician " + email + " were successfully removed.";
+		return email + "'s schedule has been removed.";
 	}
 
 	/**
