@@ -3,17 +3,21 @@ package ca.mcgill.ecse321.repairshop.dto;
 import java.util.List;
 
 public class BusinessDto {
-    private Long businessID;
     private String name;
     private String address;
     private String email;
     private String phoneNumber;
     private int numberOfRepairSpots;
     private List<TimeSlotDto> holidays;
+    
+    
+    //default constructor is needed for the controller
+    public BusinessDto() {
+    	
+    }
 
     
     public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
-        this.businessID = businessID;
         this.name = name;
         this.address = address;
         this.email = email;
@@ -22,13 +26,6 @@ public class BusinessDto {
     }
     
 
-    public long getBusinessID() {
-        return this.businessID;
-    }
-
-    public void setBusinessID(long businessID) {
-        this.businessID = businessID;
-    }
 
     public String getName() {
         return this.name;

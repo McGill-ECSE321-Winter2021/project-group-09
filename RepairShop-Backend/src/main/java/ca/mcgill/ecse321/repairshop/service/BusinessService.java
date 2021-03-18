@@ -3,9 +3,12 @@ package ca.mcgill.ecse321.repairshop.service;
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.model.Business;
+import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
+import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
+import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,9 @@ public class BusinessService {
     @Autowired
     TimeSlotRepository timeSlotRepository;
 
+    @Autowired
+    TechnicianRepository technicianRepository;
+
     /**
      * Creates a business with a name, an address, a phone number, an email and number of repair spot.
      *
@@ -31,21 +37,20 @@ public class BusinessService {
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
      * @param email               email of the business (String)
-     * @param numberOfRepairSpots number of repair spots of the business (int)
      * @return businessDto BusinessDto (the business created by this method)
      * @throws Exception If at least one of the inputs is invalid
      */
     @Transactional
-    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+    public BusinessDto createBusiness(String name, String address, String phoneNumber, String email) throws Exception {
         
-        inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
+        inputValidation(name, address, phoneNumber, email);
 
         Business business = businessRepository.findAll().get(0); // should always exist
         business.setName(name);
         business.setAddress(address);
         business.setEmail(email);
         business.setPhoneNumber(phoneNumber);
-        business.setNumberOfRepairSpots(numberOfRepairSpots);
+        business.setNumberOfRepairSpots(0);
 
         List<TimeSlot> holidays = new ArrayList<>();
         business.setHolidays(holidays);
@@ -84,7 +89,7 @@ public class BusinessService {
     @Transactional
     public BusinessDto updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
-        inputValidation(name, address, phoneNumber, email, numberOfRepairSpots);
+        inputValidation(name, address, phoneNumber, email);
 
         List<Business> businesses = businessRepository.findAll();
         if (businesses.size() == 0) throw new Exception("Business not found");
@@ -137,19 +142,18 @@ public class BusinessService {
     @Transactional
     public BusinessDto addHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
 
-        List<Business> businesses = businessRepository.findAll();
-        if (businesses.size() == 0) throw new Exception("Business not found");
-
-        Business business = businesses.get(0);
+        Business business = businessRepository.findAll().get(0);
+        if (business == null) throw new Exception("Business not found");
 
         TimeSlot newHoliday = new TimeSlot();
         newHoliday.setStartDateTime(startDateTime);
         newHoliday.setEndDateTime(endDateTime);
 
-        business.getHolidays().add(newHoliday);
+        List<TimeSlot> holidayList = business.getHolidays();
+        holidayList.add(newHoliday);
+        business.setHolidays(holidayList);
 
         businessRepository.save(business);
-        timeSlotRepository.save(newHoliday);
         return businessToDto(business);
     }
     
@@ -200,6 +204,34 @@ public class BusinessService {
         return holidaysDtoList;
     }
 
+    /** Method to get the number of available repair spots at the current time
+     * @return number of available repair spots
+     * @throws Exception if the business was not found
+     */
+    @Transactional
+    public int getAvailableRepairSpots() throws Exception {
+
+        List<Business> businesses = businessRepository.findAll();
+        if (businesses.size() == 0) throw new Exception("Business not found");
+
+        // Simulate booking an appointment to get availability
+
+        TimeSlot timeSlot = new TimeSlot();
+        timeSlot.setStartDateTime(SystemTime.getCurrentDateTime());
+        timeSlot.setEndDateTime(SystemTime.getCurrentDateTime());
+
+        List<Technician> technicians = technicianRepository.findAll();
+
+        int availableSpots = 0;
+
+        for (Technician technician : technicians) {
+            if (AppointmentService.isBookable(timeSlot, technician, businesses.get(0))) availableSpots += 1;
+        }
+
+        return availableSpots;
+
+    }
+
     /**
      * Helper method to convert Business to BusinessDto
      *
@@ -209,14 +241,15 @@ public class BusinessService {
     public BusinessDto businessToDto(Business business) {
 
         //Create businessDto
+    	
        BusinessDto businessDto = new BusinessDto(business.getBusinessID(), business.getName(), business.getAddress(), business.getEmail(), business.getPhoneNumber(), business.getNumberOfRepairSpots());
 
        List<TimeSlotDto> holidayDtoList = new ArrayList<>();
-       for(TimeSlot currHoliday:business.getHolidays()){
+       for(TimeSlot currHoliday : business.getHolidays()){
            holidayDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
        }
-        businessDto.setHolidays(holidayDtoList);
-        return businessDto;
+       businessDto.setHolidays(holidayDtoList);
+       return businessDto;
     }
 
     /**
@@ -226,10 +259,9 @@ public class BusinessService {
      * @param address             address of the business (String)
      * @param phoneNumber         phone number of the business (String)
      * @param email               email of the business (String)
-     * @param numberOfRepairSpots number of repair spots of the business (int)
      * @throws Exception if one of the inputs is invalid
      */
-    private void inputValidation(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
+    private void inputValidation(String name, String address, String phoneNumber, String email) throws Exception {
 
         if (name == null || name.equals("")) {
             throw new Exception("Business name cannot be empty!");
@@ -245,10 +277,6 @@ public class BusinessService {
         }
 
         validateEmail(email); // if email is invalid, an exception will be thrown
-
-        if (numberOfRepairSpots < 0) {
-            throw new Exception("The number of repair spots cannot be negative");
-        }
     }
 
 }
