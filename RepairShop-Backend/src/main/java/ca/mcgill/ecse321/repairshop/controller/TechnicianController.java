@@ -6,6 +6,7 @@ import java.util.List;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class TechnicianController {
     @Autowired
     AuthenticationService authenticationService;
 
+    @Autowired
+	EmailService emailService;
+
 
     /**
      * POST request to create a new technician
@@ -46,6 +50,7 @@ public class TechnicianController {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
             TechnicianDto tech = techService.createTechnician(techDto.getEmail(), techDto.getPassword(), techDto.getPhoneNumber(), techDto.getName(), techDto.getAddress());
+            emailService.accountCreationEmail(tech.getEmail(),tech.getName(), tech.getPassword());
             return new ResponseEntity<>(tech, HttpStatus.OK);
 
         } catch (Exception e) {

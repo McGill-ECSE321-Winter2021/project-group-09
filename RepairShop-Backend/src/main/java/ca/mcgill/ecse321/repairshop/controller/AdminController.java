@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.repairshop.controller;
 import java.util.List;
 
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Autowired
 	AuthenticationService authenticationService;
@@ -36,7 +40,8 @@ public class AdminController {
 				return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
 			}
 			AdminDto admin = adminService.createAdmin(adminDto.getEmail(), adminDto.getPassword(), adminDto.getPhoneNumber(), adminDto.getName(), adminDto.getAddress());
-			return new ResponseEntity<>(admin, HttpStatus.OK); 
+			emailService.accountCreationEmail(admin.getEmail(), admin.getName(), admin.getPassword());
+			return new ResponseEntity<>(admin, HttpStatus.OK);
 		
 		} catch(Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -5,6 +5,7 @@ import java.util.List;
 import ca.mcgill.ecse321.repairshop.model.Customer;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,9 @@ public class CustomerController {
 
     @Autowired
     AuthenticationService authenticationService;
+
+    @Autowired
+    EmailService emailService;
     /**
      * POST request to create a new customer
      * @param customerDto (CustomerDto)
@@ -39,6 +43,7 @@ public class CustomerController {
         try {
 
             CustomerDto customer = customerService.createCustomer(customerDto.getEmail(), customerDto.getPassword(), customerDto.getPhoneNumber(), customerDto.getName(), customerDto.getAddress());
+            emailService.accountCreationEmail(customer.getEmail(), customer.getName(), customer.getPassword());
             return new ResponseEntity<>(customer, HttpStatus.OK);
 
         } catch (Exception e) {
