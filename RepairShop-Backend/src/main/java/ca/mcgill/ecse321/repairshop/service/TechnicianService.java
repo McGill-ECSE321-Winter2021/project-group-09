@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.repairshop.service;
 
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -328,39 +329,30 @@ public class TechnicianService {
 	 * @return whether the specific work schedule was removed successfully
 	 * @throws Exception if email is empty or technician cannot be found
 	 */
-	@Transactional 
-	public String deleteSpecificWorkHours(String email, java.sql.Timestamp startTimeSlot, java.sql.Timestamp endTimeSlot) throws Exception{
-		
-		if (email == null) {
-			throw new Exception("Email cannot be empty.");
-		}
+	@Transactional
+	public String deleteSpecificWorkHours(String email, Timestamp startTimeSlot, Timestamp endTimeSlot) throws Exception {
+
+		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
 
 		Technician technician = technicianRepository.findTechnicianByEmail(email);
-		if (technician == null) {
-			throw new Exception("Technician not found.");
+		if (technician == null) throw new Exception("Technician not found.");
+
+		List<TimeSlot> workHours = technician.getTimeslots();
+
+		// Remove all appointments within timeslot and the timeslot itself
+		for (TimeSlot hours : workHours) {
+			// Find target timeslot
+			if (hours.getStartDateTime().equals(startTimeSlot) && hours.getEndDateTime().equals(endTimeSlot)) {
+				// Remove timeslot
+				workHours.remove(hours);
+				technician.setTimeslots(workHours);
+				technicianRepository.save(technician);
+				return "Requested work hours were removed.";
+			}
 		}
 
-		for (int timeSlotIndex = 0; timeSlotIndex < technician.getTimeslots().size(); timeSlotIndex++) {
-			if ((startTimeSlot.equals(technician.getTimeslots().get(timeSlotIndex).getStartDateTime())) 
-					&& (endTimeSlot.equals(technician.getTimeslots().get(timeSlotIndex).getEndDateTime()))) {
-				for (int appointmentIndex = 0; appointmentIndex < technician.getAppointments().size(); appointmentIndex++) {
-					if (technician.getAppointments().get(appointmentIndex).getTimeSlot().getStartDateTime().equals(startTimeSlot) 
-							&& technician.getAppointments().get(appointmentIndex).getTimeSlot().getEndDateTime().equals(endTimeSlot)) {
-						technician.getAppointments().remove(technician.getAppointments().get(appointmentIndex));
-					}
-				}
-				technician.getTimeslots().remove(technician.getTimeslots().get(timeSlotIndex));
-				technicianRepository.save(technician); // saving the newly removed timeslot change to the technician
-				
-			}
-			else {
-				return "Time slot not found.";
-			}
-		}
-	
-		return "Requested TimeSlot and associate Appointements within the requested TimeSlot were removed.";
+		return "Could not find provided work hours";
 	}
-	
 
 
 	/**

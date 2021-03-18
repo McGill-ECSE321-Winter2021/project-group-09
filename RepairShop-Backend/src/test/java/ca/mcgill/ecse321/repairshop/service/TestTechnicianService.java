@@ -50,8 +50,10 @@ public class TestTechnicianService {
 	private static final String TECHNICIAN_ADDRESS = "Somewhere";
 	private static final String TECHNICIAN_PHONE = "5142253789";
 	private static final Timestamp START_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
-	private static final Timestamp END_TIME = Timestamp.valueOf("2021-03-02 11:00:00");	
-	
+	private static final Timestamp END_TIME = Timestamp.valueOf("2021-03-02 11:00:00");
+	private static final Timestamp START_TIME2 = Timestamp.valueOf("2021-03-06 09:00:00");
+	private static final Timestamp END_TIME2 = Timestamp.valueOf("2021-03-06 17:00:00");
+
 	private static final String CUSTOMER_EMAIL = "someone@gmail.com";
 	private static final String SERVICE_NAME = "Repair";
 	private static final int SERVICE_DURATION = 1;
@@ -545,42 +547,67 @@ public class TestTechnicianService {
 	}
 	
 	@Test
-	public void testDeleteFullTechnicianWorkSchedule() {
+	public void testTechnicianWorkSchedule() {
 
 		try {
 			String message = service.deleteSchedule(TECHNICIAN_EMAIL);
-			
-			assertEquals("All work hour timeslots and associated appointments for technician " + TECHNICIAN_EMAIL + " were successfully removed.", message);	
-			
+			assertEquals("All work hour timeslots and associated appointments for technician " + TECHNICIAN_EMAIL + " were successfully removed.", message);
 		} catch(Exception e) {
 			fail(e.getMessage());
-			
 		}
 	}
-	
-	@Test
-	public void testDeleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule() {
+
+	@Test // Valid timeslot
+	public void testDeleteSpecificWorkHours() {
 
 		try {
 			String message = service.deleteSpecificWorkHours(TECHNICIAN_EMAIL, START_TIME, END_TIME);
-			
-			assertEquals("Requested TimeSlot and associate Appointements within the requested TimeSlot were removed.", message);	
-			
+			assertEquals("Requested work hours were removed.", message);
 		} catch(Exception e) {
 			fail(e.getMessage());
-			
 		}
 	}
 	
-	@Test
-	public void testDeleteIncorrectSpecificTechnicianTimeSlotAndAppointmentsFromSchedule() {
+	@Test // Invalid timeslot
+	public void testDeleteSpecificWorkHoursInvalidHours() {
 
 		try {
-			String message = service.deleteSpecificWorkHours(TECHNICIAN_EMAIL, S_TIME, E_TIME);
-			assertEquals("Time slot not found.", message);
+			String message = service.deleteSpecificWorkHours(TECHNICIAN_EMAIL, START_TIME2, END_TIME2);
+			assertEquals("Could not find provided work hours", message);
 		} catch(Exception e) {
 			fail(e.getMessage());
-			
+		}
+	}
+
+	@Test // Invalid technician
+	public void testDeleteSpecificWorkHoursNullTechnician() {
+
+		try {
+			service.deleteSpecificWorkHours(null, START_TIME, END_TIME);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+	}
+
+	@Test // Invalid technician
+	public void testDeleteSpecificWorkHoursEmptyTechnician() {
+
+		try {
+			service.deleteSpecificWorkHours("", START_TIME, END_TIME);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+	}
+
+	@Test // Invalid timeslot
+	public void testDeleteSpecificWorkHoursNonExistentTechnician() {
+
+		try {
+			service.deleteSpecificWorkHours("notATechnician", START_TIME, END_TIME);
+		} catch(Exception e) {
+			assertEquals("Technician not found.", e.getMessage());
 		}
 	}
 	

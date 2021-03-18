@@ -78,7 +78,6 @@ public class BusinessDto {
 
     public String toString() {
         return super.toString() + "[" +
-                "businessID" + ":" + getBusinessID() + "," +
                 "name" + ":" + getName() + "," +
                 "address" + ":" + getAddress() + "," +
                 "phoneNumber" + ":" + getPhoneNumber() + "," +
