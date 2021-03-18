@@ -162,10 +162,11 @@ public class BusinessService {
      *
      * @param startDateTime Start date and time of the new TimeSlot Holiday (TimeStamp)
      * @param endDateTime   End date and time of the new TimeSlot Holiday (TimeStamp)
+     * @return message If the holiday was successfully deleted
      * @throws Exception if the business wasn't found
      */
     @Transactional
-    public BusinessDto deleteHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
+    public String deleteHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
 
         Business business = businessRepository.findAll().get(0);
 
@@ -177,7 +178,7 @@ public class BusinessService {
         }
         
         businessRepository.save(business);
-        return businessToDto(business);  // returning List<TimeSlotDto> holidays that are still remaining
+        return "The holiday was successfully deleted" ;
     }
 
     /**

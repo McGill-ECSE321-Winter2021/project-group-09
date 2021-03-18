@@ -124,10 +124,9 @@ public class BusinessController {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            businessService.deleteHoliday(timeSlot.getStartDateTime(), timeSlot.getEndDateTime());
-            List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
-            
-            return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
+            String message =  businessService.deleteHoliday(timeSlot.getStartDateTime(), timeSlot.getEndDateTime());
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
