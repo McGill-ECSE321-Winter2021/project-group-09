@@ -46,5 +46,8 @@ Jump to [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2
 | Sandy Lao              |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Meeting planning, Meeting minutes, README.md, Create issues, Testing on Postman, Endpoint documentation| 45 |
 
 # Sprint 2: Project Report
-See [Sprint 2: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report)<br/>
-Jump to [Sprint 2: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report#sprint-2-meeting-notes-)
+See [Sprint 2: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report)\
+Jump to [Sprint 2: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report#sprint-2-meeting-notes-)\
+Jump to [Software Quality Assurance Plan & Report ✨👌](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Software-Quality-Assurance-Plan-&-Report-%E2%9C%A8%F0%9F%91%8C)\
+Jump to [API Documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/API-Documentation)\
+Jump to [RESTful Service Tests on Postman 🧪](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/RESTful-Service-Tests-on-Postman-%F0%9F%A7%AA)
