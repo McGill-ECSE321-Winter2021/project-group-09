@@ -94,8 +94,7 @@ public class BusinessController {
 
     /**
      * Add a new holiday to the business.
-     * @param startDateTime start time of the holiday
-     * @param endDateTime end time of the holiday
+     * @param timeSlot Holiday time slot (TimeSlotDto)
      * @param token of the admin
      * @return a list of all holidays
      */
@@ -115,8 +114,7 @@ public class BusinessController {
     
     /**
      * Delete a holiday from the business.
-     * @param startDateTime start time of the holiday
-     * @param endDateTime end time of the holiday
+     * @param timeSlot Holiday time slot to delete(TimeSlotDto)
      * @param token of the admin
      * @return a list of all holidays
      */
