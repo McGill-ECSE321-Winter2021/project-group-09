@@ -217,8 +217,8 @@ public class TechnicianController {
 	 * @return whether the specific work schedule was removed successfully
 	 * @throws Exception if email is empty or technician cannot be found
 	 */
-	@DeleteMapping("/delete/{email}")
-	public ResponseEntity<?> deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(@PathVariable("email") String email, @RequestParam Timestamp startTimeSlot, @RequestParam Timestamp endTimeSlot) {
+	@DeleteMapping("/delete/hours/{email}")
+	public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestParam Timestamp startTimeSlot, @RequestParam Timestamp endTimeSlot) {
 		
 		try {
 			String message = techService.deleteSpecificTechnicianTimeSlotAndAppointmentsFromSchedule(email, startTimeSlot, endTimeSlot);
@@ -234,8 +234,8 @@ public class TechnicianController {
 	 * @return whether the specific work schedule was removed successfully
 	 * @throws Exception if email is empty or technician cannot be found
 	 */
-	@DeleteMapping("/delete/{email}")
-	public ResponseEntity<?> deleteFullTechnicianWorkSchedule(@PathVariable("email") String email) {
+	@DeleteMapping("/delete/schedule/{email}")
+	public ResponseEntity<?> deleteSchedule(@PathVariable("email") String email) {
 		
 		try {
 			String message = techService.deleteFullTechnicianWorkSchedule(email);

@@ -467,9 +467,7 @@ public class TestTechnicianService {
 		try {
 			
 			List<TimeSlotDto> timeSlots = service.viewTechnicianSchedule(TECHNICIAN_EMAIL, "2021-03-01");
-			System.out.println("tech schedule    " + timeSlots.toString());
 			TimeSlotDto timeSlot = timeSlots.get(0);
-			System.out.println("tech schedule 2    " + timeSlot.toString());
 			assertEquals(1, timeSlots.size());
 			assertEquals(S_TIME, timeSlot.getStartDateTime());
 			assertEquals(E_TIME, timeSlot.getEndDateTime());

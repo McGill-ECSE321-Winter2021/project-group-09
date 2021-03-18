@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.repairshop.service;
 
 
-import java.security.Timestamp;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +19,6 @@ import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
-import ca.mcgill.ecse321.repairshop.service.AppointmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 
@@ -313,7 +305,7 @@ public class TechnicianService {
 		
 		return "All work hour timeslots and associated appointments for technician " + email + " were successfully removed.";
 	}
-	
+
 	/**
 	 * 
 	 * @param email of technician
