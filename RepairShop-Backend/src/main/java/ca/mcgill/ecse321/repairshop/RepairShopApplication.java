@@ -38,6 +38,7 @@ public class RepairShopApplication {
 
     /**
      * When we start the application we want to make sure there is a business and one root admin.
+     * You need an admin to create more admin / technicians.
      */
     @Bean
     InitializingBean sendDatabase() {
