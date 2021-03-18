@@ -639,15 +639,15 @@ public class TestBusinessService {
         TimeSlot newHoliday = new TimeSlot();
         newHoliday.setStartDateTime(startTime);
         newHoliday.setEndDateTime(endTime);
-
+        String message ="";
         try {
         	
-            businessDto = businessService.addHoliday(startTime, endTime);
-            businessDto = businessService.deleteHoliday( startTime, endTime);
+           businessService.addHoliday(startTime, endTime);
+            message = businessService.deleteHoliday( startTime, endTime);
         } catch (Exception e) {
             fail(e.getMessage());
         }
-        assertEquals(1, businessDto.getHolidays().size());
+        assertEquals("The holiday was successfully deleted", message);
     }
     
     @Test
