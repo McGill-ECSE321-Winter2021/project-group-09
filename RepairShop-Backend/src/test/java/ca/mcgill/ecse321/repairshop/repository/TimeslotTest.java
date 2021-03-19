@@ -63,7 +63,11 @@ public class TimeslotTest {
     @Test
     public void testDeleteAssociatedTechnician() {
         //create technician
+        String techName = "TestCustomer";
         String techEmail = "CustomerEmail";
+        String techPassword = "CustomerPassword";
+        String techAddress = "ABCD";
+        String techPhone = "63534525453";
         Technician tech = new Technician();
         tech.setEmail(techEmail);
 
@@ -74,7 +78,7 @@ public class TimeslotTest {
         timeSlot.setEndDateTime(endDate);
         timeSlot.setStartDateTime(startDate);
         Long newTsID = timeslotRepo.save(timeSlot).getTimeSlotID();
-        LinkedList<TimeSlot> timeslots = new LinkedList<>();
+        LinkedList<TimeSlot> timeslots = new LinkedList<TimeSlot>();
         timeslots.add(timeSlot);
         tech.setTimeslots(timeslots);
 

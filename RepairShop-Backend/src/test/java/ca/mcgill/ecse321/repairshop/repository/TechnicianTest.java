@@ -53,6 +53,8 @@ public class TechnicianTest {
 		tech.setPhoneNumber(techPhone);
 		technicianRepository.save(tech);
 
+		tech = null;
+
 		//load technician
 		tech = technicianRepository.findTechnicianByEmail(techEmail);
 		assertNotNull(tech);
@@ -83,6 +85,8 @@ public class TechnicianTest {
 		tech.setPhoneNumber(techPhone);
 		technicianRepository.save(tech);
 
+		tech = null;
+		
 		//load technician
 		tech = technicianRepository.findTechnicianByEmail(techEmail);
 		assertNotNull(tech);

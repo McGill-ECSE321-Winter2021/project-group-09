@@ -53,6 +53,7 @@ public class EmailService {
         javaMailSender.send(msg);
     }
 
+//TODO: If have time, modify messages + make them pretty
 
     /**
      * Sends an upcomingAppointment reminder or serviceReminder<br/>
