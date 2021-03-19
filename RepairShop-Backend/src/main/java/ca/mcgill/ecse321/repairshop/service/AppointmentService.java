@@ -65,7 +65,7 @@ public class AppointmentService {
         List<TimeSlot> workHours = technician.getTimeslots();
         List<TimeSlot> adjustedHours = new ArrayList<>();
         for (TimeSlot hours : workHours) {
-            adjustedHours.add(getUpdatedHours(hours));
+            adjustedHours.add(getUpdatedHours(hours,timeSlot.getStartDateTime()));
         }
 
         // Get Technician's appointments
@@ -278,6 +278,7 @@ public class AppointmentService {
                     timeSlotToAdd.setStartDateTime(tempTimeSlot.getStartDateTime());
                     timeSlotToAdd.setEndDateTime(tempTimeSlot.getEndDateTime());
                     allTimeSlots.add(timeSlotToAdd);
+                    timeSlotRepository.save(timeSlotToAdd);
                     break;
                 }
             }

@@ -47,15 +47,4 @@ public class ValidationHelperMethods {
         return newTimeSlot;
     }
 
-    /** Helper method to get a timeslot with the same days of the week at some offset (keeps the times constant)
-     * Uses an offset of the current day (or test day)
-     * @param timeSlot to adjust to another day
-     * @return an adjusted timeslot
-     */
-    public static TimeSlot getUpdatedHours(TimeSlot timeSlot) {
-        return getUpdatedHours(timeSlot, SystemTime.getCurrentDateTime());
-    }
-
-
-
 }
