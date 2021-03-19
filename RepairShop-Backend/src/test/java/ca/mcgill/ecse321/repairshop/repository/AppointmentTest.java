@@ -44,7 +44,7 @@ public class AppointmentTest {
 		customerRepository.deleteAll();
 		serviceRepository.deleteAll();
 		technicianRepository.deleteAll();
-		timeSlotRepository.deleteAll();;
+		timeSlotRepository.deleteAll();
 	}
 	
 	
@@ -118,8 +118,7 @@ public class AppointmentTest {
 		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
-		
-		appointment = null;
+
 		
 		//read from database
 		appointment = appointmentRepository.findAppointmentByAppointmentID(appID);
@@ -151,8 +150,6 @@ public class AppointmentTest {
 		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
 		Long appID = appointmentRepository.save(appointment).getAppointmentID();
-		
-		appointment = null;
 		
 		//read from database
 		appointment = appointmentRepository.findAppointmentByAppointmentID(appID);
@@ -191,9 +188,6 @@ public class AppointmentTest {
 		appointment.setService(createdService);
 		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
-		Long appID = appointmentRepository.save(appointment).getAppointmentID();
-				
-		appointment = null;
 				
 		//read from database
 		appointment = appointmentRepository.findAppointmentByCustomer(createdCustomer).get(0);
@@ -228,9 +222,6 @@ public class AppointmentTest {
 		appointment.setService(createdService);
 		appointment.setTimeSlot(timeSlot);
 		appointment.setTechnician(createTechnician());
-		Long appID = appointmentRepository.save(appointment).getAppointmentID();
-				
-		appointment = null;
 				
 		//read from database
 		appointment = appointmentRepository.findByService(createdService).get(0);

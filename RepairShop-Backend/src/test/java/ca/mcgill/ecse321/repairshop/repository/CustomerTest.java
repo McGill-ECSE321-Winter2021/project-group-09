@@ -44,7 +44,7 @@ public class CustomerTest {
 		customerRepository.deleteAll();
 		appointmentRepository.deleteAll();
 		serviceRepository.deleteAll();
-		technicianRepository.deleteAll();;
+		technicianRepository.deleteAll();
 	}
 
 	
@@ -86,8 +86,7 @@ public class CustomerTest {
 		
 		// save is used to add/update an entry in the database 
 		customerRepository.save(customer); // persists the customer data types in DB
-		
-		customer = null;
+
 		
 		// load customer
 		customer = customerRepository.findCustomerByEmail(customerEmail);
@@ -148,15 +147,13 @@ public class CustomerTest {
 		appointmentRepository.save(appointment3);
 
 		//update customer with appointments
-		ArrayList<Appointment> totalAppointments = new ArrayList<Appointment>();
+		ArrayList<Appointment> totalAppointments = new ArrayList<>();
 		totalAppointments.add(appointment1);
 		totalAppointments.add(appointment2);
 		totalAppointments.add(appointment3);
 		customer.setAppointments(totalAppointments);
 		customerRepository.save(customer);
 
-		customer = null;
-		
 		// load customer
 		customer = customerRepository.findCustomerByEmail(customerEmail);
 		

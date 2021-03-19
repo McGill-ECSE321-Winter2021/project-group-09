@@ -81,7 +81,6 @@ public class BusinessTests {
         business.setHolidays(holidaysList);
         Long newBusinessID = businessRepository.save(business).getBusinessID();
 
-        business = null;
 
         business = businessRepository.findBusinessByBusinessID(newBusinessID);
 
