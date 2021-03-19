@@ -39,9 +39,9 @@ Jump to [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2
 ## Sprint 2: Effort Table
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Fixing the team's bugs, authentication, Testing on Postman, Endpoint documentation |00  |
+| Jacek Dziewonski       |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Fixing the team's bugs, authentication, Testing on Postman, Endpoint documentation |50  |
 | Shaswata Bhattacharyya | Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Fixing the team's bugs, QA report, Testing on Postman, Endpoint documentation| 50 |
-| Zhanna Klimanova       |Implementation of Service methods, Service tests, Controller, DTO, review & modify QA report | 00 |
+| Zhanna Klimanova       |Implementation of Service methods, Service tests, Controller, DTO, review & modify QA report | 35 |
 | Tyler Syme             |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Modified Google Calendar, Postman Setup, Create issues, Fixing the team's bugs, meeting minutes	| 55 |
 | Sandy Lao              |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Meeting planning, Meeting minutes, README.md, Create issues, Testing on Postman, Endpoint documentation| 45 |
 
