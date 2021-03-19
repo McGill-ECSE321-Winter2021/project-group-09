@@ -633,7 +633,6 @@ public class TestBusinessService {
     @Test
     public void testDeleteHoliday() {
     	// first creating a holiday before proceeding to delete it
-        BusinessDto businessDto = null;
         Timestamp startTime = Timestamp.valueOf("2020-12-23 21:00:00");
         Timestamp endTime = Timestamp.valueOf("2020-12-26 07:00:00");
         TimeSlot newHoliday = new TimeSlot();
