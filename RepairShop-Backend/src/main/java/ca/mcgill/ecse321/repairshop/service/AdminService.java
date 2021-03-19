@@ -23,6 +23,16 @@ public class AdminService {
 	@Autowired
 	TokenProvider tokenProvider;
 	
+	/**
+	 * Method to create a customer account
+	 * @param email of admin
+	 * @param password of admin
+	 * @param phone of admin
+	 * @param name of admin
+	 * @param address of admin
+	 * @return an admin dto corresponding to the admin object just created
+	 * @throws Exception if email/password is null or an admin already exists with given email
+	 */
 	@Transactional
 	public AdminDto createAdmin(String email, String password, String phone, String name, String address) throws Exception {
 		
@@ -43,6 +53,12 @@ public class AdminService {
 		return adminToDto(admin);
 	}
 
+	/**
+	 * Method to delete an admin by email
+	 * @param email of an admin
+	 * @throws Exception if email is null or if no admin exists with given email
+	 * Deletes the admin account corresponding to the email provided
+	 */
 	@Transactional 
 	public String deleteAdmin(String email) throws Exception{
 		if(email == null) {
@@ -56,6 +72,13 @@ public class AdminService {
 		return "Admin account with email " + email + " was successfully deleted.";
 	}
 	
+	/**
+	 * Method to get a admin by email
+	 * @param email of admin
+	 * @return the admin with the given email
+	 * @throws Exception if email is null or if no admin exists with given email
+	 *
+	 */
 	@Transactional
 	public AdminDto getAdmin(String email) throws Exception{
 		
@@ -70,6 +93,11 @@ public class AdminService {
 		return adminToDto(admin);
 	}
 	
+	/**
+	 * Method to get all existing admins
+	 * @return a list of all the existing admins as dtos
+	 *
+ 	 */
 	@Transactional
 	public List<AdminDto> getAllAdmins() {
 		List<Admin> admins = adminRepository.findAll();
@@ -81,6 +109,14 @@ public class AdminService {
 		return adminDtos;
 	}
 	
+	/**
+	 * Method to change address
+	 * @param email of admin
+	 * @param newAddress of admin
+	 * @return a admin dto corresponding to the admin object that was just updated
+	 * @throws Exception if email/new address is null or if no admin exists with given email
+	 *
+	 */
 	@Transactional
 	public AdminDto changeAddress(String email, String newAddress) throws Exception{
 		
@@ -96,7 +132,15 @@ public class AdminService {
 		adminRepository.save(admin);
 		return adminToDto(admin);
 	}
-	
+
+	/**
+	 * Method to change phone number of an admin
+	 * @param email of admin
+	 * @param newPhone of admin
+	 * @return a admin dto corresponding to the admin object that was just updated
+	 * @throws Exception if email/new phone is null or if no admin exists with given email
+	 *
+	 */
 	@Transactional
 	public AdminDto changePhone(String email, String newPhone) throws Exception{
 		
@@ -113,6 +157,15 @@ public class AdminService {
 		return adminToDto(admin);
 	}
 	
+
+	/**
+	 * Method to change password
+	 * @param email of admin
+	 * @param newPassword of admin
+	 * @return a admin dto corresponding to the admin object that was just updated
+	 * @throws Exception if email/new password is null or if no admin exists with given email
+	 *
+	 */
 	@Transactional
 	public AdminDto changePassword(String email, String newPassword) throws Exception{
 		
@@ -129,6 +182,14 @@ public class AdminService {
 		return adminToDto(admin);
 	}
 	
+	/**
+	 * Method to change admin name
+	 * @param email of admin
+	 * @param newName of admin
+	 * @return a admin dto corresponding to the admin object that was just updated
+	 * @throws Exception if email/new name is null or if no admin exists with given email
+	 *
+	 */
 	@Transactional
 	public AdminDto changeName(String email, String newName) throws Exception{
 		
