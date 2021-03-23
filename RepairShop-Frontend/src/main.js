@@ -11,10 +11,20 @@ import './main.css'
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
+// global state to keep track of login
+// bad practice but #movefast
+var store = {
+  email: null,
+  password: null,
+  userType: null,
+  token: null
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  data: store
 })
