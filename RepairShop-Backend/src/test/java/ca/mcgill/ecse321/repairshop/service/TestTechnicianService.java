@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ca.mcgill.ecse321.repairshop.model.*;
-import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
-import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
-import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
+import ca.mcgill.ecse321.repairshop.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,8 +27,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
-
 
 
 @ExtendWith(MockitoExtension.class)
@@ -48,6 +44,12 @@ public class TestTechnicianService {
 
 	@Mock
 	private CustomerRepository customerRepository;
+
+	@Mock
+	private TimeSlotRepository timeSlotRepository;
+
+	@Mock
+	private AppointmentService appointmentService;
 	
 	@InjectMocks
 	private TechnicianService service;
