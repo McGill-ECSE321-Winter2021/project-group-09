@@ -32,36 +32,57 @@
         </div>
 
         <p class="text-danger mt-4" v-if="error">{{ error }}</p>
+        <p class="text-danger mt-4" v-if="appError">{{ appError }}</p>
 
     </main>
 </template>
 
 <script>
+  import axios from 'axios';
+  var config = require('../../config');
+
+  var AXIOS = axios.create({
+      baseURL: 'http://' + config.dev.backendHost,
+      headers: { 'Access-Control-Allow-Origin': 'http://' + config.dev.host + ':' + config.dev.port }
+  });
+
   export default {
     data() {
       return {
         error: '',
+        appError: '',
         service: '',
-        services: [
-          { name: 'Service 1', duration: '1.5 hours', price: '$60' },
-          { name: 'Service 2', duration: '3 hours', price: '$500' },
-          { name: 'Service 3', duration: '2 hours', price: '$180' }
-        ],
+        services: [],
         start: '',
-        availableTimes: [
-          { startTime: "2021-03-02 10:00", endTime: "2021-03-02 12:30" },
-          { startTime: "2021-03-02 10:30", endTime: "2021-03-02 13:00" },
-          { startTime: "2021-03-02 11:00", endTime: "2021-03-02 14:00" },
-          { startTime: "2021-03-02 11:30", endTime: "2021-03-02 14:30" }
-        ],
+        availableTimes: [],
         formSection: 1
       }
+    },
+    created: function () {
+      // get all services
+      AXIOS.get('/api/service/all').then(r => {
+        this.services = r.data;
+      }).catch(e => {
+        this.appError = e;
+      });
     },
     methods: {
       toPart1() { this.formSection = 1; },
       toPart2() {
-        if (this.service) this.formSection = 2;
-        else this.error = 'Please select a service';
+        if (this.service) {
+          // Get all possible times
+          AXIOS.get('/api/appointment/possibilities', {
+            params: {
+              "startDate": "2021-03-22 00:00:00",
+              "serviceName": this.service
+            }
+          }).then(r => {
+            this.availableTimes = r.data;
+            this.formSection = 2;
+          }).catch(e => {
+            this.appError = e;
+          });
+        } else this.error = 'Please select a service';
       },
       toPart3() {
         if (this.start) this.formSection = 3;
