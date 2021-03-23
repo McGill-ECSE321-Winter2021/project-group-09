@@ -1,5 +1,7 @@
 .gradle/
 .idea
+.project
+package-lock.json
 # Mac OS Files
 .DS_Store
 /.metadata/
