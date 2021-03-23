@@ -10,11 +10,14 @@ import static org.mockito.Mockito.lenient;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ca.mcgill.ecse321.repairshop.model.*;
+import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
 import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
+import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +42,12 @@ public class TestTechnicianService {
 
 	@Mock
 	private BusinessRepository businessRepository;
+
+	@Mock
+	private AppointmentRepository appointmentRepository;
+
+	@Mock
+	private CustomerRepository customerRepository;
 	
 	@InjectMocks
 	private TechnicianService service;
@@ -90,6 +99,7 @@ public class TestTechnicianService {
 			TECHNICIAN.setPhoneNumber(TECHNICIAN_PHONE);
 			TECHNICIAN.setAddress(TECHNICIAN_ADDRESS);
 			TECHNICIAN.setTimeslots(slots);
+			TECHNICIAN.setAppointments(Collections.emptyList());
 			
 			List<Technician> techList = new ArrayList<>();
 			techList.add(TECHNICIAN);
@@ -120,7 +130,8 @@ public class TestTechnicianService {
 				SERVICE.setDuration(SERVICE_DURATION);
 				TIME.setStartDateTime(S_TIME);
 				TIME.setEndDateTime(E_TIME);
-				
+
+				APP.setAppointmentID(1L);
 				APP.setCustomer(CUSTOMER);
 				APP.setService(SERVICE);
 				APP.setTechnician(TECHNICIAN);
@@ -134,6 +145,8 @@ public class TestTechnicianService {
 			}
 			
 		});
+
+		lenient().when(techRepo.findById(anyString())).thenAnswer((InvocationOnMock invocation) -> techRepo.findTechnicianByEmail(invocation.getArgument(0)));
 
 		lenient().when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 
@@ -158,6 +171,32 @@ public class TestTechnicianService {
 			return businesses;
 
 		});
+
+		lenient().when(appointmentRepository.findById(any(Long.class))).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(1L)) {
+				APP.setCustomer(CUSTOMER);
+				APP.setService(SERVICE);
+				APP.setTechnician(TECHNICIAN);
+				APP.setTimeSlot(TIME);
+				return APP;
+			} else return null;
+		});
+
+		lenient().when(customerRepository.findById(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
+				CUSTOMER.setEmail(CUSTOMER_EMAIL);
+				APP.setCustomer(CUSTOMER);
+				APP.setService(SERVICE);
+				APP.setTechnician(TECHNICIAN);
+				APP.setTimeSlot(TIME);
+				List<Appointment> apps = new ArrayList<>();
+				apps.add(APP);
+				CUSTOMER.setAppointments(apps);
+				return CUSTOMER;
+			} else return null;
+		});
+
+		lenient().when(customerRepository.save(any(Customer.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 		
 		lenient().when(techRepo.save(any(Technician.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 		
