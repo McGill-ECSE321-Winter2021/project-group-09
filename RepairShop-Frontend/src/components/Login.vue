@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="loginForm">
     <b-form @submit="onSubmit" v-if="show">
       <b-form-group
         id="input-group-1"
@@ -69,7 +69,13 @@ export default {
         })
         .then(
           response => {
-            console.log(response);
+            // set global state of logged in user
+            this.$root.$data.email = this.form.email;
+            this.$root.$data.password = this.form.password;
+            this.$root.$data.userType = this.form.userType;
+            this.$root.$data.token = response.data;
+            console.log(this.$root.$data);
+            alert("Login Success.");
           },
           error => {
             console.log(error);
@@ -88,4 +94,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#loginForm {
+  margin-top: 8%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+</style>
