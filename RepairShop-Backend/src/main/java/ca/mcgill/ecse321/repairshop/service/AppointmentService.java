@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -234,18 +235,20 @@ public class AppointmentService {
     @Transactional
     public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName) throws Exception {
 
-        if (startDate == null || startDate.equals("")) throw new Exception("The start date is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
 
         Timestamp startDateTime;
         Service service;
         Business business;
 
-        try {
-            startDateTime = Timestamp.valueOf(startDate);
-            if (startDateTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
-        } catch (Exception e) {
-            throw new Exception("The provided start date is invalid");
+        if (startDate == null || startDate.equals("")) startDateTime = Timestamp.valueOf(LocalDateTime.now());
+        else {
+            try {
+                startDateTime = Timestamp.valueOf(startDate);
+                if (startDateTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
+            } catch (Exception e) {
+                throw new Exception("The provided start date is invalid");
+            }
         }
 
         service = serviceRepository.findServiceByName(serviceName);

@@ -42,7 +42,8 @@
   var config = require('../../config');
 
   var AXIOS = axios.create({
-      baseURL: 'http://' + config.dev.backendHost,
+      baseURL: 'http://' + config.dev.backendHost + ':' + config.dev.backendPort,
+      // baseURL: 'http://' + config.dev.backendHost,
       headers: { 'Access-Control-Allow-Origin': 'http://' + config.dev.host + ':' + config.dev.port }
   });
 
@@ -53,6 +54,7 @@
         appError: '',
         service: '',
         services: [],
+        targetDate: '',
         start: '',
         availableTimes: [],
         formSection: 1
@@ -73,8 +75,11 @@
           // Get all possible times
           AXIOS.get('/api/appointment/possibilities', {
             params: {
-              "startDate": "2021-03-22 00:00:00",
+              "startDate": this.targetDate,
               "serviceName": this.service
+            },
+            headers: {
+              token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJncm91cDlyZXBhaXJzaG9wQGdtYWlsLmNvbSIsImlhdCI6MTYxNjUzNzY4OSwiZXhwIjoxNjE2NTgwODg5fQ.AfQ7PH_ca8HA78Zuyh-yEBiK98RwEXacp92llgmlIu0"
             }
           }).then(r => {
             this.availableTimes = r.data;

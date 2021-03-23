@@ -544,34 +544,32 @@ public class TestAppointmentService {
         SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(11)));
     }
 
-    @Test // invalid start date (null)
+    @Test // valid start date (null date uses current date)
     public void testGetPossibleAppointmentsInvalidStartDateNull() {
 
         List<TimeSlot> possibleAppointments = null;
 
         try {
             possibleAppointments = appointmentService.getPossibleAppointments(null, SERVICE_NAME);
-            fail();
         } catch (Exception e) {
-            assertEquals("The start date is mandatory", e.getMessage());
+            fail(e.getMessage());
         }
 
-        assertNull(possibleAppointments);
+        assertNotNull(possibleAppointments);
     }
 
-    @Test // invalid start date (empty)
+    @Test // valid start date (empty date uses current date)
     public void testGetPossibleAppointmentsInvalidStartDateEmpty() {
 
         List<TimeSlot> possibleAppointments = null;
 
         try {
             possibleAppointments = appointmentService.getPossibleAppointments("", SERVICE_NAME);
-            fail();
         } catch (Exception e) {
-            assertEquals("The start date is mandatory", e.getMessage());
+            fail(e.getMessage());
         }
 
-        assertNull(possibleAppointments);
+        assertNotNull(possibleAppointments);
     }
 
     @Test // invalid start date (wrong format)
