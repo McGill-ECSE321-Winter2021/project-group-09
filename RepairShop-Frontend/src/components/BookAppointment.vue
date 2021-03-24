@@ -14,8 +14,8 @@
 
         <div v-if="formSection == 2">
           <b-form-group label="Select a date and time" class="mt-4">
-              <b-form-radio v-for="t in availableTimes" :key="t.startTime" v-model="start" name="service" :value="t.startTime">
-                {{ t.startTime + " to " + t.endTime }}
+              <b-form-radio v-for="t in availableTimes" :key="t.startDateTime" v-model="start" name="service" :value="t.startdateTime">
+                {{ t.startDateTime + " to " + t.endDateTime }}
               </b-form-radio>
           </b-form-group>
           <p class="mt-3">Selected start time: {{ start }}</p>
@@ -79,7 +79,7 @@
               "serviceName": this.service
             },
             headers: {
-              token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJncm91cDlyZXBhaXJzaG9wQGdtYWlsLmNvbSIsImlhdCI6MTYxNjUzNzY4OSwiZXhwIjoxNjE2NTgwODg5fQ.AfQ7PH_ca8HA78Zuyh-yEBiK98RwEXacp92llgmlIu0"
+              token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJncm91cDlyZXBhaXJzaG9wQGdtYWlsLmNvbSIsImlhdCI6MTYxNjU0MjcwNSwiZXhwIjoxNjE2NTg1OTA1fQ.OEoKbfNvU1z4aX64QnxfD59c3KkkDEXfX4l11rMu8y8"
             }
           }).then(r => {
             this.availableTimes = r.data;
