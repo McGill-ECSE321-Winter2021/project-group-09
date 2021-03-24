@@ -14,16 +14,17 @@
 
         <div v-if="formSection == 2">
           <b-form-group label="Select a date and time" class="mt-4">
-              <b-form-radio v-for="t in availableTimes" :key="t.startDateTime" v-model="start" name="service" :value="t.startdateTime">
-                {{ t.startDateTime + " to " + t.endDateTime }}
+              <b-form-radio v-for="t in availableTimes" :key="t.startDateTime" v-model="start" name="start" :value="t">
+                {{ displayDateTime(t.startDateTime) + " to " + displayDateTime(t.endDateTime) }}
               </b-form-radio>
           </b-form-group>
-          <p class="mt-3">Selected start time: {{ start }}</p>
+          <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
 
-          <p class="mt-3">Or enter a future date to see possible schedules for that week:</p>
-          <b-button variant="outline-secondary" class="d-inline-block" @click="setToday">Today</b-button>
-          <b-form-input v-model="targetDate" placeholder="Target date (YYYY-MM-DD)" class="d-inline-block"`></b-form-input>
-          <b-button variant="outline-secondary" class="ml-3 d-inline-block" @click="updateTargetDate">Go</b-button>
+          <b-form-group label="Or enter a future date to see possible schedules for that week:" class="mt-3 form-inline">
+            <b-button variant="outline-secondary" @click="setToday">Today</b-button>
+            <b-form-input v-model="targetDate" placeholder="YYYY-MM-DD" class="ml-3"></b-form-input>
+            <b-button variant="outline-secondary" class="ml-3" @click="updateTargetDate">Go</b-button>
+          </b-form-group>
 
           <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
           <b-button variant="outline-primary" class="mt-3" @click="toPart3">Next</b-button>
@@ -32,7 +33,7 @@
         <div v-if="formSection == 3">
           <p class="mb-3">Confirm your appointment</p>
           <p class="mt-3">Selected service: {{ service }}</p>
-          <p class="mt-3">Selected start time: {{ start }}</p>
+          <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
           <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
           <b-button variant="outline-primary" class="mt-3" @click="book">Book now</b-button>
         </div>
@@ -61,7 +62,7 @@
         service: '',
         services: [],
         targetDate: '',
-        start: '',
+        start: { startDateTime: '', endDateTime: '' },
         availableTimes: [],
         formSection: 1
       }
@@ -70,6 +71,7 @@
       // get all services
       AXIOS.get('/api/service/all').then(r => {
         this.services = r.data;
+        this.appError = '';
       }).catch(e => {
         this.appError = e;
       });
@@ -92,24 +94,35 @@
               "serviceName": this.service
             },
             headers: {
-              token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJncm91cDlyZXBhaXJzaG9wQGdtYWlsLmNvbSIsImlhdCI6MTYxNjU0MjcwNSwiZXhwIjoxNjE2NTg1OTA1fQ.OEoKbfNvU1z4aX64QnxfD59c3KkkDEXfX4l11rMu8y8"
+              token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJncm91cDlyZXBhaXJzaG9wQGdtYWlsLmNvbSIsImlhdCI6MTYxNjYyMjkzMywiZXhwIjoxNjE2NjY2MTMzfQ.rAsTeq5O8sqjjETdj0gE1vB4woDQ8SV9lqz0Q9akehg"
             }
           }).then(r => {
             this.availableTimes = r.data;
             this.formSection = 2;
+            this.appError = '';
           }).catch(e => {
             this.appError = e;
           });
       },
       updateTargetDate() {
         let newTarget = new Date(this.targetDate);
-        if (newTarget == "Invalid Date") this.error = "Please select a valid date";
+        console.log('Target: ' + newTarget);
+        console.log('Target: ' + newTarget);
+        if (this.targetDate.length != 10 || newTarget == "Invalid Date") this.error = "Please select a valid date";
         else if (newTarget < new Date()) this.error = "Please enter a future date";
-        else this.getPossibleAppointments();
+        else {
+          this.error = "";
+          this.getPossibleAppointments();
+        }
       },
-      today() {
+      setToday() {
         this.targetDate = '';
         this.getPossibleAppointments();
+      },
+      displayDateTime(dateTime) {
+        // Convert a Timestamp format to YYYY-MM-DD at HH:mm 
+        // Note: make sure there is a date first
+        return (dateTime.length) ? dateTime.slice(0, 10) + " at " + dateTime.slice(11, 16) : '';
       },
       book() {
         console.log("Appointment was booked");
@@ -121,7 +134,8 @@
       },
       start: function (val, oldVal) {
         if (oldVal === '') this.error = '';
-      }
+      },
+      targetDate: function (val, oldVal) { this.error = ''; }
     }
   }
 </script>
