@@ -19,6 +19,12 @@
               </b-form-radio>
           </b-form-group>
           <p class="mt-3">Selected start time: {{ start }}</p>
+
+          <p class="mt-3">Or enter a future date to see possible schedules for that week:</p>
+          <b-button variant="outline-secondary" class="d-inline-block" @click="setToday">Today</b-button>
+          <b-form-input v-model="targetDate" placeholder="Target date (YYYY-MM-DD)" class="d-inline-block"`></b-form-input>
+          <b-button variant="outline-secondary" class="ml-3 d-inline-block" @click="updateTargetDate">Go</b-button>
+
           <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
           <b-button variant="outline-primary" class="mt-3" @click="toPart3">Next</b-button>
         </div>
@@ -72,7 +78,14 @@
       toPart1() { this.formSection = 1; },
       toPart2() {
         if (this.service) {
-          // Get all possible times
+          this.getPossibleAppointments();
+        } else this.error = 'Please select a service';
+      },
+      toPart3() {
+        if (this.start) this.formSection = 3;
+        else this.error = 'Please select a start time';
+      },
+      getPossibleAppointments() {
           AXIOS.get('/api/appointment/possibilities', {
             params: {
               "startDate": this.targetDate,
@@ -87,11 +100,16 @@
           }).catch(e => {
             this.appError = e;
           });
-        } else this.error = 'Please select a service';
       },
-      toPart3() {
-        if (this.start) this.formSection = 3;
-        else this.error = 'Please select a start time';
+      updateTargetDate() {
+        let newTarget = new Date(this.targetDate);
+        if (newTarget == "Invalid Date") this.error = "Please select a valid date";
+        else if (newTarget < new Date()) this.error = "Please enter a future date";
+        else this.getPossibleAppointments();
+      },
+      today() {
+        this.targetDate = '';
+        this.getPossibleAppointments();
       },
       book() {
         console.log("Appointment was booked");

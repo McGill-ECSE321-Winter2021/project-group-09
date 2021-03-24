@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -227,24 +228,24 @@ public class AppointmentService {
     }
 
     /** Method to return all times that an appointment for a given service can be created for one week
-     * @param startDate The date to start checking for possible appointments (uses Timestamp format)
+     * @param startDateString The date to start checking for possible appointments (uses YYYY-MM-DD format)
      * @param serviceName The name of the service for the appointment
      * @return a list of Timestamps for all available appointment start times
      */
     @Transactional
-    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName) throws Exception {
+    public List<TimeSlot> getPossibleAppointments(String startDateString, String serviceName) throws Exception {
 
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
 
-        Timestamp startDateTime;
+        LocalDate startDate;
         Service service;
         Business business;
 
-        if (startDate == null || startDate.equals("")) startDateTime = Timestamp.valueOf(LocalDateTime.now());
+        if (startDateString == null || startDateString.equals("")) startDate = LocalDate.now();
         else {
             try {
-                startDateTime = Timestamp.valueOf(startDate);
-                if (startDateTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
+                startDate = LocalDate.parse(startDateString);
+                if (startDate.compareTo(LocalDate.now()) < 0) throw new Exception("Time has passed");
             } catch (Exception e) {
                 throw new Exception("The provided start date is invalid");
             }
@@ -258,7 +259,13 @@ public class AppointmentService {
         List<Technician> technicians = technicianRepository.findAll();
 
         List<TimeSlot> allTimeSlots = new ArrayList<>();
-        LocalDateTime tempDateTime = startDateTime.toLocalDateTime();
+        LocalDateTime tempDateTime;
+        // If the target date is today, use the next 30 minute block, otherwise start at 0th hour
+        if (startDate.equals(LocalDate.now())) {
+            LocalDateTime today = LocalDateTime.now();
+            tempDateTime = startDate.atTime(today.getHour(), today.getMinute(), 0);
+            tempDateTime = tempDateTime.plusMinutes((today.getMinute() < 30) ? 30 - today.getMinute() : 60 - today.getMinute());
+        } else tempDateTime = startDate.atTime(0, 0, 0);
 
         int durationInMillis = service.getDuration() * 30 * 60 * 1000; // service duration is an int for the number of 30 minute blocks
 

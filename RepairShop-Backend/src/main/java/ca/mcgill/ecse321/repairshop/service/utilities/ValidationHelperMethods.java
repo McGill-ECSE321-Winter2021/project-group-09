@@ -37,8 +37,8 @@ public class ValidationHelperMethods {
         LocalDate newStartDate = startTime.getDayOfWeek().equals(offset.getDayOfWeek()) ? offset : offset.with(TemporalAdjusters.next(startTime.getDayOfWeek()));
         LocalDate newEndDate = endTime.getDayOfWeek().equals(offset.getDayOfWeek()) ? offset : offset.with(TemporalAdjusters.next(endTime.getDayOfWeek()));
         // convert to LocalDateTime to get the times back
-        LocalDateTime newStartDateTime = newStartDate.atTime(startTime.getHour(), startTime.getMinute());
-        LocalDateTime newEndDateTime = newEndDate.atTime(endTime.getHour(), endTime.getMinute());
+        LocalDateTime newStartDateTime = newStartDate.atTime(startTime.getHour(), startTime.getMinute(), 0);
+        LocalDateTime newEndDateTime = newEndDate.atTime(endTime.getHour(), endTime.getMinute(), 0);
 
         TimeSlot newTimeSlot = new TimeSlot();
         newTimeSlot.setStartDateTime(Timestamp.valueOf(newStartDateTime));

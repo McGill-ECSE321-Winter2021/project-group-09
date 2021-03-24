@@ -31,7 +31,7 @@ public class TestAppointmentService {
     // Test data - only using what is needed for the tests
 
     // Going to use times relative to 2021-03-01 00:00:00.0 to make them easier to understand
-    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-03-01T00:00:00.0"); // Monday
+    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-04-01T00:00:00.0"); // Monday
 
     // Target appointment start time
     private static final String APP_START_TIME = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(9)).toString(); // Monday
@@ -512,7 +512,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), SERVICE_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(INITIAL_TIME.plusDays(14).toLocalDate().toString(), SERVICE_NAME);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -531,7 +531,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(21)).toString(), SERVICE_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(INITIAL_TIME.plusDays(21).toLocalDate().toString(), SERVICE_NAME);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -608,7 +608,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), null);
+            possibleAppointments = appointmentService.getPossibleAppointments(INITIAL_TIME.plusDays(14).toLocalDate().toString(), null);
             fail();
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
@@ -623,7 +623,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "");
+            possibleAppointments = appointmentService.getPossibleAppointments(INITIAL_TIME.plusDays(14).toLocalDate().toString(), "");
             fail();
         } catch (Exception e) {
             assertEquals("The service name is mandatory", e.getMessage());
@@ -638,7 +638,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(Timestamp.valueOf(INITIAL_TIME.plusDays(14)).toString(), "notAService");
+            possibleAppointments = appointmentService.getPossibleAppointments(INITIAL_TIME.plusDays(14).toLocalDate().toString(), "notAService");
             fail();
         } catch (Exception e) {
             assertEquals("The provided service name is invalid", e.getMessage());
