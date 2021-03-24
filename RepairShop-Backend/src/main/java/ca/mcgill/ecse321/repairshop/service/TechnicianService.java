@@ -25,6 +25,7 @@ import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
 
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
+import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.getUpdatedHours;
 
 @Service
 public class TechnicianService {
@@ -41,6 +42,9 @@ public class TechnicianService {
 
 	@Autowired
 	BusinessRepository businessRepository;
+
+	@Autowired
+	AppointmentService appointmentService;
 
 
 	/**
@@ -303,6 +307,11 @@ public class TechnicianService {
 		Technician technician = technicianRepository.findTechnicianByEmail(email);
 		if (technician == null) throw new Exception("Technician not found.");
 
+		for (Appointment appointment : technician.getAppointments()) {
+			// Appointments are removed from technician when cancelled
+			appointmentService.cancelAppointment(appointment.getAppointmentID());
+		}
+
 		technician.setTimeslots(Collections.emptyList());
 
 		technicianRepository.save(technician);
@@ -327,12 +336,22 @@ public class TechnicianService {
 		if (technician == null) throw new Exception("Technician not found.");
 
 		List<TimeSlot> workHours = technician.getTimeslots();
+		List<Appointment> appointments = technician.getAppointments();
 
 		// Remove all appointments within timeslot and the timeslot itself
 		for (TimeSlot hours : workHours) {
 			// Find target timeslot
 			if (hours.getStartDateTime().equals(startTimeSlot) && hours.getEndDateTime().equals(endTimeSlot)) {
-				// Remove timeslot
+
+				// Check for appointments in those work hours
+				for (Appointment appointment : appointments) {
+					TimeSlot adjustedApp = getUpdatedHours(appointment.getTimeSlot(), hours.getStartDateTime());
+					if (!hours.getStartDateTime().after(adjustedApp.getStartDateTime()) && !hours.getEndDateTime().before(adjustedApp.getEndDateTime())) {
+						// Appointment is removed from technician when cancelling an appointment
+						appointmentService.cancelAppointment(appointment.getAppointmentID());
+					}
+				}
+
 				workHours.remove(hours);
 				technician.setTimeslots(workHours);
 				technicianRepository.save(technician);
