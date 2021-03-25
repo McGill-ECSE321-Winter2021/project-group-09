@@ -1,5 +1,5 @@
 <template>
-  <b-navbar fixed="top" sticky="true" type="dark" variant="info">
+  <b-navbar fixed="top" :sticky="true" type="dark" variant="info">
     <!-- Title button -->
     <b-navbar-brand to="/">Repair Shop</b-navbar-brand>
     <!-- Left aligned buttons -->

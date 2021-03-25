@@ -26,27 +26,16 @@
         </table> -->
 
         <!-- IF no services -->
-        <div v-if="errorViewServices" style>
+        <div v-if="errorViewServices">
           <span v-if="errorViewServices" style="color: red">
             {{ errorViewServices }}
           </span>
         </div>
         <div v-else>
-         
-          <div v-for="s in services" :key="s">
-           items.push( { 
-              service: "s.name", 
-              duration: ("s.duration" *30).toString().concat(" min."), 
-              price: "s.price".concat(" $")
-            })
-            
-          </div>
           <b-table :items="items" :fields="fields" :outlined="true"> </b-table>
-        </div> 
+        </div>
       </div>
     </template>
-  </div>
-</template>
   </div>
 </template>
 
@@ -75,6 +64,7 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
+      errorViewServices: "",
       services: [],
       // items:[
       //   <v-for="s in services": key="s">
@@ -82,29 +72,22 @@ export default {
       // ]
 
       fields: ["service", "duration", "price"],
-      items: [
-        {
-          service: "Oil Change",
-          duration: ("2" * 30).toString().concat(" min."),
-          price: "200".concat(" $"),
-        },
-        {
-          service: "Car Wash",
-          duration: ("1" * 30).toString().concat(" min."),
-          price: "150".concat(" $"),
-        },
-        {
-          service: "Maintenance",
-          duration: ("3" * 30).toString().concat(" min."),
-          price: "100".concat(" $"),
-        },
-      ],
+      items: []
     };
   },
   created: function () {
     AXIOS.get("/api/service/all")
       .then((response) => {
         this.services = response.data;
+
+        this.services.forEach((item, index) => {
+          this.items.push({
+            service: item.name,
+             duration: (item.duration * 30)+" min.",
+            price: item.price+" $",
+          });
+          
+        });
       })
       .catch((e) => {
         this.errorViewServices = "No service";
