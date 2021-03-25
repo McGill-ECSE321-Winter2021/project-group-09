@@ -55,10 +55,6 @@ var AXIOS = axios.create({
   //PRODUCTION
   //baseURL: "http://" + config.build.backendHost + ":" + config.build.backendPort,
 
-  headers: {
-    "Access-Control-Allow-Origin":
-      "http://" + config.dev.host + ":" + config.dev.port, //127.0.0.1:8089
-  },
 });
 
 export default {

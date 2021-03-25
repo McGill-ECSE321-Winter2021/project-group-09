@@ -5,18 +5,17 @@
   <div id="addServiceForm">
     <h2>Add New Service</h2>
 
-      <p>
-        <span v-if="successAddService" style="color: green" >
-          {{ successAddService }}
-        </span>
-      </p>
+    <p>
+      <span v-if="successAddService" style="color: green">
+        {{ successAddService }}
+      </span>
+    </p>
 
-      <!-- <p>
+    <!-- <p>
         <span style="color: green">Error: Message text comes here</span>
       </p> -->
 
     <b-form>
-
       <b-form-group
         id="input-group-1"
         label="Service Name:"
@@ -56,11 +55,16 @@
       <!--  <p>
         <span style="color: red">Error: Message text comes here</span>
       </p>-->
-      <p v-if="errorAddService" style="color: red"
-          >Error: {{ errorAddService }}    
+      <p v-if="errorAddService" style="color: red">
+        Error: {{ errorAddService }}
       </p>
 
-      <b-button type="submit" variant="primary" @click="createService(form.name, form.duration, form.price)">Create Service</b-button>
+      <b-button
+        type="submit"
+        variant="primary"
+        @click="createService(form.name, form.duration, form.price)"
+        >Create Service</b-button
+      >
     </b-form>
   </div>
 </template>
@@ -75,9 +79,8 @@ import axios from "axios";
 var config = require("../../config");
 var AXIOS = axios.create({
   //DEVELOPMENT
-   baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
+  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
   //baseURL: "http://" + LOCALHOST_BACKEND,
-
 
   //PRODUCTION
   //baseURL: "http://" + config.build.backendHost + ":" + config.build.backendPort,
@@ -85,8 +88,7 @@ var AXIOS = axios.create({
   headers: {
     "Access-Control-Allow-Origin":
       "http://" + config.dev.host + ":" + config.dev.port, //127.0.0.1:8089
-  }
-
+  },
 });
 
 export default {
@@ -98,40 +100,43 @@ export default {
         price: "",
       },
       errorAddService: "",
-      successAddService:"",
+      successAddService: "",
     };
   },
   methods: {
-
-/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
 
     //CREATE SERVICE
     createService: function (serviceName, serviceDuration, servicePrice) {
-      AXIOS.post("api/service/create", {
+      AXIOS.post(
+        "api/service/create",
+        {
           name: serviceName,
           duration: serviceDuration,
           price: servicePrice,
-      },{
-
-        headers:{
-          token: this.$root.$data.token   
+        },
+        {
+          headers: {
+            token: this.$root.$data.token,
+          },
         }
-        
-      })
+      )
         .then((response) => {
           //this.services.push(response.data);
 
           this.errorAddService = "";
           this.form.name = "";
           this.form.duration = "";
-          this.form.price =""
+          this.form.price = "";
 
-          this.successAddService ="The new service has been added successfully" 
+          this.successAddService =
+            "The new service has been added successfully";
         })
         .catch((e) => {
-          var errorMsg = e.response.data.message;
-          console.log(errorMsg);
-          this.errorAddService = errorMsg;  //set error message for add service to be error of backend
+          // var errorMsg = e.response.data.message;
+          // console.log(errorMsg);
+
+          this.errorAddService = e.response.data; //set error message for add service to be error of backend
         });
     },
     //END Create Service
