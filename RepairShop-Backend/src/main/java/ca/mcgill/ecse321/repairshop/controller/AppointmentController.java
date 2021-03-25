@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/appointment")
@@ -26,7 +28,7 @@ public class AppointmentController {
      * @return the appointment that's been created
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createAppointment(@RequestParam String startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestHeader String token) {
+    public ResponseEntity<?> createAppointment(@RequestParam Timestamp startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
@@ -38,7 +40,7 @@ public class AppointmentController {
     }
 
     /** Endpoint to get all possible appointment times for one week
-     * @param startDate The initial date to start the search
+     * @param startDate The initial date to start the search of form YYYY-MM-DD
      * @param serviceName The name of the service for the appointment
      * @param token for the admin or customer to get all possible appointments
      * @return a list of timeslots for all the possible appointments

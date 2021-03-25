@@ -133,29 +133,27 @@ public class AppointmentService {
     /**
      * Method to book an appointment given a valid timeslot
      *
-     * @param startTimestamp when the appointment will start
+     * @param startTime when the appointment will start
      * @param serviceName    the name of the appointment's service
      * @param customerEmail  the email of the customer for whom to book the appointment
      * @return an AppointmentDto for the bookedAppointment
      * @throws Exception for invalid timestamp, service name or technician's email
      */
     @Transactional
-    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail) throws Exception {
+    public AppointmentDto createAppointment(Timestamp startTime, String serviceName, String customerEmail) throws Exception {
 
         // Validate all inputs
 
-        if (startTimestamp == null || startTimestamp.equals("")) throw new Exception("The Timestamp is mandatory");
+        if (startTime == null) throw new Exception("The Timestamp is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
         if (customerEmail == null || customerEmail.equals("")) throw new Exception("The customer is mandatory");
 
-        Timestamp startTime;
         Service service;
         Technician technician = null;
         Customer customer;
         Business business;
 
         try {
-            startTime = Timestamp.valueOf(startTimestamp);
             if (startTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
         } catch (Exception e) {
             throw new Exception("The provided Timestamp is invalid");
@@ -208,7 +206,7 @@ public class AppointmentService {
         emailService.sendConfirmationEmail(customerEmail, customer.getName(), startTime, serviceName, Double.toString(service.getPrice()));
 
         //Upcoming Appointment Reminder (10 days before appointment date)
-        reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, -10).toString(), startTimestamp, serviceName, ReminderType.UpcomingAppointment.toString(), customerEmail);
+        reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, -10), startTime, serviceName, ReminderType.UpcomingAppointment.toString(), customerEmail);
 
         //Service Reminder ( 180 days after appointment date)
         boolean hasServiceReminder = false;
@@ -221,8 +219,8 @@ public class AppointmentService {
         }
         //If no service reminder yet, create one
         if (!hasServiceReminder)
-            reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, 180).toString(),
-                    startTimestamp, serviceName, ReminderType.ServiceReminder.toString(), customerEmail);
+            reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, 180),
+                    startTime, serviceName, ReminderType.ServiceReminder.toString(), customerEmail);
         return appointmentToDto(appointment);
 
     }
@@ -287,7 +285,6 @@ public class AppointmentService {
                     timeSlotToAdd.setStartDateTime(tempTimeSlot.getStartDateTime());
                     timeSlotToAdd.setEndDateTime(tempTimeSlot.getEndDateTime());
                     allTimeSlots.add(timeSlotToAdd);
-                    timeSlotRepository.save(timeSlotToAdd);
                     break;
                 }
             }

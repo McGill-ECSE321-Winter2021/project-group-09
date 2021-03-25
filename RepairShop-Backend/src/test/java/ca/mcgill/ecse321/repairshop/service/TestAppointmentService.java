@@ -34,13 +34,13 @@ public class TestAppointmentService {
     private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-04-01T00:00:00.0"); // Monday
 
     // Target appointment start time
-    private static final String APP_START_TIME = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(9)).toString(); // Monday
-    private static final String APP_START_TIME2 = Timestamp.valueOf(INITIAL_TIME.minusDays(14)).toString(); // Past time
-    private static final String APP_START_TIME3 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(13)).toString(); // Tuesday - end time out of hours
-    private static final String APP_START_TIME4 = Timestamp.valueOf(INITIAL_TIME.plusDays(18).plusHours(7)).toString(); // Friday - outside hours
-    private static final String APP_START_TIME5 = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(7)).toString(); // Wednesday - during holiday
-    private static final String APP_START_TIME6 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(11)).toString(); // Tuesday - overlaps another appointment
-    private static final String APP_START_TIME7 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(13)).toString(); // Tuesday - during another appointment
+    private static final Timestamp APP_START_TIME = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(9)); // Monday
+    private static final Timestamp APP_START_TIME2 = Timestamp.valueOf(INITIAL_TIME.minusDays(14)); // Past time
+    private static final Timestamp APP_START_TIME3 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(13)); // Tuesday - end time out of hours
+    private static final Timestamp APP_START_TIME4 = Timestamp.valueOf(INITIAL_TIME.plusDays(18).plusHours(7)); // Friday - outside hours
+    private static final Timestamp APP_START_TIME5 = Timestamp.valueOf(INITIAL_TIME.plusDays(15).plusHours(7)); // Wednesday - during holiday
+    private static final Timestamp APP_START_TIME6 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(11)); // Tuesday - overlaps another appointment
+    private static final Timestamp APP_START_TIME7 = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(13)); // Tuesday - during another appointment
 
     // Service
     private static final String SERVICE_NAME = "Service";
@@ -271,7 +271,7 @@ public class TestAppointmentService {
         }
 
         assertNotNull(appointmentDto);
-        assertEquals(APP_START_TIME, appointmentDto.getTimeSlotDto().getStartDateTime().toString());
+        assertEquals(APP_START_TIME, appointmentDto.getTimeSlotDto().getStartDateTime());
         assertEquals(SERVICE_NAME, appointmentDto.getServiceDto().getName());
         assertEquals(TECHNICIAN_EMAIL, appointmentDto.getTechnicianDto().getEmail());
         assertEquals(CUSTOMER_EMAIL, appointmentDto.getCustomerDto().getEmail());
@@ -288,36 +288,6 @@ public class TestAppointmentService {
             fail();
         } catch (Exception e) {
             assertEquals("The Timestamp is mandatory", e.getMessage());
-        }
-
-        assertNull(appointmentDto);
-    }
-
-    @Test // invalid appointment - invalid start time (empty timestamp)
-    public void testCreateAppointmentInvalidTimestampEmpty() {
-
-        AppointmentDto appointmentDto = null;
-
-        try {
-            appointmentDto = appointmentService.createAppointment("", SERVICE_NAME, CUSTOMER_EMAIL);
-            fail();
-        } catch (Exception e) {
-            assertEquals("The Timestamp is mandatory", e.getMessage());
-        }
-
-        assertNull(appointmentDto);
-    }
-
-    @Test // invalid appointment - invalid start time (wrong format for timestamp)
-    public void testCreateAppointmentInvalidTimestamp() {
-
-        AppointmentDto appointmentDto = null;
-
-        try {
-            appointmentDto = appointmentService.createAppointment("notATimestamp", SERVICE_NAME, CUSTOMER_EMAIL);
-            fail();
-        } catch (Exception e) {
-            assertEquals("The provided Timestamp is invalid", e.getMessage());
         }
 
         assertNull(appointmentDto);
@@ -593,7 +563,7 @@ public class TestAppointmentService {
         List<TimeSlot> possibleAppointments = null;
 
         try {
-            possibleAppointments = appointmentService.getPossibleAppointments(APP_START_TIME2, SERVICE_NAME);
+            possibleAppointments = appointmentService.getPossibleAppointments(APP_START_TIME2.toString(), SERVICE_NAME);
             fail();
         } catch (Exception e) {
             assertEquals("The provided start date is invalid", e.getMessage());

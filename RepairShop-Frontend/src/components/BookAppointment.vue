@@ -57,11 +57,6 @@
   } from "../constants/constants";
   import axios from "axios";
 
-  let Axios = axios.create({
-    baseURL: LOCALHOST_BACKEND,
-    headers: { 'Access-Control-Allow-Origin': '*' }
-  });
-
   export default {
     data() {
       return {
@@ -78,7 +73,7 @@
     },
     created: function () {
       // get all services
-      Axios.get(ALL_SERVICES_ENDPOINT).then(r => {
+      axios.get(LOCALHOST_BACKEND + ALL_SERVICES_ENDPOINT).then(r => {
         this.services = r.data;
         this.appError = '';
       }).catch(e => {
@@ -97,7 +92,7 @@
         else this.error = 'Please select a start time';
       },
       getPossibleAppointments() {
-          Axios.get(POSSIBLE_APPOINTMENTS_ENDPOINT, {
+          axios.get(LOCALHOST_BACKEND + POSSIBLE_APPOINTMENTS_ENDPOINT, {
             params: {
               "startDate": this.targetDate,
               "serviceName": this.service
@@ -134,21 +129,21 @@
         return (dateTime.length) ? dateTime.slice(0, 10) + " at " + dateTime.slice(11, 16) : '';
       },
       book() {
-        Axios.get(CREATE_APPOINTMENT_ENDPOINT, {
-            params: {
-              "startTimestamp": this.start.startDateTime,
-              "serviceName": this.service,
-              "customerEmail": this.$root.$data.email
-            },
-            headers: {
-              token: this.$root.$data.token
-            }
-          }).then(r => {
-            this.formSection = 4;
-            this.appError = '';
-          }).catch(e => {
-            this.appError = e;
-          });
+        axios.post(LOCALHOST_BACKEND + CREATE_APPOINTMENT_ENDPOINT, {
+          params: {
+            "startTimestamp": this.start.startDateTime,
+            "serviceName": this.service,
+            "customerEmail": this.$root.$data.email
+          },
+          headers: {
+            token: this.$root.$data.token
+          }
+        }).then(r => {
+          this.formSection = 4;
+          this.appError = '';
+        }).catch(e => {
+          this.appError = e;
+        });
       }
     },
     watch: { // if a service or start time is set, reset error

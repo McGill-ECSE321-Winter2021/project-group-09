@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/reminder")
@@ -49,7 +51,7 @@ public class ReminderController {
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createReminder(@RequestParam String dateTime, @RequestParam String appointmentDateTime,
+    public ResponseEntity<?> createReminder(@RequestParam Timestamp dateTime, @RequestParam Timestamp appointmentDateTime,
                                             @RequestParam String serviceName, @RequestParam String type, @RequestParam String email, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
