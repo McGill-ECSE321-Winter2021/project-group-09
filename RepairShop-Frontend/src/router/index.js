@@ -24,21 +24,21 @@ export default new Router({
       name: 'Register',
       component : Register
     }, {
-      path: '/technician_schedule',
-      name: 'TechnicianSchedule',
-      component : TechnicianSchedule
-    }, {
-      path: '/technician_appointments',
-      name: 'TechnicianAppointments',
-      component : TechnicianAppointments
-    }, {
-      path: '/modify_business_info',
-      name: 'ModifyBusinessInfo',
-      component : ModifyBusinessInfo
-    }, {
       path: '/logout',
       name: 'Logout',
       component : Logout
+    }, {
+      path: '/technician_schedule',
+      name: 'technician_schedule',
+      component : TechnicianSchedule
+    }, {
+      path: '/technician_appointments',
+      name: 'technician_appointments',
+      component : TechnicianAppointments
+    }, {
+      path: '/modify_business_info',
+      name: 'modify_business_info',
+      component : ModifyBusinessInfo
     }
 
 

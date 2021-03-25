@@ -8,16 +8,18 @@
       <b-nav-item to="Register">Register</b-nav-item>
     </b-navbar-nav>
 
-    <!-- For testing -->
+
+
     <b-navbar-nav>
-      <b-nav-item to="TechnicianSchedule">Technician Schedule</b-nav-item>
+      <b-nav-item to="technician_schedule">Technician Schedule</b-nav-item>
+      <b-nav-item to="technician_appointments">Technician Appointments</b-nav-item>
     </b-navbar-nav>
+
     <b-navbar-nav>
-      <b-nav-item to="TechnicianAppointments">Technician Appointments</b-nav-item>
+      <b-nav-item to="modify_business_info">Modify Business Information</b-nav-item>
     </b-navbar-nav>
-    <b-navbar-nav>
-      <b-nav-item to="ModifyBusinessInfo">Modify Business Information</b-nav-item>
-    </b-navbar-nav>
+
+
 
     <b-navbar-nav class="ml-auto">
       <b-nav-item v-show="this.$root.$data.email" disabled
