@@ -16,9 +16,12 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
+    "daypilot-pro-vue": "0.0.0",
     "jquery": "^3.6.0",
     "popper.js": "^1.12.9",
     "vue": "^2.5.2",
+    "vue-cal": "^4.2.0",
+    "vue-daily-scheduler": "^1.0.9",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
