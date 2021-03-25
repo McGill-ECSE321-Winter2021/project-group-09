@@ -20,13 +20,14 @@ public class AppointmentController {
     AuthenticationService authenticationService;
 
     /** Endpoint to create an appointment
-     * @param appointmentInfoDto Contains the start time of the appointment, the service name and the customer email, as well as token (must be admin or customer)
+     * @param appointmentInfoDto Contains the start time of the appointment, the service name and the customer email
+     * @param token The token for the logged in customer or admin
      * @return the appointment that's been created
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createAppointment(@RequestBody AppointmentInfoDto appointmentInfoDto) {
+    public ResponseEntity<?> createAppointment(@RequestBody AppointmentInfoDto appointmentInfoDto, @RequestHeader String token) {
         try {
-            if (authenticationService.validateAdminToken(appointmentInfoDto.getToken()) == null && authenticationService.validateCustomerToken(appointmentInfoDto.getToken()) == null) {
+            if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(appointmentService.createAppointment(appointmentInfoDto.getStartTime(), appointmentInfoDto.getServiceName(), appointmentInfoDto.getCustomerEmail()), HttpStatus.OK);

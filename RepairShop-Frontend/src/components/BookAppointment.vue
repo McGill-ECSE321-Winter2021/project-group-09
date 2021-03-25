@@ -132,8 +132,9 @@
         axios.post(LOCALHOST_BACKEND + CREATE_APPOINTMENT_ENDPOINT, {
           "startTime": this.start.startDateTime,
           "serviceName": this.service,
-          "customerEmail": this.$root.$data.email,
-          "token": this.$root.$data.token
+          "customerEmail": this.$root.$data.email
+        }, {
+          headers: { "token": this.$root.$data.token }
         }).then(r => {
           this.formSection = 4;
           this.appError = '';

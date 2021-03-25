@@ -7,7 +7,6 @@ public class AppointmentInfoDto {
     private Timestamp startTime;
     private String serviceName;
     private String customerEmail;
-    private String token;
 
     public Timestamp getStartTime() {
         return startTime;
@@ -31,13 +30,5 @@ public class AppointmentInfoDto {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }
