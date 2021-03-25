@@ -1,7 +1,7 @@
 <template>
   <div id="titleContainer">
     <h1 v-show="success">Logged Out Successfully!</h1>
-    <h1 v-show="!success">Your were not logged in.</h1>
+    <h1 v-show="!success">You were not logged in.</h1>
   </div>
 </template>
 
