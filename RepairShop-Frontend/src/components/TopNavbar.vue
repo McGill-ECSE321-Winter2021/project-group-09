@@ -9,6 +9,21 @@
     <b-navbar-nav>
       <b-nav-item to="Register">Register</b-nav-item>
     </b-navbar-nav>
+
+<!-- REMOVE THIS LATER: ADD SERVICE-->
+
+
+
+    <b-navbar-nav> 
+      <b-nav-item to="AddService">Add Service</b-nav-item>
+    </b-navbar-nav>
+    <b-navbar-nav> 
+      <b-nav-item to="ViewServices">View Services</b-nav-item>
+    </b-navbar-nav>
+
+    
+<!-- REMOVE THIS LATER: ADD SERVICE -->
+
   </b-navbar>
 </template>
 
