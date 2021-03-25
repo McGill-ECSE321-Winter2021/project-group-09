@@ -38,6 +38,10 @@
           <b-button variant="outline-primary" class="mt-3" @click="book">Book now</b-button>
         </div>
 
+        <div v-if="formSection == 4">
+          <p class="mb-3">Your appointment has been booked</p>
+        </div>
+
         <p class="text-danger mt-4" v-if="error">{{ error }}</p>
         <p class="text-danger mt-4" v-if="appError">{{ appError }}</p>
 
@@ -45,13 +49,17 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  var config = require('../../config');
+  import { 
+    LOCALHOST_BACKEND, 
+    ALL_SERVICES_ENDPOINT, 
+    POSSIBLE_APPOINTMENTS_ENDPOINT,
+    CREATE_APPOINTMENT_ENDPOINT
+  } from "../constants/constants";
+  import axios from "axios";
 
-  var AXIOS = axios.create({
-      baseURL: 'http://' + config.dev.backendHost + ':' + config.dev.backendPort,
-      // baseURL: 'http://' + config.dev.backendHost,
-      headers: { 'Access-Control-Allow-Origin': 'http://' + config.dev.host + ':' + config.dev.port }
+  let Axios = axios.create({
+    baseURL: LOCALHOST_BACKEND,
+    headers: { 'Access-Control-Allow-Origin': '*' }
   });
 
   export default {
@@ -64,12 +72,13 @@
         targetDate: '',
         start: { startDateTime: '', endDateTime: '' },
         availableTimes: [],
+        customerEmail: '',
         formSection: 1
       }
     },
     created: function () {
       // get all services
-      AXIOS.get('/api/service/all').then(r => {
+      Axios.get(ALL_SERVICES_ENDPOINT).then(r => {
         this.services = r.data;
         this.appError = '';
       }).catch(e => {
@@ -88,13 +97,13 @@
         else this.error = 'Please select a start time';
       },
       getPossibleAppointments() {
-          AXIOS.get('/api/appointment/possibilities', {
+          Axios.get(POSSIBLE_APPOINTMENTS_ENDPOINT, {
             params: {
               "startDate": this.targetDate,
               "serviceName": this.service
             },
             headers: {
-              token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJncm91cDlyZXBhaXJzaG9wQGdtYWlsLmNvbSIsImlhdCI6MTYxNjYyMjkzMywiZXhwIjoxNjE2NjY2MTMzfQ.rAsTeq5O8sqjjETdj0gE1vB4woDQ8SV9lqz0Q9akehg"
+              token: this.$root.$data.token
             }
           }).then(r => {
             this.availableTimes = r.data;
@@ -125,7 +134,21 @@
         return (dateTime.length) ? dateTime.slice(0, 10) + " at " + dateTime.slice(11, 16) : '';
       },
       book() {
-        console.log("Appointment was booked");
+        Axios.get(CREATE_APPOINTMENT_ENDPOINT, {
+            params: {
+              "startTimestamp": this.start.startDateTime,
+              "serviceName": this.service,
+              "customerEmail": this.$root.$data.email
+            },
+            headers: {
+              token: this.$root.$data.token
+            }
+          }).then(r => {
+            this.formSection = 4;
+            this.appError = '';
+          }).catch(e => {
+            this.appError = e;
+          });
       }
     },
     watch: { // if a service or start time is set, reset error
