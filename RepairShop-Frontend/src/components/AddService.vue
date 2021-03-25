@@ -53,7 +53,7 @@
       <b-button
         type="submit"
         variant="primary"
-        @click="createService(form.name, form.duration, form.price)"
+        @click="createService(form.name.trim(), form.duration, form.price)"
         >Create Service</b-button
       >
     </b-form>
