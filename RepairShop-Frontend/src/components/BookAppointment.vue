@@ -126,7 +126,8 @@
           this.formSection = 2;
           this.appError = '';
         }).catch(e => {
-          this.appError = e;
+          if (e.response.status == 400) this.appError = e.response.data;
+          else this.appError = e;
         });
       },
 
@@ -168,7 +169,8 @@
           this.formSection = 4;
           this.appError = '';
         }).catch(e => {
-          this.appError = e;
+          if (e.response.status == 400) this.appError = e.response.data;
+          else this.appError = e;
         });
       }
 
