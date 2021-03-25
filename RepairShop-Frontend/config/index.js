@@ -31,8 +31,6 @@ module.exports = {
     port: 8089,
     backendHost: '127.0.0.1',
     backendPort: 8080,
-    // backendHost: 'repairshop-backend-ecse321-09.herokuapp.com',
-    // backendPort: 5432,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

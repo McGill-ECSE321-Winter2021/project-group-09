@@ -7,3 +7,4 @@ export const REGISTER_TECHNICIAN_ENDPOINT = "/api/technician/register"
 export const ALL_SERVICES_ENDPOINT = "/api/service/all";
 export const POSSIBLE_APPOINTMENTS_ENDPOINT = "/api/appointment/possibilities";
 export const CREATE_APPOINTMENT_ENDPOINT = "/api/appointment/create";
+export const LOGOUT_ENDPOINT = "/api/authentication/logout";
