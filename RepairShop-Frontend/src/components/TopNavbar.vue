@@ -3,25 +3,20 @@
     <!-- Title button -->
     <b-navbar-brand to="/">Repair Shop</b-navbar-brand>
     <!-- Left aligned buttons -->
-    <b-navbar-nav>
+    <b-navbar-nav v-show="!this.$root.$data.email">
       <b-nav-item to="Login">Log In</b-nav-item>
+      <b-nav-item to="Register">Register</b-nav-item>
     </b-navbar-nav>
 
-<!-- REMOVE THIS LATER: ADD SERVICE-->
+    <!-- REMOVE THIS LATER: ADD SERVICE-->
 
-
-
-    <b-navbar-nav> 
+    <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
       <b-nav-item to="AddService">Add Service</b-nav-item>
     </b-navbar-nav>
-    <b-navbar-nav> 
-      <b-nav-item to="ViewServices">View Services</b-nav-item>
-    </b-navbar-nav>
 
-    
-<!-- REMOVE THIS LATER: ADD SERVICE -->
-<b-navbar-nav>
-      <b-nav-item to="Register">Register</b-nav-item>
+    <b-navbar-nav>
+      <b-nav-item to="ViewServices">View Services</b-nav-item>
+      <!-- REMOVE THIS LATER: ADD SERVICE -->
     </b-navbar-nav>
 
     <b-navbar-nav class="ml-auto">
@@ -33,9 +28,10 @@
   </b-navbar>
 </template>
 
+
 <script>
 export default {
-  name: "TopNavbar"
+  name: "TopNavbar",
 };
 </script>
 

@@ -15,7 +15,7 @@
         <span style="color: green">Error: Message text comes here</span>
       </p> -->
 
-    <b-form @submit="onSubmit" v-if="show">
+    <b-form>
 
       <b-form-group
         id="input-group-1"
@@ -56,10 +56,8 @@
       <!--  <p>
         <span style="color: red">Error: Message text comes here</span>
       </p>-->
-      <p>
-        <span v-if="errorAddService" style="color: red"
-          >Error: {{ errorAddService }}
-        </span>
+      <p v-if="errorAddService" style="color: red"
+          >Error: {{ errorAddService }}    
       </p>
 
       <b-button type="submit" variant="primary" @click="createService(form.name, form.duration, form.price)">Create Service</b-button>
@@ -100,7 +98,7 @@ export default {
         price: "",
       },
       errorAddService: "",
-      show: true,
+      successAddService:"",
     };
   },
   methods: {
@@ -110,14 +108,15 @@ export default {
     //CREATE SERVICE
     createService: function (serviceName, serviceDuration, servicePrice) {
       AXIOS.post("api/service/create", {
-        params: {
           name: serviceName,
           duration: serviceDuration,
           price: servicePrice,
-        },
+      },{
+
         headers:{
-          token: this.$root.$data.token   //not sure if this is the right way to do 
+          token: this.$root.$data.token   
         }
+        
       })
         .then((response) => {
           //this.services.push(response.data);
