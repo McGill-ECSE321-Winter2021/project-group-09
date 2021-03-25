@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
+import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.ReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,7 @@ public class ReminderController {
     /**
      * Create a new reminder
      *
-     * @param dateTime            of the new reminder
-     * @param appointmentDateTime date and time of the appointment
+     * @param dateTimes           A timeslot for the new reminder. The start time is for the reminder and the end time if for the appointment
      * @param serviceName         name of the service
      * @param type                of the new reminder
      * @param email               of the customer associated to the new reminder
@@ -51,12 +51,13 @@ public class ReminderController {
      * @return the new reminder if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createReminder(@RequestParam Timestamp dateTime, @RequestParam Timestamp appointmentDateTime,
-                                            @RequestParam String serviceName, @RequestParam String type, @RequestParam String email, @RequestHeader String token) {
+    public ResponseEntity<?> createReminder(@RequestBody TimeSlotDto dateTimes, @RequestParam String serviceName, @RequestParam String type, @RequestParam String email, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
+            Timestamp dateTime = dateTimes.getStartDateTime();
+            Timestamp appointmentDateTime = dateTimes.getEndDateTime();
             return new ResponseEntity<>(reminderService.createReminder(dateTime, appointmentDateTime, serviceName, type, email), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

@@ -1,13 +1,12 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentInfoDto;
 import ca.mcgill.ecse321.repairshop.service.AppointmentService;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
 
 @CrossOrigin("*")
 @RestController
@@ -21,19 +20,16 @@ public class AppointmentController {
     AuthenticationService authenticationService;
 
     /** Endpoint to create an appointment
-     * @param startTimestamp Timestamp for the start time of the appointment as a string
-     * @param serviceName The name of the service for the appointment
-     * @param customerEmail The email of the customer for whom to book the appointment
-     * @param token for the admin or customer to create an appointment
+     * @param appointmentInfoDto Contains the start time of the appointment, the service name and the customer email, as well as token (must be admin or customer)
      * @return the appointment that's been created
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createAppointment(@RequestParam Timestamp startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestHeader String token) {
+    public ResponseEntity<?> createAppointment(@RequestBody AppointmentInfoDto appointmentInfoDto) {
         try {
-            if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
+            if (authenticationService.validateAdminToken(appointmentInfoDto.getToken()) == null && authenticationService.validateCustomerToken(appointmentInfoDto.getToken()) == null) {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(appointmentService.createAppointment(startTimestamp, serviceName, customerEmail), HttpStatus.OK);
+            return new ResponseEntity<>(appointmentService.createAppointment(appointmentInfoDto.getStartTime(), appointmentInfoDto.getServiceName(), appointmentInfoDto.getCustomerEmail()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

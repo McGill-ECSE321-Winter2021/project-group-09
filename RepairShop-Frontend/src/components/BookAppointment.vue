@@ -130,13 +130,11 @@
       },
       book() {
         axios.post(LOCALHOST_BACKEND + CREATE_APPOINTMENT_ENDPOINT, {
-          params: {
-            "startTimestamp": this.start.startDateTime,
+          body: {
+            "startTime": this.start.startDateTime,
             "serviceName": this.service,
-            "customerEmail": this.$root.$data.email
-          },
-          headers: {
-            token: this.$root.$data.token
+            "customerEmail": this.$root.$data.email,
+            "token": this.$root.$data.token
           }
         }).then(r => {
           this.formSection = 4;
