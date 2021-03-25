@@ -6,9 +6,6 @@
     <b-navbar-nav>
       <b-nav-item to="Login">Log In</b-nav-item>
     </b-navbar-nav>
-    <b-navbar-nav>
-      <b-nav-item to="Register">Register</b-nav-item>
-    </b-navbar-nav>
 
 <!-- REMOVE THIS LATER: ADD SERVICE-->
 
@@ -23,7 +20,16 @@
 
     
 <!-- REMOVE THIS LATER: ADD SERVICE -->
+<b-navbar-nav>
+      <b-nav-item to="Register">Register</b-nav-item>
+    </b-navbar-nav>
 
+    <b-navbar-nav class="ml-auto">
+      <b-nav-item v-show="this.$root.$data.email" disabled
+        >Logged in as: {{ this.$root.$data.email }}</b-nav-item
+      >
+      <b-nav-item to="Logout">Logout</b-nav-item>
+    </b-navbar-nav>
   </b-navbar>
 </template>
 

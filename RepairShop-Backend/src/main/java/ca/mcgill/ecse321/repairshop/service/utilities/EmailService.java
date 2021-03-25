@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -18,6 +19,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Async
     public void accountCreationEmail(String recipientEmail, String name, String newPassword) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setFrom(systemEmail);
@@ -38,6 +40,7 @@ public class EmailService {
      * @param serviceName         Name of the service
      * @param price               price of the service
      */
+    @Async
     public void sendConfirmationEmail(String recipientEmail, String recipientName,
                                       Timestamp appointmentDateTime, String serviceName, String price) {
 
@@ -64,6 +67,7 @@ public class EmailService {
      * @param serviceName         Name of the service
      * @param price               price of the service
      */
+    @Async
     public void sendReminderEmail(String recipientEmail, String recipientName,
                                   Timestamp appointmentDateTime, ReminderType typeOfReminder, String serviceName, String price) {
 
@@ -106,6 +110,7 @@ public class EmailService {
      * @param appointmentDateTime when is the appointment (Timestamp)
      * @param serviceName         name of the service (String)
      */
+    @Async
     public void appointmentCancelledEmail(String recipientEmail, String recipientName,
                                           Timestamp appointmentDateTime, String serviceName) {
         String appointmentDate = appointmentDateTime.toString().substring(0, 10);

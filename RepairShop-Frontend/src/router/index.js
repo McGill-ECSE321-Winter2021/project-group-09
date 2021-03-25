@@ -6,6 +6,7 @@ import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 
+import Logout from '@/components/Logout'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +31,10 @@ export default new Router({
       path: '/viewServices',
       name: 'View Services',
       component : ViewServices
+    },{
+      path: '/logout',
+      name: 'Logout',
+      component : Logout
     }
   ]
 })
