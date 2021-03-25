@@ -31,9 +31,18 @@
             {{ errorViewServices }}
           </span>
         </div>
-        <div v-else> <!--ELSE: table -->
-          <b-table :items="items" :fields="fields" :outlined=true > </b-table>
-        </div>
+        <div v-else>
+         
+          <div v-for="s in services" :key="s">
+           items.push( { 
+              service: "s.name", 
+              duration: ("s.duration" *30).toString().concat(" min."), 
+              price: "s.price".concat(" $")
+            })
+            
+          </div>
+          <b-table :items="items" :fields="fields" :outlined="true"> </b-table>
+        </div> 
       </div>
     </template>
   </div>
@@ -66,7 +75,7 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      // services: []
+      services: [],
       // items:[
       //   <v-for="s in services": key="s">
       //       { "name": s.name, "duration": s.duration, "price": s.price }
@@ -88,7 +97,7 @@ export default {
           service: "Maintenance",
           duration: ("3" * 30).toString().concat(" min."),
           price: "100".concat(" $"),
-        }
+        },
       ],
     };
   },
