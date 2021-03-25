@@ -3,9 +3,13 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+<<<<<<< HEAD
 import TechnicianSchedule from '@/components/TechnicianSchedule'
 import TechnicianAppointments from '@/components/TechnicianAppointments'
 import ModifyBusinessInfo from '@/components/ModifyBusinessInfo'
+=======
+import Logout from '@/components/Logout'
+>>>>>>> 05c0418cd64f347fc9816c5a19c861d5c505b93e
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +38,10 @@ export default new Router({
       path: '/modify_business_info',
       name: 'ModifyBusinessInfo',
       component : ModifyBusinessInfo
+    }, {
+      path: '/logout',
+      name: 'Logout',
+      component : Logout
     }
 
 
