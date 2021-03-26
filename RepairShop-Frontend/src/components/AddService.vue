@@ -6,8 +6,8 @@
     <p>
       <b>
         <span v-if="successAddService" style="color: #04571b">
-        {{ successAddService }}
-      </span>
+          {{ successAddService }}
+        </span>
       </b>
     </p>
 
@@ -27,11 +27,12 @@
 
       <b-form-group
         id="input-group-2"
-        label="Duration:"
+        label="Duration:" 
         label-for="input-2"
         description="The integer represents the number of 30 minutes slots"
       >
         <b-form-input
+          type="number"
           id="input-2"
           v-model="form.duration"
           placeholder="Enter Integer"
@@ -41,6 +42,8 @@
 
       <b-form-group id="input-group-3" label="Price ($):" label-for="input-3">
         <b-form-input
+          type="number"
+          step="0.01"
           id="input-3"
           v-model="form.price"
           placeholder="Enter Price"
@@ -67,16 +70,8 @@ import axios from "axios";
 
 var config = require("../../config");
 var AXIOS = axios.create({
-  //DEVELOPMENT
   baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
 
-  //PRODUCTION
-  //baseURL: "http://" + config.build.backendHost + ":" + config.build.backendPort,
-
-  headers: {
-    "Access-Control-Allow-Origin":
-      "http://" + config.dev.host + ":" + config.dev.port,
-  },
 });
 
 export default {

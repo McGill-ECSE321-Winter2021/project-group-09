@@ -50,7 +50,7 @@ export default {
         });
       })
       .catch((e) => {
-        this.errorViewServices = "No service";
+        this.errorViewServices = "There are currently no services";
       });
   },
   methods: {},
