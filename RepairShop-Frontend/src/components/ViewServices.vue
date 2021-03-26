@@ -23,12 +23,7 @@ import axios from "axios";
 
 var config = require("../../config");
 var AXIOS = axios.create({
-  //DEVELOPMENT
   baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
-
-  //PRODUCTION
-  //baseURL: "http://" + config.build.backendHost + ":" + config.build.backendPort,
-
 });
 
 export default {
