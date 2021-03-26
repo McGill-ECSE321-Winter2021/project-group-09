@@ -1,11 +1,16 @@
 package ca.mcgill.ecse321.repairshop.dto;
 
+import com.sun.istack.NotNull;
+
 import java.sql.Timestamp;
 
 public class AppointmentInfoDto {
 
+    @NotNull
     private Timestamp startTime;
+    @NotNull
     private String serviceName;
+    @NotNull
     private String customerEmail;
 
     public Timestamp getStartTime() {

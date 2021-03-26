@@ -1,63 +1,67 @@
 <template>
-    <main class="container">
+    <main class="container py-4">
+        <div class="mx-auto my-4" style="max-width: 600px">
 
-        <h2 class="my-4">Book an Appointment</h2>
+          <h2 class="my-4 text-center">Book an Appointment</h2>
 
-        <div v-if="formSection == 1">
+          <div v-if="formSection == 1">
 
-          <b-form-group label="Select a service" class="mt-4">
-              <b-form-radio v-for="s in services" :key="s.name" v-model="service" name="service" :value="s.name">
-                {{ s.name + ", for " + displayDuration(s.duration) + " ($" + s.price + ")" }}
-              </b-form-radio>
-              <p v-show="services.length === 0">There are currently no services available.</p>
-          </b-form-group>
+            <b-form-group label="Select a service" class="mt-4">
+                <b-form-radio v-for="s in services" :key="s.name" v-model="service" name="service" :value="s.name">
+                  {{ s.name + ", for " + displayDuration(s.duration) + " ($" + s.price + ")" }}
+                </b-form-radio>
+                <p v-show="services.length === 0">There are currently no services available.</p>
+            </b-form-group>
 
-          <p class="mt-3">Selected service: {{ service }}</p>
+            <p class="mt-3">Selected service: {{ service }}</p>
 
-          <b-button variant="outline-primary" class="mt-3" @click="toPart2">Next</b-button>
+            <b-button variant="outline-primary" class="mt-3" :disabled="services.length === 0" @click="toPart2">Next</b-button>
+
+          </div>
+
+          <div v-if="formSection == 2">
+
+            <b-form-group label="Select a date and time" class="mt-4">
+                <b-form-radio v-for="t in availableTimes" :key="t.startDateTime" v-model="start" name="start" :value="t">
+                  {{ displayDateTime(t.startDateTime) + " to " + displayDateTime(t.endDateTime) }}
+                </b-form-radio>
+                <p v-show="availableTimes.length === 0">There are currently no time slots available.</p>
+            </b-form-group>
+
+            <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
+
+            <b-form-group label="Or enter a future date to see possible schedules for that week:" class="mt-3 form-inline">
+              <b-button variant="outline-secondary" @click="setToday">Today</b-button>
+              <b-form-input v-model="targetDate" placeholder="YYYY-MM-DD" class="ml-3"></b-form-input>
+              <b-button variant="outline-secondary" class="ml-3" @click="updateTargetDate">Go</b-button>
+            </b-form-group>
+
+            <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
+            <b-button variant="outline-primary" class="mt-3" :disabled="availableTimes.length === 0" @click="toPart3">Next</b-button>
+
+          </div>
+
+          <div v-if="formSection == 3">
+
+            <p class="mb-3">Confirm your appointment</p>
+            <p class="mt-3">Selected service: {{ service }}</p>
+            <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
+
+            <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
+            <b-button variant="outline-primary" class="mt-3" @click="book">Book now</b-button>
+
+          </div>
+
+          <div v-if="formSection == 4" class="text-center">
+            <p class="mb-3">Your appointment has been booked.</p>
+            <p>A confirmation email has been sent.</p>
+            <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
+          </div>
+
+          <p class="text-danger mt-4" v-if="error">{{ error }}</p>
+          <p class="text-danger mt-4" v-if="appError">{{ appError }}</p>
 
         </div>
-
-        <div v-if="formSection == 2">
-
-          <b-form-group label="Select a date and time" class="mt-4">
-              <b-form-radio v-for="t in availableTimes" :key="t.startDateTime" v-model="start" name="start" :value="t">
-                {{ displayDateTime(t.startDateTime) + " to " + displayDateTime(t.endDateTime) }}
-              </b-form-radio>
-              <p v-show="availableTimes.length === 0">There are currently no time slots available.</p>
-          </b-form-group>
-
-          <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
-
-          <b-form-group label="Or enter a future date to see possible schedules for that week:" class="mt-3 form-inline">
-            <b-button variant="outline-secondary" @click="setToday">Today</b-button>
-            <b-form-input v-model="targetDate" placeholder="YYYY-MM-DD" class="ml-3"></b-form-input>
-            <b-button variant="outline-secondary" class="ml-3" @click="updateTargetDate">Go</b-button>
-          </b-form-group>
-
-          <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
-          <b-button variant="outline-primary" class="mt-3" @click="toPart3">Next</b-button>
-
-        </div>
-
-        <div v-if="formSection == 3">
-
-          <p class="mb-3">Confirm your appointment</p>
-          <p class="mt-3">Selected service: {{ service }}</p>
-          <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
-
-          <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
-          <b-button variant="outline-primary" class="mt-3" @click="book">Book now</b-button>
-
-        </div>
-
-        <div v-if="formSection == 4">
-          <p class="mb-3">Your appointment has been booked</p>
-        </div>
-
-        <p class="text-danger mt-4" v-if="error">{{ error }}</p>
-        <p class="text-danger mt-4" v-if="appError">{{ appError }}</p>
-
     </main>
 </template>
 

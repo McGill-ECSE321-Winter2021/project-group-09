@@ -15,7 +15,7 @@ export default new Router({
       component: Login
     }, {
       path: '/',
-      name: "Hello",
+      name: "Home",
       component: Hello
     }, {
       path: '/book',
