@@ -46,19 +46,17 @@ public class ServiceController {
     }
 
     /** Create a new service
-     * @param name of the new service
-     * @param duration of the new service
-     * @param price of the new service
+     * @param  serviceDto (ServiceDto)
      * @param token of the admin
      * @return the new service if created successfully
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createService(@RequestParam String name, @RequestParam int duration, @RequestParam double price, @RequestHeader String token) {
+    public ResponseEntity<?> createService(@RequestBody ServiceDto serviceDto, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(serviceService.createService(name, duration, price), HttpStatus.OK);
+            return new ResponseEntity<>(serviceService.createService(serviceDto.getName(), serviceDto.getDuration(), serviceDto.getPrice()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

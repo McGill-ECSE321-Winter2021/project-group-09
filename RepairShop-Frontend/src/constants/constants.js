@@ -5,3 +5,6 @@ export const REGISTER_CUSTOMER_ENDPOINT = "/api/customer/register"
 export const REGISTER_ADMIN_ENDPOINT = "/api/admin/register"
 export const REGISTER_TECHNICIAN_ENDPOINT = "/api/technician/register"
 export const LOGOUT_ENDPOINT = "/api/authentication/logout"
+//SERVICE
+export const SERVICE_ENDPOINT = "/api/service"
+
