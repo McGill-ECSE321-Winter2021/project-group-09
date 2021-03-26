@@ -4,9 +4,11 @@
     <h2>Add New Service</h2>
 
     <p>
-      <span v-if="successAddService" style="color: green">
+      <b>
+        <span v-if="successAddService" style="color: #04571b">
         {{ successAddService }}
       </span>
+      </b>
     </p>
 
     <b-form>
@@ -73,7 +75,7 @@ var AXIOS = axios.create({
 
   headers: {
     "Access-Control-Allow-Origin":
-      "http://" + config.dev.host + ":" + config.dev.port, 
+      "http://" + config.dev.host + ":" + config.dev.port,
   },
 });
 
@@ -90,7 +92,6 @@ export default {
     };
   },
   methods: {
-
     createService: function (serviceName, serviceDuration, servicePrice) {
       AXIOS.post(
         "api/service/create",
@@ -106,18 +107,17 @@ export default {
         }
       )
         .then((response) => {
-
           this.errorAddService = "";
           this.form.name = "";
           this.form.duration = "";
           this.form.price = "";
 
           this.successAddService =
-            "The new service has been added successfully";
+            "The new service has been added successfully ✓";
         })
         .catch((e) => {
           this.errorAddService = e.response.data;
-          this.successAddService ="";
+          this.successAddService = "";
         });
     },
   },
