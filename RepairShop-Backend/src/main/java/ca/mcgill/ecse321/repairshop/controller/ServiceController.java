@@ -27,7 +27,7 @@ public class ServiceController {
         try {
             return new ResponseEntity<>(serviceService.getAllServices(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

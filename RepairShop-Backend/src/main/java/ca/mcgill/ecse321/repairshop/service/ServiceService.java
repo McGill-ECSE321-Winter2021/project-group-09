@@ -32,11 +32,13 @@ public class ServiceService {
 
     /** Gets all services and returns them in a list
      * @return a list of serviceDto objects
+     * @throws Exception if no services yet
      */
     @Transactional
-    public List<ServiceDto> getAllServices() {
+    public List<ServiceDto> getAllServices() throws Exception{
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (Service service : serviceRepository.findAll()) { serviceDtos.add(serviceToDTO(service)); }
+        if(serviceDtos.size()==0) throw new Exception("There are currently no services");
         return serviceDtos;
 
     }

@@ -140,10 +140,15 @@ public class TestServiceService {
         assertNull(serviceDto);
 
     }
-    @Test
+    @Test //valid
     public void testGetAllServices() {
 
-        List<ServiceDto> serviceDtos = serviceService.getAllServices();
+        List<ServiceDto> serviceDtos = null;
+        try {
+            serviceDtos = serviceService.getAllServices();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
 
         // verify the entry
         assertEquals(1, serviceDtos.size());
@@ -155,6 +160,7 @@ public class TestServiceService {
         assertEquals(SERVICE_PRICE, serviceDto.getPrice());
 
     }
+
 
     @Test //valid service name
     public void testServiceByName() {
