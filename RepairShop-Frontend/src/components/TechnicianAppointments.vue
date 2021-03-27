@@ -19,6 +19,11 @@
     </div>
 
 
+    <b-card class="mt-3" header="Message">
+      <pre class="m-0">{{ message }}</pre>
+    </b-card>
+
+
   </div>
 </template>
 
@@ -32,6 +37,7 @@
   export default {
     data() {
       return {
+        message : "",
         fields: [
           'index',
           'service',
@@ -41,7 +47,7 @@
         ],
         
         items: [
-            { service: 40, 'date': '2021-04-02', 'start time': 'Dickerson', 'end time': 'Macdonald', 'customer name': "customer1"},
+            { service: 'default', 'date': 'default', 'start time': 'default', 'end time': 'default', 'customer name': "default"},
         ]
       }
 
@@ -51,11 +57,8 @@
     methods: {
 
       getAppointments(event){
-        var email = this.$root.$data.email;
-        var token = this.$root.$data.token;
-        var url = LOCALHOST_BACKEND + "/api/technician/" + email + "/appointments";
-        var tempAppList;
-        var appointments;
+        var url = LOCALHOST_BACKEND + "/api/technician/" + this.$root.$data.email + "/appointments";
+        var appList = [];
 
         axios.get(url, 
         {
@@ -64,27 +67,29 @@
           }
         }).then(
           response => {
-            tempAppList = response.data
-            appointments = tempAppList.map(thisApp => {
-            var app = {
+        
+            if(response.data === "No upcoming appointments"){
+              this.message = response.data;
+            } else{
+
+              var tempAppList = response.data;
+              appList = tempAppList.map(thisApp => {
+              var app = {
                 service: thisApp.serviceDto.name,
                 'date': thisApp.timeSlotDto.startDateTime.substring(0, 10),
                 'start time': thisApp.timeSlotDto.startDateTime.substring(11, 16),
                 'end time': thisApp.timeSlotDto.endDateTime.substring(11, 16),
                 'customer name': thisApp.customerDto.name
+              }
+              appList.push(app);
+              });
+              this.items = appList;
+                    
             }
-            this.items = app;
-
-            if(formattedSchedule === null){
-              this.items = formattedSchedule;
-            }else {
-              items = ["Default", "Default"];
-            }
-
-            });
+            
           },
           error => {
-            console.log(error); 
+            console.log(error.response.data); 
           }
         );
 

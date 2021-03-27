@@ -30,6 +30,11 @@
     </div>
 
 
+    <b-card class="mt-3" header="Message">
+      <pre class="m-0">{{ message }}</pre>
+    </b-card>
+
+
   </div>
 </template>
 
@@ -45,14 +50,15 @@
     data() {
       
       return {
-        date,
+        message : "",
+        date : "",
         fields: [
           'index',
           { key: 'dayTime', label: 'Day and Time' },
           
         ],
-        items: ["Monday from 10:00 to 10:30", 
-                "Tuesday from 10:00 to 10:30",
+        items: ["Default", 
+                "Default",
                 ]
       }
     },
@@ -62,7 +68,7 @@
 
       getSchedule(event){
         var url = LOCALHOST_BACKEND + "/api/technician/" + this.$root.$data.email + "/schedule";
-        var tempSchedule;
+        var tempSchedule = [];
 
         axios.get(url,
         //changed wekStartDate to header. Need to test if it works
@@ -74,22 +80,28 @@
         }
         ).then(
           response => {
-            tempSchedule = response.data
+            var formattedSchedule = [];
 
-            var formattedSchedule = tempSchedule.map(thisDayTime => {
-              var day = getDay(thisDayTime.startDateTime.substring(0, 10));
-              var dayTime = day + thisDayTime.startDateTime.substring(11, 16) + thisDayTime.endDateTime.substring(11, 16);
-              return dayTime;
-            });
-        
-            if(formattedSchedule === null){
+            if(response.data === "No upcoming appointments"){
+              this.message = response.data;
+            } else{
+              
+              tempSchedule = response.data;
+              tempSchedule.forEach((thisDayTime) => {
+                var day = getDay(thisDayTime.startDateTime.substring(0, 10));
+                var dayTime = day + thisDayTime.startDateTime.substring(11, 16) + thisDayTime.endDateTime.substring(11, 16);
+                formattedSchedule.push(dayTime);
+              });
               this.items = formattedSchedule;
-            }else {
-              this.items = ["Default", "Default"];
+
             }
+            
+
+            
+
           },
           error => {
-            console.log(error); 
+            console.log(error.response.data); 
           }
         );
  

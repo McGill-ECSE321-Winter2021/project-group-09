@@ -26,6 +26,7 @@
       <b-nav-item v-show="this.$root.$data.email" disabled>
         Logged in as: {{ this.$root.$data.email }}
       </b-nav-item>
+    </b-navbar-nav>
     <b-navbar-nav v-show="this.$root.$data.userType == 'Customer'">
       <b-nav-item to="book">Book Appointment</b-nav-item>
     </b-navbar-nav>
