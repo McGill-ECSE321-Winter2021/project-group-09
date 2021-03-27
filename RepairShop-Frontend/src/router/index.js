@@ -6,7 +6,7 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
-
+import ChangePassword from '@/components/ChangePassword'
 import Logout from '@/components/Logout'
 Vue.use(Router)
 
@@ -40,6 +40,10 @@ export default new Router({
       path: '/logout',
       name: 'Logout',
       component : Logout
+    }, {
+      path: '/changePass',
+      name: "ChangePassword",
+      component: ChangePassword
     }
   ]
 })
