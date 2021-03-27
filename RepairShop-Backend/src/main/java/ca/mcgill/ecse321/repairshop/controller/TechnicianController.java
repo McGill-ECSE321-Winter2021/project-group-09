@@ -191,7 +191,7 @@ public class TechnicianController {
      * @return list of timeslot Dtos
      */
     @GetMapping("/{email}/schedule")
-    public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestBody String weekStartDate, @RequestHeader String token) {
+    public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestHeader String weekStartDate, @RequestHeader String token) {
 
         try {
             Technician technician = technicianRepository.findTechnicianByEmail(email);

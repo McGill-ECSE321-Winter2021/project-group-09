@@ -11,20 +11,20 @@
 
 
     <b-navbar-nav>
-      <b-nav-item to="technician_schedule">Technician Schedule</b-nav-item>
-      <b-nav-item to="technician_appointments">Technician Appointments</b-nav-item>
+      <b-nav-item to="technician_schedule" v-show="this.$root.$data.userType === 'Technician'">Technician Schedule</b-nav-item>
+      <b-nav-item to="technician_appointments" v-show="this.$root.$data.userType === 'Technician'">Technician Appointments</b-nav-item>
     </b-navbar-nav>
 
     <b-navbar-nav>
-      <b-nav-item to="modify_business_info">Modify Business Information</b-nav-item>
+      <b-nav-item to="modify_business_info" v-show="this.$root.$data.userType === 'Admin'">Modify Business Information</b-nav-item>
     </b-navbar-nav>
 
 
 
     <b-navbar-nav class="ml-auto">
-      <b-nav-item v-show="this.$root.$data.email" disabled
-        >Logged in as: {{ this.$root.$data.email }}</b-nav-item
-      >
+      <b-nav-item v-show="this.$root.$data.email" disabled>
+        Logged in as: {{ this.$root.$data.email }}
+      </b-nav-item>
       <b-nav-item to="Logout">Logout</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
@@ -34,6 +34,10 @@
 export default {
   name: "TopNavbar"
 };
+
+//
+//
+
 </script>
 
 <style></style>

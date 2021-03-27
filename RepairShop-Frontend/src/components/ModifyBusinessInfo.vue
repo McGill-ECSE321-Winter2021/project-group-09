@@ -15,7 +15,7 @@
       </b-form-group>
 
       <b-form-group id="input-group-4" label="Phone Number:" label-for="input-4">
-        <b-form-input id="input-4" v-model="form.phone" type="tel" required></b-form-input>
+        <b-form-input id="input-4" v-model="form.phone" type="text" required></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-5" label="Number of repair spots:" label-for="input-5">
@@ -28,7 +28,7 @@
     </b-form>
 
     <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
+      <pre class="m-0">{{ result }}</pre>
     </b-card>
 
   </div>
@@ -39,7 +39,6 @@
             LOCALHOST_BACKEND
         } from "../constants/constants";
     import axios from "axios";
-
     export default {
     data() {
       return {
@@ -50,27 +49,40 @@
           phone: '',
           numRepairSpots: ''
         },
-
+        result: {
+          email: '',
+          name: '',
+          address: '',
+          phone: '',
+          numRepairSpots: ''
+        }
       }
     },
     methods: {
         onSubmit(event) {
-            token = this.$root.$data.token;
-            url = LOCALHOST_BACKEND + "/api/business/" + email + "/update";
-
+            let url = LOCALHOST_BACKEND + "/api/business/update";
             axios.put(url, {
                 email: this.form.email,
                 name: this.form.name,
                 address: this.form.address,
-                phoneNumber: this.form.phoneNumber,
+                phoneNumber: this.form.phone,
                 numberOfRepairSpots: this.form.numRepairSpots
-                }, token
+                }, 
+                {
+                  headers: {
+                    token: this.$root.$data.token
+                  }
+                }
             ).then(
                 response => {
-                    alert("Business information updated.");
+                    this.result.email = response.data.email;
+                    this.result.name = response.data.name;
+                    this.result.address = response.data.address;
+                    this.result.phone = response.data.phoneNumber;
+                    this.result.numRepairSpots = response.data.numberOfRepairSpots;
                 },
                 error => {
-                    console.log(error);
+                    console.log(error.response.data);
                 }
             );
         }

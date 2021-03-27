@@ -1,20 +1,18 @@
 <template>
   <div id="technicianSchedule">
 
-    <div>
+    <div id="datePicker">
       <b-form @submit="getSchedule">
 
-      <b-form-group id="input-group-2" label="Enter a date:" label-for="input-1">
-        <b-form-input id="input-1" v-model="date" placeholder="Enter date" required></b-form-input>
-      </b-form-group>
+        <div>
+          <label for="schedule-datepicker">Choose a date</label>
+          <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
+        </div>
+        <b-button type="submit" variant="primary">Get Schedule</b-button>
 
-      <b-button type="submit" variant="primary">Get Schedule</b-button>
-
-    </b-form>
+      </b-form>
     </div>
 
-    <p></p>
-    <p></p>
 
     <div>
       <b-table :fields="fields" :items="items" responsive="sm">
@@ -43,6 +41,7 @@
   
   
   export default {
+    
     data() {
       
       return {
@@ -62,32 +61,38 @@
     methods: {
 
       getSchedule(event){
-        var email = this.$root.$data.email;
-        var token = this.$root.$data.token;
-        var url = LOCALHOST_BACKEND + "api/technician/" + email + "/schedule";
+        var url = LOCALHOST_BACKEND + "/api/technician/" + this.$root.$data.email + "/schedule";
         var tempSchedule;
 
-        axios.get(url, this.date, token).then(
+        axios.get(url,
+        //changed wekStartDate to header. Need to test if it works
+        {
+          headers: {
+            weekStartDate: this.date,
+            token: this.$root.$data.token
+          }
+        }
+        ).then(
           response => {
             tempSchedule = response.data
+
+            var formattedSchedule = tempSchedule.map(thisDayTime => {
+              var day = getDay(thisDayTime.startDateTime.substring(0, 10));
+              var dayTime = day + thisDayTime.startDateTime.substring(11, 16) + thisDayTime.endDateTime.substring(11, 16);
+              return dayTime;
+            });
+        
+            if(formattedSchedule === null){
+              this.items = formattedSchedule;
+            }else {
+              this.items = ["Default", "Default"];
+            }
           },
           error => {
             console.log(error); 
           }
         );
-
-        var formattedSchedule = tempSchedule.map(thisDayTime => {
-            var day = getDay(thisDayTime.startDateTime.substring(0, 10));
-            var dayTime = day + thisDayTime.startDateTime.substring(11, 16) + thisDayTime.endDateTime.substring(11, 16);
-            return dayTime;
-        });
-        
-        if(formattedSchedule === null){
-          this.items = formattedSchedule;
-        }else {
-          items = ["Default", "Default"];
-        }
-        
+ 
         
       }
 
@@ -102,5 +107,12 @@
   margin-top: 5%;
   margin-left: 5%;
   margin-right: 5%;
+}
+
+#datePicker{
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
 }
 </style>

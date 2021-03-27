@@ -1,12 +1,12 @@
 <template>
   <div id="technicianAppointments">
 
-    <div>
+    <h1>Upcoming Appointments</h1>
+
+    <div id="AppButton">
       <b-button type="button" variant="primary" @click="getAppointments">Get Appointments</b-button>
     </div>
 
-    <p></p>
-    <p></p>
     
     <div>
         <b-table :fields="fields" :items="items" responsive="sm">
@@ -53,19 +53,19 @@
       getAppointments(event){
         var email = this.$root.$data.email;
         var token = this.$root.$data.token;
-        var url = LOCALHOST_BACKEND + "api/technician/" + email + "/appointments";
+        var url = LOCALHOST_BACKEND + "/api/technician/" + email + "/appointments";
         var tempAppList;
+        var appointments;
 
-        axios.get(url, token).then(
+        axios.get(url, 
+        {
+          headers: {
+            token: this.$root.$data.token
+          }
+        }).then(
           response => {
             tempAppList = response.data
-          },
-          error => {
-            console.log(error); 
-          }
-        );
-
-        var appointments = tempAppList.map(thisApp => {
+            appointments = tempAppList.map(thisApp => {
             var app = {
                 service: thisApp.serviceDto.name,
                 'date': thisApp.timeSlotDto.startDateTime.substring(0, 10),
@@ -74,14 +74,20 @@
                 'customer name': thisApp.customerDto.name
             }
             this.items = app;
-        });
 
-        if(formattedSchedule === null){
-          this.items = formattedSchedule;
-        }else {
-          items = ["Default", "Default"];
-        }
-        
+            if(formattedSchedule === null){
+              this.items = formattedSchedule;
+            }else {
+              items = ["Default", "Default"];
+            }
+
+            });
+          },
+          error => {
+            console.log(error); 
+          }
+        );
+
         
       }
 
@@ -96,5 +102,11 @@
   margin-top: 5%;
   margin-left: 5%;
   margin-right: 5%;
+}
+#AppButton {
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
 }
 </style>
