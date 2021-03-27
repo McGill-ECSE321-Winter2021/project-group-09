@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
+import ca.mcgill.ecse321.repairshop.dto.AppointmentInfoDto;
 import ca.mcgill.ecse321.repairshop.service.AppointmentService;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +20,24 @@ public class AppointmentController {
     AuthenticationService authenticationService;
 
     /** Endpoint to create an appointment
-     * @param startTimestamp Timestamp for the start time of the appointment as a string
-     * @param serviceName The name of the service for the appointment
-     * @param customerEmail The email of the customer for whom to book the appointment
-     * @param token for the admin or customer to create an appointment
+     * @param appointmentInfoDto Contains the start time of the appointment, the service name and the customer email
+     * @param token The token for the logged in customer
      * @return the appointment that's been created
      */
     @PostMapping("/create")
-    public ResponseEntity<?> createAppointment(@RequestParam String startTimestamp, @RequestParam String serviceName, @RequestParam String customerEmail, @RequestHeader String token) {
+    public ResponseEntity<?> createAppointment(@RequestBody AppointmentInfoDto appointmentInfoDto, @RequestHeader String token) {
         try {
-            if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
-                return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
+            if (authenticationService.validateCustomerToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as a customer.", HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(appointmentService.createAppointment(startTimestamp, serviceName, customerEmail), HttpStatus.OK);
+            return new ResponseEntity<>(appointmentService.createAppointment(appointmentInfoDto.getStartTime(), appointmentInfoDto.getServiceName(), appointmentInfoDto.getCustomerEmail()), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     /** Endpoint to get all possible appointment times for one week
-     * @param startDate The initial date to start the search
+     * @param startDate The initial date to start the search of form YYYY-MM-DD
      * @param serviceName The name of the service for the appointment
      * @param token for the admin or customer to get all possible appointments
      * @return a list of timeslots for all the possible appointments

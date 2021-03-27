@@ -113,10 +113,42 @@ public class TestServiceService {
 
     }
 
-    @Test
+    @Test // invalid duration (negative)
+    public void testCreateServiceInvalidDuration() {
+
+        ServiceDto serviceDto = null;
+
+        try {
+            serviceDto = serviceService.createService("Service with invalid duration", -6, 0);
+        } catch (Exception e) {
+            assertEquals("The duration cannot be negative", e.getMessage());
+        }
+        assertNull(serviceDto);
+    }
+
+    @Test // invalid price (negative)
+    public void testCreateServiceInvalidPrice() {
+
+        ServiceDto serviceDto = null;
+
+        try {
+            serviceDto = serviceService.createService("Service with invalid price", 0, -255);
+        } catch (Exception e) {
+            assertEquals("The price cannot be negative", e.getMessage());
+        }
+
+        assertNull(serviceDto);
+
+    }
+    @Test //valid
     public void testGetAllServices() {
 
-        List<ServiceDto> serviceDtos = serviceService.getAllServices();
+        List<ServiceDto> serviceDtos = null;
+        try {
+            serviceDtos = serviceService.getAllServices();
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
 
         // verify the entry
         assertEquals(1, serviceDtos.size());
@@ -128,6 +160,7 @@ public class TestServiceService {
         assertEquals(SERVICE_PRICE, serviceDto.getPrice());
 
     }
+
 
     @Test //valid service name
     public void testServiceByName() {

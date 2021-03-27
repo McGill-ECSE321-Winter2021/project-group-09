@@ -23,7 +23,7 @@
           <b-form-input
             id="input-2"
             v-model="form.password"
-            placeholder="Enter name"
+            placeholder="Enter password"
             required
             type="password"
           ></b-form-input>

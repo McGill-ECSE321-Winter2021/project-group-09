@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,29 +133,27 @@ public class AppointmentService {
     /**
      * Method to book an appointment given a valid timeslot
      *
-     * @param startTimestamp when the appointment will start
+     * @param startTime when the appointment will start
      * @param serviceName    the name of the appointment's service
      * @param customerEmail  the email of the customer for whom to book the appointment
      * @return an AppointmentDto for the bookedAppointment
      * @throws Exception for invalid timestamp, service name or technician's email
      */
     @Transactional
-    public AppointmentDto createAppointment(String startTimestamp, String serviceName, String customerEmail) throws Exception {
+    public AppointmentDto createAppointment(Timestamp startTime, String serviceName, String customerEmail) throws Exception {
 
         // Validate all inputs
 
-        if (startTimestamp == null || startTimestamp.equals("")) throw new Exception("The Timestamp is mandatory");
+        if (startTime == null) throw new Exception("The Timestamp is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
         if (customerEmail == null || customerEmail.equals("")) throw new Exception("The customer is mandatory");
 
-        Timestamp startTime;
         Service service;
         Technician technician = null;
         Customer customer;
         Business business;
 
         try {
-            startTime = Timestamp.valueOf(startTimestamp);
             if (startTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
         } catch (Exception e) {
             throw new Exception("The provided Timestamp is invalid");
@@ -207,7 +206,7 @@ public class AppointmentService {
         emailService.sendConfirmationEmail(customerEmail, customer.getName(), startTime, serviceName, Double.toString(service.getPrice()));
 
         //Upcoming Appointment Reminder (10 days before appointment date)
-        reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, -10).toString(), startTimestamp, serviceName, ReminderType.UpcomingAppointment.toString(), customerEmail);
+        reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, -10), startTime, serviceName, ReminderType.UpcomingAppointment.toString(), customerEmail);
 
         //Service Reminder ( 180 days after appointment date)
         boolean hasServiceReminder = false;
@@ -220,32 +219,34 @@ public class AppointmentService {
         }
         //If no service reminder yet, create one
         if (!hasServiceReminder)
-            reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, 180).toString(),
-                    startTimestamp, serviceName, ReminderType.ServiceReminder.toString(), customerEmail);
+            reminderService.createReminder(SystemTime.addOrSubtractDays(startTime, 180),
+                    startTime, serviceName, ReminderType.ServiceReminder.toString(), customerEmail);
         return appointmentToDto(appointment);
 
     }
 
     /** Method to return all times that an appointment for a given service can be created for one week
-     * @param startDate The date to start checking for possible appointments (uses Timestamp format)
+     * @param startDateString The date to start checking for possible appointments (uses YYYY-MM-DD format)
      * @param serviceName The name of the service for the appointment
      * @return a list of Timestamps for all available appointment start times
      */
     @Transactional
-    public List<TimeSlot> getPossibleAppointments(String startDate, String serviceName) throws Exception {
+    public List<TimeSlot> getPossibleAppointments(String startDateString, String serviceName) throws Exception {
 
-        if (startDate == null || startDate.equals("")) throw new Exception("The start date is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
 
-        Timestamp startDateTime;
+        LocalDate startDate;
         Service service;
         Business business;
 
-        try {
-            startDateTime = Timestamp.valueOf(startDate);
-            if (startDateTime.before(SystemTime.getCurrentDateTime())) throw new Exception("Time has passed");
-        } catch (Exception e) {
-            throw new Exception("The provided start date is invalid");
+        if (startDateString == null || startDateString.equals("")) startDate = LocalDate.now();
+        else {
+            try {
+                startDate = LocalDate.parse(startDateString);
+                if (startDate.compareTo(LocalDate.now()) < 0) throw new Exception("Time has passed");
+            } catch (Exception e) {
+                throw new Exception("The provided start date is invalid");
+            }
         }
 
         service = serviceRepository.findServiceByName(serviceName);
@@ -256,7 +257,13 @@ public class AppointmentService {
         List<Technician> technicians = technicianRepository.findAll();
 
         List<TimeSlot> allTimeSlots = new ArrayList<>();
-        LocalDateTime tempDateTime = startDateTime.toLocalDateTime();
+        LocalDateTime tempDateTime;
+        // If the target date is today, use the next 30 minute block, otherwise start at 0th hour
+        if (startDate.equals(LocalDate.now())) {
+            LocalDateTime today = LocalDateTime.now();
+            tempDateTime = startDate.atTime(today.getHour(), today.getMinute(), 0);
+            tempDateTime = tempDateTime.plusMinutes((today.getMinute() < 30) ? 30 - today.getMinute() : 60 - today.getMinute());
+        } else tempDateTime = startDate.atTime(0, 0, 0);
 
         int durationInMillis = service.getDuration() * 30 * 60 * 1000; // service duration is an int for the number of 30 minute blocks
 
@@ -278,7 +285,6 @@ public class AppointmentService {
                     timeSlotToAdd.setStartDateTime(tempTimeSlot.getStartDateTime());
                     timeSlotToAdd.setEndDateTime(tempTimeSlot.getEndDateTime());
                     allTimeSlots.add(timeSlotToAdd);
-                    timeSlotRepository.save(timeSlotToAdd);
                     break;
                 }
             }

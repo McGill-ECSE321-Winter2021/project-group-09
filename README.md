@@ -23,7 +23,7 @@ During the development of the RepairShop application software, the team will fol
 | Zhanna Klimanova       | Software Developer | 35 | 35 | -- | -- | 70 |
 | Tyler Syme             | Software Developer | 35 | 55 | -- | -- | 90 |
 
-## Sprint 1: Effort Table
+## Sprint 1: Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
 | Jacek Dziewonski       | Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Create Repository, Gradle, Spring and Travis CI Setups, UML code generation | 35 |
@@ -33,10 +33,10 @@ During the development of the RepairShop application software, the team will fol
 | Sandy Lao              |Domain Model, Requirements, Detailed Use Cases, Add JPA annotations, Persistence layer tests, Wiki Setup, Use Case Diagrams, Wiki, Meeting planning, Meeting minutes, README.md, Create issues | 40 |
 
 # Sprint 1: Project Report
-See [Sprint 1: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-1:-Project-Report)<br/>
-Jump to [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-1:-Project-Report#sprint-1-meeting-notes-)
+- [Sprint 1: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-1:-Project-Report)<br/>
+- [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-1:-Project-Report#sprint-1-meeting-notes-)
 
-## Sprint 2: Effort Table
+## Sprint 2: Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
 | Jacek Dziewonski       |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Fixing the team's bugs, authentication, Testing on Postman, Endpoint documentation |50  |
@@ -46,8 +46,25 @@ Jump to [Sprint 1: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2
 | Sandy Lao              |Implementation of Service methods, Service tests, Controller, DTO, Code reviews, Meeting planning, Meeting minutes, README.md, Create issues, Testing on Postman, Endpoint documentation| 45 |
 
 # Sprint 2: Project Report
-See [Sprint 2: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report)\
-Jump to [Sprint 2: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report#sprint-2-meeting-notes-)\
-Jump to [Software Quality Assurance Plan & Report ✨👌](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Software-Quality-Assurance-Plan-&-Report-%E2%9C%A8%F0%9F%91%8C)\
-Jump to [API Documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/API-Documentation)\
-Jump to [RESTful Service Tests on Postman 🧪](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/RESTful-Service-Tests-on-Postman-%F0%9F%A7%AA)
+- [Sprint 2: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report)
+- [Sprint 2: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-2:-Project-Report#sprint-2-meeting-notes-)
+- [Software Quality Assurance Plan & Report ✨👌](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Software-Quality-Assurance-Plan-&-Report-%E2%9C%A8%F0%9F%91%8C)
+- [API Documentation](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/API-Documentation)
+- [RESTful Service Tests on Postman 🧪](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/RESTful-Service-Tests-on-Postman-%F0%9F%A7%AA)
+
+## Sprint 3: Effort Table 🏋️ 
+| Name            | Contributions | Efforts (hours)|
+| :-------------         | ------------- | :-------------: |
+| Jacek Dziewonski       |TO BE UPDATED LATER, Code reviews, Fixing the team's bugs | 00 |
+| Shaswata Bhattacharyya |TO UPDATE LATER, Frontend Setups, Code reviews, Fixing the team's bugs| 00 |
+| Zhanna Klimanova       |TO UPDATE LATER, Code reviews,  | 00 |
+| Tyler Syme             |TO BE UPDATED LATER, Meeting planning, Code reviews, Modified Google Calendar, Create issues, Fixing the team's bugs, Meeting minutes | 00 |
+| Sandy Lao              |TO BE UPDATED LATER, Meeting planning, Meeting minutes, README.md, Create issues | 00 |
+
+# Sprint 3: Project Report
+- [Sprint 3: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-3:-Project-Report)
+- [Sprint 3: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-3:-Project-Report#sprint-3-meeting-notes-)
+- [Architecture Model 🏛️📐](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Architecture-Model-%F0%9F%8F%9B%EF%B8%8F%F0%9F%93%90)
+
+
+
