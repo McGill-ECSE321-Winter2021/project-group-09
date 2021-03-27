@@ -66,25 +66,15 @@ public class ReminderService {
      * @param email               of the customer associated to the appointment
      * @return the reminder object
      */
-    public ReminderDto createReminder(String dateTime, String appointmentDateTime, String serviceName, String type, String email) throws Exception {
+    public ReminderDto createReminder(Timestamp dateTime, Timestamp appointmentDateTime, String serviceName, String type, String email) throws Exception {
 
-        if (dateTime == null || dateTime.equals("") || appointmentDateTime == null || appointmentDateTime.equals(""))
-            throw new Exception("The Timestamps are mandatory");
+        if (dateTime == null || appointmentDateTime == null) throw new Exception("The Timestamps are mandatory");
         if (type == null || type.equals("")) throw new Exception("The ReminderType is mandatory");
         if (email == null || email.equals("")) throw new Exception("The customer email is mandatory");
         if (serviceName == null || serviceName.equals("")) throw new Exception("The service name is mandatory");
 
-        Timestamp timestamp;
-        Timestamp apptTimestamp;
         ReminderType reminderType;
         Customer customer;
-
-        try {
-            timestamp = Timestamp.valueOf(dateTime);
-            apptTimestamp = Timestamp.valueOf(appointmentDateTime);
-        } catch (Exception e) {
-            throw new Exception("The provided Timestamps are invalid");
-        }
 
         try {
             reminderType = ReminderType.valueOf(type);
@@ -96,10 +86,10 @@ public class ReminderService {
         if (customer == null) throw new Exception("The provided customer email does not exist");
         if(serviceRepository.findServiceByName(serviceName) == null) throw new Exception("The provided service name does not exist");
         Reminder reminder = new Reminder();
-        reminder.setDateTime(timestamp);
+        reminder.setDateTime(dateTime);
         reminder.setReminderType(reminderType);
         reminder.setCustomer(customer);
-        reminder.setAppointmentDateTime(apptTimestamp);
+        reminder.setAppointmentDateTime(appointmentDateTime);
         reminder.setServiceName(serviceName);
         reminderRepository.save(reminder);
 

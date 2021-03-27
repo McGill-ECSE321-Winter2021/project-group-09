@@ -32,11 +32,13 @@ public class ServiceService {
 
     /** Gets all services and returns them in a list
      * @return a list of serviceDto objects
+     * @throws Exception if no services yet
      */
     @Transactional
-    public List<ServiceDto> getAllServices() {
+    public List<ServiceDto> getAllServices() throws Exception{
         List<ServiceDto> serviceDtos = new ArrayList<>();
         for (Service service : serviceRepository.findAll()) { serviceDtos.add(serviceToDTO(service)); }
+        if(serviceDtos.size()==0) throw new Exception("There are currently no services");
         return serviceDtos;
 
     }
@@ -55,7 +57,15 @@ public class ServiceService {
         if (name == null || name.equals("")) throw new Exception("A service name is required");
         else if (serviceRepository.findServiceByName(name) != null) throw new Exception("A service with name \"" + name + "\" already exists");
 
-        // don't need to check duration or price, since they get initialized to 0 by default
+        if (duration < 0) {
+            throw new Exception("The duration cannot be negative");
+        }
+
+        if (price < 0) {
+            throw new Exception("The price cannot be negative");
+        }
+
+
 
         Service service = new Service();
         service.setName(name);
