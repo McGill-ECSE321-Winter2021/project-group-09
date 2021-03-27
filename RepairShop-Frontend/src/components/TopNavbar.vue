@@ -15,6 +15,8 @@
 
     <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
       <b-nav-item to="AddService">Add Service</b-nav-item>
+      <b-nav-item to="AddHoliday">Add Holiday</b-nav-item>
+      <b-nav-item to="ViewHolidays">View Holidays</b-nav-item>
     </b-navbar-nav>
 
     <b-navbar-nav>
