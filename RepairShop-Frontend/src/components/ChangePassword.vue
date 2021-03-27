@@ -64,6 +64,13 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
+      if (
+        this.form.currPassword.localeCompare(this.$root.$data.password) != 0
+      ) {
+        this.textColor = "red";
+        this.titleText = "Current password is not valid.";
+        return;
+      }
       let apiurl = "";
       switch (this.form.userType) {
         case "Admin":
@@ -79,12 +86,11 @@ export default {
       axios
         .post(
           LOCALHOST_BACKEND + apiurl + this.$root.$data.email,
-          {
-            newPassword: this.form.newPassword
-          },
+          this.form.newPassword,
           {
             headers: {
-              token: this.$root.$data.token
+              token: this.$root.$data.token,
+              "Content-Type": "text/plain"
             }
           }
         )
