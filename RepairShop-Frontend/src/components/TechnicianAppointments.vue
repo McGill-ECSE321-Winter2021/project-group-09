@@ -47,7 +47,7 @@
         ],
         
         items: [
-            { service: 'default', 'date': 'default', 'start time': 'default', 'end time': 'default', 'customer name': "default"},
+            { 'service': 'default', 'date': 'default', 'start time': 'default', 'end time': 'default', 'customer name': "default"},
         ]
       }
 
@@ -67,22 +67,24 @@
           }
         }).then(
           response => {
-        
+            
             if(response.data === "No upcoming appointments"){
               this.message = response.data;
             } else{
 
               var tempAppList = response.data;
-              appList = tempAppList.map(thisApp => {
-              var app = {
-                service: thisApp.serviceDto.name,
-                'date': thisApp.timeSlotDto.startDateTime.substring(0, 10),
-                'start time': thisApp.timeSlotDto.startDateTime.substring(11, 16),
-                'end time': thisApp.timeSlotDto.endDateTime.substring(11, 16),
-                'customer name': thisApp.customerDto.name
-              }
-              appList.push(app);
+              tempAppList.forEach((element) => {
+                var app = {
+                  'service': element.serviceDto.name,
+                  'date': element.timeSlotDto.startDateTime.substring(0, 10),
+                  'start time': element.timeSlotDto.startDateTime.substring(11, 16),
+                  'end time': element.timeSlotDto.endDateTime.substring(11, 16),
+                  'customer name': element.customerDto.name
+                }
+                appList.push(app);
               });
+
+              
               this.items = appList;
                     
             }

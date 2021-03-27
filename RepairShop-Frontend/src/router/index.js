@@ -9,6 +9,7 @@ import TechnicianAppointments from '@/components/TechnicianAppointments'
 import ModifyBusinessInfo from '@/components/ModifyBusinessInfo'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
+import TechnicianScheduleAdmin from '@/components/TechnicianScheduleAdmin'
 
 import Logout from '@/components/Logout'
 Vue.use(Router)
@@ -55,6 +56,10 @@ export default new Router({
       path: '/modify_business_info',
       name: 'modify_business_info',
       component : ModifyBusinessInfo
+    }, {
+      path: '/technician_schedule_admin',
+      name: '/technician_schedule_admin',
+      component: TechnicianScheduleAdmin
     }
 
 

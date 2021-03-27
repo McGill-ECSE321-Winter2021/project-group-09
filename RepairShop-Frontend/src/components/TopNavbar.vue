@@ -20,6 +20,10 @@
       <b-nav-item to="modify_business_info" v-show="this.$root.$data.userType === 'Admin'">Modify Business Information</b-nav-item>
     </b-navbar-nav>
 
+    <b-navbar-nav>
+      <b-nav-item to="technician_schedule_admin" v-show="this.$root.$data.userType === 'Admin'">Technician Schedules</b-nav-item>
+    </b-navbar-nav>
+
 
 
     <b-navbar-nav class="ml-auto">

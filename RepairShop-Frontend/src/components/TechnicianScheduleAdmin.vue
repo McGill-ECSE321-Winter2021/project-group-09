@@ -1,13 +1,19 @@
 <template>
   <div id="technicianSchedule">
 
-    <div id="datePicker">
+    <div id="dataInput">
       <b-form @submit="getSchedule">
 
-        <div>
+        <div id="techEmailInput">
+          <label for="tech-email">Enter technician's email</label>
+          <b-form-input id="tech-email" v-model="techEmail" type="email"></b-form-input>
+        </div>
+
+        <div id="datePicker">
           <label for="schedule-datepicker">Choose a date</label>
           <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2"></b-form-datepicker>
         </div>
+
         <b-button type="submit" variant="primary">Get Schedule</b-button>
 
       </b-form>
@@ -50,6 +56,7 @@
     data() {
       
       return {
+        techEmail : "",
         message : "",
         date : "",
         fields: [
@@ -67,7 +74,7 @@
     methods: {
 
       getSchedule(event){
-        var url = LOCALHOST_BACKEND + "/api/technician/" + this.$root.$data.email + "/schedule";
+        var url = LOCALHOST_BACKEND + "/api/technician/" + this.techEmail + "/schedule";
         var tempSchedule = [];
 
         axios.get(url,
@@ -88,22 +95,15 @@
               
               tempSchedule = response.data;
               tempSchedule.forEach((thisDayTime) => {
-                var date = thisDayTime.startDateTime.substring(0,10);
-                console.log(date);
-
-                const dayOfWeek = new Date(date).getDay();    
-                var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
-
-                var dayTime = day + " from " + thisDayTime.startDateTime.substring(11, 16) + " to " + thisDayTime.endDateTime.substring(11, 16);
+                var day = thisDayTime.startDateTime.substring(0, 10).getDay();
+                var dayTime = day + thisDayTime.startDateTime.substring(11, 16) + thisDayTime.endDateTime.substring(11, 16);
                 formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
 
             }
             
-
             
-
           },
           error => {
             console.log(error.response.data); 
@@ -126,7 +126,7 @@
   margin-right: 5%;
 }
 
-#datePicker{
+#dataInput{
   margin-top: 5%;
   margin-left: 5%;
   margin-right: 5%;
