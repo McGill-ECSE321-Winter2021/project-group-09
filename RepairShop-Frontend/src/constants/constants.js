@@ -8,3 +8,4 @@ export const ALL_SERVICES_ENDPOINT = "/api/service/all";
 export const POSSIBLE_APPOINTMENTS_ENDPOINT = "/api/appointment/possibilities";
 export const CREATE_APPOINTMENT_ENDPOINT = "/api/appointment/create";
 export const LOGOUT_ENDPOINT = "/api/authentication/logout";
+export const SERVICE_ENDPOINT = "/api/service";
