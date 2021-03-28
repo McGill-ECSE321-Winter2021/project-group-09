@@ -405,6 +405,8 @@ public class TestBusinessService {
         }
 
     }
+    
+    /*
 
     @Test
     public void testMissingNameUpdateBusiness() {
@@ -419,6 +421,7 @@ public class TestBusinessService {
         assertNull(business);
         assertEquals("Business name cannot be empty!", error);
     }
+    
 
     @Test
     public void testMissingAddressUpdateBusiness() {
@@ -433,6 +436,7 @@ public class TestBusinessService {
         assertNull(business);
         assertEquals("Address cannot be empty!", error);
     }
+    
 
     @Test
     public void testMissingPhoneNumberUpdateBusiness() {
@@ -463,9 +467,10 @@ public class TestBusinessService {
 
         assertEquals("Email cannot be empty!", error);
     }
+    
+    */
 
     @Test
-
     public void testInvalidEmailNoAtSignUpdateBusiness() {
         String email = "bestBusinessgmail.com";
         String error = null;
@@ -524,6 +529,7 @@ public class TestBusinessService {
 
 	*/
 
+    /*
     @Test
     public void testNullNameUpdateBusiness() {
         String nullBusinessName = null;
@@ -552,6 +558,7 @@ public class TestBusinessService {
         assertEquals("Address cannot be empty!", error);
     }
 
+    
     @Test
     public void testNullPhoneNumberUpdateBusiness() {
         String nullPhoneNumber = null;
@@ -579,6 +586,7 @@ public class TestBusinessService {
         assertNull(business);
         assertEquals("Email cannot be empty!", error);
     }
+    */
 
     @Test
     public void testUpdateNbRepairSpots() {

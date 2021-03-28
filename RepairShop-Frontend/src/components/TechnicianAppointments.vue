@@ -40,6 +40,8 @@
         message : "",
         fields: [
           'index',
+          'day',
+          'date',
           'service',
           'start time',
           'end time',
@@ -47,7 +49,7 @@
         ],
         
         items: [
-            { 'service': 'default', 'date': 'default', 'start time': 'default', 'end time': 'default', 'customer name': "default"},
+            { 'service': 'default', 'day': 'default', 'date': 'default', 'start time': 'default', 'end time': 'default', 'customer name': "default"},
         ]
       }
 
@@ -74,8 +76,11 @@
 
               var tempAppList = response.data;
               tempAppList.forEach((element) => {
+                const dayOfWeek = new Date(element.timeSlotDto.startDateTime.substring(0,10)).getDay();    
+                var thisDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
                 var app = {
                   'service': element.serviceDto.name,
+                  'day': thisDay,
                   'date': element.timeSlotDto.startDateTime.substring(0, 10),
                   'start time': element.timeSlotDto.startDateTime.substring(11, 16),
                   'end time': element.timeSlotDto.endDateTime.substring(11, 16),

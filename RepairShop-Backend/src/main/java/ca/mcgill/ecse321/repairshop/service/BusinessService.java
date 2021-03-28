@@ -89,18 +89,20 @@ public class BusinessService {
     @Transactional
     public BusinessDto updateBusiness(String name, String address, String phoneNumber, String email, int numberOfRepairSpots) throws Exception {
 
-        inputValidation(name, address, phoneNumber, email);
 
         List<Business> businesses = businessRepository.findAll();
         if (businesses.size() == 0) throw new Exception("Business not found");
 
         Business business = businesses.get(0);
 
-        business.setName(name);
-        business.setAddress(address);
-        business.setEmail(email);
-        business.setPhoneNumber(phoneNumber);
-        business.setNumberOfRepairSpots(numberOfRepairSpots);
+        if(!name.isEmpty()) business.setName(name);
+        if(!address.isEmpty()) business.setAddress(address);
+        if(!email.isEmpty()) {
+        	validateEmail(email);
+        	business.setEmail(email);
+        }
+        if(!phoneNumber.isEmpty()) business.setPhoneNumber(phoneNumber);
+        if(numberOfRepairSpots != 0) business.setNumberOfRepairSpots(numberOfRepairSpots);
 
         businessRepository.save(business);
         return businessToDto(business);

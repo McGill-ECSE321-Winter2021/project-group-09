@@ -31,6 +31,7 @@
       <pre class="m-0">{{ result }}</pre>
     </b-card>
 
+
   </div>
 </template>
 
