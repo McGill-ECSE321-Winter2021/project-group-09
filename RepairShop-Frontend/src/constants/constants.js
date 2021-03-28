@@ -9,3 +9,7 @@ export const POSSIBLE_APPOINTMENTS_ENDPOINT = "/api/appointment/possibilities";
 export const CREATE_APPOINTMENT_ENDPOINT = "/api/appointment/create";
 export const LOGOUT_ENDPOINT = "/api/authentication/logout";
 export const SERVICE_ENDPOINT = "/api/service";
+export const CHANGE_PASS_TECH = "/api/technician/changePassword/"
+export const CHANGE_PASS_ADMIN = "/api/admin/changePassword/"
+export const CHANGE_PASS_CUS = "/api/customer/changePassword/"
+export const CANCEL_APPOINTMENT_ENDPOINT = "/api/appointment/cancel/"

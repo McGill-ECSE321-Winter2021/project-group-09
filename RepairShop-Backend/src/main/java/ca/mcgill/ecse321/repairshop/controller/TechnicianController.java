@@ -75,7 +75,7 @@ public class TechnicianController {
             Technician technician = technicianRepository.findTechnicianByEmail(email);
             Technician techToAuth = authenticationService.validateTechnicianToken(token);
             if (techToAuth == null || technician == null || !technician.getEmail().equals(techToAuth.getEmail())) {
-                return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Must be logged in as requested technician.", HttpStatus.BAD_REQUEST);
             }
             TechnicianDto tech = techService.changePassword(email, newPassword);
             return new ResponseEntity<>(tech, HttpStatus.OK);

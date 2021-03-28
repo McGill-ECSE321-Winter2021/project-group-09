@@ -1,7 +1,5 @@
 <template>
-
   <b-navbar fixed="top" :sticky="true" type="dark" variant="info">
-
     <b-navbar-brand to="/">Repair Shop</b-navbar-brand>
 
     <b-navbar-nav v-show="!this.$root.$data.email">
@@ -43,19 +41,23 @@
       <b-nav-item to="ViewServices">View Services</b-nav-item>
     </b-navbar-nav>
 
-    <b-navbar-nav class="ml-auto" v-show="this.$root.$data.email">
-      <b-nav-item disabled>Logged in as: {{ this.$root.$data.email }}</b-nav-item>
-      <b-nav-item to="Logout">Logout</b-nav-item>
+    <b-navbar-nav v-show="this.$root.$data.userType == 'Customer'">
+      <b-nav-item to="ViewAppointments">View Your Appointments</b-nav-item>
     </b-navbar-nav>
 
+    <b-navbar-nav class="ml-auto" v-show="this.$root.$data.email">
+      <b-nav-item disabled
+        >Logged in as: {{ this.$root.$data.email }}</b-nav-item
+      >
+      <b-nav-item to="ChangePass">Change Password</b-nav-item>
+      <b-nav-item to="Logout">Logout</b-nav-item>
+    </b-navbar-nav>
   </b-navbar>
-
 </template>
-
 
 <script>
 export default {
-  name: "TopNavbar",
+  name: "TopNavbar"
 };
 
 //
