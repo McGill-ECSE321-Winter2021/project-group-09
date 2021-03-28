@@ -92,7 +92,8 @@ export default {
           console.log(response);
         })
         .catch((e) => {
-          console.log(response);
+          console.log(e);
+          // this.errorViewHolidays = e.response.data;
           this.errorViewHolidays = e.response.data;
         });
     },
@@ -100,22 +101,20 @@ export default {
     //fetches all holidays
     getHolidays() {
       AXIOS.get(ALL_HOLIDAYS_ENDPOINT)
-        .then(response => {
-          this.holidays  = response.data;
-          this.holidays .forEach(item => {
+        .then((response) => {
+          this.holidays = response.data;
+          this.holidays.forEach((item) => {
             this.items.push({
               start: this.displayDateTime(item.timeSlotDto.startDateTime),
-              end: this.displayDateTime(item.timeSlotDto.endDateTime)
+              end: this.displayDateTime(item.timeSlotDto.endDateTime),
             });
           });
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
-          this.errorViewHolidays =e.response.data;
+          this.errorViewHolidays = e.response.data;
         });
-    }
-
-    
+    },
   },
 };
 </script>
