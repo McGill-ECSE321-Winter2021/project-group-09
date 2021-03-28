@@ -27,6 +27,7 @@
       <b-nav-item disabled
         >Logged in as: {{ this.$root.$data.email }}</b-nav-item
       >
+      <b-nav-item to="ChangePass">Change Password</b-nav-item>
       <b-nav-item to="Logout">Logout</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
