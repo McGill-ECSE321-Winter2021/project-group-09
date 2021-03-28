@@ -1,4 +1,3 @@
-
 <template>
   <div id="addServiceForm">
     <h2>Add New Service</h2>
@@ -11,7 +10,7 @@
       </b>
     </p>
 
-    <b-form>
+    <b-form @submit="onSubmit">
       <b-form-group
         id="input-group-1"
         label="Service Name:"
@@ -27,7 +26,7 @@
 
       <b-form-group
         id="input-group-2"
-        label="Duration:" 
+        label="Duration:"
         label-for="input-2"
         description="The integer represents the number of 30 minutes slots"
       >
@@ -55,12 +54,7 @@
         Error: {{ errorAddService }}
       </p>
 
-      <b-button
-        type="submit"
-        variant="primary"
-        @click="createService(form.name.trim(), form.duration, form.price)"
-        >Create Service</b-button
-      >
+      <b-button type="submit" variant="primary">Create Service</b-button>
     </b-form>
   </div>
 </template>
@@ -70,8 +64,7 @@ import axios from "axios";
 
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
-
+  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort
 });
 
 export default {
@@ -80,28 +73,29 @@ export default {
       form: {
         name: "",
         duration: "",
-        price: "",
+        price: ""
       },
       errorAddService: "",
-      successAddService: "",
+      successAddService: ""
     };
   },
   methods: {
-    createService: function (serviceName, serviceDuration, servicePrice) {
+    onSubmit(event) {
+      event.preventDefault();
       AXIOS.post(
         "api/service/create",
         {
-          name: serviceName,
-          duration: serviceDuration,
-          price: servicePrice,
+          name: this.form.name,
+          duration: this.form.duration,
+          price: this.form.price
         },
         {
           headers: {
-            token: this.$root.$data.token,
-          },
+            token: this.$root.$data.token
+          }
         }
       )
-        .then((response) => {
+        .then(response => {
           this.errorAddService = "";
           this.form.name = "";
           this.form.duration = "";
@@ -110,12 +104,12 @@ export default {
           this.successAddService =
             "The new service has been added successfully ✓";
         })
-        .catch((e) => {
+        .catch(e => {
           this.errorAddService = e.response.data;
           this.successAddService = "";
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -7,6 +7,7 @@ import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import ChangePassword from '@/components/ChangePassword'
+import ViewAppointments from "@/components/ViewAppointments"
 import Logout from '@/components/Logout'
 Vue.use(Router)
 
@@ -44,6 +45,10 @@ export default new Router({
       path: '/changePass',
       name: "ChangePassword",
       component: ChangePassword
+    },{
+      path : '/viewAppointments',
+      name: "ViewAppointments",
+      component : ViewAppointments
     }
   ]
 })

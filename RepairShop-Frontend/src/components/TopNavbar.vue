@@ -19,6 +19,10 @@
       <b-nav-item to="ViewServices">View Services</b-nav-item>
     </b-navbar-nav>
 
+    <b-navbar-nav v-show="this.$root.$data.userType == 'Customer'">
+      <b-nav-item to="ViewAppointments">View Your Appointments</b-nav-item>
+    </b-navbar-nav>
+
     <b-navbar-nav class="ml-auto" v-show="this.$root.$data.email">
       <b-nav-item disabled
         >Logged in as: {{ this.$root.$data.email }}</b-nav-item

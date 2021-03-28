@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.repairshop.controller;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentInfoDto;
 import ca.mcgill.ecse321.repairshop.service.AppointmentService;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
+import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public class AppointmentController {
     }
 
     /**
-     * Controller to cancel (delete) an appointment
+     * Controller method to cancel (delete) an appointment
      * @param id ID of the appointment to be deleted
      * @param token for the admin or customer to delete an appointment
      * @return response with a possible error message
@@ -67,6 +68,28 @@ public class AppointmentController {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
             appointmentService.cancelAppointment(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            if (e instanceof TimeConstraintException) {
+                return new ResponseEntity<>("Cant cancel within 7 days.", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Controller method to cancel (delete) an appointment for a customer (checks date)
+     * @param id ID of the appointment to be deleted
+     * @param token for the admin or customer to delete an appointment
+     * @return response with a possible error message
+     */
+    @DeleteMapping("/cancel/customer/{id}")
+    public ResponseEntity<?> cancelCustomerAppointment(@PathVariable("id") Long id, @RequestHeader String token) {
+        try {
+            if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
+            }
+            appointmentService.cancelCustomerAppointment(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
