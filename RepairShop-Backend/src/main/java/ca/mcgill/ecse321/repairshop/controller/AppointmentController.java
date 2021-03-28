@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.repairshop.controller;
 import ca.mcgill.ecse321.repairshop.dto.AppointmentInfoDto;
 import ca.mcgill.ecse321.repairshop.service.AppointmentService;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
+import ca.mcgill.ecse321.repairshop.service.exceptions.TimeConstraintException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +70,10 @@ public class AppointmentController {
             appointmentService.cancelAppointment(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            if (e instanceof TimeConstraintException) {
+                return new ResponseEntity<>("Cant cancel within 7 days.", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
