@@ -55,7 +55,7 @@ public class AppointmentController {
     }
 
     /**
-     * Controller to cancel (delete) an appointment
+     * Controller method to cancel (delete) an appointment
      * @param id ID of the appointment to be deleted
      * @param token for the admin or customer to delete an appointment
      * @return response with a possible error message
@@ -67,6 +67,25 @@ public class AppointmentController {
                 return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
             }
             appointmentService.cancelAppointment(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Controller method to cancel (delete) an appointment for a customer (checks date)
+     * @param id ID of the appointment to be deleted
+     * @param token for the admin or customer to delete an appointment
+     * @return response with a possible error message
+     */
+    @DeleteMapping("/cancel/customer/{id}")
+    public ResponseEntity<?> cancelCustomerAppointment(@PathVariable("id") Long id, @RequestHeader String token) {
+        try {
+            if (authenticationService.validateAdminToken(token) == null && authenticationService.validateCustomerToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as admin or customer.", HttpStatus.BAD_REQUEST);
+            }
+            appointmentService.cancelCustomerAppointment(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

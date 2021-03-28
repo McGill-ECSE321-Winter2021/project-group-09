@@ -305,9 +305,6 @@ public class AppointmentService {
     public void cancelAppointment(Long appointmentID) {
         Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
         if (appointment.isPresent()) {
-            if (SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), -7).compareTo(SystemTime.getCurrentDateTime()) < 0) {
-                throw new TimeConstraintException("Can only cancel 1 week in advance.");
-            }
             Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
             Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
             if (customer.isPresent() && tech.isPresent()) {
@@ -351,6 +348,22 @@ public class AppointmentService {
         } else {
             throw new EntityNotFoundException("Cannot find the appointment by ID.");
         }
+
+    }
+
+    /**
+     * Deletes an appointment by ID for a customer (checks date)
+     *
+     * @param appointmentID ID of appointment
+     */
+    public void cancelCustomerAppointment(Long appointmentID) {
+
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
+        if (appointment.isPresent()) {
+            if (SystemTime.addOrSubtractDays(appointment.get().getTimeSlot().getStartDateTime(), -7).compareTo(SystemTime.getCurrentDateTime()) < 0)
+                throw new TimeConstraintException("Can only cancel 1 week in advance.");
+            else cancelAppointment(appointmentID);
+        } else throw new EntityNotFoundException("Cannot find the appointment by ID.");
 
     }
 }
