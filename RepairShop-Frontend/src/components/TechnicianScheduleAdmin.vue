@@ -1,6 +1,8 @@
 <template>
   <div id="technicianSchedule">
 
+    <h1>Technician's weekly schedule</h1>
+
     <div id="dataInput">
       <b-form @submit="getSchedule">
 
@@ -95,15 +97,22 @@
               
               tempSchedule = response.data;
               tempSchedule.forEach((thisDayTime) => {
-                var day = thisDayTime.startDateTime.substring(0, 10).getDay();
-                var dayTime = day + thisDayTime.startDateTime.substring(11, 16) + thisDayTime.endDateTime.substring(11, 16);
+                var date = thisDayTime.startDateTime.substring(0,10);
+                console.log(date);
+
+                const dayOfWeek = new Date(date).getDay();    
+                var day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+
+                var dayTime = day + " from " + thisDayTime.startDateTime.substring(11, 16) + " to " + thisDayTime.endDateTime.substring(11, 16);
                 formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
 
             }
             
+
             
+
           },
           error => {
             console.log(error.response.data); 
