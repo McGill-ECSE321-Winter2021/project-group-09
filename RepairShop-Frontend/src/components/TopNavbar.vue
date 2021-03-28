@@ -21,6 +21,10 @@
       <b-nav-item to="ViewServices">View Services</b-nav-item>
     </b-navbar-nav>
 
+    <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
+      <b-nav-item to="ViewDeleteHoliday">Holidays: View and Delete</b-nav-item>
+    </b-navbar-nav>
+
     <b-navbar-nav class="ml-auto" v-show="this.$root.$data.email">
       <b-nav-item disabled>Logged in as: {{ this.$root.$data.email }}</b-nav-item>
       <b-nav-item to="Logout">Logout</b-nav-item>

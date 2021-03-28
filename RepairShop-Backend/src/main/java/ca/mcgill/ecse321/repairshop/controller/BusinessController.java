@@ -87,7 +87,7 @@ public class BusinessController {
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(),  HttpStatus.NOT_FOUND);
         }
     }
 

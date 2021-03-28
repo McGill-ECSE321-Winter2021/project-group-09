@@ -9,3 +9,5 @@ export const POSSIBLE_APPOINTMENTS_ENDPOINT = "/api/appointment/possibilities";
 export const CREATE_APPOINTMENT_ENDPOINT = "/api/appointment/create";
 export const LOGOUT_ENDPOINT = "/api/authentication/logout";
 export const SERVICE_ENDPOINT = "/api/service";
+export const ALL_HOLIDAYS_ENDPOINT = "/api/business/holidays";
+export const DELETE_HOLIDAY_ENDPOINT = "/api/business/delete/holidays";

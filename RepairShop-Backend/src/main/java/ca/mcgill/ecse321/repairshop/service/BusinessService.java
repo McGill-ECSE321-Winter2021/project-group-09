@@ -209,6 +209,8 @@ public class BusinessService {
             holidaysDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
         }
 
+        if (holidays.size() == 0) throw new Exception("There are currently no holidays");
+
         return holidaysDtoList;
     }
 
