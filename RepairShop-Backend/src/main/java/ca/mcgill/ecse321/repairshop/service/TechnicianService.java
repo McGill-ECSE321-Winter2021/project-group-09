@@ -156,8 +156,8 @@ public class TechnicianService {
 			throw new Exception("Technician not found.");
 		}
 
-		//delete technician's work hours
-		tech.setTimeslots(null);
+		// Delete schedule and cancel associated appointments
+		deleteSchedule(email);
 
 		technicianRepository.deleteTechnicianByEmail(email);
 

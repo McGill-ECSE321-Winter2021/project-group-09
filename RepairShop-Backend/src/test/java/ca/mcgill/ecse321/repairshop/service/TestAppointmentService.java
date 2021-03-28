@@ -644,8 +644,7 @@ public class TestAppointmentService {
     @Test
     public void testCancelAppointmentTooLate() {
         SystemTime.setTestTime(Timestamp.valueOf(INITIAL_TIME.plusDays(21)));
-        assertThrows(TimeConstraintException.class,
-                () -> appointmentService.cancelAppointment(1L)
+        assertThrows(TimeConstraintException.class, () -> appointmentService.cancelCustomerAppointment(1L)
         );
     }
 

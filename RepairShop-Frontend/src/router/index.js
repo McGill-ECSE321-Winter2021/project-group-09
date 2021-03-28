@@ -8,6 +8,8 @@ import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
 
+import ChangePassword from '@/components/ChangePassword'
+import ViewAppointments from "@/components/ViewAppointments"
 import Logout from '@/components/Logout'
 Vue.use(Router)
 
@@ -45,6 +47,14 @@ export default new Router({
       path: '/viewDeleteHoliday',
       name: 'View and Delete Holidays',
       component : ViewDeleteHoliday
+    }, {
+      path: '/changePass',
+      name: "ChangePassword",
+      component: ChangePassword
+    },{
+      path : '/viewAppointments',
+      name: "ViewAppointments",
+      component : ViewAppointments
     }
   ]
 })
