@@ -7,13 +7,13 @@
           <div v-if="formSection == 1">
 
             <b-form-group label="Select a technician" class="mt-4">
-                <b-form-radio v-for="t in technicians" :key="t.email" v-model="technicianEmail" name="technician" :value="t.email">
+                <b-form-radio v-for="t in technicians" :key="t.email" v-model="technicianEmail" name="technicianEmail" :value="t.email">
                   {{ t.email }}
                 </b-form-radio>
                 <p v-show="technicians.length === 0">There are currently no technicians available.</p>
             </b-form-group>
 
-            <p class="mt-3">Selected technician: {{ technician }}</p>
+            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
 
             <b-button variant="outline-primary" class="mt-3" :disabled="!technicianEmail" @click="toPart2">Next</b-button>
 
@@ -21,7 +21,7 @@
 
           <div v-if="formSection == 2">
 
-            <p class="mt-3">Selected technician: {{ technician }}</p>
+            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
 
             <b-form-group label="Pick a time slot to remove" class="mt-4">
                 <b-form-radio v-for="h in workHours" :key="h.startDateTime" v-model="hours" name="hours" :value="h">
@@ -30,13 +30,13 @@
                 <p v-show="workHours.length === 0">There are currently no time slots available.</p>
             </b-form-group>
 
-            <p class="mt-3">Selected hours: {{ displayDayTime(h.startDateTime) + " to " + displayDayTime(h.endDateTime) }}</p>
+            <p class="mt-3">Selected hours: {{ hours.startDateTime ? displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) : '' }}</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
-            <b-button variant="outline-primary" class="mt-3" :disabled="!hours" @click="toPart3">Next</b-button>
+            <b-button variant="outline-primary" class="mt-3" :disabled="!hours.startDateTime" @click="toPart3">Next</b-button>
 
-            <b-form-group label="Or remove their entire schedule" class="mt-3 form-inline">
-              <b-button variant="outline-danger" class="ml-3" @click="nextDeleteSchedule">Delete Schedule</b-button>
+            <b-form-group label="Or remove their entire schedule" class="mt-4">
+              <b-button variant="outline-danger" @click="nextDeleteSchedule">Delete Schedule</b-button>
             </b-form-group>
 
           </div>
@@ -44,9 +44,9 @@
           <div v-if="formSection == 3">
 
             <p class="mb-3">Confirm your modification</p>
-            <p class="mt-3">Selected technician: {{ technician }}</p>
+            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
             <p class="mt-3" v-if="deleteSchedule">Decision: Delete their entire schedule</p>
-            <p class="mt-3" v-else>Selected hours time: {{ displayDayTime(h.startDateTime) + " to " + displayDayTime(h.endDateTime) }}</p>
+            <p class="mt-3" v-else>Selected hours: {{ hours.startDateTime ? displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) : '' }}</p>
             <p class="mt-3">Please note that this cannot be undone.</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
@@ -55,7 +55,7 @@
           </div>
 
           <div v-if="formSection == 4" class="text-center">
-            <p class="mb-3" v-if="deleteSchedule">{{ technician + "'s schedule has been deleted."}}</p>
+            <p class="mb-3" v-if="deleteSchedule">{{ technicianEmail + "'s schedule has been deleted."}}</p>
             <p class="mb-3" v-else>The selected hours have been deleted.</p>
             <p class="mb-3">The selected hours have been deleted.</p>
             <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
@@ -82,7 +82,7 @@
       return {
         error: '',
         appError: '',
-        technician: '',
+        technicianEmail: '',
         technicians: [],
         targetDate: '',
         hours: { startDateTime: '', endDateTime: '' },
@@ -94,7 +94,9 @@
 
     created: function () {
       // get all technicians
-      axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'all').then(r => {
+      axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'all', {
+        headers: { "token": this.$root.$data.token }
+    }).then(r => {
         this.technicians = r.data;
         this.appError = '';
       }).catch(e => {
@@ -107,10 +109,10 @@
       toPart1() { this.formSection = 1; },
       
       toPart2() {
-        if (this.technician) {
-            deleteSchedule = false;
+        if (this.technicianEmail) {
+            this.deleteSchedule = false;
             // Get work hours
-            axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + technicianEmail + 'work_hours', {
+            axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + this.technicianEmail + '/work_hours', {
                 headers: { "token": this.$root.$data.token }
             }).then(r => {
                 this.workHours = r.data;
@@ -124,7 +126,7 @@
       },
 
       toPart3() {
-        if (this.hours || deleteSchedule) this.formSection = 3;
+        if (this.hours || this.deleteSchedule) this.formSection = 3;
         else this.error = 'Please select a time slot';
       },
 
@@ -136,14 +138,14 @@
       },
 
       nextDeleteSchedule() {
-          deleteSchedule = true;
-          this.toPart3();
+        this.deleteSchedule = true;
+        this.toPart3();
       },
 
       deleteTargetHours() {
-        if (deleteSchedule) {
+        if (this.deleteSchedule) {
             // Delete entire schedule
-            axios.delete(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/schedule/' + technicianEmail, {
+            axios.delete(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/schedule/' + this.technicianEmail, {
                 headers: { "token": this.$root.$data.token }
             }).then(r => {
                 this.formSection = 4;
@@ -154,7 +156,7 @@
             });
         } else {
             // Delete specific work hours
-            axios.delete(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + technicianEmail, {
+            axios.delete(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + this.technicianEmail, {
                 "startDateTime": this.hours.startDateTime,
                 "endDateTime": this.hours.endDateTime
             }, {
@@ -174,7 +176,7 @@
 
     watch: {
       // if a value is set, reset error
-      technician: function (val, oldVal) {
+      technicianEmail: function (val, oldVal) {
         if (oldVal === '') this.error = '';
       },
       hours: function (val, oldVal) {

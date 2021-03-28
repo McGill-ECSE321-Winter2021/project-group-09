@@ -307,7 +307,9 @@ public class TechnicianService {
 		Technician technician = technicianRepository.findTechnicianByEmail(email);
 		if (technician == null) throw new Exception("Technician not found.");
 
-		for (Appointment appointment : technician.getAppointments()) {
+		List<Appointment> appointments = technician.getAppointments();
+
+		for (Appointment appointment : appointments) {
 			// Appointments are removed from technician when cancelled
 			appointmentService.cancelAppointment(appointment.getAppointmentID());
 		}
