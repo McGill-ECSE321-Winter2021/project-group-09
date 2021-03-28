@@ -15,7 +15,7 @@
 
             <p class="mt-3">Selected service: {{ service }}</p>
 
-            <b-button variant="outline-primary" class="mt-3" :disabled="services.length === 0" @click="toPart2">Next</b-button>
+            <b-button variant="outline-primary" class="mt-3" :disabled="!service" @click="toPart2">Next</b-button>
 
           </div>
 
@@ -37,7 +37,7 @@
             </b-form-group>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
-            <b-button variant="outline-primary" class="mt-3" :disabled="availableTimes.length === 0" @click="toPart3">Next</b-button>
+            <b-button variant="outline-primary" class="mt-3" :disabled="!start" @click="toPart3">Next</b-button>
 
           </div>
 
@@ -86,7 +86,6 @@
         targetDate: '',
         start: { startDateTime: '', endDateTime: '' },
         availableTimes: [],
-        customerEmail: '',
         formSection: 1
       }
     },

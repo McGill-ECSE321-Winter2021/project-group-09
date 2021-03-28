@@ -13,3 +13,4 @@ export const CHANGE_PASS_TECH = "/api/technician/changePassword/"
 export const CHANGE_PASS_ADMIN = "/api/admin/changePassword/"
 export const CHANGE_PASS_CUS = "/api/customer/changePassword/"
 export const CANCEL_APPOINTMENT_ENDPOINT = "/api/appointment/cancel/"
+export const TECHNICIAN_ENDPOINT = "/api/technician/";

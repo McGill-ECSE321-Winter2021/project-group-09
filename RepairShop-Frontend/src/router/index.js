@@ -7,8 +7,10 @@ import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import ChangePassword from '@/components/ChangePassword'
-import ViewAppointments from "@/components/ViewAppointments"
+import ViewAppointments from '@/components/ViewAppointments'
 import Logout from '@/components/Logout'
+import ModifyTechHours from '@/components/ModifyTechHours'
+
 Vue.use(Router)
 
 export default new Router({
@@ -49,6 +51,10 @@ export default new Router({
       path : '/viewAppointments',
       name: "ViewAppointments",
       component : ViewAppointments
+    }, {
+      path: '/modifyHours',
+      name: 'Modify Technician Hours',
+      component: ModifyTechHours
     }
   ]
 })
