@@ -35,7 +35,7 @@
                   </b-form-radio>
               </b-form-group>
 
-              <p class="mt-3">Selected hours: {{ hours.startDateTime ? displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) : '' }}</p>
+              <p class="mt-3" v-show="hours.startDateTime">Selected hours: {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
 
             </div>
 
@@ -44,18 +44,13 @@
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
             <b-button variant="outline-primary" class="mt-3" :disabled="!hours.startDateTime" @click="toPart3">Next</b-button>
 
-            <b-form-group v-show="workHours.length" label="Or remove their entire schedule" class="mt-4">
-              <b-button variant="outline-danger" @click="nextDeleteSchedule">Delete Schedule</b-button>
-            </b-form-group>
-
           </div>
 
           <div v-if="formSection == 3">
 
             <p class="mb-3">Confirm your modification</p>
             <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
-            <p class="mt-3" v-if="deleteSchedule">Decision: Delete their entire schedule</p>
-            <p class="mt-3" v-else>Selected hours: {{ hours.startDateTime ? displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) : '' }}</p>
+            <p class="mt-3">Selected hours: {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
             <p class="mt-3">Please note that this cannot be undone.</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
@@ -64,8 +59,7 @@
           </div>
 
           <div v-if="formSection == 4" class="text-center">
-            <p class="mb-3 text-success" v-if="deleteSchedule">{{ technicianEmail + "'s schedule has been deleted."}}</p>
-            <p class="mb-3 text-success" v-else>The selected hours have been deleted.</p>
+            <p class="mb-3 text-success">The selected hours have been deleted.</p>
             <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
           </div>
 
@@ -95,7 +89,6 @@
         targetDate: '',
         hours: { startDateTime: '', endDateTime: '' },
         workHours: [],
-        deleteSchedule: false,
         formSection: 1
       }
     },
@@ -118,7 +111,6 @@
       
       toPart2() {
         if (this.technicianEmail) {
-            this.deleteSchedule = false;
             // Get work hours
             axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + this.technicianEmail + '/work_hours', {
                 headers: { "token": this.$root.$data.token }
@@ -134,7 +126,7 @@
       },
 
       toPart3() {
-        if (this.hours || this.deleteSchedule) this.formSection = 3;
+        if (this.hours) this.formSection = 3;
         else this.error = 'Please select a time slot';
       },
 
@@ -145,39 +137,20 @@
         else return date.slice(0, 3) + " at " + date.slice(16, 21);
       },
 
-      nextDeleteSchedule() {
-        this.deleteSchedule = true;
-        this.toPart3();
-      },
-
       deleteTargetHours() {
-        if (this.deleteSchedule) {
-            // Delete entire schedule
-            axios.delete(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/schedule/' + this.technicianEmail, {
-                headers: { "token": this.$root.$data.token }
-            }).then(r => {
-                this.formSection = 4;
-                this.appError = '';
-            }).catch(e => {
-                if (e.response.status == 400) this.appError = e.response.data;
-                else this.appError = e;
-            });
-        } else {
-            // Delete specific work hours
-            axios.post(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + this.technicianEmail, {
-                "startDateTime": this.hours.startDateTime,
-                "endDateTime": this.hours.endDateTime
-            }, {
-                headers: { "token": this.$root.$data.token }
-            }).then(r => {
-                this.formSection = 4;
-                this.appError = '';
-            }).catch(e => {
-                if (e.response.status == 400) this.appError = e.response.data;
-                else this.appError = e;
-            });
-        }
-        
+        // Delete specific work hours
+        axios.post(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + this.technicianEmail, {
+            "startDateTime": this.hours.startDateTime,
+            "endDateTime": this.hours.endDateTime
+        }, {
+            headers: { "token": this.$root.$data.token }
+        }).then(r => {
+            this.formSection = 4;
+            this.appError = '';
+        }).catch(e => {
+            if (e.response.status == 400) this.appError = e.response.data;
+            else this.appError = e;
+        });
       }
 
     },

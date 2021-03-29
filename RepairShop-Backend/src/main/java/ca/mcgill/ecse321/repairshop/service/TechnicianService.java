@@ -4,7 +4,6 @@ package ca.mcgill.ecse321.repairshop.service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -464,9 +463,8 @@ public class TechnicianService {
 	public void cancelTechAppointment(Long appointmentID) {
 		Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
 		if (appointment.isPresent()) {
-			Optional<Technician> tech = technicianRepository.findById(appointment.get().getTechnician().getEmail());
 			Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
-			if (customer.isPresent() && tech.isPresent()) {
+			if (customer.isPresent()) {
 
 				//Remove timeslot from timeslot repository
 				timeSlotRepository.deleteById(appointment.get().getTimeSlot().getTimeSlotID());
