@@ -104,10 +104,10 @@ export default {
           this.holidays = response.data;
           this.holidays.forEach((item) => {
             this.items.push({
-              //start: this.displayDateTime(item.timeSlotDto.startDateTime),
-              //end: this.displayDateTime(item.timeSlotDto.endDateTime),
-              start: this.displayDateTime(item.startDateTime),
-              end: this.displayDateTime(item.endDateTime)
+              // start: this.displayDateTime(item.timeSlotDto.startDateTime),
+              // end: this.displayDateTime(item.timeSlotDto.endDateTime),
+              "Start Date": this.displayDateTime(item.startDateTime), 
+              "End Date": this.displayDateTime(item.endDateTime)
 
             });
           });
