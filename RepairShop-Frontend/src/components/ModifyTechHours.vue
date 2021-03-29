@@ -6,14 +6,19 @@
 
           <div v-if="formSection == 1">
 
-            <b-form-group label="Select a technician" class="mt-4">
-                <b-form-radio v-for="t in technicians" :key="t.email" v-model="technicianEmail" name="technicianEmail" :value="t.email">
-                  {{ t.email }}
-                </b-form-radio>
-                <p v-show="technicians.length === 0">There are currently no technicians available.</p>
-            </b-form-group>
+            <div v-if="technicians.length">
 
-            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+              <b-form-group label="Select a technician" class="mt-4">
+                  <b-form-radio v-for="t in technicians" :key="t.email" v-model="technicianEmail" name="technicianEmail" :value="t.email">
+                    {{ t.email }}
+                  </b-form-radio>
+              </b-form-group>
+
+              <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+
+            </div>
+
+            <p v-else class="text-danger">There are currently no technicians available.</p>
 
             <b-button variant="outline-primary" class="mt-3" :disabled="!technicianEmail" @click="toPart2">Next</b-button>
 
@@ -23,19 +28,23 @@
 
             <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
 
-            <b-form-group label="Pick a time slot to remove" class="mt-4">
-                <b-form-radio v-for="h in workHours" :key="h.startDateTime" v-model="hours" name="hours" :value="h">
-                  {{ displayDayTime(h.startDateTime) + " to " + displayDayTime(h.endDateTime) }}
-                </b-form-radio>
-                <p v-show="workHours.length === 0">There are currently no time slots available.</p>
-            </b-form-group>
+            <div v-if="workHours.length">
+              <b-form-group label="Pick a time slot to remove" class="mt-4">
+                  <b-form-radio v-for="h in workHours" :key="h.startDateTime" v-model="hours" name="hours" :value="h">
+                    {{ displayDayTime(h.startDateTime) + " to " + displayDayTime(h.endDateTime) }}
+                  </b-form-radio>
+              </b-form-group>
 
-            <p class="mt-3">Selected hours: {{ hours.startDateTime ? displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) : '' }}</p>
+              <p class="mt-3">Selected hours: {{ hours.startDateTime ? displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) : '' }}</p>
+
+            </div>
+
+            <p v-else class="mt-3 text-danger">There are currently no time slots available.</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
             <b-button variant="outline-primary" class="mt-3" :disabled="!hours.startDateTime" @click="toPart3">Next</b-button>
 
-            <b-form-group label="Or remove their entire schedule" class="mt-4">
+            <b-form-group v-show="workHours.length" label="Or remove their entire schedule" class="mt-4">
               <b-button variant="outline-danger" @click="nextDeleteSchedule">Delete Schedule</b-button>
             </b-form-group>
 
@@ -55,8 +64,8 @@
           </div>
 
           <div v-if="formSection == 4" class="text-center">
-            <p class="mb-3" v-if="deleteSchedule">{{ technicianEmail + "'s schedule has been deleted."}}</p>
-            <p class="mb-3" v-else>The selected hours have been deleted.</p>
+            <p class="mb-3 text-success" v-if="deleteSchedule">{{ technicianEmail + "'s schedule has been deleted."}}</p>
+            <p class="mb-3 text-success" v-else>The selected hours have been deleted.</p>
             <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
           </div>
 
