@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.repairshop.service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -312,18 +313,18 @@ public class TechnicianService {
 
 		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
 
-		List<Appointment> appointments;
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		if (technician == null) throw new Exception("Technician not found.");
 
-		try {
-			appointments = technicianRepository.findTechnicianByEmail(email).getAppointments();
-		} catch (Exception e) {
-			throw new Exception("Technician not found.");
-		}
+		List<Appointment> appointments = technician.getAppointments();
 
 		// Appointments are removed from technician when cancelled
 		for (Appointment appointment : appointments) {
 			appointmentService.cancelAppointment(appointment.getAppointmentID());
 		}
+		
+		technician.setTimeslots(Collections.emptyList());
+		technicianRepository.save(technician);
 		
 		return email + "'s schedule has been removed.";
 	}
@@ -364,6 +365,9 @@ public class TechnicianService {
 
 				//remove it from technician's list
 				technician.setAppointments(finalAppointments);
+
+				workHours.remove(hours);
+				technician.setTimeslots(workHours);
 				technicianRepository.save(technician);
 
 				return "Requested work hours were removed.";
