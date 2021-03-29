@@ -7,7 +7,6 @@ import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
-
 import ChangePassword from '@/components/ChangePassword'
 import ViewAppointments from "@/components/ViewAppointments"
 import Logout from '@/components/Logout'
