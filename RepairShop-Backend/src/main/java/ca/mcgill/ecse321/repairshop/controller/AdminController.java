@@ -2,6 +2,10 @@ package ca.mcgill.ecse321.repairshop.controller;
 
 import java.util.List;
 
+import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
+import ca.mcgill.ecse321.repairshop.model.Admin;
+import ca.mcgill.ecse321.repairshop.model.Technician;
+import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,9 @@ public class AdminController {
 
 	@Autowired
 	AuthenticationService authenticationService;
+
+	@Autowired
+	AdminRepository adminRepository;
 	
 	/**
 	 * POST request to create a new administrator
@@ -117,6 +124,25 @@ public class AdminController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
+	}
+
+
+	@PostMapping("/changePassword/{email}")
+	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestBody String newPassword, @RequestHeader String token) {
+
+		try {
+			Admin admin = adminRepository.findAdminByEmail(email);
+			Admin adminToAuth = authenticationService.validateAdminToken(token);
+			if (adminToAuth == null || admin == null || !admin.getEmail().equals(admin.getEmail())) {
+				return new ResponseEntity<>("Must be logged in as  requested admin.", HttpStatus.BAD_REQUEST);
+			}
+			AdminDto adminDto = adminService.changePassword(email, newPassword);
+			return new ResponseEntity<>(adminDto, HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+
 	}
 	
 	

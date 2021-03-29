@@ -50,14 +50,10 @@ public class TestCustomerService {
 	
 	@Mock
 	private AppointmentRepository appRepo;
-	
-	
+
 	@InjectMocks
 	private CustomerService service;
-	
-	
-	
-	
+
 	private static final String CUSTOMER_NAME = "ABCD";
 	private static final String CUSTOMER_EMAIL = "someone@gmail.com";
 	private static final String CUSTOMER_PASSWORD = "fSHBlfsuesefd";
@@ -73,17 +69,15 @@ public class TestCustomerService {
 	private static final Long APP_ID = (long) 312312;
 	
 	
-	private Customer CUSTOMER = new Customer();
-	private Appointment APP = new Appointment();
-	private TimeSlot TIME = new TimeSlot();
-	private Service SERVICE = new Service();
-	private Technician TECHNICIAN = new Technician();
+	private final Customer CUSTOMER = new Customer();
+	private final Appointment APP = new Appointment();
+	private final TimeSlot TIME = new TimeSlot();
+	private final Service SERVICE = new Service();
+	private final Technician TECHNICIAN = new Technician();
 	
-	
-	
+
 	@BeforeEach
 	public void setMockOutput() {
-		
 		
 
 		lenient().when(customerRepo.findAll()).thenAnswer((InvocationOnMock invocation) -> {
@@ -134,34 +128,15 @@ public class TestCustomerService {
 			
 		});
 		
-		
-
-		
-		
 		lenient().when(appRepo.findAppointmentByAppointmentID(anyLong())).thenAnswer((InvocationOnMock invocation) -> {
-			if (invocation.getArgument(0).equals(APP_ID)) {
-				return APP;
-			} else {
-				return null;
-			}
-			
+			if (invocation.getArgument(0).equals(APP_ID)) return APP;
+			else return null;
 		});
-		
-	
-		
-		
-		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-			return invocation.getArgument(0);
-		};
-		
-		lenient().when(customerRepo.save(any(Customer.class))).thenAnswer(returnParameterAsAnswer);
-		
+
+		lenient().when(customerRepo.save(any(Customer.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 	}	
 	
-	
-	
-	
-	
+
 	@Test
 	public void testCreateCustomer() {
 
@@ -183,11 +158,9 @@ public class TestCustomerService {
 		assertNotNull(customer);
 		assertEquals(customerName, customer.getName());
 		assertEquals(customerEmail, customer.getEmail());
-		
-		
+
 	}
 
-	
 	
 	@Test
 	public void testCreateCustomerNull() {
@@ -231,9 +204,7 @@ public class TestCustomerService {
 			//an error should occur
 			assertEquals("Email is already taken.", e.getMessage());
 		}
-		
-	
-		
+
 	}
 	
 	
@@ -257,8 +228,7 @@ public class TestCustomerService {
 		assertEquals(CUSTOMER_EMAIL, customer.getEmail());
 		
 	}
-	
-	
+
 	
 	@Test
 	public void testChangePasswordNull() {
@@ -284,8 +254,7 @@ public class TestCustomerService {
 			assertEquals("Customer not found.", e.getMessage());
 		}
 	}
-	
-	
+
 	
 	@Test
 	public void testGetCustomer() {
@@ -305,10 +274,8 @@ public class TestCustomerService {
 		
 		
 	}
-	
-	
-	
-	
+
+
 	@Test
 	public void testGetCustomerNull() {
 		
@@ -321,8 +288,7 @@ public class TestCustomerService {
 		}
 		
 	}
-	
-	
+
 	
 	@Test
 	public void testGetNonExistentCustomer() {
@@ -340,8 +306,7 @@ public class TestCustomerService {
 		
 		
 	}
-	
-	
+
 	
 	@Test              //not sure if this test is correct
 	public void testDeleteCustomer() {
@@ -358,8 +323,7 @@ public class TestCustomerService {
 
 	}
 	
-	
-	
+
 	
 	@Test
 	public void testDeleteCustomerNull() {
@@ -375,9 +339,7 @@ public class TestCustomerService {
 		
 	}
 	
-	
-	
-	
+
 	@Test
 	public void testDeleteNonExistentCustomer() {
 		String email = "abc@gmail.com";
@@ -394,8 +356,6 @@ public class TestCustomerService {
 	}
 	
 
-	
-	
 	@Test
 	public void testGetAllCustomers() {
 		
@@ -405,12 +365,10 @@ public class TestCustomerService {
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
-		
 
 	}
 	
-	
-	
+
 	
 	@Test
 	public void testViewAppointment() {
@@ -429,11 +387,5 @@ public class TestCustomerService {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }
