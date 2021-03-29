@@ -20,7 +20,7 @@
             <template #cell(delete)="row">
               <b-button
                 size="sm"
-                v-on:click="deleteHoliday(row.item.start, row.item.end)"
+                v-on:click="deleteHoliday(row.item.startDateTime, row.item.endDateTime)"
                 class="mr-2"
                 variant="danger"
               >
@@ -74,7 +74,7 @@ export default {
     },
     //Deletes holiday by start date and start time, forcing a component refresh once list is updated
     deleteHoliday(start, end) {
-      AXIOS.delete(
+      AXIOS.post(
         DELETE_HOLIDAY_ENDPOINT,
         {
           startDateTime: start,
@@ -104,10 +104,10 @@ export default {
           this.holidays = response.data;
           this.holidays.forEach((item) => {
             this.items.push({
-              // start: this.displayDateTime(item.timeSlotDto.startDateTime),
-              // end: this.displayDateTime(item.timeSlotDto.endDateTime),
               "Start Date": this.displayDateTime(item.startDateTime), 
-              "End Date": this.displayDateTime(item.endDateTime)
+              "End Date": this.displayDateTime(item.endDateTime),
+               "startDateTime": item.startDateTime, 
+              "endDateTime":item.endDateTime
 
             });
           });

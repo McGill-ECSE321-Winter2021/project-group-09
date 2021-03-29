@@ -117,7 +117,7 @@ public class BusinessController {
      * @param token of the admin
      * @return a list of all holidays
      */
-    @DeleteMapping("/delete/holidays")
+    @PostMapping("/delete/holidays")
     public ResponseEntity<?> deleteHoliday(@RequestBody TimeSlotDto timeSlot, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {
