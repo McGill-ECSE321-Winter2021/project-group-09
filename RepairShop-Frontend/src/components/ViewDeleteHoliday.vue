@@ -93,7 +93,6 @@ export default {
         })
         .catch((e) => {
           console.log(e);
-          // this.errorViewHolidays = e.response.data;
           this.errorViewHolidays = e.response.data;
         });
     },
@@ -105,14 +104,17 @@ export default {
           this.holidays = response.data;
           this.holidays.forEach((item) => {
             this.items.push({
-              start: this.displayDateTime(item.timeSlotDto.startDateTime),
-              end: this.displayDateTime(item.timeSlotDto.endDateTime),
+              //start: this.displayDateTime(item.timeSlotDto.startDateTime),
+              //end: this.displayDateTime(item.timeSlotDto.endDateTime),
+              start: this.displayDateTime(item.startDateTime),
+              end: this.displayDateTime(item.endDateTime)
+
             });
           });
         })
         .catch((e) => {
           console.log(e);
-          this.errorViewHolidays = e.response.data;
+         this.errorViewHolidays = e.response.data;
         });
     },
   },
