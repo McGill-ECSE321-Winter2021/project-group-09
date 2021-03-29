@@ -346,7 +346,7 @@ public class TechnicianService {
 
 		List<TimeSlot> workHours = technician.getTimeslots();
 		List<Appointment> appointments = technician.getAppointments();
-		List<Appointment> finalAppointments = new ArrayList<>();
+		List<Appointment> finalAppointments = new ArrayList<>(appointments);
 
 		// Remove all appointments within timeslot and the timeslot itself
 		for (TimeSlot hours : workHours) {
@@ -357,9 +357,9 @@ public class TechnicianService {
 				for (Appointment appointment : appointments) {
 					TimeSlot adjustedApp = getUpdatedHours(appointment.getTimeSlot(), hours.getStartDateTime());
 					if (!hours.getStartDateTime().after(adjustedApp.getStartDateTime()) && !hours.getEndDateTime().before(adjustedApp.getEndDateTime())) {
-
 						cancelTechAppointment(appointment.getAppointmentID());
-					} else finalAppointments.add(appointment);
+						finalAppointments.remove(appointment);
+					}
 				}
 
 				//remove it from technician's list
