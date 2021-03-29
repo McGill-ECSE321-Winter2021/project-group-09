@@ -1,124 +1,102 @@
 <template>
-  <div id="technicianAppointments">
-
-    <h1>Upcoming Appointments</h1>
-
-    <div id="AppButton">
-      <b-button type="button" variant="primary" @click="getAppointments">Get Appointments</b-button>
-    </div>
-
-    
-    <div>
-        <b-table :fields="fields" :items="items" responsive="sm">
-
-            <template #cell(index)="data">
-                {{ data.index + 1 }}
-            </template>
-
-        </b-table>
-    </div>
-
-
-    <b-card class="mt-3" header="Message">
-      <pre class="m-0">{{ message }}</pre>
-    </b-card>
-
-
+  <div id="ViewAppointments">
+    <h2>Your Appointments</h2>
+    <template>
+      <div>
+        <div v-if="errorViewServices">
+          <span v-if="errorViewServices" style="color: red">
+            {{ errorViewServices }}
+          </span>
+        </div>
+        <div v-else>
+          <b-table
+            :items="items"
+            :fields="fields"
+            :outlined="true"
+            :key="this.items.length"
+          />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-  import {
-    LOCALHOST_BACKEND
-  } from "../constants/constants";
-  import axios from "axios";
-  
-  
-  export default {
-    data() {
-      return {
-        message : "",
-        fields: [
-          'index',
-          'day',
-          'date',
-          'service',
-          'start time',
-          'end time',
-          'customer name'
-        ],
-        
-        items: [
-            { 'service': 'default', 'day': 'default', 'date': 'default', 'start time': 'default', 'end time': 'default', 'customer name': "default"},
-        ]
-      }
+import axios from "axios";
+var config = require("../../config");
+var AXIOS = axios.create({
+  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort
+});
 
-    },
-  
-     
-    methods: {
+export default {
+  data() {
+    return {
+      errorViewServices: "",
+      appointments: [],
+      fields: ["ID", "Service", "start", "end"],
+      items: [],
+      idToDateTimeMap: {}
+    };
+  },
 
-      getAppointments(event){
-        var url = LOCALHOST_BACKEND + "/api/technician/" + this.$root.$data.email + "/appointments";
-        var appList = [];
-
-        axios.get(url, 
-        {
-          headers: {
-            token: this.$root.$data.token
-          }
-        }).then(
-          response => {
-            
-            if(response.data === "No upcoming appointments"){
-              this.message = response.data;
-            } else{
-
-              var tempAppList = response.data;
-              tempAppList.forEach((element) => {
-                const dayOfWeek = new Date(element.timeSlotDto.startDateTime.substring(0,10)).getDay();    
-                var thisDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
-                var app = {
-                  'service': element.serviceDto.name,
-                  'day': thisDay,
-                  'date': element.timeSlotDto.startDateTime.substring(0, 10),
-                  'start time': element.timeSlotDto.startDateTime.substring(11, 16),
-                  'end time': element.timeSlotDto.endDateTime.substring(11, 16),
-                  'customer name': element.customerDto.name
-                }
-                appList.push(app);
-              });
-
-              
-              this.items = appList;
-                    
-            }
-            
-          },
-          error => {
-            console.log(error.response.data); 
-          }
+  //fetch all of this technician's appointments and display them in a table
+  created: function() {
+    this.getAppointments();
+  },
+  methods: {
+    // Should output something like "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)" given a timestamp
+    displayDateTime(dateTime) {
+      let date = new Date(dateTime).toString();
+      if (date == "Invalid Date") return "";
+      else
+        return (
+          date.slice(0, 10) +
+          ", " +
+          date.slice(11, 15) +
+          " at " +
+          date.slice(16, 21)
         );
+    },
+    //checks if an appointment (by id) is at least a week away from today
+    checkIfWeekAhead(id) {
+      let target = new Date(this.idToDateTimeMap[id]);
+      target.setDate(target.getDate() - 7);
+      if (target > new Date()) return true;
+      return false;
+    },
+    //fetches all of technician's appointments
+    getAppointments() {
+      AXIOS.get("/api/technician/" + this.$root.$data.email + "/appointments", {
+        headers: {
+          token: this.$root.$data.token
+        }
+      })
+        .then(response => {
+          this.appointments = response.data;
 
-        
-      }
-
+          this.appointments.forEach(item => {
+            this.items.push({
+              ID: item.appointmentID,
+              Service: item.serviceDto.name,
+              start: this.displayDateTime(item.timeSlotDto.startDateTime),
+              end: this.displayDateTime(item.timeSlotDto.endDateTime)
+            });
+            this.idToDateTimeMap[item.appointmentID] =
+              item.timeSlotDto.startDateTime;
+          });
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   }
-    
-  
+};
 </script>
 
 <style>
-#technicianAppointments {
-  margin-top: 5%;
+#ViewAppointments {
+  margin-top: 4%;
   margin-left: 5%;
   margin-right: 5%;
-}
-#AppButton {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
 }
 </style>
