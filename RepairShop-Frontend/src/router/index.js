@@ -6,8 +6,9 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
-import AddHoliday from '@components/AddHoliday'
+import AddHoliday from '@/components/AddHoliday'
 import Logout from '@/components/Logout'
+import ViewHolidays from '@/components/ViewHolidays'
 
 Vue.use(Router)
 
@@ -45,6 +46,10 @@ export default new Router({
       path: '/addHoliday',
       name: 'Add Holiday',
       component : AddHoliday
+    }, {
+      path: '/viewHolidays',
+      name: 'View Holidays',
+      component : ViewHolidays
     }
   ]
 })

@@ -1,60 +1,35 @@
+
 <template>
-  <div id="addServiceForm">
-    <h2>Add New Service</h2>
+  <div id="addHolidayForm">
+    <h2>Add New Holiday</h2>
 
     <p>
-      <b>
-        <span v-if="successAddService" style="color: #04571b">
-          {{ successAddService }}
+      <strong>
+        <span v-if="successAddHoliday" style="color: #04571b">
+          {{ successAddHoliday }}
         </span>
-      </b>
+      </strong>
     </p>
 
     <b-form @submit="onSubmit">
-      <b-form-group
-        id="input-group-1"
-        label="Service Name:"
-        label-for="input-1"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.name"
-          placeholder="Enter Service Name"
-          required
-        ></b-form-input>
-      </b-form-group>
+    <div>
+        <b-form-group class="d-inline mr-5" 
+            label="Start Date:"
+        >
+            <b-calendar v-model="startDate" @context="onCalandarStartDateTime" locale="en-US"></b-calendar>
+        </b-form-group>
 
-      <b-form-group
-        id="input-group-2"
-        label="Duration:"
-        label-for="input-2"
-        description="The integer represents the number of 30 minutes slots"
-      >
-        <b-form-input
-          type="number"
-          id="input-2"
-          v-model="form.duration"
-          placeholder="Enter Integer"
-          required
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group class="d-inline"
+            label="End Date:"
+        >
+            <b-calendar v-model="endDate" @context="onCalandarEndDateTime" locale="en-US"></b-calendar>
+        </b-form-group>
+    </div>
+        <p v-if="errorAddHoliday" style="color: red">
+            Error: {{ errorAddHoliday}}
+        </p>
 
-      <b-form-group id="input-group-3" label="Price ($):" label-for="input-3">
-        <b-form-input
-          type="number"
-          step="0.01"
-          id="input-3"
-          v-model="form.price"
-          placeholder="Enter Price"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <p v-if="errorAddService" style="color: red">
-        Error: {{ errorAddService }}
-      </p>
-
-      <b-button type="submit" variant="primary">Create Service</b-button>
+        <b-button type="submit" variant="primary"> Add Holiday</b-button>
     </b-form>
   </div>
 </template>
@@ -70,52 +45,52 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      form: {
-        name: "",
-        duration: "",
-        price: ""
-      },
-      errorAddService: "",
-      successAddService: ""
+        startDate: "", // specific format
+        endDate: "",
+        calandarStartDateTime : "", //  bunch of different formats from calandar
+        calandarEndDateTime : "",
+        errorAddHoliday: "",
+        successAddHoliday: ""
     };
   },
   methods: {
     onSubmit(event) {
       event.preventDefault();
       AXIOS.post(
-        "api/service/create",
+        "api/business/create/holidays",
         {
-          name: this.form.name,
-          duration: this.form.duration,
-          price: this.form.price
+          startDateTime : this.calandarStartDateTime.activeDate,
+          endDateTime : this.calandarEndDateTime.activeDate
         },
         {
           headers: {
             token: this.$root.$data.token
           }
-        }
-      )
+        })
         .then(response => {
-          this.errorAddService = "";
-          this.form.name = "";
-          this.form.duration = "";
-          this.form.price = "";
+          this.errorAddHoliday = "";
 
-          this.successAddService =
-            "The new service has been added successfully ✓";
+          this.successAddHoliday =
+            "The new holiday has been added successfully ✓";
         })
         .catch(e => {
-          this.errorAddService = e.response.data;
-          this.successAddService = "";
+          this.errorAddHoliday = e.response.data;
+          this.successAddHoliday = "";
         });
+    },
+    onCalandarStartDateTime(startDateTime) {
+        this.calandarStartDateTime = startDateTime
+    },
+    onCalandarEndDateTime(endDateTime) {
+        this.calandarEndDateTime = endDateTime
     }
   }
 };
 </script>
 
 <style>
-#addServiceForm {
-  margin-top: 4%;
+#addHolidayForm {
+  margin-top: 5%;
   margin-left: 5%;
   margin-right: 5%;
 }
