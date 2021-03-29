@@ -29,11 +29,9 @@
     </b-navbar-nav>
 
     <b-navbar-nav>
-      <b-nav-item
-        to="technician_schedule_admin"
-        v-show="this.$root.$data.userType === 'Admin'"
-        >Technician Schedules</b-nav-item
-      >
+      <b-nav-item to="technician_schedule_admin" v-show="this.$root.$data.userType === 'Admin'">
+        Technician Schedules
+      </b-nav-item>
     </b-navbar-nav>
 
     <b-navbar-nav v-show="this.$root.$data.userType == 'Customer'">
@@ -44,7 +42,7 @@
       <b-nav-item to="AddService">Add Service</b-nav-item>
     </b-navbar-nav>
 
-    <b-navbar-nav>
+    <b-navbar-nav v-show="this.$root.$data.email">
       <b-nav-item to="ViewServices">View Services</b-nav-item>
     </b-navbar-nav>
 

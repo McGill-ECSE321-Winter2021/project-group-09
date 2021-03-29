@@ -5,21 +5,17 @@
     <div id="dataInput">
       <b-form @submit="getSchedule">
         <div id="techEmailInput">
-          <label for="tech-email">Enter technician's email</label>
-          <b-form-input
-            id="tech-email"
-            v-model="techEmail"
-            type="email"
-          ></b-form-input>
+          <b-form-group label="Select a technician" class="mt-4">
+                <b-form-radio v-for="tech in technicians" :key="tech.email" v-model="techEmail" :value="tech.email">
+                  {{ "Name: " + tech.name + " (Email: " + tech.email + ")"}}
+                </b-form-radio>
+                <p v-show="technicians.length === 0">No technicians registered.</p>
+            </b-form-group>
         </div>
 
         <div id="datePicker">
           <label for="schedule-datepicker">Choose a date</label>
-          <b-form-datepicker
-            id="schedule-datepicker"
-            v-model="date"
-            class="mb-2"
-          ></b-form-datepicker>
+          <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2" :date-disabled-fn="dateDisabled"></b-form-datepicker>
         </div>
 
         <b-button type="submit" variant="primary">Get Schedule</b-button>
@@ -27,20 +23,18 @@
     </div>
 
     <div>
-      <b-table :fields="fields" :items="items" responsive="sm">
-        <!-- A virtual column -->
-        <template #cell(index)="data">
-          {{ data.index + 1 }}
-        </template>
 
+      <b-table :fields="fields" :items="items" responsive="sm">
         <!-- A virtual composite column -->
         <template #cell(dayTime)="data"> {{ data.item }}. </template>
       </b-table>
+
     </div>
 
-    <b-card class="mt-3" header="Message">
-      <pre class="m-0">{{ message }}</pre>
-    </b-card>
+    <p v-if="noAppointments" style="color: blue">{{ noAppointments }}</p>
+    <p v-else-if="errorAppointments" style="color: red">{{ errorAppointments }}</p>
+
+
   </div>
 </template>
 
@@ -51,15 +45,36 @@ import axios from "axios";
 export default {
   data() {
     return {
+      technicians: [],
       techEmail: "",
-      message: "",
+      noAppointments: "",
+      errorAppointments: "",
       date: "",
       fields: ["index", { key: "dayTime", label: "Day and Time" }],
       items: ["Default", "Default"]
     };
   },
 
+  created: function () {
+      let url = LOCALHOST_BACKEND + "/api/technician/all"
+      axios.get(url, {
+                  headers: {
+                    token: this.$root.$data.token
+                  }
+        }).then(response => {
+          this.technicians = response.data
+      }).catch(error => {
+        this.errorAppointments = error;
+      });
+  },
+
   methods: {
+
+    dateDisabled(ymd, date){
+      const weekday = date.getDay();
+      return weekday != 1;
+    },
+
     getSchedule(event) {
       event.preventDefault();
       var url =
@@ -80,9 +95,11 @@ export default {
         .then(
           response => {
             var formattedSchedule = [];
+            this.noAppointments = "";
+            this.errorAppointments = "";
 
             if (response.data === "No upcoming appointments") {
-              this.message = response.data;
+              this.noAppointments = response.data;
             } else {
               tempSchedule = response.data;
               tempSchedule.forEach(thisDayTime => {
@@ -90,22 +107,9 @@ export default {
                 console.log(date);
 
                 const dayOfWeek = new Date(date).getDay();
-                var day = [
-                  "Sunday",
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday"
-                ][dayOfWeek];
+                var day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayOfWeek];
 
-                var dayTime =
-                  day +
-                  " from " +
-                  thisDayTime.startDateTime.substring(11, 16) +
-                  " to " +
-                  thisDayTime.endDateTime.substring(11, 16);
+                var dayTime = day + " from " + thisDayTime.startDateTime.substring(11, 16) + " to " + thisDayTime.endDateTime.substring(11, 16);
                 formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
@@ -113,6 +117,7 @@ export default {
           },
           error => {
             console.log(error.response.data);
+            this.errorAppointments = error.response.data;
           }
         );
     }

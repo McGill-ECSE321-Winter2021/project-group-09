@@ -6,31 +6,24 @@
       <b-form @submit="getSchedule">
         <div>
           <label for="schedule-datepicker">Choose a date</label>
-          <b-form-datepicker
-            id="schedule-datepicker"
-            v-model="date"
-            class="mb-2"
-          ></b-form-datepicker>
+          <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2" :date-disabled-fn="dateDisabled"></b-form-datepicker>
         </div>
         <b-button type="submit" variant="primary">Get Schedule</b-button>
       </b-form>
     </div>
 
     <div>
-      <b-table :fields="fields" :items="items" responsive="sm">
-        <!-- A virtual column -->
-        <template #cell(index)="data">
-          {{ data.index + 1 }}
-        </template>
 
+      <b-table :fields="fields" :items="items" responsive="sm">
         <!-- A virtual composite column -->
         <template #cell(dayTime)="data"> {{ data.item }}. </template>
       </b-table>
+
     </div>
 
-    <b-card class="mt-3" header="Message">
-      <pre class="m-0">{{ message }}</pre>
-    </b-card>
+    <p v-if="noAppointments" style="color: blue">{{ noAppointments }}</p>
+
+
   </div>
 </template>
 
@@ -41,7 +34,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      message: "",
+      noAppointments: "",
       date: "",
       fields: ["index", { key: "dayTime", label: "Day and Time" }],
       items: ["Default", "Default"]
@@ -49,6 +42,12 @@ export default {
   },
 
   methods: {
+
+    dateDisabled(ymd, date){
+      const weekday = date.getDay();
+      return weekday != 1;
+    },
+
     getSchedule(event) {
       event.preventDefault();
       var url =
@@ -74,7 +73,7 @@ export default {
             var formattedSchedule = [];
 
             if (response.data === "No upcoming appointments") {
-              this.message = response.data;
+              this.noAppointments = response.data;
             } else {
               tempSchedule = response.data;
               tempSchedule.forEach(thisDayTime => {
@@ -82,22 +81,9 @@ export default {
                 console.log(date);
 
                 const dayOfWeek = new Date(date).getDay();
-                var day = [
-                  "Sunday",
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday"
-                ][dayOfWeek];
+                var day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayOfWeek];
 
-                var dayTime =
-                  day +
-                  " from " +
-                  thisDayTime.startDateTime.substring(11, 16) +
-                  " to " +
-                  thisDayTime.endDateTime.substring(11, 16);
+                var dayTime = day + " from " + thisDayTime.startDateTime.substring(11, 16) + " to " + thisDayTime.endDateTime.substring(11, 16);
                 formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
