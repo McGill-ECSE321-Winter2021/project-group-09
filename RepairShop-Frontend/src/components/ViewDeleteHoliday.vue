@@ -72,7 +72,7 @@ export default {
           date.slice(16, 21)
         );
     },
-    //Deletes holiday by start date and start time, forcing a component refresh once list is updated
+    //Deletes holiday by start date and end date, forcing a component refresh once list is updated
     deleteHoliday(start, end) {
       AXIOS.post(
         DELETE_HOLIDAY_ENDPOINT,
