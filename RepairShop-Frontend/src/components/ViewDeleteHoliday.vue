@@ -4,11 +4,21 @@
 
     <template>
       <div>
-        <div v-if="errorViewHolidays">
-          <span v-if="errorViewHolidays" style="color: red">
-            {{ errorViewHolidays }}
+
+
+    <p>  
+          <span v-if="successDeleteHoliday" style="color: #04571b">
+            {{ successDeleteHoliday }}
+          </span>
+
+    </p>
+
+        <div v-if="errorViewDeleteHolidays">
+          <span v-if="errorViewDeleteHolidays" style="color: red">
+            {{ errorViewDeleteHolidays }}
           </span>
         </div>
+   
 
         <div v-else>
           <b-table
@@ -48,7 +58,8 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      errorViewHolidays: "",
+      errorViewDeleteHolidays: "",
+      successDeleteHoliday: "",
       holidays: [],
       fields: ["Start Date", "End Date", "delete"],
       items: [],
@@ -90,10 +101,12 @@ export default {
           this.items = [];
           this.getHolidays();
           console.log(response);
+          this.successDeleteHoliday = "The holiday has been deleted successfully ✓ ";
+
         })
         .catch((e) => {
           console.log(e);
-          this.errorViewHolidays = e.response.data;
+          this.errorViewDeleteHolidays = e.response.data;
         });
     },
 
@@ -104,20 +117,21 @@ export default {
           this.holidays = response.data;
           this.holidays.forEach((item) => {
             this.items.push({
-              "Start Date": this.displayDateTime(item.startDateTime), 
+              "Start Date": this.displayDateTime(item.startDateTime),
               "End Date": this.displayDateTime(item.endDateTime),
-               "startDateTime": item.startDateTime, 
-              "endDateTime":item.endDateTime
-
+              startDateTime: item.startDateTime,
+              endDateTime: item.endDateTime,
             });
           });
         })
         .catch((e) => {
           console.log(e);
-         this.errorViewHolidays = e.response.data;
+          if (e.response.status == 400 || e.response.status == 404)
+            this.errorViewDeleteHolidays = e.response.data;
+          else this.errorViewDeleteHolidays = e;
         });
-    },
-  },
+    }
+  }
 };
 </script>
     
