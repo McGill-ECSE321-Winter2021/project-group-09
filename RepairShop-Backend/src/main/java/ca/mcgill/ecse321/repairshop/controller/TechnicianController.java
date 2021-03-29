@@ -264,7 +264,7 @@ public class TechnicianController {
      * @param token         of the admin
      * @return whether the specific work schedule was removed successfully
      */
-    @DeleteMapping("/delete/hours/{email}")
+    @PostMapping("/delete/hours/{email}")
     public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotDto timeSlotDto, @RequestHeader String token) {
 
         try {

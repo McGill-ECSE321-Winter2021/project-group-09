@@ -57,7 +57,6 @@
           <div v-if="formSection == 4" class="text-center">
             <p class="mb-3" v-if="deleteSchedule">{{ technicianEmail + "'s schedule has been deleted."}}</p>
             <p class="mb-3" v-else>The selected hours have been deleted.</p>
-            <p class="mb-3">The selected hours have been deleted.</p>
             <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
           </div>
 
@@ -156,7 +155,7 @@
             });
         } else {
             // Delete specific work hours
-            axios.delete(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + this.technicianEmail, {
+            axios.post(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + this.technicianEmail, {
                 "startDateTime": this.hours.startDateTime,
                 "endDateTime": this.hours.endDateTime
             }, {
