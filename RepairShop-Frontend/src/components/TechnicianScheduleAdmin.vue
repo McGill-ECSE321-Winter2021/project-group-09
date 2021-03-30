@@ -77,14 +77,15 @@ export default {
 
     getSchedule(event) {
       event.preventDefault();
-      var url =
-        LOCALHOST_BACKEND + "/api/technician/" + this.techEmail + "/schedule";
+      this.noAppointments = "";
+      this.errorAppointments = "";
+
+      this.items = ["Default", "Default"]
+      var url = LOCALHOST_BACKEND + "/api/technician/" + this.techEmail + "/schedule";
       var tempSchedule = [];
 
       axios
-        .get(
-          url,
-          //changed wekStartDate to header. Need to test if it works
+        .get(url,
           {
             headers: {
               weekStartDate: this.date,
@@ -117,7 +118,7 @@ export default {
           },
           error => {
             console.log(error.response.data);
-            this.errorAppointments = error.response.data;
+            this.errorAppointments = "Something went wrong. Please try again.";
           }
         );
     }

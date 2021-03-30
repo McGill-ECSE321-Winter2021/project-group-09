@@ -406,69 +406,101 @@ public class TestBusinessService {
 
     }
     
-    /*
-
-    @Test
-    public void testMissingNameUpdateBusiness() {
-        String newName = "";
-        String error = null;
-        BusinessDto business = null;
-        try {
-            business = businessService.updateBusiness(newName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-        assertNull(business);
-        assertEquals("Business name cannot be empty!", error);
-    }
     
 
     @Test
-    public void testMissingAddressUpdateBusiness() {
-        String address = "";
+    public void testMissingNameUpdateBusiness() {
+    	String newName = "";
+        String newAddress = "Update address";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(BUSINESS_NAME, address, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(BUSINESS_NAME, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-        assertEquals("Address cannot be empty!", error);
+        
+    }
+    
+    
+    @Test
+    public void testMissingAddressUpdateBusiness() {
+    	String newName = "New Name";
+        String newAddress = "";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
+        String error = null;
+        BusinessDto business = null;
+        try {
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(newName, business.getName());
+            assertEquals(BUSINESS_ADDRESS, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
+        } catch (Exception e) {
+            error = e.getMessage();
+        }
     }
     
 
     @Test
     public void testMissingPhoneNumberUpdateBusiness() {
-        String phoneNumber = "";
+    	String newName = "New Name";
+        String newAddress = "Update address";
+        String newPhoneNumber = "";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, phoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(newName, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-        assertEquals("Phone number cannot be empty!", error);
     }
 
 
     @Test
     public void testMissingEmailUpdateBusiness() {
-        String email = "";
+    	String newName = "New Name";
+        String newAddress = "Update address";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "";
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, email, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(newName, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(BUSINESS_EMAIL, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-
-        assertEquals("Email cannot be empty!", error);
     }
     
-    */
+    
 
     @Test
     public void testInvalidEmailNoAtSignUpdateBusiness() {
@@ -513,80 +545,98 @@ public class TestBusinessService {
         assertEquals("Invalid email", error);
     }
 
-    /*
-    @Test
-    public void testNullIDUpdateBusiness() {
-        String error = null;
-        BusinessDto business = null;
-        try {
-            business = businessService.updateBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
-        } catch (Exception e) {
-            error = e.getMessage();
-        }
-        assertNull(business);
-        assertEquals("Business ID cannot be empty!", error);
-    }
+    
 
-	*/
-
-    /*
+    
     @Test
     public void testNullNameUpdateBusiness() {
-        String nullBusinessName = null;
+    	String newName = "";
+        String newAddress = "Update address";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(BUSINESS_NAME, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-        assertEquals("Business name cannot be empty!", error);
     }
 
     @Test
     public void testNullAddressUpdateBusiness() {
-        String nullAddress = null;
+    	String newName = "New Name";
+        String newAddress = null;
+        String newPhoneNumber = "Update phone number";
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(newName, business.getName());
+            assertEquals(BUSINESS_ADDRESS, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-        assertEquals("Address cannot be empty!", error);
     }
 
     
     @Test
     public void testNullPhoneNumberUpdateBusiness() {
-        String nullPhoneNumber = null;
+    	String newName = "New Name";
+        String newAddress = "Update address";
+        String newPhoneNumber = null;
+        String newEmail = "niceEmail@mcgill.ca";
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(newName, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
+            assertEquals(newEmail, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-        assertEquals("Phone number cannot be empty!", error);
     }
 
     @Test
     public void testNullEmailUpdateBusiness() {
-        String nullEmail = null;
+    	String newName = "New Name";
+        String newAddress = "Update address";
+        String newPhoneNumber = "Update phone number";
+        String newEmail = null;
+        int newNbRepairSpots = 100;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.updateBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail, BUSINESS_NUMBER_OF_REPAIR_SPOTS);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            assertEquals(newName, business.getName());
+            assertEquals(newAddress, business.getAddress());
+            assertEquals(newPhoneNumber, business.getPhoneNumber());
+            assertEquals(BUSINESS_EMAIL, business.getEmail());
+            assertEquals(newNbRepairSpots, business.getNumberOfRepairSpots());
+            assertNotNull(business);
         } catch (Exception e) {
             error = e.getMessage();
         }
-        assertNull(business);
-        assertEquals("Email cannot be empty!", error);
     }
-    */
+    
 
     @Test
     public void testUpdateNbRepairSpots() {

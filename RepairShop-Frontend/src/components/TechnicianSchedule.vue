@@ -22,6 +22,7 @@
     </div>
 
     <p v-if="noAppointments" style="color: blue">{{ noAppointments }}</p>
+    <p v-else-if="errorAppointments" style="color: red">{{ errorAppointments }}</p>
 
 
   </div>
@@ -35,8 +36,9 @@ export default {
   data() {
     return {
       noAppointments: "",
+      errorAppointments: "",
       date: "",
-      fields: ["index", { key: "dayTime", label: "Day and Time" }],
+      fields: [{ key: "dayTime", label: "Day and Time" }],
       items: ["Default", "Default"]
     };
   },
@@ -50,6 +52,9 @@ export default {
 
     getSchedule(event) {
       event.preventDefault();
+      this.errorAppointments = "";
+      this.noAppointments = "";
+
       var url =
         LOCALHOST_BACKEND +
         "/api/technician/" +
@@ -91,6 +96,7 @@ export default {
           },
           error => {
             console.log(error.response.data);
+            this.errorAppointments = "Something went wrong. Please try again.";
           }
         );
     }

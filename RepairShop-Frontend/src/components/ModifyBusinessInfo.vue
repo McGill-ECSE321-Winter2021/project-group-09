@@ -105,7 +105,7 @@
                 },
                 error => {
                     console.log(error.response.data);
-                    this.errorModifyBusinessInfo = error.response.data;
+                    this.errorModifyBusinessInfo = "Something went wrong. Please try again.";
                 }
             );
         }

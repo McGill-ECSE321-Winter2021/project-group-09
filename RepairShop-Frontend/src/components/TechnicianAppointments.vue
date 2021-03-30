@@ -33,7 +33,7 @@ export default {
     return {
       errorViewServices: "",
       appointments: [],
-      fields: ["ID", "Service", "start", "end"],
+      fields: ["ID", "Service", "start", "end", "customer"],
       items: [],
       idToDateTimeMap: {}
     };
@@ -73,13 +73,15 @@ export default {
       })
         .then(response => {
           this.appointments = response.data;
+          
 
           this.appointments.forEach(item => {
             this.items.push({
               ID: item.appointmentID,
               Service: item.serviceDto.name,
               start: this.displayDateTime(item.timeSlotDto.startDateTime),
-              end: this.displayDateTime(item.timeSlotDto.endDateTime)
+              end: this.displayDateTime(item.timeSlotDto.endDateTime),
+              customer: item.customerDto.name
             });
             this.idToDateTimeMap[item.appointmentID] =
               item.timeSlotDto.startDateTime;
