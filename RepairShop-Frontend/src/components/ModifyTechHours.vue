@@ -4,7 +4,9 @@
 
           <h2 class="my-4 text-center">Modify a Technician's Work Hours</h2>
 
-          <div v-if="formSection == 1">
+          <div v-if="formSection == 1" class="mt-4">
+
+            <b-link to="deleteHours" class="my-3">Delete hours</b-link>
 
             <div v-if="technicians.length">
 
@@ -24,42 +26,40 @@
 
           </div>
 
-          <div v-if="formSection == 2">
+          <div v-if="formSection == 2" class="mt-4">
 
             <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
 
-            <div v-if="workHours.length">
-              <b-form-group label="Pick a time slot to remove" class="mt-4">
-                  <b-form-radio v-for="h in workHours" :key="h.startDateTime" v-model="hours" name="hours" :value="h">
-                    {{ displayDayTime(h.startDateTime) + " to " + displayDayTime(h.endDateTime) }}
-                  </b-form-radio>
-              </b-form-group>
+            <p class="mt-3">Choose dates and times for the hours to add</p>
 
-              <p class="mt-3" v-show="hours.startDateTime">Selected hours: {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
+            <b-form-group label="Start date and time" description="Times must be rounded to the nearest half hour" class="mt-4 form-inline">
+              <b-form-select v-model="startDate" :options="weekDays"></b-form-select>
+              <b-form-input v-model="startTime" placeholder="Time (HH:MM)" class="mr-3"></b-form-input>
+            </b-form-group>
 
-            </div>
-
-            <p v-else class="mt-3 text-danger">There are currently no time slots available.</p>
+            <b-form-group label="End date and time" description="Times must be rounded to the nearest half hour" class="mt-4 form-inline">
+              <b-form-select v-model="endDate" :options="weekDays"></b-form-select>
+              <b-form-input v-model="endTime" placeholder="Time (HH:MM)" class="mr-3"></b-form-input>
+            </b-form-group>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
-            <b-button variant="outline-primary" class="mt-3" :disabled="!hours.startDateTime" @click="toPart3">Next</b-button>
+            <b-button variant="outline-primary" class="mt-3" @click="toPart3">Next</b-button>
 
           </div>
 
-          <div v-if="formSection == 3">
+          <div v-if="formSection == 3" class="mt-4">
 
             <p class="mb-3">Confirm your modification</p>
             <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
-            <p class="mt-3">Selected hours: {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
-            <p class="mt-3">Please note that this cannot be undone.</p>
+            <p class="mt-3">Selected hours to add: {{ "thingsssssssssssssssssssssssssssssssssssss" }}</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
-            <b-button variant="outline-danger" class="mt-3" @click="deleteTargetHours">Confirm</b-button>
+            <b-button variant="outline-danger" class="mt-3" @click="addHours">Confirm</b-button>
 
           </div>
 
-          <div v-if="formSection == 4" class="text-center">
-            <p class="mb-3 text-success">The selected hours have been deleted.</p>
+          <div v-if="formSection == 4" class="text-center mt-4">
+            <p class="mb-3 text-success">The selected hours have been added.</p>
             <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
           </div>
 
@@ -86,9 +86,22 @@
         appError: '',
         technicianEmail: '',
         technicians: [],
-        targetDate: '',
-        hours: { startDateTime: '', endDateTime: '' },
-        workHours: [],
+        weekDays: [
+          // Using known dates - days of the week will be mapped to future dates
+          { text: "Monday", value: "2021-03-01" },
+          { text: "Tuesday", value: "2021-03-02" },
+          { text: "Wednesday", value: "2021-03-03" },
+          { text: "Thursday", value: "2021-03-04" },
+          { text: "Friday", value: "2021-03-05" },
+          { text: "Saturday", value: "2021-03-06" },
+          { text: "Sunday", value: "2021-03-07" }
+        ],
+        startDate: "2021-03-01", // Default is Monday
+        endDate: "2021-03-01",
+        startTime: "",
+        endTime: "",
+        startTimestamp: "",
+        endTimestamp: "",
         formSection: 1
       }
     },
@@ -111,37 +124,32 @@
       
       toPart2() {
         if (this.technicianEmail) {
-            // Get work hours
-            axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + this.technicianEmail + '/work_hours', {
-                headers: { "token": this.$root.$data.token }
-            }).then(r => {
-                this.workHours = r.data;
-                this.formSection = 2;
-                this.appError = '';
-            }).catch(e => {
-                if (e.response.status == 500) this.appError = e.response.data;
-                else this.appError = e;
-            });
+          this.formSection = 2;
+          this.appError = '';
         } else this.error = 'Please select a technician';
       },
 
-      toPart3() {
-        if (this.hours) this.formSection = 3;
-        else this.error = 'Please select a time slot';
+      toPart3() { 
+        if (this.validateTimes()) this.formSection = 3;
+        else this.error = "Please specify times as HH:MM (ex: 09:00 or 17:30). The start date and time must also be before the end date and time."
       },
 
-      // Convert a Timestamp format (2021-03-02T15:00:00.000+00:00) to "Tue at 10:00" (in local timezone)
-      displayDayTime(dateTime) {
-        let date = new Date(dateTime).toString(); // Result: "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)"
-        if (date == "Invalid Date") return '';
-        else return date.slice(0, 3) + " at " + date.slice(16, 21);
+      validateTimes() {
+        let startTimeCheck = (this.startTime.length === 5 && this.startTime.search(/(0[0-9]|1[0-9]|2[0-3]):[0,3](0)/) === 0);
+        let endTimeCheck = (this.endTime.length === 5 && this.endTime.search(/(0[0-9]|1[0-9]|2[0-3]):[0,3](0)/) === 0);
+        if (startTimeCheck && endTimeCheck) {
+          this.startTimestamp = Date.parse(this.startDate + " " + this.startTime);
+          this.endTimestamp = Date.parse(this.endDate + " " + this.endTime);
+          if (this.startTimestamp > this.endTimestamp) return false;
+          else return true;
+        } else return false;
       },
 
-      deleteTargetHours() {
+      addHours() {
         // Delete specific work hours
-        axios.post(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + 'delete/hours/' + this.technicianEmail, {
-            "startDateTime": this.hours.startDateTime,
-            "endDateTime": this.hours.endDateTime
+        axios.post(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + this.technicianEmail + '/add_time_slot', {
+            "startDateTime": this.startTimestamp,
+            "endDateTime": this.endTimestamp
         }, {
             headers: { "token": this.$root.$data.token }
         }).then(r => {
@@ -160,10 +168,13 @@
       technicianEmail: function (val, oldVal) {
         if (oldVal === '') this.error = '';
       },
-      hours: function (val, oldVal) {
-        if (oldVal === '') this.error = '';
-      }
+      startTime: function (val, oldVal) { this.error = ''; },
+      endTime: function (val, oldVal) { this.error = ''; },
     }
 
   }
 </script>
+
+<style>
+a { cursor: pointer; }
+</style>

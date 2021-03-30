@@ -10,6 +10,7 @@ import ChangePassword from '@/components/ChangePassword'
 import ViewAppointments from '@/components/ViewAppointments'
 import Logout from '@/components/Logout'
 import ModifyTechHours from '@/components/ModifyTechHours'
+import DeleteTechHours from '@/components/DeleteTechHours'
 
 Vue.use(Router)
 
@@ -55,6 +56,10 @@ export default new Router({
       path: '/modifyHours',
       name: 'Modify Technician Hours',
       component: ModifyTechHours
+    }, {
+      path: '/deleteHours',
+      name: 'Delete Technician Hours',
+      component: DeleteTechHours
     }
   ]
 })
