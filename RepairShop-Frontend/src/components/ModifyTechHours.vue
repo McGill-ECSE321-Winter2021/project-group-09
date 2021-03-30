@@ -51,7 +51,7 @@
 
             <p class="mb-3">Confirm your modification</p>
             <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
-            <p class="mt-3">Selected hours to add: {{ "thingsssssssssssssssssssssssssssssssssssss" }}</p>
+            <p class="mt-3">Selected hours to add: {{ displayDay(startDate) + " at " + startTime + " to " + displayDay(endDate) + " at " + endTime }}</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
             <b-button variant="outline-danger" class="mt-3" @click="addHours">Confirm</b-button>
@@ -143,6 +143,12 @@
           if (this.startTimestamp > this.endTimestamp) return false;
           else return true;
         } else return false;
+      },
+
+      displayDay(day) {
+        for (let item of this.weekDays) {
+          if (item.value == day) return item.text;
+        }
       },
 
       addHours() {
