@@ -315,30 +315,6 @@ public class TechnicianService {
 		Technician technician = technicianRepository.findTechnicianByEmail(email);
 		if (technician == null) throw new Exception("Technician not found.");
 
-//		List<Appointment> appointments = technician.getAppointments();
-
-		// Appointments are removed from technician when cancelled
-//		for (Appointment appointment : appointments) {
-//			cancelTechAppointment(appointment.getAppointmentID());
-//		}
-//
-//		// Update hours
-//		List<TimeSlot> hours = new ArrayList<>();
-//		hours.add(null);
-//		hours.remove(0);
-////		addTechnicianWorkHours(email, hours);
-//
-//		Technician updatedTech = technicianRepository.findTechnicianByEmail(email);
-//		updatedTech.setTimeslots(hours);
-//		technicianRepository.save(updatedTech);
-
-//		for (Appointment appointment : appointments) {
-//			appointmentService.cancelAppointment(appointment.getAppointmentID());
-//		}
-//
-//		technician.setTimeslots(Collections.emptyList());
-//		technicianRepository.save(technician);
-
 		for (TimeSlot hours : technician.getTimeslots()) {
 			deleteSpecificWorkHours(email, hours.getStartDateTime(), hours.getEndDateTime());
 		}
