@@ -256,6 +256,25 @@ public class TechnicianController {
         }
     }
 
+    /** Post request to add another time slot for new work hours
+     * @param email of the technician
+     * @param newWorkHours The TimeSlotDto for the work hours to be added
+     * @param token of the admin
+     * @return http response with status of error message
+     */
+    @PostMapping("/{email}/add_time_slot")
+    public ResponseEntity<?> addSpecificWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotDto newWorkHours, @RequestHeader String token) {
+        try {
+            if (authenticationService.validateAdminToken(token) == null)
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+
+            return new ResponseEntity<>(techService.addSpecificWorkHours(email, newWorkHours), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     /**
      * DELETE request to delete a specific technician work hour
      *

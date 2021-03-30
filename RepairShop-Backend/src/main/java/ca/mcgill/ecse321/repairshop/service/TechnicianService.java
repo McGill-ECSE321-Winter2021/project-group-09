@@ -424,6 +424,38 @@ public class TechnicianService {
 		return "Work hours for technician " + email + " successfully added.";
 	}
 
+	/** Add a new TimeSlot to a technician's work hours
+	 * @param email of the technician
+	 * @param newWorkHours The TimeSlotDto for the new work hours to be added
+	 * @return whether the work hours were added successfully
+	 * @throws Exception if the email is empty or the technician is not found
+	 */
+	@Transactional
+	public String addSpecificWorkHours(String email, TimeSlotDto newWorkHours) throws Exception {
+
+		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
+
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		if (technician == null) throw new Exception("The specified Technician could not be found.");
+
+		if (newWorkHours.getStartDateTime().after(newWorkHours.getEndDateTime())) throw new Exception("The end date and time must be after the start date and time.");
+
+		List<TimeSlot> workHours = technician.getTimeslots();
+
+		// Check if hours to be added overlap with existing hours
+		for (TimeSlot hours : workHours) {
+			TimeSlot adjustedHours = getUpdatedHours(hours, newWorkHours.getStartDateTime());
+			if (!newWorkHours.getStartDateTime().after(adjustedHours.getEndDateTime()) && newWorkHours.getEndDateTime().after(adjustedHours.getStartDateTime()))
+				throw new Exception("The specified hours cannot overlap with existing hours.");
+		}
+
+		workHours.add(TimeSlotService.DtoToTimeSlot(newWorkHours));
+
+		technicianRepository.save(technician);
+
+		return "Work hours for technician " + email + " successfully added.";
+	}
+
 
 	/**
 	 * View appointments of a technician.
