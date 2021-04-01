@@ -48,7 +48,7 @@
     <div v-else id="holidayInfo">
 
         <b> The repair shop will be closed on these days:</b>
-
+        
       <b-table
         :items="items"
         :fields="fields"
@@ -102,9 +102,10 @@ export default {
       });
   },
   methods: {
-    // Should output something like "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)" given a timestamp
+    // Should output in format "Tue Mar 02, 2021 10:00" given a timestamp. 
     displayDateTime(dateTime) {
-      let date = new Date(dateTime).toString();
+       
+      let date = new Date(dateTime).toString(); //Output: "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)" given a timestamp
       if (date == "Invalid Date") return "";
       else
         return (
