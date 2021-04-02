@@ -87,7 +87,7 @@ public class BusinessController {
             List<TimeSlotDto> holidaysDtoList = businessService.getAllHolidays();
             return new ResponseEntity<>(holidaysDtoList, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(),  HttpStatus.NOT_FOUND);
         }
     }
 
@@ -117,7 +117,7 @@ public class BusinessController {
      * @param token of the admin
      * @return a list of all holidays
      */
-    @DeleteMapping("/delete/holidays")
+    @PostMapping("/delete/holidays")
     public ResponseEntity<?> deleteHoliday(@RequestBody TimeSlotDto timeSlot, @RequestHeader String token) {
         try {
             if (authenticationService.validateAdminToken(token) == null) {

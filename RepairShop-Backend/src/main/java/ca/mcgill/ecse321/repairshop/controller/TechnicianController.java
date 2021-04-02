@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.repairshop.controller;
 
 import java.util.List;
 
+import ca.mcgill.ecse321.repairshop.dto.TimeSlotListDto;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
@@ -252,13 +253,13 @@ public class TechnicianController {
      * @return http response with status or error message
      */
     @PostMapping("/{email}/add_work_hours")
-    public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody List<TimeSlotDto> timeSlotDtoList, @RequestHeader String token) {
+    public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotListDto timeSlotDtoList, @RequestHeader String token) {
 
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            String message = techService.addTechnicianWorkHours(email, timeSlotDtoList);
+            String message = techService.addTechnicianWorkHours(email, timeSlotDtoList.getTimeSlots());
             return new ResponseEntity<>(message, HttpStatus.OK);
 
         } catch (Exception e) {

@@ -11,9 +11,13 @@ import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import TechnicianScheduleAdmin from '@/components/TechnicianScheduleAdmin'
 
+import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
+import AddHoliday from '@/components/AddHoliday'
 import ChangePassword from '@/components/ChangePassword'
 import ViewAppointments from "@/components/ViewAppointments"
 import Logout from '@/components/Logout'
+import ContactUs from '@/components/ContactUs'
+
 Vue.use(Router)
 
 export default new Router({
@@ -42,10 +46,18 @@ export default new Router({
       path: '/viewServices',
       name: 'View Services',
       component : ViewServices
-    },{
+    }, {
       path: '/logout',
       name: 'Logout',
       component : Logout
+    },{
+      path: '/viewDeleteHoliday',
+      name: 'View and Delete Holidays',
+      component : ViewDeleteHoliday
+    }, {
+      path: '/addHoliday',
+      name: 'Add Holiday',
+      component : AddHoliday
     }, {
       path: '/technician_schedule',
       name: 'technician_schedule',
@@ -70,6 +82,10 @@ export default new Router({
       path : '/viewAppointments',
       name: "ViewAppointments",
       component : ViewAppointments
+    },{
+      path : '/contactUs',
+      name: "Constact Us",
+      component : ContactUs
     }
 
 
