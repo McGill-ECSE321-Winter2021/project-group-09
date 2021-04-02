@@ -192,7 +192,7 @@ public class TechnicianController {
      * @return list of timeslot Dtos
      */
     @GetMapping("/{email}/schedule")
-    public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestBody String weekStartDate, @RequestHeader String token) {
+    public ResponseEntity<?> viewTechnicianSchedule(@PathVariable("email") String email, @RequestHeader String weekStartDate, @RequestHeader String token) {
 
         try {
             Technician technician = technicianRepository.findTechnicianByEmail(email);
@@ -201,7 +201,12 @@ public class TechnicianController {
                 return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
             }
             List<TimeSlotDto> tDtos = techService.viewTechnicianSchedule(email, weekStartDate);
-            return new ResponseEntity<>(tDtos, HttpStatus.OK);
+            if(tDtos.size() > 0) {
+            	return new ResponseEntity<>(tDtos, HttpStatus.OK);
+            }else {
+            	return new ResponseEntity<>("No upcoming appointments", HttpStatus.OK);
+            }
+            
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -227,7 +232,12 @@ public class TechnicianController {
                 return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
             }
             List<AppointmentDto> appDtos = techService.viewAppointments(email);
-            return new ResponseEntity<>(appDtos, HttpStatus.OK);
+            if(appDtos.size() > 0) {
+            	return new ResponseEntity<>(appDtos, HttpStatus.OK);
+            }else {
+            	return new ResponseEntity<>("No upcoming appointments", HttpStatus.OK);
+            }
+            
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

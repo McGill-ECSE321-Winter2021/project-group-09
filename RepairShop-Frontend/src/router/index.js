@@ -4,8 +4,13 @@ import Hello from '@/components/Hello'
 import BookAppointment from '@/components/BookAppointment'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
+import TechnicianSchedule from '@/components/TechnicianSchedule'
+import TechnicianAppointments from '@/components/TechnicianAppointments'
+import ModifyBusinessInfo from '@/components/ModifyBusinessInfo'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
+import TechnicianScheduleAdmin from '@/components/TechnicianScheduleAdmin'
+
 import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
 import AddHoliday from '@/components/AddHoliday'
 import ChangePassword from '@/components/ChangePassword'
@@ -56,6 +61,22 @@ export default new Router({
       name: 'Add Holiday',
       component : AddHoliday
     }, {
+      path: '/technician_schedule',
+      name: 'technician_schedule',
+      component : TechnicianSchedule
+    }, {
+      path: '/technician_appointments',
+      name: 'technician_appointments',
+      component : TechnicianAppointments
+    }, {
+      path: '/modify_business_info',
+      name: 'modify_business_info',
+      component : ModifyBusinessInfo
+    }, {
+      path: '/technician_schedule_admin',
+      name: '/technician_schedule_admin',
+      component: TechnicianScheduleAdmin
+    },{
       path: '/changePass',
       name: "ChangePassword",
       component: ChangePassword
@@ -76,5 +97,8 @@ export default new Router({
       name: "Constact Us",
       component : ContactUs
     }
+
+
+
   ]
 })
