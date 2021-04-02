@@ -4,25 +4,21 @@ package ca.mcgill.ecse321.repairshop.service;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
-import ca.mcgill.ecse321.repairshop.model.Business;
-import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
+import ca.mcgill.ecse321.repairshop.model.*;
+import ca.mcgill.ecse321.repairshop.repository.*;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.model.Appointment;
-import ca.mcgill.ecse321.repairshop.model.Technician;
-import ca.mcgill.ecse321.repairshop.model.TimeSlot;
-import ca.mcgill.ecse321.repairshop.repository.AppointmentRepository;
-import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
-import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
 
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.getUpdatedHours;
@@ -44,7 +40,19 @@ public class TechnicianService {
 	BusinessRepository businessRepository;
 
 	@Autowired
+	AppointmentRepository appointmentRepository;
+
+	@Autowired
+	CustomerRepository customerRepository;
+
+	@Autowired
 	AppointmentService appointmentService;
+
+	@Autowired
+	EmailService emailService;
+
+	@Autowired
+	ReminderService reminderService;
 
 
 	/**
@@ -307,14 +315,9 @@ public class TechnicianService {
 		Technician technician = technicianRepository.findTechnicianByEmail(email);
 		if (technician == null) throw new Exception("Technician not found.");
 
-		for (Appointment appointment : technician.getAppointments()) {
-			// Appointments are removed from technician when cancelled
-			appointmentService.cancelAppointment(appointment.getAppointmentID());
+		for (TimeSlot hours : technician.getTimeslots()) {
+			deleteSpecificWorkHours(email, hours.getStartDateTime(), hours.getEndDateTime());
 		}
-
-		technician.setTimeslots(Collections.emptyList());
-
-		technicianRepository.save(technician);
 		
 		return email + "'s schedule has been removed.";
 	}
@@ -337,6 +340,7 @@ public class TechnicianService {
 
 		List<TimeSlot> workHours = technician.getTimeslots();
 		List<Appointment> appointments = technician.getAppointments();
+		List<Appointment> finalAppointments = new ArrayList<>(appointments);
 
 		// Remove all appointments within timeslot and the timeslot itself
 		for (TimeSlot hours : workHours) {
@@ -347,14 +351,18 @@ public class TechnicianService {
 				for (Appointment appointment : appointments) {
 					TimeSlot adjustedApp = getUpdatedHours(appointment.getTimeSlot(), hours.getStartDateTime());
 					if (!hours.getStartDateTime().after(adjustedApp.getStartDateTime()) && !hours.getEndDateTime().before(adjustedApp.getEndDateTime())) {
-						// Appointment is removed from technician when cancelling an appointment
-						appointmentService.cancelAppointment(appointment.getAppointmentID());
+						cancelTechAppointment(appointment.getAppointmentID());
+						finalAppointments.remove(appointment);
 					}
 				}
+
+				//remove it from technician's list
+				technician.setAppointments(finalAppointments);
 
 				workHours.remove(hours);
 				technician.setTimeslots(workHours);
 				technicianRepository.save(technician);
+
 				return "Requested work hours were removed.";
 			}
 		}
@@ -392,6 +400,38 @@ public class TechnicianService {
 		return "Work hours for technician " + email + " successfully added.";
 	}
 
+	/** Add a new TimeSlot to a technician's work hours
+	 * @param email of the technician
+	 * @param newWorkHours The TimeSlotDto for the new work hours to be added
+	 * @return whether the work hours were added successfully
+	 * @throws Exception if the email is empty or the technician is not found
+	 */
+	@Transactional
+	public String addSpecificWorkHours(String email, TimeSlotDto newWorkHours) throws Exception {
+
+		if (email == null || email.equals("")) throw new Exception("Email cannot be empty.");
+
+		Technician technician = technicianRepository.findTechnicianByEmail(email);
+		if (technician == null) throw new Exception("The specified Technician could not be found.");
+
+		if (newWorkHours.getStartDateTime().after(newWorkHours.getEndDateTime())) throw new Exception("The end date and time must be after the start date and time.");
+
+		List<TimeSlot> workHours = technician.getTimeslots();
+
+		// Check if hours to be added overlap with existing hours
+		for (TimeSlot hours : workHours) {
+			TimeSlot adjustedHours = getUpdatedHours(hours, newWorkHours.getStartDateTime());
+			if (!newWorkHours.getStartDateTime().after(adjustedHours.getEndDateTime()) && newWorkHours.getEndDateTime().after(adjustedHours.getStartDateTime()))
+				throw new Exception("The specified hours cannot overlap with existing hours.");
+		}
+
+		workHours.add(TimeSlotService.DtoToTimeSlot(newWorkHours));
+
+		technicianRepository.save(technician);
+
+		return "Work hours for technician " + email + " successfully added.";
+	}
+
 
 	/**
 	 * View appointments of a technician.
@@ -419,6 +459,56 @@ public class TechnicianService {
 		}
 
 		return appDtos;
+	}
+
+
+	/**
+	 * Deletes an appointment by ID
+	 *
+	 * @param appointmentID ID of appointment
+	 */
+	@Transactional
+	public void cancelTechAppointment(Long appointmentID) {
+		Optional<Appointment> appointment = appointmentRepository.findById(appointmentID);
+		if (appointment.isPresent()) {
+			Optional<Customer> customer = customerRepository.findById(appointment.get().getCustomer().getEmail());
+			if (customer.isPresent()) {
+
+				//Remove timeslot from timeslot repository
+				timeSlotRepository.deleteById(appointment.get().getTimeSlot().getTimeSlotID());
+
+				//delete the appointment and remove it from customer's list
+				appointmentRepository.delete(appointment.get());
+				List<Appointment> cusApps = customer.get().getAppointments();
+				cusApps.removeIf(app -> app.getAppointmentID().equals(appointmentID));
+				customer.get().setAppointments(cusApps);
+				customerRepository.save(customer.get());
+
+				//Send APPOINTMENT CANCELLED email
+				emailService.appointmentCancelledEmail(customer.get().getEmail(), customer.get().getName(),
+						appointment.get().getTimeSlot().getStartDateTime(), appointment.get().getService().getName());
+
+				for (Reminder currReminder : customer.get().getReminders()) {  //Remove all reminders related to this cancelled appointment
+					if (currReminder.getReminderType().equals(ReminderType.ServiceReminder) //same //REMINDER TYPE
+							&& currReminder.getServiceName().equals(appointment.get().getService().getName()) //same SERVICE NAME
+							&& currReminder.getAppointmentDateTime().toString().equals(appointment.get().getTimeSlot().getStartDateTime().toString())) { //same APPT STARTDATETIME
+
+						try {
+							reminderService.deleteReminderById(currReminder.getReminderID()); //delete the reminder
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					}
+				}
+
+			} else {
+				throw new EntityNotFoundException("Cannot find associated customer and technician of appointment.");
+			}
+		} else {
+			throw new EntityNotFoundException("Cannot find the appointment by ID.");
+		}
+
 	}
 
 }
