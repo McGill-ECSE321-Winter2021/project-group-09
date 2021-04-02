@@ -3,7 +3,8 @@
   <div>
     <h1>Add New Holiday</h1>
 
-    <div id="addHolidayForm">
+
+    <div class="inputForm" id="addHolidayForm">
 
       <b-form @submit="onSubmit">
         <div>
@@ -136,21 +137,13 @@ export default {
     }
   },
   watch:{
-    startTime: clearError,
-    endTime: clearError, 
-    startDate: clearError,    
-    endDate:clearError
+    startTime: this.clearError,
+    endTime: this.clearError, 
+    startDate: this.clearError,    
+    endDate:this.clearError
   }
 };
 </script>
 
 <style>
-#addHolidayForm {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div>
       <h1> Register </h1>
-    <div id="registerForm">
+    <div class="inputForm" id="registerForm">
       <b-form @submit="onSubmit" v-if="show">
-        <b-form-group id="input-group-0" label="Full Name:" label-for="input-0">
+        <b-form-group id="input-group-0" label="Full Name:" label-for="input-0" style="width:560px">
           <b-form-input
             id="input-0"
             v-model="form.name"

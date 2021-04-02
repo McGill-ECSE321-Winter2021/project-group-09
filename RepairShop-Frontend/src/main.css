@@ -16,3 +16,12 @@ h1{
     text-align: center;
     margin-top: 2%;
 }
+
+.inputForm{
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

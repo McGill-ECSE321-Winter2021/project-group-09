@@ -1,8 +1,8 @@
 <template>
   <div>
       <h1>Log In</h1>
-    <div id="loginForm">
-      <b-form @submit="onSubmit" v-if="show">
+    <div class="inputForm" id="loginForm">
+      <b-form class="d-inline-block" @submit="onSubmit" v-if="show" style="width:560px">
         <b-form-group
           id="input-group-1"
           label="Email address:"
@@ -120,9 +120,4 @@ export default {
 </script>
 
 <style>
-#loginForm {
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>
