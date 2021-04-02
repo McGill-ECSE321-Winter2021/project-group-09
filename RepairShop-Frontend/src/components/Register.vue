@@ -96,6 +96,90 @@
             required
           ></b-form-input>
         </b-form-group>
+
+        <!-- schedule of technician, only visible if user is admin and selects technician to register -->
+        <div
+          id="techSchedule"
+          v-if="
+            this.$root.$data.userType === 'Admin' &&
+              form.userType === 'Technician'
+          "
+        >
+          <div id="titleContainer">
+            <h1>
+              Technician's work schedule:
+            </h1>
+          </div>
+          Sunday
+          <b-form-timepicker
+            v-model="form.techSchedule[0][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[0][1]"
+            locale="en"
+          ></b-form-timepicker>
+          Monday
+          <b-form-timepicker
+            v-model="form.techSchedule[1][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[1][1]"
+            locale="en"
+          ></b-form-timepicker>
+          Tuesday
+          <b-form-timepicker
+            v-model="form.techSchedule[2][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[2][1]"
+            locale="en"
+          ></b-form-timepicker>
+          Wednesday
+          <b-form-timepicker
+            v-model="form.techSchedule[3][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[3][1]"
+            locale="en"
+          ></b-form-timepicker>
+          Thursday
+          <b-form-timepicker
+            v-model="form.techSchedule[4][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[4][1]"
+            locale="en"
+          ></b-form-timepicker>
+          Friday
+          <b-form-timepicker
+            v-model="form.techSchedule[5][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[5][1]"
+            locale="en"
+          ></b-form-timepicker>
+          Saturday
+          <b-form-timepicker
+            v-model="form.techSchedule[6][0]"
+            locale="en"
+          ></b-form-timepicker>
+          <b-form-timepicker
+            v-model="form.techSchedule[6][1]"
+            locale="en"
+          ></b-form-timepicker>
+        </div>
+        <p v-if="this.techMessageS" style="color: green">
+          Successfully added work hours.
+        </p>
+        <p v-if="this.techMessageF" style="color: red">
+          There was an error
+        </p>
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
@@ -119,7 +203,16 @@ export default {
         address: "",
         email: "",
         password: "",
-        userType: null
+        userType: null,
+        techSchedule: [
+          ["", ""],
+          ["", ""],
+          ["", ""],
+          ["", ""],
+          ["", ""],
+          ["", ""],
+          ["", ""]
+        ]
       },
       userType: [
         { text: "Select One", value: null },
@@ -128,12 +221,68 @@ export default {
         "Technician"
       ],
       userType2: [{ text: "Select One", value: null }, "Customer"],
-      show: true
+      show: true,
+      techMessageS: false,
+      techMessageF: false
     };
   },
   methods: {
+    //builds a list of validly entered work hours
+    createSchedule() {
+      let timeSlotDtos = [];
+      let idx = 0;
+      this.form.techSchedule.forEach(item => {
+        if (item[0] != "" && item[1] != "") {
+          timeSlotDtos.push({
+            startDateTime: this.formatTimeToTimestamp(item[0], idx),
+            endDateTime: this.formatTimeToTimestamp(item[1], idx)
+          });
+        }
+        idx += 1;
+      });
+      return timeSlotDtos;
+    },
+    //formats the time to timestamp with the appropriate date based on 'day' param ( 0 : sunday ... 6: saturday)
+    formatTimeToTimestamp(time, day) {
+      let today = new Date();
+      let todaysDayOfWeek = today.getDay();
+      today.setDate(today.getDate() - (todaysDayOfWeek - day));
+      let dd = String(today.getDate()).padStart(2, "0");
+      let mm = String(today.getMonth() + 1).padStart(2, "0");
+      let yyyy = today.getFullYear();
+      today = yyyy + "-" + mm + "-" + dd;
+      return today + "T" + time + "+00:00";
+    },
+    //send any validly entered time pairs as new work schedules to the technician
+    addWorkHours() {
+      var data = JSON.stringify({ timeSlots: this.createSchedule() });
+      var config = {
+        method: "post",
+        url:
+          "http://localhost:8080/api/technician/" +
+          this.form.email +
+          "/add_work_hours",
+        headers: {
+          token: this.$root.$data.token,
+          "Content-Type": "application/json"
+        },
+        data: data
+      };
+      var that = this;
+      axios(config)
+        .then(function(response) {
+          console.log(JSON.stringify(response.data));
+          that.techMessageS = true;
+        })
+        .catch(function(error) {
+          console.log(error);
+          that.techMessageF = true;
+        });
+    },
     onSubmit(event) {
       event.preventDefault();
+      this.techMessageS = false;
+      this.techMessageF = false;
       let user_url = "";
       //determine which login endpoint to call based on usertype
       switch (this.form.userType) {
@@ -169,7 +318,6 @@ export default {
         )
         .then(
           response => {
-            console.log(response);
             alert(
               "Account created for " +
                 response.data.name +
@@ -177,7 +325,12 @@ export default {
                 response.data.email +
                 ".\nConfirmation email sent.\nProceed to login."
             );
-            console.log(this.loading);
+            if (
+              this.$root.$data.userType === "Admin" &&
+              this.form.userType === "Technician"
+            ) {
+              this.addWorkHours();
+            }
           },
           error => {
             console.log(error);
