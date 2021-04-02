@@ -240,7 +240,6 @@ export default {
         }
         idx += 1;
       });
-      console.log(timeSlotDtos);
       return timeSlotDtos;
     },
     //formats the time to timestamp with the appropriate date based on 'day' param ( 0 : sunday ... 6: saturday)
@@ -257,7 +256,6 @@ export default {
     //send any validly entered time pairs as new work schedules to the technician
     addWorkHours() {
       var data = JSON.stringify({ timeSlots: this.createSchedule() });
-      console.log(data);
       var config = {
         method: "post",
         url:
@@ -301,7 +299,6 @@ export default {
           console.error("Invalid usertype");
           return;
       }
-      console.log(this.$root.$data.token);
       axios
         .post(
           LOCALHOST_BACKEND + user_url,
