@@ -7,12 +7,17 @@
       <b-nav-item to="Register">Register</b-nav-item>
     </b-navbar-nav>
 
+    <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
+      <b-nav-item to="Register">Register New User</b-nav-item>
+    </b-navbar-nav>
+
     <b-navbar-nav v-show="this.$root.$data.userType == 'Customer'">
       <b-nav-item to="book">Book Appointment</b-nav-item>
     </b-navbar-nav>
 
     <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
       <b-nav-item to="AddService">Add Service</b-nav-item>
+      <b-nav-item to="AddHoliday">Add Holiday</b-nav-item>
     </b-navbar-nav>
 
     <b-navbar-nav>
