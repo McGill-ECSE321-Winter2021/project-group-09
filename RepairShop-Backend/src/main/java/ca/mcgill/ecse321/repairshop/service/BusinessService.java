@@ -150,6 +150,20 @@ public class BusinessService {
         Business business = businessRepository.findAll().get(0);
         if (business == null) throw new Exception("Business not found");
 
+        List<TimeSlot> holidaysList = business.getHolidays();
+        for(TimeSlot currHoliday : holidaysList){
+            Timestamp currStart = currHoliday.getStartDateTime();
+            Timestamp currEnd= currHoliday.getEndDateTime();
+
+            //Find target timeslot
+            if (currStart.equals(startDateTime) && currEnd.equals(endDateTime)) {
+                throw new Exception("Holiday already exists");
+            }
+            if (endDateTime.after(currStart) && startDateTime.before(currEnd) ) {
+                throw new Exception("Current Holiday overlaps with another one");
+            }
+        }
+
         TimeSlot newHoliday = new TimeSlot();
         newHoliday.setStartDateTime(startDateTime);
         newHoliday.setEndDateTime(endDateTime);
