@@ -2,7 +2,7 @@
 <template>
   <div>
     <h1>View Services</h1>
-    <div id="ViewServices">
+    <div class="inputForm" id="ViewServices">
       <template>
         <div>
           <div v-if="errorViewServices">
@@ -11,7 +11,7 @@
             </span>
           </div>
           <div v-else>
-            <b-table :items="items" :fields="fields" :outlined="true">
+            <b-table :items="items" :fields="fields" :outlined="true" style="width:800px">
             </b-table>
           </div>
         </div>
@@ -59,9 +59,4 @@ export default {
 </script>
 
 <style>
-#ViewServices {
-  margin-top: 4%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>
