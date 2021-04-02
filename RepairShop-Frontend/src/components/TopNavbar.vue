@@ -29,9 +29,13 @@
     </b-navbar-nav>
 
     <b-navbar-nav>
-      <b-nav-item to="technician_schedule_admin" v-show="this.$root.$data.userType === 'Admin'">
+      <b-nav-item
+        to="technician_schedule_admin"
+        v-show="this.$root.$data.userType === 'Admin'"
+      >
         Technician Schedules
       </b-nav-item>
+    </b-navbar-nav>
     <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
       <b-nav-item to="Register">Register New User</b-nav-item>
     </b-navbar-nav>
@@ -74,7 +78,7 @@
 
 <script>
 export default {
-  name: "TopNavbar"
+  name: "TopNavbar",
 };
 
 //
