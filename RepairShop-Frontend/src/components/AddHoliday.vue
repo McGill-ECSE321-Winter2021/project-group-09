@@ -1,7 +1,9 @@
 
 <template>
+<div>
+  <h1>Add New Holiday</h1> 
+
   <div id="addHolidayForm">
-    <h2>Add New Holiday</h2>
 
     <p>
       <strong>
@@ -32,6 +34,8 @@
         <b-button type="submit" variant="primary"> Add Holiday</b-button>
     </b-form>
   </div>
+</div>
+
 </template>
 
 <script>

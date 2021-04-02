@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div id="titleContainer">
-      <h1>
-        Register
-      </h1>
-    </div>
+      <h1> Register </h1>
     <div id="registerForm">
       <b-form @submit="onSubmit" v-if="show">
         <b-form-group id="input-group-0" label="Full Name:" label-for="input-0">
@@ -351,11 +347,5 @@ export default {
   margin-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
-}
-#titleContainer {
-  margin-top: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>

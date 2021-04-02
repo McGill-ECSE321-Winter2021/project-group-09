@@ -1,8 +1,9 @@
-<template>
-    <main class="container py-4">
+<template>   
+<div>
+  <h1>Delete a Technician's Work Hours</h1>
+      <main class="container py-4">
         <div class="mx-auto my-4" style="max-width: 600px">
 
-          <h2 class="my-4 text-center">Delete a Technician's Work Hours</h2>
 
           <div v-if="formSection == 1">
 
@@ -68,6 +69,7 @@
 
         </div>
     </main>
+</div>
 </template>
 
 <script>

@@ -1,6 +1,7 @@
 <template>
-  <div id="addServiceForm">
-    <h2>Add New Service</h2>
+<div>
+  <h1>Add New Service</h1>
+<div id="addServiceForm">
 
     <p>
       <b>
@@ -57,6 +58,8 @@
       <b-button type="submit" variant="primary">Create Service</b-button>
     </b-form>
   </div>
+</div>
+  
 </template>
 
 <script>

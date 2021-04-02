@@ -1,6 +1,7 @@
 <template>
+
   <div id="ViewAppointments">
-    <h2>Your Appointments</h2>
+    <h1>View Appointments</h1>
     <template>
       <div>
         <div v-if="errorViewServices">

@@ -1,6 +1,7 @@
 <template>
-  <div id="technicianSchedule">
-    <h1>Weekly schedule</h1>
+<div>
+      <h1>Weekly schedule</h1>
+ <div id="technicianSchedule">
 
     <div id="datePicker">
       <b-form @submit="getSchedule">
@@ -26,6 +27,8 @@
 
 
   </div>
+</div>
+ 
 </template>
 
 <script>

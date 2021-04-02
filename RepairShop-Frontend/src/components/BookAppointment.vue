@@ -1,9 +1,9 @@
 <template>
-    <main class="container py-4">
+<div>
+     <h1>Book an Appointment</h1>
+
+      <main class="container py-4">
         <div class="mx-auto my-4" style="max-width: 600px">
-
-          <h2 class="my-4 text-center">Book an Appointment</h2>
-
           <div v-if="formSection == 1">
 
             <b-form-group label="Select a service" class="mt-4">
@@ -63,6 +63,7 @@
 
         </div>
     </main>
+</div>
 </template>
 
 <script>

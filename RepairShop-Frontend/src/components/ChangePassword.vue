@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div id="titleContainer">
       <h1 v-bind:style="{ color: this.textColor }">{{ this.titleText }}</h1>
-    </div>
+
     <div id="changePassForm">
       <b-form @submit="onSubmit" v-if="show">
         <!-- lol we dont even check if they entered the right current password on backend? -->
@@ -119,11 +118,5 @@ export default {
   margin-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
-}
-#titleContainer {
-  margin-top: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div id="titleContainer">
       <h1>Log In</h1>
-    </div>
     <div id="loginForm">
       <b-form @submit="onSubmit" v-if="show">
         <b-form-group

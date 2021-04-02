@@ -1,44 +1,46 @@
 <template>
-  <div id="ViewServices">
-    <h2>Your Appointments</h2>
-    <template>
-      <div>
-        <div v-if="errorViewServices">
-          <span v-if="errorViewServices" style="color: red">
-            {{ errorViewServices }}
-          </span>
+  <div>
+    <h1>My Appointments</h1>
+    <div id="ViewServices">
+      <template>
+        <div>
+          <div v-if="errorViewServices">
+            <span v-if="errorViewServices" style="color: red">
+              {{ errorViewServices }}
+            </span>
+          </div>
+          <div v-else>
+            <b-table
+              :items="items"
+              :fields="fields"
+              :outlined="true"
+              :key="this.items.length"
+            >
+              <template #cell(cancellation)="row">
+                <b-button
+                  size="sm"
+                  v-on:click="cancelAppointment(row.item.ID)"
+                  class="mr-2"
+                  variant="danger"
+                  v-if="checkIfWeekAhead(row.item.ID)"
+                >
+                  Cancel Appointment
+                </b-button>
+                <b-button
+                  size="sm"
+                  v-on:click="cancelAppointment(row.item.ID)"
+                  class="mr-2"
+                  disabled
+                  v-else
+                >
+                  Cancel Appointment
+                </b-button>
+              </template></b-table
+            >
+          </div>
         </div>
-        <div v-else>
-          <b-table
-            :items="items"
-            :fields="fields"
-            :outlined="true"
-            :key="this.items.length"
-          >
-            <template #cell(cancellation)="row">
-              <b-button
-                size="sm"
-                v-on:click="cancelAppointment(row.item.ID)"
-                class="mr-2"
-                variant="danger"
-                v-if="checkIfWeekAhead(row.item.ID)"
-              >
-                Cancel Appointment
-              </b-button>
-              <b-button
-                size="sm"
-                v-on:click="cancelAppointment(row.item.ID)"
-                class="mr-2"
-                disabled
-                v-else
-              >
-                Cancel Appointment
-              </b-button>
-            </template></b-table
-          >
-        </div>
-      </div>
-    </template>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -47,7 +49,7 @@ import axios from "axios";
 import { CANCEL_APPOINTMENT_ENDPOINT } from "../constants/constants";
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort
+  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
 });
 
 export default {
@@ -57,12 +59,12 @@ export default {
       appointments: [],
       fields: ["ID", "Service", "start", "end", "cancellation"],
       items: [],
-      idToDateTimeMap: {}
+      idToDateTimeMap: {},
     };
   },
 
   //fetch all of this customer's appointments and display them in a table
-  created: function() {
+  created: function () {
     this.getAppointments();
   },
   methods: {
@@ -83,15 +85,15 @@ export default {
     cancelAppointment(id) {
       AXIOS.delete(CANCEL_APPOINTMENT_ENDPOINT + id, {
         headers: {
-          token: this.$root.$data.token
-        }
+          token: this.$root.$data.token,
+        },
       })
-        .then(response => {
+        .then((response) => {
           this.items = [];
           this.getAppointments();
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response) {
             if (error.response.status === 400) {
               alert(
@@ -115,28 +117,28 @@ export default {
     getAppointments() {
       AXIOS.get("/api/customer/" + this.$root.$data.email + "/appointments", {
         headers: {
-          token: this.$root.$data.token
-        }
+          token: this.$root.$data.token,
+        },
       })
-        .then(response => {
+        .then((response) => {
           this.appointments = response.data;
 
-          this.appointments.forEach(item => {
+          this.appointments.forEach((item) => {
             this.items.push({
               ID: item.appointmentID,
               Service: item.serviceDto.name,
               start: this.displayDateTime(item.timeSlotDto.startDateTime),
-              end: this.displayDateTime(item.timeSlotDto.endDateTime)
+              end: this.displayDateTime(item.timeSlotDto.endDateTime),
             });
             this.idToDateTimeMap[item.appointmentID] =
               item.timeSlotDto.startDateTime;
           });
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

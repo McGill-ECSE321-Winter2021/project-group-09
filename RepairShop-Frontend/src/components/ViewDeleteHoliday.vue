@@ -1,6 +1,8 @@
 <template>
-  <div id="ViewDeleteHoliday">
-    <h2>Holidays: View and Delete</h2>
+
+<div>
+    <h1>Holidays: View and Delete</h1>
+<div id="ViewDeleteHoliday">
 
     <template>
       <div>
@@ -42,6 +44,8 @@
       </div>
     </template>
   </div>
+</div>
+  
 </template>
 
 <script>
