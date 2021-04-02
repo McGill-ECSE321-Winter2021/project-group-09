@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { LOGIN_ENDPOINT, LOCALHOST_BACKEND } from "../constants/constants";
+import { LOGIN_ENDPOINT, LOCALHOST_BACKEND,GET_BUSINESS_ENDPOINT } from "../constants/constants";
 import axios from "axios";
 export default {
   data() {
@@ -57,7 +57,7 @@ export default {
         userType: null,
       },        
       errorLogin:"",
-
+      businessName:"",
       userType: [
         { text: "Select One", value: null },
         "Admin",
@@ -66,6 +66,16 @@ export default {
       ],
       show: true
     };
+  },
+  created: function(){
+        axios.get(LOCALHOST_BACKEND + GET_BUSINESS_ENDPOINT)
+      .then((response) => {
+        this.businessName = response.data.name;
+      })
+      .catch((e) => {
+        if (e.response.status == 404) this.errorLogin = e.response.data;
+        else this.errorLogin = e;
+      });
   },
   methods: {
     onSubmit(event) {
@@ -84,7 +94,14 @@ export default {
             this.$root.$data.userType = this.form.userType;
             this.$root.$data.token = response.data;
             this.errorLogin="Login Success";
+
+            if(this.$root.$data.userType=="Admin" && !this.businessName){
+               
+              this.$router.push("/modify_business_info")
+            } else{
             this.$router.push("/");
+            }
+
           },
           error => {
             if (error.response) {
