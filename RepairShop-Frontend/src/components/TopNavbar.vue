@@ -24,6 +24,10 @@
       <b-nav-item to="ViewServices">View Services</b-nav-item>
     </b-navbar-nav>
 
+    <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
+      <b-nav-item to="ViewDeleteHoliday">Holidays: View and Delete</b-nav-item>
+    </b-navbar-nav>
+
     <b-navbar-nav v-show="this.$root.$data.userType == 'Customer'">
       <b-nav-item to="ViewAppointments">View Your Appointments</b-nav-item>
     </b-navbar-nav>

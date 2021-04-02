@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.repairshop.service;
 
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
+import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Business;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
@@ -16,6 +17,8 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.getUpdatedHours;
 import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.validateEmail;
 
 @Service
@@ -169,14 +172,18 @@ public class BusinessService {
     public String deleteHoliday(Timestamp startDateTime, Timestamp endDateTime) throws Exception {
 
         Business business = businessRepository.findAll().get(0);
-
-        for (TimeSlotDto holidayToDelete: getAllHolidays()) {
-        	if (holidayToDelete.getStartDateTime() == startDateTime && holidayToDelete.getEndDateTime() == endDateTime) { 
-        		timeSlotRepository.deleteById(holidayToDelete.getID());
-        		break;
-        	}
+        if (business == null) throw new Exception("Business not found");
+        //Remove target holiday from list of holidays in Business Repository and from TimeSlot Repository
+        List<TimeSlot> holidaysList = business.getHolidays();
+        for(TimeSlot currHoliday : holidaysList){
+            //Find target timeslot
+            if (currHoliday.getStartDateTime().equals(startDateTime) && currHoliday.getEndDateTime().equals(endDateTime)) {
+                holidaysList.remove(currHoliday);
+                timeSlotRepository.deleteById(currHoliday.getTimeSlotID());
+                break;
+            }
         }
-        
+
         businessRepository.save(business);
         return "The holiday was successfully deleted" ;
     }
@@ -201,6 +208,8 @@ public class BusinessService {
         for (TimeSlot currHoliday : holidays) {
             holidaysDtoList.add(TimeSlotService.timeslotToDTO(currHoliday));
         }
+
+        if (holidays.size() == 0) throw new Exception("There are currently no holidays");
 
         return holidaysDtoList;
     }

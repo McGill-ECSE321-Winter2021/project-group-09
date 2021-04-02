@@ -6,6 +6,7 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
+import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
 import AddHoliday from '@/components/AddHoliday'
 import ChangePassword from '@/components/ChangePassword'
 import ViewAppointments from "@/components/ViewAppointments"
@@ -44,6 +45,10 @@ export default new Router({
       path: '/logout',
       name: 'Logout',
       component : Logout
+    },{
+      path: '/viewDeleteHoliday',
+      name: 'View and Delete Holidays',
+      component : ViewDeleteHoliday
     }, {
       path: '/addHoliday',
       name: 'Add Holiday',
