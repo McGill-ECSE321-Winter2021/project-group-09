@@ -87,16 +87,12 @@ export default {
             this.$router.push("/");
           },
           error => {
-            console.log(error);
             if (error.response) {
               if (error.response.status === 400) {
                this.errorLogin="Invalid Password";
-                console.log("HERE password");
               }
               if (error.response.status === 500) {
                 this.errorLogin="Email does not exist";
-                console.log("HERE email");
-
               }
             }
           }
@@ -111,11 +107,5 @@ export default {
   margin-top: 2%;
   margin-left: 5%;
   margin-right: 5%;
-}
-#titleContainer {
-  margin-top: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
