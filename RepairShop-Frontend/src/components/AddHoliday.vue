@@ -56,9 +56,6 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      console.log("Start:" + this.calandarStartDateTime.activeDate);
-      console.log("End:" + this.calandarEndDateTime.activeDate);
-      console.log("COMPARE: "+this.calandarStartDateTime.activeDate>this.calandarEndDateTime.activeDate);
 
       if(this.calandarStartDateTime.activeDate>this.calandarEndDateTime.activeDate){
         this.errorAddHoliday ="The start date and time must be before the end date and time.";

@@ -10,7 +10,6 @@ import AddHoliday from '@/components/AddHoliday'
 import ChangePassword from '@/components/ChangePassword'
 import ViewAppointments from "@/components/ViewAppointments"
 import Logout from '@/components/Logout'
-import ViewHolidays from '@/components/ViewHolidays'
 
 Vue.use(Router)
 
@@ -48,10 +47,6 @@ export default new Router({
       path: '/addHoliday',
       name: 'Add Holiday',
       component : AddHoliday
-    }, {
-      path: '/viewHolidays',
-      name: 'View Holidays',
-      component : ViewHolidays
     }, {
       path: '/changePass',
       name: "ChangePassword",
