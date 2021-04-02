@@ -35,6 +35,10 @@
             required
           ></b-form-select>
         </b-form-group>
+          <div v-if="errorLogin" style="color: red">
+              {{ errorLogin }}
+          </div>
+
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
@@ -50,8 +54,10 @@ export default {
       form: {
         email: "",
         password: "",
-        userType: null
-      },
+        userType: null,
+      },        
+      errorLogin:"",
+
       userType: [
         { text: "Select One", value: null },
         "Admin",
@@ -77,17 +83,20 @@ export default {
             this.$root.$data.password = this.form.password;
             this.$root.$data.userType = this.form.userType;
             this.$root.$data.token = response.data;
-            console.log(this.$root.$data);
-            alert("Login Success.");
+            this.errorLogin="Login Success";
+            this.$router.push("/");
           },
           error => {
             console.log(error);
             if (error.response) {
               if (error.response.status === 400) {
-                alert("Invalid Password.");
+               this.errorLogin="Invalid Password";
+                console.log("HERE password");
               }
               if (error.response.status === 500) {
-                alert("Email does not exist.");
+                this.errorLogin="Email does not exist";
+                console.log("HERE email");
+
               }
             }
           }

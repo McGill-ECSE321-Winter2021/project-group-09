@@ -6,13 +6,12 @@
   </div>
 
   <div v-else>
-    
-    <h1>Welcome!</h1>
-
     <div v-if="name">
       <h1>Welcome to {{ name }}!</h1>
     </div>
-
+    <div v-else>
+      <h1>Welcome!</h1>
+    </div>
   </div>
 </template>
 
