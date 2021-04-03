@@ -1,5 +1,5 @@
 <template>
-  <div id="titleContainer">
+  <div>
     <h1 v-show="success">Logged Out Successfully!</h1>
     <h1 v-show="!success">You were not logged in.</h1>
   </div>
@@ -19,6 +19,7 @@ export default {
       console.log(this.$root.$data.email);
       //user was not logged in
       this.success = false;
+      this.$router.push("/login");
       return;
     }
     axios
@@ -33,7 +34,7 @@ export default {
           this.$root.$data.password = null;
           this.$root.$data.userType = null;
           this.$root.$data.token = null;
-          alert("Logout Success.");
+          this.$router.push("/");
         },
         error => {
           console.error(error);
@@ -42,12 +43,3 @@ export default {
   }
 };
 </script>
-
-<style>
-#titleContainer {
-  margin-top: 5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>

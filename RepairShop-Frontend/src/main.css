@@ -9,4 +9,28 @@
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
+    line-height: 1.8;
+}
+
+h1{
+    text-align: center;
+    margin-top: 2%;
+}
+
+.formContainer{
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputWidth{
+   width:100%; 
+   max-width:560px;
+}
+.ourTable{
+    width:100%; 
+    max-width:800px;
 }

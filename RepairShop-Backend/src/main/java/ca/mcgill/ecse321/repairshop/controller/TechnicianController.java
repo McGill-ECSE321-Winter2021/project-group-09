@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.repairshop.controller;
 
 import java.util.List;
 
+import ca.mcgill.ecse321.repairshop.dto.TimeSlotListDto;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.TechnicianRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
@@ -252,14 +253,33 @@ public class TechnicianController {
      * @return http response with status or error message
      */
     @PostMapping("/{email}/add_work_hours")
-    public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody List<TimeSlotDto> timeSlotDtoList, @RequestHeader String token) {
+    public ResponseEntity<?> addTechnicianWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotListDto timeSlotDtoList, @RequestHeader String token) {
 
         try {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-            String message = techService.addTechnicianWorkHours(email, timeSlotDtoList);
+            String message = techService.addTechnicianWorkHours(email, timeSlotDtoList.getTimeSlots());
             return new ResponseEntity<>(message, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /** Post request to add another time slot for new work hours
+     * @param email of the technician
+     * @param newWorkHours The TimeSlotDto for the work hours to be added
+     * @param token of the admin
+     * @return http response with status of error message
+     */
+    @PostMapping("/{email}/add_time_slot")
+    public ResponseEntity<?> addSpecificWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotDto newWorkHours, @RequestHeader String token) {
+        try {
+            if (authenticationService.validateAdminToken(token) == null)
+                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+
+            return new ResponseEntity<>(techService.addSpecificWorkHours(email, newWorkHours), HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -274,7 +294,7 @@ public class TechnicianController {
      * @param token         of the admin
      * @return whether the specific work schedule was removed successfully
      */
-    @DeleteMapping("/delete/hours/{email}")
+    @PostMapping("/delete/hours/{email}")
     public ResponseEntity<?> deleteSpecificWorkHours(@PathVariable("email") String email, @RequestBody TimeSlotDto timeSlotDto, @RequestHeader String token) {
 
         try {

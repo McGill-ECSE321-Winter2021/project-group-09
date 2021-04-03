@@ -12,10 +12,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ca.mcgill.ecse321.repairshop.model.*;
 import ca.mcgill.ecse321.repairshop.repository.*;
+import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +52,9 @@ public class TestTechnicianService {
 
 	@Mock
 	private AppointmentService appointmentService;
+
+	@Mock
+	private EmailService emailService;
 	
 	@InjectMocks
 	private TechnicianService service;
@@ -127,6 +132,7 @@ public class TestTechnicianService {
 				
 				//technician appointments
 				CUSTOMER.setEmail(CUSTOMER_EMAIL);
+				CUSTOMER.setReminders(Collections.emptyList());
 				SERVICE.setName(SERVICE_NAME);
 				SERVICE.setPrice(SERVICE_PRICE);
 				SERVICE.setDuration(SERVICE_DURATION);
@@ -180,13 +186,14 @@ public class TestTechnicianService {
 				APP.setService(SERVICE);
 				APP.setTechnician(TECHNICIAN);
 				APP.setTimeSlot(TIME);
-				return APP;
+				return Optional.of(APP);
 			} else return null;
 		});
 
 		lenient().when(customerRepository.findById(anyString())).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(CUSTOMER_EMAIL)) {
 				CUSTOMER.setEmail(CUSTOMER_EMAIL);
+				CUSTOMER.setReminders(Collections.emptyList());
 				APP.setCustomer(CUSTOMER);
 				APP.setService(SERVICE);
 				APP.setTechnician(TECHNICIAN);
@@ -194,7 +201,7 @@ public class TestTechnicianService {
 				List<Appointment> apps = new ArrayList<>();
 				apps.add(APP);
 				CUSTOMER.setAppointments(apps);
-				return CUSTOMER;
+				return Optional.of(CUSTOMER);
 			} else return null;
 		});
 
@@ -583,6 +590,91 @@ public class TestTechnicianService {
 			fail();
 		} catch(Exception e) {
 			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+
+	}
+
+	// private static final Timestamp START_TIME = Timestamp.valueOf("2021-03-02 10:00:00");
+	//	private static final Timestamp END_TIME = Timestamp.valueOf("2021-03-02 11:00:00");
+	//	private static final Timestamp START_TIME2 = Timestamp.valueOf("2021-03-06 09:00:00");
+	//	private static final Timestamp END_TIME2 = Timestamp.valueOf("2021-03-06 17:00:00");
+
+	@Test // Valid
+	public void testAddSpecificWorkHours() {
+
+		Timestamp start = Timestamp.valueOf("2021-03-04 10:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-04 14:00:00");
+
+		TimeSlotDto newHours = new TimeSlotDto();
+		newHours.setStartDateTime(start);
+		newHours.setEndDateTime(end);
+
+		try {
+			String message = service.addSpecificWorkHours(TECHNICIAN_EMAIL, newHours);
+			assertEquals("Work hours for technician " + TECHNICIAN_EMAIL + " successfully added.", message);
+			assertEquals(2, TECHNICIAN.getTimeslots().size());
+			assertEquals(start, TECHNICIAN.getTimeslots().get(1).getStartDateTime());
+			assertEquals(end, TECHNICIAN.getTimeslots().get(1).getEndDateTime());
+		} catch(Exception e) {
+			fail(e.getMessage());
+		}
+
+	}
+
+
+	@Test // Invalid - null email
+	public void testAddSpecificWorkHoursNull() {
+
+		Timestamp start = Timestamp.valueOf("2021-03-04 10:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-04 14:00:00");
+
+		TimeSlotDto newHours = new TimeSlotDto();
+		newHours.setStartDateTime(start);
+		newHours.setEndDateTime(end);
+
+		try {
+			service.addSpecificWorkHours(null, newHours);
+			fail();
+		} catch(Exception e) {
+			assertEquals("Email cannot be empty.", e.getMessage());
+		}
+
+	}
+
+	@Test // Invalid - start after end
+	public void testAddSpecificWorkHoursInvalidHours() {
+
+		Timestamp start = Timestamp.valueOf("2021-03-04 14:00:00");
+		Timestamp end = Timestamp.valueOf("2021-03-04 10:00:00");
+
+		TimeSlotDto newHours = new TimeSlotDto();
+		newHours.setStartDateTime(start);
+		newHours.setEndDateTime(end);
+
+		try {
+			service.addSpecificWorkHours(TECHNICIAN_EMAIL, newHours);
+			fail();
+		} catch(Exception e) {
+			assertEquals("The end date and time must be after the start date and time.", e.getMessage());
+		}
+
+	}
+
+	@Test // Invalid - hours overlap
+	public void testAddSpecificWorkHoursOverlap() {
+
+		Timestamp start = Timestamp.valueOf("2021-03-02 10:30:00");
+		Timestamp end = Timestamp.valueOf("2021-03-02 14:00:00");
+
+		TimeSlotDto newHours = new TimeSlotDto();
+		newHours.setStartDateTime(start);
+		newHours.setEndDateTime(end);
+
+		try {
+			service.addSpecificWorkHours(TECHNICIAN_EMAIL, newHours);
+			fail();
+		} catch(Exception e) {
+			assertEquals("The specified hours cannot overlap with existing hours.", e.getMessage());
 		}
 
 	}

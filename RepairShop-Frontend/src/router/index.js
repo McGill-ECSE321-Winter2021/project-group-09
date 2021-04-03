@@ -11,9 +11,18 @@ import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import TechnicianScheduleAdmin from '@/components/TechnicianScheduleAdmin'
 
+<<<<<<< HEAD
+=======
+import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
+import AddHoliday from '@/components/AddHoliday'
+>>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
 import ChangePassword from '@/components/ChangePassword'
-import ViewAppointments from "@/components/ViewAppointments"
+import ViewAppointments from '@/components/ViewAppointments'
 import Logout from '@/components/Logout'
+import ModifyTechHours from '@/components/ModifyTechHours'
+import DeleteTechHours from '@/components/DeleteTechHours'
+import ContactUs from '@/components/ContactUs'
+
 Vue.use(Router)
 
 export default new Router({
@@ -42,10 +51,18 @@ export default new Router({
       path: '/viewServices',
       name: 'View Services',
       component : ViewServices
-    },{
+    }, {
       path: '/logout',
       name: 'Logout',
       component : Logout
+    },{
+      path: '/viewDeleteHoliday',
+      name: 'View and Delete Holidays',
+      component : ViewDeleteHoliday
+    }, {
+      path: '/addHoliday',
+      name: 'Add Holiday',
+      component : AddHoliday
     }, {
       path: '/technician_schedule',
       name: 'technician_schedule',
@@ -55,6 +72,17 @@ export default new Router({
       name: 'technician_appointments',
       component : TechnicianAppointments
     }, {
+<<<<<<< HEAD
+      path: '/technician_schedule',
+      name: 'technician_schedule',
+      component : TechnicianSchedule
+    }, {
+      path: '/technician_appointments',
+      name: 'technician_appointments',
+      component : TechnicianAppointments
+    }, {
+=======
+>>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
       path: '/modify_business_info',
       name: 'modify_business_info',
       component : ModifyBusinessInfo
@@ -70,6 +98,18 @@ export default new Router({
       path : '/viewAppointments',
       name: "ViewAppointments",
       component : ViewAppointments
+    }, {
+      path: '/modifyHours',
+      name: 'Modify Technician Hours',
+      component: ModifyTechHours
+    }, {
+      path: '/deleteHours',
+      name: 'Delete Technician Hours',
+      component: DeleteTechHours
+    },{
+      path : '/contactUs',
+      name: "Constact Us",
+      component : ContactUs
     }
 
 

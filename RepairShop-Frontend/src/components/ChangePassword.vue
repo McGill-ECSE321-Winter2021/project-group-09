@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div id="titleContainer">
       <h1 v-bind:style="{ color: this.textColor }">{{ this.titleText }}</h1>
-    </div>
-    <div id="changePassForm">
-      <b-form @submit="onSubmit" v-if="show">
-        <!-- lol we dont even check if they entered the right current password on backend? -->
+
+    <div class="formContainer" id="changePassForm">
+      <b-form @submit="onSubmit" v-if="show" class="inputWidth">
         <b-form-group
           id="input-group-1"
           label="Please enter your current password:"
@@ -41,6 +39,7 @@
 </template>
 
 <script>
+
 import {
   CHANGE_PASS_TECH,
   CHANGE_PASS_ADMIN,
@@ -110,20 +109,13 @@ export default {
           }
         );
     }
+  },
+  created: function(){
+    if(!this.$root.$data.userType) this.$router.push("/");
   }
+
 };
 </script>
 
 <style>
-#changePassForm {
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-#titleContainer {
-  margin-top: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>

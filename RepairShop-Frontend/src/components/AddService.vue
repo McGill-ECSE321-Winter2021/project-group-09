@@ -1,6 +1,7 @@
 <template>
-  <div id="addServiceForm">
-    <h2>Add New Service</h2>
+<div>
+  <h1>Add a Service</h1>
+<div class="formContainer" id="addServiceForm">
 
     <p>
       <b>
@@ -10,7 +11,7 @@
       </b>
     </p>
 
-    <b-form @submit="onSubmit">
+    <b-form @submit="onSubmit"  class="inputWidth">
       <b-form-group
         id="input-group-1"
         label="Service Name:"
@@ -57,6 +58,8 @@
       <b-button type="submit" variant="primary">Create Service</b-button>
     </b-form>
   </div>
+</div>
+  
 </template>
 
 <script>
@@ -113,10 +116,4 @@ export default {
 };
 </script>
 
-<style>
-#addServiceForm {
-  margin-top: 4%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-</style>
+<style></style>

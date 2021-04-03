@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div id="titleContainer">
       <h1>Log In</h1>
-    </div>
-    <div id="loginForm">
-      <b-form @submit="onSubmit" v-if="show">
+    <div class="formContainer" id="loginForm">
+      <b-form class="inputWidth" @submit="onSubmit" v-if="show">
         <b-form-group
           id="input-group-1"
           label="Email address:"
@@ -37,6 +35,10 @@
             required
           ></b-form-select>
         </b-form-group>
+          <div v-if="errorLogin" style="color: red">
+              {{ errorLogin }}
+          </div>
+
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
@@ -44,7 +46,7 @@
 </template>
 
 <script>
-import { LOGIN_ENDPOINT, LOCALHOST_BACKEND } from "../constants/constants";
+import { LOGIN_ENDPOINT, LOCALHOST_BACKEND,GET_BUSINESS_ENDPOINT } from "../constants/constants";
 import axios from "axios";
 export default {
   data() {
@@ -52,8 +54,10 @@ export default {
       form: {
         email: "",
         password: "",
-        userType: null
-      },
+        userType: null,
+      },        
+      errorLogin:"",
+      businessName:"",
       userType: [
         { text: "Select One", value: null },
         "Admin",
@@ -62,6 +66,16 @@ export default {
       ],
       show: true
     };
+  },
+  created: function(){
+        axios.get(LOCALHOST_BACKEND + GET_BUSINESS_ENDPOINT)
+      .then((response) => {
+        this.businessName = response.data.name;
+      })
+      .catch((e) => {
+        if (e.response.status == 404) this.errorLogin = e.response.data;
+        else this.errorLogin = e;
+      });
   },
   methods: {
     onSubmit(event) {
@@ -79,17 +93,23 @@ export default {
             this.$root.$data.password = this.form.password;
             this.$root.$data.userType = this.form.userType;
             this.$root.$data.token = response.data;
-            console.log(this.$root.$data);
-            alert("Login Success.");
+            this.errorLogin="Login Success";
+
+            if(this.$root.$data.userType=="Admin" && !this.businessName){
+               
+              this.$router.push("/modify_business_info")
+            } else{
+            this.$router.push("/");
+            }
+
           },
           error => {
-            console.log(error);
             if (error.response) {
               if (error.response.status === 400) {
-                alert("Invalid Password.");
+               this.errorLogin="Invalid Password";
               }
               if (error.response.status === 500) {
-                alert("Email does not exist.");
+                this.errorLogin="Email does not exist";
               }
             }
           }
@@ -100,15 +120,4 @@ export default {
 </script>
 
 <style>
-#loginForm {
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-#titleContainer {
-  margin-top: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 </style>

@@ -4,7 +4,7 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    host: 'repairshop-backend-ecse321-09.herokuapp.com',
+    host: ' https://lit-fortress-63303.herokuapp.com',
     port: 5432,
     backendHost: 'repairshop-backend-ecse321-09.herokuapp.com',
     backendPort: 5432,
