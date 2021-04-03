@@ -28,11 +28,7 @@ export default {
     };
   },
   created: function() {
-    console.log(
-      "here",
-      process.env.VUE_APP_PROD_BACKEND,
-      process.env.VUE_APP_TES
-    );
+    console.log(process.env.VUE_APP_PROD_BACKEND);
     AXIOS.get(GET_BUSINESS_ENDPOINT)
       .then(response => {
         this.name = response.data.name;
