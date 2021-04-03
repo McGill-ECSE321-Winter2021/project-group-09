@@ -1,6 +1,6 @@
 <template>
   <b-navbar fixed="top" :sticky="true" type="dark" variant="info">
-    <b-navbar-brand to="/">Repair Shop</b-navbar-brand>
+    <b-navbar-brand to="/">{{name}}</b-navbar-brand>
 
     <b-navbar-nav v-show="!this.$root.$data.email">
       <b-nav-item to="Login">Log In</b-nav-item>
@@ -51,8 +51,28 @@
 </template>
 
 <script>
+import axios from "axios";
+import { GET_BUSINESS_ENDPOINT } from "../constants/constants";
+var config = require("../../config");
+var AXIOS = axios.create({
+  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
+});
 export default {
-  name: "TopNavbar",
+   data() {
+    return {
+      name: "",
+      errorGetBusiness: "",
+    };
+  },name: "TopNavbar",  created: function () {
+    AXIOS.get(GET_BUSINESS_ENDPOINT)
+      .then((response) => {
+        this.name = response.data.name;
+      })
+      .catch((e) => {
+        if (e.response.status == 404) this.errorGetBusiness = e.response.data;
+        else this.errorGetBusiness = e;
+      });
+  },
 };
 </script>
 
