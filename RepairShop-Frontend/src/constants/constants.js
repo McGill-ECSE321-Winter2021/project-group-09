@@ -1,8 +1,4 @@
-let x = false
-if ('PROD_BACKEND' in process.env) {
-    x = true
-}
-export const BACKEND = x ? "https://repairshop-backend-ecse321-09.herokuapp.com:5432" : "http://localhost:8080"
+export const BACKEND = 'VUE_APP_PROD_BACKEND' in process.env ? "https://repairshop-backend-ecse321-09.herokuapp.com:5432" : "http://localhost:8080"
 export const HEROKU_BACKEND = "https://repairshop-backend-ecse321-09.herokuapp.com"
 export const LOGIN_ENDPOINT = "/api/authentication/login"
 export const REGISTER_CUSTOMER_ENDPOINT = "/api/customer/register"

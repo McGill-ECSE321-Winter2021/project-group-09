@@ -99,7 +99,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     ]),
     new webpack.DefinePlugin({
       'process.env': {
-        PROD_BACKEND: process.env.true,
+        VUE_APP_PROD_BACKEND: process.env.true,
       },
     }),
   ]
