@@ -1,36 +1,41 @@
 <template>
-<div>
-      <h1>Weekly Appointment Schedule</h1>
- <div class="formContainer" id="technicianSchedule">
-
-    <div class="ourTable">
-
-    <div id="datePicker">
-      <b-form @submit="getSchedule" class="inputWidth">
-        <div>
-          <label for="schedule-datepicker">Choose a date</label>
-          <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2" :date-disabled-fn="dateDisabled"></b-form-datepicker>
+  <div>
+    <h1>Weekly Appointment Schedule</h1>
+    <div class="formContainer" id="technicianSchedule">
+      <div class="ourTable">
+        <div id="datePicker">
+          <b-form @submit="getSchedule">
+            <div>
+              <label for="schedule-datepicker">Choose a date</label>
+              <b-form-datepicker
+                id="schedule-datepicker"
+                v-model="date"
+                class="mb-2"
+                :date-disabled-fn="dateDisabled"
+              ></b-form-datepicker>
+            </div>
+            <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
+            <p v-else-if="errorAppointments" style="color: red">
+              {{ errorAppointments }}
+            </p>
+            <b-button type="submit" variant="primary" style="margin-top:15px">Get Schedule</b-button>
+          </b-form>
         </div>
-        <b-button type="submit" variant="primary">Get Schedule</b-button>
-      </b-form>
+
+        <div v-if="date && items.length != 0">
+          <b-table
+            :fields="fields"
+            :items="items"
+            responsive="sm"
+            style="margin-top: 50px"
+          >
+            <!-- A virtual composite column -->
+            <template #cell(dayTime)="data"> {{ data.item }}. </template>
+          </b-table>
+        </div>
+      </div>
     </div>
-
-    <div v-if="date && !noAppointments" >
-
-      <b-table :fields="fields" :items="items" responsive="sm">
-        <!-- A virtual composite column -->
-        <template #cell(dayTime)="data"> {{ data.item }}. </template>
-      </b-table>
-
-    </div>
-
-    <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
-    <p v-else-if="errorAppointments" style="color: red">{{ errorAppointments }}</p>
-</div>
-
   </div>
-</div>
- 
 </template>
 
 <script>
@@ -44,13 +49,12 @@ export default {
       errorAppointments: "",
       date: "",
       fields: [{ key: "dayTime", label: "Day and Time" }],
-      items: []
+      items: [],
     };
   },
 
   methods: {
-
-    dateDisabled(ymd, date){
+    dateDisabled(ymd, date) {
       const weekday = date.getDay();
       return weekday != 1;
     },
@@ -74,47 +78,60 @@ export default {
           {
             headers: {
               weekStartDate: this.date,
-              token: this.$root.$data.token
-            }
+              token: this.$root.$data.token,
+            },
           }
         )
         .then(
-          response => {
+          (response) => {
             var formattedSchedule = [];
 
             if (response.data === "No upcoming appointments") {
               this.noAppointments = response.data;
             } else {
               tempSchedule = response.data;
-              tempSchedule.forEach(thisDayTime => {
+              tempSchedule.forEach((thisDayTime) => {
                 var date = thisDayTime.startDateTime.substring(0, 10);
                 console.log(date);
 
                 const dayOfWeek = new Date(date).getDay();
-                var day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayOfWeek];
+                var day = [
+                  "Sunday",
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                ][dayOfWeek];
 
-                var dayTime = day + " from " + thisDayTime.startDateTime.substring(11, 16) + " to " + thisDayTime.endDateTime.substring(11, 16);
+                var dayTime =
+                  day +
+                  " from " +
+                  thisDayTime.startDateTime.substring(11, 16) +
+                  " to " +
+                  thisDayTime.endDateTime.substring(11, 16);
                 formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
             }
           },
-          error => {
+          (error) => {
             console.log(error.response.data);
             this.errorAppointments = "Something went wrong. Please try again.";
           }
         );
-    }
+    },
+  },
+  watch: {
+    date: function(val, oldVal) {
+      this.items=[];
+      this.errorAppointments="";
+      this.noAppointments="";
+    },
   }
 };
 </script>
 
 <style>
-
-#datePicker {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-}
 </style>

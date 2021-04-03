@@ -34,7 +34,7 @@
             <p v-else-if="errorAppointments" style="color: red">
               {{ errorAppointments }}
             </p>
-            <b-button type="submit" variant="primary">Get Schedule</b-button>
+            <b-button type="submit" variant="primary" style="margin-top:15px">Get Schedule</b-button>
           </b-form>
         </div>
 
@@ -162,7 +162,6 @@ export default {
     techEmail: function (val, oldVal) {
       this.date = "";
       this.items=[];
-      this.error="";
       this.errorAppointments="";
       this.noAppointments="";
     },
@@ -171,10 +170,4 @@ export default {
 </script>
 
 <style>
-/* #dataInput {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-} */
 </style>
