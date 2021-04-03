@@ -1,7 +1,9 @@
 <template>
-  <b-navbar fixed="top" :sticky="true" type="dark" variant="info">
+  <b-navbar fixed="top" :sticky="true" type="dark" variant="info" toggleable="lg">
     <b-navbar-brand to="/">{{name}}</b-navbar-brand>
 
+<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+<b-collapse id ="nav-collapse" is-nav>
     <b-navbar-nav v-show="!this.$root.$data.email">
       <b-nav-item to="Login">Log In</b-nav-item>
       <b-nav-item to="Register">Register</b-nav-item>
@@ -47,6 +49,7 @@
       </b-nav-item-dropdown>
     </b-navbar-nav>
     
+    </b-collapse>
   </b-navbar>
 </template>
 
