@@ -1,9 +1,9 @@
 <template>
   <div>
-      <h1> Register </h1>
+    <h1>Register</h1>
     <div class="formContainer" id="registerForm">
       <b-form @submit="onSubmit" v-if="show" class="inputWidth">
-        <b-form-group id="input-group-0" label="Full Name:" label-for="input-0" >
+        <b-form-group id="input-group-0" label="Full Name:" label-for="input-0">
           <b-form-input
             id="input-0"
             v-model="form.name"
@@ -94,88 +94,99 @@
         </b-form-group>
 
         <!-- schedule of technician, only visible if user is admin and selects technician to register -->
-        <div id="techSchedule"
+        <div
+          id="techSchedule"
           v-if="
             this.$root.$data.userType === 'Admin' &&
-              form.userType === 'Technician'
+            form.userType === 'Technician'
           "
         >
           <div id="titleContainer">
-            <h1>
-              Technician's work schedule:
-            </h1>
+            <h1>Technician's work schedule:</h1>
           </div>
-          Sunday
-          <b-form-timepicker
-            v-model="form.techSchedule[0][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[0][1]"
-            locale="en"
-          ></b-form-timepicker>
-          Monday
-          <b-form-timepicker
-            v-model="form.techSchedule[1][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[1][1]"
-            locale="en"
-          ></b-form-timepicker>
-          Tuesday
-          <b-form-timepicker
-            v-model="form.techSchedule[2][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[2][1]"
-            locale="en"
-          ></b-form-timepicker>
-          Wednesday
-          <b-form-timepicker
-            v-model="form.techSchedule[3][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[3][1]"
-            locale="en"
-          ></b-form-timepicker>
-          Thursday
-          <b-form-timepicker
-            v-model="form.techSchedule[4][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[4][1]"
-            locale="en"
-          ></b-form-timepicker>
-          Friday
-          <b-form-timepicker
-            v-model="form.techSchedule[5][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[5][1]"
-            locale="en"
-          ></b-form-timepicker>
-          Saturday
-          <b-form-timepicker
-            v-model="form.techSchedule[6][0]"
-            locale="en"
-          ></b-form-timepicker>
-          <b-form-timepicker
-            v-model="form.techSchedule[6][1]"
-            locale="en"
-          ></b-form-timepicker>
+
+          <b-form-group label="Sunday">
+            <b-form-timepicker
+              v-model="form.techSchedule[0][0]"
+              locale="en"
+              class="timeslot"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[0][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
+
+          <b-form-group label="Monday">
+            <b-form-timepicker
+              v-model="form.techSchedule[1][0]"
+              locale="en"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[1][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
+
+          <b-form-group label="Tuesday">
+            <b-form-timepicker
+              v-model="form.techSchedule[2][0]"
+              locale="en"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[2][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
+
+          <b-form-group label="Wednesday">
+            <b-form-timepicker
+              v-model="form.techSchedule[3][0]"
+              locale="en"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[3][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
+          <b-form-group label="Thursday">
+            <b-form-timepicker
+              v-model="form.techSchedule[4][0]"
+              locale="en"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[4][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
+          <b-form-group label="Friday">
+            <b-form-timepicker
+              v-model="form.techSchedule[5][0]"
+              locale="en"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[5][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
+          <b-form-group label="Saturday">
+            <b-form-timepicker
+              v-model="form.techSchedule[6][0]"
+              locale="en"
+            ></b-form-timepicker>
+            <b-form-timepicker
+              v-model="form.techSchedule[6][1]"
+              locale="en"
+            ></b-form-timepicker>
+          </b-form-group>
         </div>
         <p v-if="this.successfulMessage" style="color: green">
-          {{this.successfulMessage}}
+          {{ this.successfulMessage }}
         </p>
-        <p v-if="this.techMessageF" style="color: red">
-          There was an error
+        <p v-if="this.failureMessage" style="color: red">
+          {{ this.failureMessage }}
         </p>
-        
+
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
@@ -187,7 +198,7 @@ import {
   REGISTER_CUSTOMER_ENDPOINT,
   REGISTER_ADMIN_ENDPOINT,
   REGISTER_TECHNICIAN_ENDPOINT,
-  LOCALHOST_BACKEND
+  LOCALHOST_BACKEND,
 } from "../constants/constants";
 import axios from "axios";
 export default {
@@ -207,20 +218,21 @@ export default {
           ["", ""],
           ["", ""],
           ["", ""],
-          ["", ""]
-        ]
+          ["", ""],
+        ],
       },
       userType: [
         { text: "Select One", value: null },
         "Admin",
         "Customer",
-        "Technician"
+        "Technician",
       ],
       userType2: [{ text: "Select One", value: null }, "Customer"],
       show: true,
       techMessageS: false,
       techMessageF: false,
-      successfulMessage:""
+      successfulMessage: "",
+      failureMessage: "",
     };
   },
   methods: {
@@ -228,11 +240,11 @@ export default {
     createSchedule() {
       let timeSlotDtos = [];
       let idx = 0;
-      this.form.techSchedule.forEach(item => {
+      this.form.techSchedule.forEach((item) => {
         if (item[0] != "" && item[1] != "") {
           timeSlotDtos.push({
             startDateTime: this.formatTimeToTimestamp(item[0], idx),
-            endDateTime: this.formatTimeToTimestamp(item[1], idx)
+            endDateTime: this.formatTimeToTimestamp(item[1], idx),
           });
         }
         idx += 1;
@@ -261,17 +273,17 @@ export default {
           "/add_work_hours",
         headers: {
           token: this.$root.$data.token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        data: data
+        data: data,
       };
       var that = this;
       axios(config)
-        .then(function(response) {
+        .then(function (response) {
           console.log(JSON.stringify(response.data));
           that.techMessageS = true;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
           that.techMessageF = true;
         });
@@ -305,48 +317,49 @@ export default {
             userType: this.form.userType,
             name: this.form.name,
             phoneNumber: this.form.phoneNumber,
-            address: this.form.address
+            address: this.form.address,
           },
           {
             headers: {
-              token: this.$root.$data.token
-            }
+              token: this.$root.$data.token,
+            },
           }
         )
         .then(
-          response => {
-            
+          (response) => {
             if (
               this.$root.$data.userType === "Admin" &&
-              this.form.userType === "Technician"      
+              this.form.userType === "Technician"
             ) {
               this.addWorkHours();
-              this.successfulMessage="Successfully added work hours.\nAccount created for " +
+              this.successfulMessage =
+                "Successfully added work hours.\nAccount created for " +
                 response.data.name +
                 " with email " +
                 response.data.email +
                 ".\nConfirmation email sent.\nProceed to login.";
-            }else{
-              this.successfulMessage="Account created for " +
+            } else {
+              this.successfulMessage =
+                "Account created for " +
                 response.data.name +
                 " with email " +
                 response.data.email +
                 ".\nConfirmation email sent.\nProceed to login.";
             }
-
-
+            this.failureMessage = "";
           },
-          error => {
+          (error) => {
             console.log(error);
             if (error.response) {
               if (error.response.status === 400) {
-                alert("Email already taken.");
+                this.failureMessage = "Email already taken.";
+                this.successfulMessage = "";
               }
             }
           }
         );
-    }
-  }
+    },
+  },
 };
 </script>
 
