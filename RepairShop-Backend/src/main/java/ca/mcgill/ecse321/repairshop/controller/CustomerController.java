@@ -120,8 +120,12 @@ public class CustomerController {
     public ResponseEntity<?> getCustomer(@PathVariable("email") String email, @RequestHeader String token) {
 
         try {
-            if (authenticationService.validateAdminToken(token) == null) {
-                return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
+
+            Customer customer = customerRepository.findCustomerByEmail(email);
+            Customer cusToAuth = authenticationService.validateCustomerToken(token);
+
+            if ((cusToAuth == null || customer == null || !customer.getEmail().equals(cusToAuth.getEmail())) && authenticationService.validateAdminToken(token) == null) {
+                return new ResponseEntity<>("Must be logged in as the correct customer or admin.", HttpStatus.BAD_REQUEST);
             }
 
             CustomerDto customerDto = customerService.getCustomer(email);
@@ -145,6 +149,8 @@ public class CustomerController {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
+
+
 
             List<CustomerDto> customerDtos = customerService.getAllCustomers();
             return new ResponseEntity<>(customerDtos, HttpStatus.OK);
