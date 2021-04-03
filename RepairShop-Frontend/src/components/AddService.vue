@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h1>Add New Service</h1>
+  <h1>Add a Service</h1>
 <div class="formContainer" id="addServiceForm">
 
     <p>

@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <h1>Add New Holiday</h1>
+    <h1>Add a Holiday</h1>
 
 
     <div class="formContainer" id="addHolidayForm">
@@ -79,6 +79,9 @@ export default {
       endTimestamp:"",
     };
   },
+  created: function(){
+    if(this.$root.$data.userType !=  'Admin') this.$router.push("/");
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
@@ -142,7 +145,7 @@ export default {
     endTime: this.clearError, 
     startDate: this.clearError,    
     endDate:this.clearError
-  }
+  } 
 };
 </script>
 

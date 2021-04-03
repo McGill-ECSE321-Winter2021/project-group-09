@@ -1,9 +1,8 @@
 <template>
-
-  <div id="ViewAppointments">
+<div>
     <h1>View Appointments</h1>
-    <template>
-      <div>
+  <div class="formContainer" id="ViewAppointments">
+      <div class="ourTable">
         <div v-if="errorViewServices">
           <span v-if="errorViewServices" style="color: red">
             {{ errorViewServices }}
@@ -18,7 +17,8 @@
           />
         </div>
       </div>
-    </template>
+
+  </div>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
     return {
       errorViewServices: "",
       appointments: [],
-      fields: ["ID", "Service", "start", "end", "customer"],
+      fields: ["Service", "start", "end", "customer"],
       items: [],
       idToDateTimeMap: {}
     };
@@ -97,9 +97,4 @@ export default {
 </script>
 
 <style>
-#ViewAppointments {
-  margin-top: 4%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>
