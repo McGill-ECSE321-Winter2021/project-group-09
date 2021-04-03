@@ -135,17 +135,28 @@ export default {
         if (this.startTimestamp > this.endTimestamp) return false;
         else return true;
       } else return false;
-    },clearError(){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";
-    }
+    }, 
   },
   watch:{
-    startTime: this.clearError,
-    endTime: this.clearError, 
-    startDate: this.clearError,    
-    endDate:this.clearError
+    startDate: function(val, oldVal){
+      this.errorAddHoliday="";
+      this.successAddHoliday="";   
+    } ,
+    endDate: function(val, oldVal){
+      this.errorAddHoliday="";
+      this.successAddHoliday="";   
+    }, 
+    startDate: function(val, oldVal){
+      this.errorAddHoliday="";
+      this.successAddHoliday="";   
+    } ,
+    startTime: function(val, oldVal){
+      this.errorAddHoliday="";
+      this.successAddHoliday="";   
+    },
   } 
+
+
 };
 </script>
 
