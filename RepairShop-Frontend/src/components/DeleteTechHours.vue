@@ -19,7 +19,7 @@
 
             </div>
 
-            <p v-else class="text-danger">There are currently no technicians available.</p>
+            <p v-show="noTechnicians" class="text-danger">There are currently no technicians available.</p>
 
             <b-button variant="primary" class="mt-3" :disabled="!technicianEmail" @click="toPart2">Next</b-button>
 
@@ -88,6 +88,7 @@
         appError: '',
         technicianEmail: '',
         technicians: [],
+        noTechnicians: false,
         targetDate: '',
         hours: { startDateTime: '', endDateTime: '' },
         workHours: [],
@@ -102,6 +103,8 @@
     }).then(r => {
         this.technicians = r.data;
         this.appError = '';
+        if (this.technicians.length == 0) this.noTechnicians = true;
+        else this.noTechnicians = false;
       }).catch(e => {
         this.appError = e;
       });
