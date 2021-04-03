@@ -28,6 +28,7 @@ export default {
     };
   },
   created: function() {
+    console.log("here", process.env.PROD_BACKEND);
     AXIOS.get(GET_BUSINESS_ENDPOINT)
       .then(response => {
         this.name = response.data.name;
