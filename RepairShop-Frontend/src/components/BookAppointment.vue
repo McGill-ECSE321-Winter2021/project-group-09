@@ -2,8 +2,8 @@
 <div>
      <h1>Book an Appointment</h1>
 
-      <main class="container py-4">
-        <div class="mx-auto my-4" style="max-width: 600px">
+      <main class="formContainer">
+        <div class="inputWidth">
           <div v-if="formSection == 1">
 
             <b-form-group label="Select a service" class="mt-4">
@@ -13,7 +13,7 @@
                 <p v-show="services.length === 0">There are currently no services available.</p>
             </b-form-group>
 
-            <p class="mt-3">Selected service: {{ service }}</p>
+            <p class="mt-3"> <b>Selected service:</b> {{ service }}</p>
 
             <b-button variant="outline-primary" class="mt-3" :disabled="!service" @click="toPart2">Next</b-button>
 
@@ -28,7 +28,7 @@
                 <p v-show="availableTimes.length === 0">There are currently no time slots available.</p>
             </b-form-group>
 
-            <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
+            <p class="mt-3"><b>Selected start time:</b> {{ displayDateTime(start.startDateTime) }}</p>
 
             <b-form-group label="Or enter a future date to see possible schedules for that week:" class="mt-3 form-inline">
               <b-button variant="outline-secondary" @click="setToday">Today</b-button>
@@ -43,16 +43,16 @@
 
           <div v-if="formSection == 3">
 
-            <p class="mb-3">Confirm your appointment</p>
-            <p class="mt-3">Selected service: {{ service }}</p>
-            <p class="mt-3">Selected start time: {{ displayDateTime(start.startDateTime) }}</p>
+            <p class="mb-3"><b>Confirm your appointment</b></p>
+            <p class="mt-3"><b>Selected service:</b> {{ service }}</p>
+            <p class="mt-3"><b>Selected start time:</b> {{ displayDateTime(start.startDateTime) }}</p>
 
             <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
             <b-button variant="outline-primary" class="mt-3" @click="book">Book now</b-button>
 
           </div>
 
-          <div v-if="formSection == 4" class="text-center">
+          <div v-if="formSection == 4" class="text-center text-success" >
             <p class="mb-3">Your appointment has been booked.</p>
             <p>A confirmation email has been sent.</p>
             <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
