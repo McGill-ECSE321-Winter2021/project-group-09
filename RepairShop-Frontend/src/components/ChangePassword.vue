@@ -2,9 +2,8 @@
   <div>
       <h1 v-bind:style="{ color: this.textColor }">{{ this.titleText }}</h1>
 
-    <div id="changePassForm">
-      <b-form @submit="onSubmit" v-if="show">
-        <!-- lol we dont even check if they entered the right current password on backend? -->
+    <div class="formContainer" id="changePassForm">
+      <b-form @submit="onSubmit" v-if="show" class="inputWidth">
         <b-form-group
           id="input-group-1"
           label="Please enter your current password:"
@@ -114,9 +113,4 @@ export default {
 </script>
 
 <style>
-#changePassForm {
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>
