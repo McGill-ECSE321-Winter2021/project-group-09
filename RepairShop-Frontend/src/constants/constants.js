@@ -1,4 +1,4 @@
-export const BACKEND = process.env.VUE_APP_PROD_BACKEND === "true" ? "https://repairshop-backend-ecse321-09.herokuapp.com:5432" : "http://localhost:8080"
+export const BACKEND = process.env.VUE_APP_PROD_BACKEND === "true" ? "https://repairshop-backend-ecse321-09.herokuapp.com" : "http://localhost:8080"
 export const HEROKU_BACKEND = "https://repairshop-backend-ecse321-09.herokuapp.com"
 export const LOGIN_ENDPOINT = "/api/authentication/login"
 export const REGISTER_CUSTOMER_ENDPOINT = "/api/customer/register"
