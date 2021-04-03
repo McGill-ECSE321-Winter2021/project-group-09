@@ -20,7 +20,7 @@
     <b-navbar-nav v-show="this.$root.$data.userType == 'Admin'">
       <b-nav-item to="AddService">Add Service</b-nav-item>
       <b-nav-item to="Register">Register New User</b-nav-item>
-      <b-nav-item to="modify_business_info">Business Info</b-nav-item>
+      <b-nav-item to="modify_business_info">Modify Business Information</b-nav-item>
 
       <b-nav-item-dropdown text="Holidays" right>
         <b-dropdown-item to="AddHoliday">Add</b-dropdown-item>
