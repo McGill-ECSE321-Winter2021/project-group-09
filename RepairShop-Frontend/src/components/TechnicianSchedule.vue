@@ -39,7 +39,7 @@ export default {
       errorAppointments: "",
       date: "",
       fields: [{ key: "dayTime", label: "Day and Time" }],
-      items: ["Default", "Default"]
+      items: ["", ""]
     };
   },
 

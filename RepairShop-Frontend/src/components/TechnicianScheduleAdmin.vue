@@ -50,8 +50,8 @@ export default {
       noAppointments: "",
       errorAppointments: "",
       date: "",
-      fields: ["index", { key: "dayTime", label: "Day and Time" }],
-      items: ["Default", "Default"]
+      fields: [{ key: "dayTime", label: "Day and Time" }],
+      items: ["", ""]
     };
   },
 
