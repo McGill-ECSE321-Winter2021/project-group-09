@@ -2,7 +2,7 @@
 <template>
   <div>
     <h1>View Services</h1>
-    <div class="inputForm" id="ViewServices">
+    <div class="formContainer" id="ViewServices">
       <template>
         <div>
           <div v-if="errorViewServices">

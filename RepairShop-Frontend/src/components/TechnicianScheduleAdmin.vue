@@ -1,7 +1,7 @@
 <template>
 <div>
   
-<h1>Technician's weekly schedule</h1>
+<h1>Technician's Weekly Schedule</h1>
  <div id="technicianSchedule">
 
     <div id="dataInput">

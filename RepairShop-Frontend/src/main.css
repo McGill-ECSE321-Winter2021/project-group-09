@@ -17,11 +17,20 @@ h1{
     margin-top: 2%;
 }
 
-.inputForm{
+.formContainer{
     margin-top: 2%;
     margin-left: 5%;
     margin-right: 5%;
     display:flex;
     justify-content: center;
     align-items: center;
+}
+
+.inputWidth{
+   width:100%; 
+   max-width:560px;
+}
+.ourTable{
+    width:100%; 
+    max-width:800px;
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
       <h1>Log In</h1>
-    <div class="inputForm" id="loginForm">
+    <div class="formContainer" id="loginForm">
       <b-form class="d-inline-block" @submit="onSubmit" v-if="show" style="width:560px">
         <b-form-group
           id="input-group-1"

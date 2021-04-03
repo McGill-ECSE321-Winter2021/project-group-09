@@ -1,9 +1,9 @@
 <template>
   <div>
       <h1> Register </h1>
-    <div class="inputForm" id="registerForm">
-      <b-form @submit="onSubmit" v-if="show">
-        <b-form-group id="input-group-0" label="Full Name:" label-for="input-0" style="width:560px">
+    <div class="formContainer" id="registerForm">
+      <b-form @submit="onSubmit" v-if="show" class="inputWidth">
+        <b-form-group id="input-group-0" label="Full Name:" label-for="input-0" >
           <b-form-input
             id="input-0"
             v-model="form.name"
@@ -94,8 +94,7 @@
         </b-form-group>
 
         <!-- schedule of technician, only visible if user is admin and selects technician to register -->
-        <div
-          id="techSchedule"
+        <div id="techSchedule"
           v-if="
             this.$root.$data.userType === 'Admin' &&
               form.userType === 'Technician'
@@ -170,12 +169,13 @@
             locale="en"
           ></b-form-timepicker>
         </div>
-        <p v-if="this.techMessageS" style="color: green">
-          Successfully added work hours.
+        <p v-if="this.successfulMessage" style="color: green">
+          {{this.successfulMessage}}
         </p>
         <p v-if="this.techMessageF" style="color: red">
           There was an error
         </p>
+        
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
     </div>
@@ -219,7 +219,8 @@ export default {
       userType2: [{ text: "Select One", value: null }, "Customer"],
       show: true,
       techMessageS: false,
-      techMessageF: false
+      techMessageF: false,
+      successfulMessage:""
     };
   },
   methods: {
@@ -314,19 +315,26 @@ export default {
         )
         .then(
           response => {
-            alert(
-              "Account created for " +
+            
+            if (
+              this.$root.$data.userType === "Admin" &&
+              this.form.userType === "Technician"      
+            ) {
+              this.addWorkHours();
+              this.successfulMessage="Successfully added work hours.\nAccount created for " +
                 response.data.name +
                 " with email " +
                 response.data.email +
-                ".\nConfirmation email sent.\nProceed to login."
-            );
-            if (
-              this.$root.$data.userType === "Admin" &&
-              this.form.userType === "Technician"
-            ) {
-              this.addWorkHours();
+                ".\nConfirmation email sent.\nProceed to login.";
+            }else{
+              this.successfulMessage="Account created for " +
+                response.data.name +
+                " with email " +
+                response.data.email +
+                ".\nConfirmation email sent.\nProceed to login.";
             }
+
+
           },
           error => {
             console.log(error);

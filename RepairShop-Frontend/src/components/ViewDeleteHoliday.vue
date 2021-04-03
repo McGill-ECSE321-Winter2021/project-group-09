@@ -2,7 +2,7 @@
 
 <div>
     <h1>Holidays: View and Delete</h1>
-<div id="ViewDeleteHoliday">
+<div class="formContainer" id="ViewDeleteHoliday">
 
     <template>
       <div>
@@ -28,6 +28,7 @@
             :fields="fields"
             :outlined="true"
             :key="this.items.length"
+            style="width:800px"
           >
             <template #cell(delete)="row">
               <b-button
@@ -140,9 +141,4 @@ export default {
 </script>
     
 <style>
-#ViewDeleteHoliday {
-  margin-top: 4%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>

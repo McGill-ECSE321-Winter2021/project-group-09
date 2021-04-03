@@ -4,7 +4,7 @@
     <h1>Add New Holiday</h1>
 
 
-    <div class="inputForm" id="addHolidayForm">
+    <div class="formContainer" id="addHolidayForm">
 
       <b-form @submit="onSubmit">
         <div>
@@ -134,6 +134,7 @@ export default {
       } else return false;
     },clearError(){
       this.errorAddHoliday="";
+      this.successAddHoliday="";
     }
   },
   watch:{
