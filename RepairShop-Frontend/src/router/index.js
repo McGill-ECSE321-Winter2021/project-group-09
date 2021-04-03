@@ -10,7 +10,7 @@ import ModifyBusinessInfo from '@/components/ModifyBusinessInfo'
 import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import TechnicianScheduleAdmin from '@/components/TechnicianScheduleAdmin'
-
+import CancelAppointmentAdmin from '@/components/CancelAppointmentAdmin'
 import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
 import AddHoliday from '@/components/AddHoliday'
 import ChangePassword from '@/components/ChangePassword'
@@ -96,9 +96,10 @@ export default new Router({
       path : '/contactUs',
       name: "Constact Us",
       component : ContactUs
+    }, {
+      path: '/CancelAppointmentAdmin',
+      name: 'CancelAppointmentAdmin',
+      component: CancelAppointmentAdmin
     }
-
-
-
   ]
 })

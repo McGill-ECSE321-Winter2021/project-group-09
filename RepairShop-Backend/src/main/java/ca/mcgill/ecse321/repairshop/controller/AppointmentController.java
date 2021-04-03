@@ -71,7 +71,7 @@ public class AppointmentController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             if (e instanceof TimeConstraintException) {
-                return new ResponseEntity<>("Cant cancel within 7 days.", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Can't cancel within 7 days.", HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
