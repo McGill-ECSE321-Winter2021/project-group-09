@@ -1,10 +1,12 @@
 <template>
 <div>
-      <h1>Weekly schedule</h1>
- <div id="technicianSchedule">
+      <h1>Weekly Appointment Schedule</h1>
+ <div class="formContainer" id="technicianSchedule">
+
+    <div class="ourTable">
 
     <div id="datePicker">
-      <b-form @submit="getSchedule">
+      <b-form @submit="getSchedule" class="inputWidth">
         <div>
           <label for="schedule-datepicker">Choose a date</label>
           <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2" :date-disabled-fn="dateDisabled"></b-form-datepicker>
@@ -13,7 +15,7 @@
       </b-form>
     </div>
 
-    <div>
+    <div v-if="date && !noAppointments" >
 
       <b-table :fields="fields" :items="items" responsive="sm">
         <!-- A virtual composite column -->
@@ -22,9 +24,9 @@
 
     </div>
 
-    <p v-if="noAppointments" style="color: blue">{{ noAppointments }}</p>
+    <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
     <p v-else-if="errorAppointments" style="color: red">{{ errorAppointments }}</p>
-
+</div>
 
   </div>
 </div>
@@ -42,7 +44,7 @@ export default {
       errorAppointments: "",
       date: "",
       fields: [{ key: "dayTime", label: "Day and Time" }],
-      items: ["Default", "Default"]
+      items: []
     };
   },
 
@@ -108,11 +110,6 @@ export default {
 </script>
 
 <style>
-#technicianSchedule {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 
 #datePicker {
   margin-top: 5%;
