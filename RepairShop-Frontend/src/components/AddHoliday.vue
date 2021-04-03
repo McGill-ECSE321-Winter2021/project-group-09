@@ -64,6 +64,10 @@ var AXIOS = axios.create({
   baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
 });
 
+const clearErrors=function(val, oldVal) {
+  this.errorAddHoliday="";
+  this.successAddHoliday="";
+};
 export default {
   data() {
     return {
@@ -135,17 +139,16 @@ export default {
         if (this.startTimestamp > this.endTimestamp) return false;
         else return true;
       } else return false;
-    },clearError(){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";
-    }
+    }, 
   },
+
   watch:{
-    startTime: this.clearError,
-    endTime: this.clearError, 
-    startDate: this.clearError,    
-    endDate:this.clearError
+    startDate: clearErrors ,
+    endDate: clearErrors, 
+    startDate: clearErrors,
+    startTime: clearErrors
   } 
+
 };
 </script>
 
