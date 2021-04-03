@@ -48,7 +48,7 @@
               class="radioStyle"
             >
               <p>
-                <b>{{ displayDateTime(a.timeSlotDto.startDateTime) }} </b>
+                <b>{{ displayDateTime(a.timeSlotDto.startDateTime, a.timeSlotDto.endDateTime) }} </b>
               </p>
               <p>
                 <b>Service: </b>
@@ -72,7 +72,7 @@
 
             <p>
               <b
-                >{{ displayDateTime(appointment.timeSlotDto.startDateTime) }}
+                >{{ displayDateTime(appointment.timeSlotDto.startDateTime, appointment.timeSlotDto.endDateTime) }}
               </b>
             </p>
             <p>
@@ -111,7 +111,7 @@
 
             <p>
               <b
-                >{{ displayDateTime(appointment.timeSlotDto.startDateTime) }}
+                >{{ displayDateTime(appointment.timeSlotDto.startDateTime, appointment.timeSlotDto.endDateTime) }}
               </b>
             </p>
             <p>
@@ -157,7 +157,7 @@ export default {
       appointment: {
         serviceDto: { name: "" },
         customerDto: { name: "" },
-        timeSlotDto: { startDateTime: "" },
+        timeSlotDto: { startDateTime: "", endDateTime:"" },
       },
       appointments: [],
       formSection: 1,
@@ -245,17 +245,22 @@ export default {
           else this.appError = e;
         });
     },
-    // Convert a Timestamp format (2021-03-02T15:00:00.000+00:00) to YYYY-MM-DD at HH:mm (in local timezone)
-    displayDateTime(dateTime) {
-      let date = new Date(dateTime).toString(); // Should output something like "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)"
-      if (date == "Invalid Date") return "";
+    // Convert a Timestamp format (2021-03-02T15:00:00.000+00:00) to Weekday YYYY-MM-DD from HH:mm to HH:mm(in local timezone)
+    displayDateTime(startDateTime, endDateTime) {
+      let startDate = new Date(startDateTime).toString(); // Should output something like "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)"
+      let endDate = new Date(endDateTime).toString();
+      
+      if (startDate == "Invalid Date" || endDate == "Invalid Date") return "";
+
       else
         return (
-          date.slice(0, 10) +
+          startDate.slice(0, 10) +
           ", " +
-          date.slice(11, 15) +
-          " at " +
-          date.slice(16, 21)
+          startDate.slice(11, 15) +
+          " from " +
+          startDate.slice(16, 21) +
+          " to " +
+          endDate.slice(16,21)
         );
     },
   },
