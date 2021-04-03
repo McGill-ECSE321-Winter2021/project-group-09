@@ -1,73 +1,66 @@
 <template>
-<div>
-  <h1>Add a Service</h1>
-<div class="formContainer" id="addServiceForm">
+  <div>
+    <h1>Add a Service</h1>
+    <div class="formContainer" id="addServiceForm">
+      <b-form @submit="onSubmit" class="inputWidth">
+        <b-form-group
+          id="input-group-1"
+          label="Service Name:"
+          label-for="input-1"
+        >
+          <b-form-input
+            id="input-1"
+            v-model="form.name"
+            placeholder="Enter Service Name"
+            required
+          ></b-form-input>
+        </b-form-group>
 
-    <p>
-      <b>
-        <span v-if="successAddService" style="color: #04571b">
+        <b-form-group
+          id="input-group-2"
+          label="Duration:"
+          label-for="input-2"
+          description="The integer represents the number of 30 minutes slots"
+        >
+          <b-form-input
+            type="number"
+            id="input-2"
+            v-model="form.duration"
+            placeholder="Enter Integer"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group id="input-group-3" label="Price ($):" label-for="input-3">
+          <b-form-input
+            type="number"
+            step="0.01"
+            id="input-3"
+            v-model="form.price"
+            placeholder="Enter Price"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+        <p v-if="errorAddService" style="color: red">
+          Error: {{ errorAddService }}
+        </p>
+        <p v-if="successAddService" style="color: #04571b">
           {{ successAddService }}
-        </span>
-      </b>
-    </p>
+        </p>
 
-    <b-form @submit="onSubmit"  class="inputWidth">
-      <b-form-group
-        id="input-group-1"
-        label="Service Name:"
-        label-for="input-1"
-      >
-        <b-form-input
-          id="input-1"
-          v-model="form.name"
-          placeholder="Enter Service Name"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group
-        id="input-group-2"
-        label="Duration:"
-        label-for="input-2"
-        description="The integer represents the number of 30 minutes slots"
-      >
-        <b-form-input
-          type="number"
-          id="input-2"
-          v-model="form.duration"
-          placeholder="Enter Integer"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <b-form-group id="input-group-3" label="Price ($):" label-for="input-3">
-        <b-form-input
-          type="number"
-          step="0.01"
-          id="input-3"
-          v-model="form.price"
-          placeholder="Enter Price"
-          required
-        ></b-form-input>
-      </b-form-group>
-
-      <p v-if="errorAddService" style="color: red">
-        Error: {{ errorAddService }}
-      </p>
-
-      <b-button type="submit" variant="primary">Create Service</b-button>
-    </b-form>
+        <b-button type="submit" variant="primary">Create Service</b-button>
+      </b-form>
+    </div>
   </div>
-</div>
-  
 </template>
 
 <script>
 import axios from "axios";
-
+import { BACKEND } from "../constants/constants";
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort
+  baseURL: BACKEND
 });
 
 export default {

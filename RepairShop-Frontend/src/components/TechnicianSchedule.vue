@@ -1,40 +1,41 @@
 <template>
-<div>
-      <h1>Weekly Appointment Schedule</h1>
- <div class="formContainer" id="technicianSchedule">
-
-    <div class="ourTable">
-
-    <div id="datePicker">
-      <b-form @submit="getSchedule" class="inputWidth">
-        <div>
-          <label for="schedule-datepicker">Choose a date</label>
-          <b-form-datepicker id="schedule-datepicker" v-model="date" class="mb-2" :date-disabled-fn="dateDisabled"></b-form-datepicker>
+  <div>
+    <h1>Weekly Appointment Schedule</h1>
+    <div class="formContainer" id="technicianSchedule">
+      <div class="ourTable">
+        <div id="datePicker">
+          <b-form @submit="getSchedule" class="inputWidth">
+            <div>
+              <label for="schedule-datepicker">Choose a date</label>
+              <b-form-datepicker
+                id="schedule-datepicker"
+                v-model="date"
+                class="mb-2"
+                :date-disabled-fn="dateDisabled"
+              ></b-form-datepicker>
+            </div>
+            <b-button type="submit" variant="primary">Get Schedule</b-button>
+          </b-form>
         </div>
-        <b-button type="submit" variant="primary">Get Schedule</b-button>
-      </b-form>
+
+        <div v-if="date && !noAppointments">
+          <b-table :fields="fields" :items="items" responsive="sm">
+            <!-- A virtual composite column -->
+            <template #cell(dayTime)="data"> {{ data.item }}. </template>
+          </b-table>
+        </div>
+
+        <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
+        <p v-else-if="errorAppointments" style="color: red">
+          {{ errorAppointments }}
+        </p>
+      </div>
     </div>
-
-    <div v-if="date && !noAppointments" >
-
-      <b-table :fields="fields" :items="items" responsive="sm">
-        <!-- A virtual composite column -->
-        <template #cell(dayTime)="data"> {{ data.item }}. </template>
-      </b-table>
-
-    </div>
-
-    <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
-    <p v-else-if="errorAppointments" style="color: red">{{ errorAppointments }}</p>
-</div>
-
   </div>
-</div>
- 
 </template>
 
 <script>
-import { LOCALHOST_BACKEND } from "../constants/constants";
+import { BACKEND } from "../constants/constants";
 import axios from "axios";
 
 export default {
@@ -49,8 +50,7 @@ export default {
   },
 
   methods: {
-
-    dateDisabled(ymd, date){
+    dateDisabled(ymd, date) {
       const weekday = date.getDay();
       return weekday != 1;
     },
@@ -61,10 +61,7 @@ export default {
       this.noAppointments = "";
 
       var url =
-        LOCALHOST_BACKEND +
-        "/api/technician/" +
-        this.$root.$data.email +
-        "/schedule";
+        BACKEND + "/api/technician/" + this.$root.$data.email + "/schedule";
       var tempSchedule = [];
 
       axios
@@ -91,9 +88,22 @@ export default {
                 console.log(date);
 
                 const dayOfWeek = new Date(date).getDay();
-                var day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dayOfWeek];
+                var day = [
+                  "Sunday",
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday"
+                ][dayOfWeek];
 
-                var dayTime = day + " from " + thisDayTime.startDateTime.substring(11, 16) + " to " + thisDayTime.endDateTime.substring(11, 16);
+                var dayTime =
+                  day +
+                  " from " +
+                  thisDayTime.startDateTime.substring(11, 16) +
+                  " to " +
+                  thisDayTime.endDateTime.substring(11, 16);
                 formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
@@ -110,7 +120,6 @@ export default {
 </script>
 
 <style>
-
 #datePicker {
   margin-top: 5%;
   margin-left: 5%;

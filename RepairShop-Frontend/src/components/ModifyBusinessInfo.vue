@@ -16,7 +16,6 @@
           ></b-form-input>
         </b-form-group>
 
-
         <b-form-group
           id="input-group-4"
           label="Phone Number:"
@@ -36,7 +35,6 @@
           id="input-group-1"
           label="Email Address:"
           label-for="input-1"
-          
         >
           <b-form-input
             id="input-1"
@@ -45,7 +43,6 @@
             required
           ></b-form-input>
         </b-form-group>
-
 
         <b-form-group id="input-group-3" label="Address:" label-for="input-3">
           <b-form-input
@@ -76,18 +73,12 @@
         </p>
         <b-button type="submit" variant="primary">Save changes</b-button>
       </b-form>
-
-      
-
-  
-
-
     </div>
   </div>
 </template>
 
 <script>
-import { LOCALHOST_BACKEND } from "../constants/constants";
+import { BACKEND } from "../constants/constants";
 import axios from "axios";
 export default {
   data() {
@@ -99,29 +90,29 @@ export default {
         name: "",
         address: "",
         phone: "",
-        numRepairSpots: "",
+        numRepairSpots: ""
       },
       result: {
         email: "",
         name: "",
         address: "",
         phone: "",
-        numRepairSpots: "",
-      },
+        numRepairSpots: ""
+      }
     };
   },
 
-  created: function () {
-    let url = LOCALHOST_BACKEND + "/api/business/info";
+  created: function() {
+    let url = BACKEND + "/api/business/info";
     axios.get(url).then(
-      (response) => {
+      response => {
         this.form.email = response.data.email;
         this.form.address = response.data.address;
         this.form.phone = response.data.phoneNumber;
         this.form.numRepairSpots = response.data.numberOfRepairSpots;
         this.form.name = response.data.name;
       },
-      (error) => {
+      error => {
         console.log(error.response.data);
       }
     );
@@ -132,7 +123,7 @@ export default {
       event.preventDefault();
       this.errorModifyBusinessInfo = "";
       this.successModifyBusinessInfo = "";
-      let url = LOCALHOST_BACKEND + "/api/business/update";
+      let url = BACKEND + "/api/business/update";
       axios
         .put(
           url,
@@ -141,29 +132,27 @@ export default {
             name: this.form.name,
             address: this.form.address,
             phoneNumber: this.form.phone,
-            numberOfRepairSpots: this.form.numRepairSpots,
+            numberOfRepairSpots: this.form.numRepairSpots
           },
           {
             headers: {
-              token: this.$root.$data.token,
-            },
+              token: this.$root.$data.token
+            }
           }
         )
         .then(
-          (response) => {
+          response => {
             this.successModifyBusinessInfo = "Business successfully updated.";
           },
-          (error) => {
+          error => {
             console.log(error.response.data);
             this.errorModifyBusinessInfo =
               "Something went wrong. Please try again.";
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>
 
-
-<style>
-</style>
+<style></style>

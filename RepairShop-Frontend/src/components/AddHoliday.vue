@@ -1,14 +1,11 @@
-
 <template>
   <div>
     <h1>Add a Holiday</h1>
 
-
     <div class="formContainer" id="addHolidayForm">
-
       <b-form @submit="onSubmit">
         <div>
-          <div class="d-inline-block mr-5" style="max-width: 300px" > 
+          <div class="d-inline-block mr-5" style="max-width: 300px">
             <b-form-group label="Start Date:">
               <b-calendar
                 v-model="startDate"
@@ -46,9 +43,9 @@
         <p v-if="errorAddHoliday" style="color: red">
           Error: {{ errorAddHoliday }}
         </p>
-      <p v-if="successAddHoliday" style="color: #04571b">
-            {{ successAddHoliday }}
-      </p>
+        <p v-if="successAddHoliday" style="color: #04571b">
+          {{ successAddHoliday }}
+        </p>
 
         <b-button type="submit" variant="primary"> Add Holiday</b-button>
       </b-form>
@@ -58,10 +55,11 @@
 
 <script>
 import axios from "axios";
+import { BACKEND } from "../constants/constants";
 
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
+  baseURL: BACKEND
 });
 
 export default {
@@ -75,42 +73,45 @@ export default {
       successAddHoliday: "",
       startTime: "",
       endTime: "",
-      startTimestamp:"",
-      endTimestamp:"",
+      startTimestamp: "",
+      endTimestamp: ""
     };
   },
-  created: function(){
-    if(this.$root.$data.userType !=  'Admin') this.$router.push("/");
+  created: function() {
+    if (this.$root.$data.userType != "Admin") this.$router.push("/");
   },
   methods: {
     onSubmit(event) {
       event.preventDefault();
 
-      if (this.calandarStartDateTime.activeDate > this.calandarEndDateTime.activeDate) {
+      if (
+        this.calandarStartDateTime.activeDate >
+        this.calandarEndDateTime.activeDate
+      ) {
         this.errorAddHoliday =
           "The start date and time must be before the end date and time.";
-      }else if(!this.validateTimes()){
-          this.errorAddHoliday = "Invalid time entered."
-      }else {
+      } else if (!this.validateTimes()) {
+        this.errorAddHoliday = "Invalid time entered.";
+      } else {
         AXIOS.post(
           "api/business/create/holidays",
           {
             startDateTime: this.startTimestamp,
-            endDateTime: this.endTimestamp,
+            endDateTime: this.endTimestamp
           },
           {
             headers: {
-              token: this.$root.$data.token,
-            },
+              token: this.$root.$data.token
+            }
           }
         )
-          .then((response) => {
+          .then(response => {
             this.errorAddHoliday = "";
 
             this.successAddHoliday =
               "The new holiday has been added successfully ✓";
           })
-          .catch((e) => {
+          .catch(e => {
             this.errorAddHoliday = e.response.data;
             this.successAddHoliday = "";
           });
@@ -135,19 +136,19 @@ export default {
         if (this.startTimestamp > this.endTimestamp) return false;
         else return true;
       } else return false;
-    },clearError(){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";
+    },
+    clearError() {
+      this.errorAddHoliday = "";
+      this.successAddHoliday = "";
     }
   },
-  watch:{
+  watch: {
     startTime: this.clearError,
-    endTime: this.clearError, 
-    startDate: this.clearError,    
-    endDate:this.clearError
-  } 
+    endTime: this.clearError,
+    startDate: this.clearError,
+    endDate: this.clearError
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>
