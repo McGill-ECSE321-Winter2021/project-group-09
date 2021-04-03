@@ -186,11 +186,6 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
-#contactUs {
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 
 #businessName {
   font-family: "Libre Baskerville", serif;
