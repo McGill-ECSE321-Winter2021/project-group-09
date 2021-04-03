@@ -83,7 +83,7 @@ export default {
       this.noAppointments = "";
       this.errorAppointments = "";
 
-      this.items = ["Default", "Default"]
+      this.items = ["", ""]
       var url = LOCALHOST_BACKEND + "/api/technician/" + this.techEmail + "/schedule";
       var tempSchedule = [];
 

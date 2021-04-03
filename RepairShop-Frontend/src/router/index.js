@@ -11,11 +11,8 @@ import AddService from '@/components/AddService'
 import ViewServices from '@/components/ViewServices'
 import TechnicianScheduleAdmin from '@/components/TechnicianScheduleAdmin'
 
-<<<<<<< HEAD
-=======
 import ViewDeleteHoliday from '@/components/ViewDeleteHoliday'
 import AddHoliday from '@/components/AddHoliday'
->>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
 import ChangePassword from '@/components/ChangePassword'
 import ViewAppointments from '@/components/ViewAppointments'
 import Logout from '@/components/Logout'
@@ -72,17 +69,6 @@ export default new Router({
       name: 'technician_appointments',
       component : TechnicianAppointments
     }, {
-<<<<<<< HEAD
-      path: '/technician_schedule',
-      name: 'technician_schedule',
-      component : TechnicianSchedule
-    }, {
-      path: '/technician_appointments',
-      name: 'technician_appointments',
-      component : TechnicianAppointments
-    }, {
-=======
->>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
       path: '/modify_business_info',
       name: 'modify_business_info',
       component : ModifyBusinessInfo

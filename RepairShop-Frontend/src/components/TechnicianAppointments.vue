@@ -1,15 +1,8 @@
 <template>
-<<<<<<< HEAD
-  <div id="ViewAppointments">
-    <h2>Your Appointments</h2>
-    <template>
-      <div>
-=======
 <div>
     <h1>View Appointments</h1>
   <div class="formContainer" id="ViewAppointments">
       <div class="ourTable">
->>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
         <div v-if="errorViewServices">
           <span v-if="errorViewServices" style="color: red">
             {{ errorViewServices }}
@@ -24,12 +17,8 @@
           />
         </div>
       </div>
-<<<<<<< HEAD
-    </template>
-=======
 
   </div>
->>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
   </div>
 </template>
 
@@ -45,11 +34,7 @@ export default {
     return {
       errorViewServices: "",
       appointments: [],
-<<<<<<< HEAD
-      fields: ["ID", "Service", "start", "end", "customer"],
-=======
       fields: ["Service", "start", "end", "customer"],
->>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
       items: [],
       idToDateTimeMap: {}
     };
@@ -112,12 +97,4 @@ export default {
 </script>
 
 <style>
-<<<<<<< HEAD
-#ViewAppointments {
-  margin-top: 4%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-=======
->>>>>>> 07a58bdcb63f481c9aa7161603df5e6826250f57
 </style>
