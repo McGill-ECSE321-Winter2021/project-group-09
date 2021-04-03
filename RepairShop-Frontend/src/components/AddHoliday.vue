@@ -149,34 +149,6 @@ export default {
     startTime: clearErrors
   } 
 
-
-
-
-//WORKING
-
-  // watch:{
-  //   startDate: function(val, oldVal){
-  //     this.errorAddHoliday="";
-  //     this.successAddHoliday="";   
-  //   } ,
-  //   endDate: function(val, oldVal){
-  //     this.errorAddHoliday="";
-  //     this.successAddHoliday="";   
-  //   }, 
-  //   startDate: function(val, oldVal){
-  //     this.errorAddHoliday="";
-  //     this.successAddHoliday="";   
-  //   } ,
-  //   startTime: function(val, oldVal){
-  //     this.errorAddHoliday="";
-  //     this.successAddHoliday="";   
-  //   },
-  // } 
-
-
-
-
-
 };
 </script>
 
