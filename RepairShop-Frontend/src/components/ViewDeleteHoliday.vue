@@ -4,10 +4,8 @@
     <h1>Holidays: View and Delete</h1>
 <div class="formContainer" id="ViewDeleteHoliday">
 
-    <template>
-      <div>
 
-
+      <div class="ourTable">
     <p>  
           <span v-if="successDeleteHoliday" style="color: #04571b">
             {{ successDeleteHoliday }}
@@ -15,20 +13,17 @@
 
     </p>
 
-        <div v-if="errorViewDeleteHolidays">
-          <span v-if="errorViewDeleteHolidays" style="color: red">
-            {{ errorViewDeleteHolidays }}
-          </span>
+        <div v-if="errorViewDeleteHolidays" style="color: red">
+            {{ errorViewDeleteHolidays }}    
         </div>
    
 
-        <div v-else>
+        <div v-else >
           <b-table
             :items="items"
             :fields="fields"
             :outlined="true"
             :key="this.items.length"
-            style="width:800px"
           >
             <template #cell(delete)="row">
               <b-button
@@ -43,7 +38,6 @@
           >
         </div>
       </div>
-    </template>
   </div>
 </div>
   

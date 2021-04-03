@@ -3,19 +3,19 @@
   <div>
     <h1>View Services</h1>
     <div class="formContainer" id="ViewServices">
-      <template>
-        <div>
+      
+        <div class="ourTable">
           <div v-if="errorViewServices">
             <span v-if="errorViewServices" style="color: red">
               {{ errorViewServices }}
             </span>
           </div>
           <div v-else>
-            <b-table :items="items" :fields="fields" :outlined="true" style="width:800px">
+            <b-table :items="items" :fields="fields" :outlined="true" >
             </b-table>
           </div>
         </div>
-      </template>
+     
     </div>
   </div>
 </template>

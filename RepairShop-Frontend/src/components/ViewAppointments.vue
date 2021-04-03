@@ -1,13 +1,11 @@
 <template>
   <div>
     <h1>My Appointments</h1>
-    <div id="ViewServices">
-      <template>
-        <div>
-          <div v-if="errorViewServices">
-            <span v-if="errorViewServices" style="color: red">
-              {{ errorViewServices }}
-            </span>
+    <div class="formContainer" id="ViewAppt">
+      
+        <div class="ourTable">
+          <div v-if="errorViewAppt" class="text-center" style="color: red">
+              {{ errorViewAppt }}
           </div>
           <div v-else>
             <b-table
@@ -39,7 +37,6 @@
             >
           </div>
         </div>
-      </template>
     </div>
   </div>
 </template>
@@ -55,9 +52,9 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      errorViewServices: "",
+      errorViewAppt: "",
       appointments: [],
-      fields: ["ID", "Service", "start", "end", "cancellation"],
+      fields: ["Service", "start", "end", "cancellation"],
       items: [],
       idToDateTimeMap: {},
     };
@@ -122,8 +119,10 @@ export default {
       })
         .then((response) => {
           this.appointments = response.data;
-
-          this.appointments.forEach((item) => {
+            if(this.appointments.length==0){
+              this.errorViewAppt="There are no appointments";
+            }else{
+            this.appointments.forEach((item) => {
             this.items.push({
               ID: item.appointmentID,
               Service: item.serviceDto.name,
@@ -133,9 +132,11 @@ export default {
             this.idToDateTimeMap[item.appointmentID] =
               item.timeSlotDto.startDateTime;
           });
+            }  
         })
         .catch((e) => {
           console.log(e);
+
         });
     },
   },
@@ -143,9 +144,4 @@ export default {
 </script>
 
 <style>
-#ViewServices {
-  margin-top: 4%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>
