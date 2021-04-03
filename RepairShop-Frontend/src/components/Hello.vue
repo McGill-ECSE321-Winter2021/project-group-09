@@ -28,7 +28,6 @@ export default {
     };
   },
   created: function() {
-    console.log(process.env.VUE_APP_PROD_BACKEND);
     AXIOS.get(GET_BUSINESS_ENDPOINT)
       .then(response => {
         this.name = response.data.name;
