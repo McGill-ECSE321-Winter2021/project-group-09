@@ -31,9 +31,7 @@ export default {
     console.log(
       "here",
       process.env.VUE_APP_PROD_BACKEND,
-      process.env.VUE_APP_TES,
-      env.VUE_APP_PROD_BACKEND,
-      env.VUE_APP_TES
+      process.env.VUE_APP_TES
     );
     AXIOS.get(GET_BUSINESS_ENDPOINT)
       .then(response => {
