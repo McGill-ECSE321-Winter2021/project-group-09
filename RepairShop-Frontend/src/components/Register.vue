@@ -8,7 +8,7 @@
             id="input-0"
             v-model="form.name"
             type="text"
-            placeholder="Enter Full Name"
+            placeholder="Enter full name"
             required
           ></b-form-input>
         </b-form-group>
@@ -78,7 +78,7 @@
             v-model="form.phoneNumber"
             type="tel"
             pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-            placeholder="Enter Phone Number"
+            placeholder="Enter phone number"
             required
           ></b-form-input>
         </b-form-group>
@@ -88,7 +88,7 @@
             id="input-5"
             v-model="form.address"
             type="text"
-            placeholder="Enter Address"
+            placeholder="Enter address"
             required
           ></b-form-input>
         </b-form-group>
@@ -361,9 +361,4 @@ export default {
 </script>
 
 <style>
-#registerForm {
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>

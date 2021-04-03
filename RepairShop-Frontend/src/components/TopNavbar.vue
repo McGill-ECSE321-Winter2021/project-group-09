@@ -44,6 +44,7 @@
 
     <b-navbar-nav class="ml-auto" v-show="this.$root.$data.email">
       <b-nav-item-dropdown :text="this.$root.$data.email" right>
+        <b-dropdown-item to="Profile">Profile</b-dropdown-item>
         <b-dropdown-item to="ChangePass">Change Password</b-dropdown-item>
         <b-dropdown-item to="Logout">Logout</b-dropdown-item>
       </b-nav-item-dropdown>

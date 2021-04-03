@@ -19,6 +19,7 @@ import Logout from '@/components/Logout'
 import ModifyTechHours from '@/components/ModifyTechHours'
 import DeleteTechHours from '@/components/DeleteTechHours'
 import ContactUs from '@/components/ContactUs'
+import Profile from '@/components/Profile'
 
 Vue.use(Router)
 
@@ -100,6 +101,10 @@ export default new Router({
       path: '/CancelAppointmentAdmin',
       name: 'CancelAppointmentAdmin',
       component: CancelAppointmentAdmin
+    }, {
+      path: '/Profile',
+      name: 'Profile',
+      component: Profile
     }
   ]
 })
