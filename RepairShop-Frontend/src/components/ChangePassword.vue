@@ -39,6 +39,7 @@
 </template>
 
 <script>
+
 import {
   CHANGE_PASS_TECH,
   CHANGE_PASS_ADMIN,
@@ -108,7 +109,11 @@ export default {
           }
         );
     }
+  },
+  created: function(){
+    if(!this.$root.$data.userType) this.$router.push("/");
   }
+
 };
 </script>
 

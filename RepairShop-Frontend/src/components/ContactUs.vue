@@ -3,7 +3,10 @@
   <div>
     <h1>Contact Us</h1>
 
-    <div id="contactUs">
+    <div class="formContainer" id="contactUs">
+
+          <div class="ourTable">      
+
       <div v-if="errorGetBusiness">
         <span v-if="errorGetBusiness" style="color: red">
           {{ errorGetBusiness }}
@@ -98,6 +101,7 @@
         </b-table>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
