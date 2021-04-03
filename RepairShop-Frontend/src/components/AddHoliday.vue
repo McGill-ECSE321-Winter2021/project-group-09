@@ -64,6 +64,10 @@ var AXIOS = axios.create({
   baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
 });
 
+const clearErrors=function(val, oldVal) {
+  this.errorAddHoliday="";
+  this.successAddHoliday="";
+};
 export default {
   data() {
     return {
@@ -137,24 +141,40 @@ export default {
       } else return false;
     }, 
   },
+
   watch:{
-    startDate: function(val, oldVal){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";   
-    } ,
-    endDate: function(val, oldVal){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";   
-    }, 
-    startDate: function(val, oldVal){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";   
-    } ,
-    startTime: function(val, oldVal){
-      this.errorAddHoliday="";
-      this.successAddHoliday="";   
-    },
+    startDate: clearErrors ,
+    endDate: clearErrors, 
+    startDate: clearErrors,
+    startTime: clearErrors
   } 
+
+
+
+
+//WORKING
+
+  // watch:{
+  //   startDate: function(val, oldVal){
+  //     this.errorAddHoliday="";
+  //     this.successAddHoliday="";   
+  //   } ,
+  //   endDate: function(val, oldVal){
+  //     this.errorAddHoliday="";
+  //     this.successAddHoliday="";   
+  //   }, 
+  //   startDate: function(val, oldVal){
+  //     this.errorAddHoliday="";
+  //     this.successAddHoliday="";   
+  //   } ,
+  //   startTime: function(val, oldVal){
+  //     this.errorAddHoliday="";
+  //     this.successAddHoliday="";   
+  //   },
+  // } 
+
+
+
 
 
 };
