@@ -1,4 +1,4 @@
-export const BACKEND = 'PROD_BACKEND' in process.env ? "https://repairshop-backend-ecse321-09.herokuapp.com:5432" : "http://localhost:8080"
+export const BACKEND = process.env.PROD_BACKEND ? "https://repairshop-backend-ecse321-09.herokuapp.com:5432" : "http://localhost:8080"
 export const HEROKU_BACKEND = "https://repairshop-backend-ecse321-09.herokuapp.com"
 export const LOGIN_ENDPOINT = "/api/authentication/login"
 export const REGISTER_CUSTOMER_ENDPOINT = "/api/customer/register"
