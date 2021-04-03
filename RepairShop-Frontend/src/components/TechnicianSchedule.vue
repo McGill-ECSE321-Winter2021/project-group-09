@@ -4,7 +4,7 @@
     <div class="formContainer" id="technicianSchedule">
       <div class="ourTable">
         <div id="datePicker">
-          <b-form @submit="getSchedule" class="inputWidth">
+          <b-form @submit="getSchedule">
             <div>
               <label for="schedule-datepicker">Choose a date</label>
               <b-form-datepicker
@@ -14,21 +14,27 @@
                 :date-disabled-fn="dateDisabled"
               ></b-form-datepicker>
             </div>
-            <b-button type="submit" variant="primary">Get Schedule</b-button>
+            <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
+            <p v-else-if="errorAppointments" style="color: red">
+              {{ errorAppointments }}
+            </p>
+            <b-button type="submit" variant="primary" style="margin-top:15px"
+              >Get Schedule</b-button
+            >
           </b-form>
         </div>
 
-        <div v-if="date && !noAppointments">
-          <b-table :fields="fields" :items="items" responsive="sm">
+        <div v-if="date && items.length != 0">
+          <b-table
+            :fields="fields"
+            :items="items"
+            responsive="sm"
+            style="margin-top: 50px"
+          >
             <!-- A virtual composite column -->
             <template #cell(dayTime)="data"> {{ data.item }}. </template>
           </b-table>
         </div>
-
-        <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
-        <p v-else-if="errorAppointments" style="color: red">
-          {{ errorAppointments }}
-        </p>
       </div>
     </div>
   </div>
@@ -115,15 +121,15 @@ export default {
           }
         );
     }
+  },
+  watch: {
+    date: function(val, oldVal) {
+      this.items = [];
+      this.errorAppointments = "";
+      this.noAppointments = "";
+    }
   }
 };
 </script>
 
-<style>
-#datePicker {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-}
-</style>
+<style></style>

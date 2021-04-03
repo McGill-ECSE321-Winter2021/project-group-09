@@ -24,7 +24,7 @@
             </p>
           </div>
 
-          <p v-else class="text-danger">
+          <p v-show="noTechnicians" class="text-danger">
             There are currently no technicians available.
           </p>
 
@@ -129,6 +129,7 @@ export default {
       appError: "",
       technicianEmail: "",
       technicians: [],
+      noTechnicians: false,
       weekDays: [
         // Using known dates - days of the week will be mapped to future dates
         { text: "Monday", value: "2021-03-01" },
@@ -158,6 +159,8 @@ export default {
       .then(r => {
         this.technicians = r.data;
         this.appError = "";
+        if (this.technicians.length == 0) this.noTechnicians = true;
+        else this.noTechnicians = false;
       })
       .catch(e => {
         this.appError = e;

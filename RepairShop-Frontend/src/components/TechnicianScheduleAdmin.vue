@@ -1,50 +1,57 @@
 <template>
   <div>
     <h1>Technician's Weekly Schedule</h1>
-    <div id="technicianSchedule">
-      <div id="dataInput">
-        <b-form @submit="getSchedule">
-          <div id="techEmailInput">
-            <b-form-group label="Select a technician" class="mt-4">
-              <b-form-radio
-                v-for="tech in technicians"
-                :key="tech.email"
-                v-model="techEmail"
-                :value="tech.email"
-              >
-                {{ "Name: " + tech.name + " (Email: " + tech.email + ")" }}
-              </b-form-radio>
-              <p v-show="technicians.length === 0">
-                No technicians registered.
-              </p>
-            </b-form-group>
-          </div>
+    <div class="formContainer" id="technicianSchedule">
+      <div class="ourTable">
+        <div id="dataInput">
+          <b-form @submit="getSchedule">
+            <div id="techEmailInput">
+              <b-form-group label="Select a technician" class="mt-4">
+                <b-form-radio
+                  v-for="tech in technicians"
+                  :key="tech.email"
+                  v-model="techEmail"
+                  :value="tech.email"
+                >
+                  {{ tech.name + " (" + tech.email + ")" }}
+                </b-form-radio>
+                <p v-show="technicians.length === 0">
+                  No technicians registered.
+                </p>
+              </b-form-group>
+            </div>
 
-          <div id="datePicker">
-            <label for="schedule-datepicker">Choose a date</label>
-            <b-form-datepicker
-              id="schedule-datepicker"
-              v-model="date"
-              class="mb-2"
-              :date-disabled-fn="dateDisabled"
-            ></b-form-datepicker>
-          </div>
+            <div id="datePicker">
+              <label for="schedule-datepicker">Choose a date</label>
+              <b-form-datepicker
+                id="schedule-datepicker"
+                v-model="date"
+                class="mb-2"
+                :date-disabled-fn="dateDisabled"
+              ></b-form-datepicker>
+            </div>
+            <p v-if="noAppointments" style="color: red">{{ noAppointments }}</p>
+            <p v-else-if="errorAppointments" style="color: red">
+              {{ errorAppointments }}
+            </p>
+            <b-button type="submit" variant="primary" style="margin-top:15px"
+              >Get Schedule</b-button
+            >
+          </b-form>
+        </div>
 
-          <b-button type="submit" variant="primary">Get Schedule</b-button>
-        </b-form>
+        <div v-if="date && this.items.length != 0">
+          <b-table
+            :fields="fields"
+            :items="items"
+            responsive="sm"
+            style="margin-top: 50px"
+          >
+            <!-- A virtual composite column -->
+            <template #cell(dayTime)="data"> {{ data.item }}</template>
+          </b-table>
+        </div>
       </div>
-
-      <div>
-        <b-table :fields="fields" :items="items" responsive="sm">
-          <!-- A virtual composite column -->
-          <template #cell(dayTime)="data"> {{ data.item }}. </template>
-        </b-table>
-      </div>
-
-      <p v-if="noAppointments" style="color: blue">{{ noAppointments }}</p>
-      <p v-else-if="errorAppointments" style="color: red">
-        {{ errorAppointments }}
-      </p>
     </div>
   </div>
 </template>
@@ -61,8 +68,8 @@ export default {
       noAppointments: "",
       errorAppointments: "",
       date: "",
-      fields: ["index", { key: "dayTime", label: "Day and Time" }],
-      items: ["Default", "Default"]
+      fields: [{ key: "dayTime", label: "Day and Time" }],
+      items: []
     };
   },
 
@@ -93,7 +100,12 @@ export default {
       this.noAppointments = "";
       this.errorAppointments = "";
 
-      this.items = ["Default", "Default"];
+      if (this.date == "") {
+        this.errorAppointments = "Please choose a date";
+        return;
+      }
+
+      this.items = [];
       var url = BACKEND + "/api/technician/" + this.techEmail + "/schedule";
       var tempSchedule = [];
 
@@ -146,21 +158,16 @@ export default {
           }
         );
     }
+  },
+  watch: {
+    techEmail: function(val, oldVal) {
+      this.date = "";
+      this.items = [];
+      this.errorAppointments = "";
+      this.noAppointments = "";
+    }
   }
 };
 </script>
 
-<style>
-#technicianSchedule {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
-#dataInput {
-  margin-top: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-}
-</style>
+<style></style>
