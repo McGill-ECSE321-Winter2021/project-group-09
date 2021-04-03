@@ -29,6 +29,7 @@
 
       <b-nav-item-dropdown text="Technicians" right>
         <b-dropdown-item to="technician_schedule_admin">Schedules</b-dropdown-item>
+        <b-dropdown-item to="cancelAppointmentAdmin">Cancel Appointments</b-dropdown-item>
         <b-dropdown-item to="modifyHours">Modify Work Hours</b-dropdown-item>
         <b-dropdown-item to="deleteHours">Delete Work Hours</b-dropdown-item>
       </b-nav-item-dropdown>
