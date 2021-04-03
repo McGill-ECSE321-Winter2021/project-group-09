@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { LOGOUT_ENDPOINT, LOCALHOST_BACKEND } from "../constants/constants";
+import { LOGOUT_ENDPOINT, BACKEND } from "../constants/constants";
 import axios from "axios";
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
       return;
     }
     axios
-      .post(LOCALHOST_BACKEND + LOGOUT_ENDPOINT, {
+      .post(BACKEND + LOGOUT_ENDPOINT, {
         email: this.$root.$data.email,
         password: this.$root.$data.password,
         userType: this.$root.$data.userType

@@ -1,24 +1,19 @@
 <template>
-
-<div>
+  <div>
     <h1>Holidays: View and Delete</h1>
-<div class="formContainer" id="ViewDeleteHoliday">
-
-
+    <div class="formContainer" id="ViewDeleteHoliday">
       <div class="ourTable">
-    <p>  
+        <p>
           <span v-if="successDeleteHoliday" style="color: #04571b">
             {{ successDeleteHoliday }}
           </span>
-
-    </p>
+        </p>
 
         <div v-if="errorViewDeleteHolidays" style="color: red">
-            {{ errorViewDeleteHolidays }}    
+          {{ errorViewDeleteHolidays }}
         </div>
-   
 
-        <div v-else >
+        <div v-else>
           <b-table
             :items="items"
             :fields="fields"
@@ -28,7 +23,9 @@
             <template #cell(delete)="row">
               <b-button
                 size="sm"
-                v-on:click="deleteHoliday(row.item.startDateTime, row.item.endDateTime)"
+                v-on:click="
+                  deleteHoliday(row.item.startDateTime, row.item.endDateTime)
+                "
                 class="mr-2"
                 variant="danger"
               >
@@ -38,9 +35,8 @@
           >
         </div>
       </div>
+    </div>
   </div>
-</div>
-  
 </template>
 
 <script>
@@ -48,11 +44,12 @@ import axios from "axios";
 import {
   DELETE_HOLIDAY_ENDPOINT,
   ALL_HOLIDAYS_ENDPOINT,
+  BACKEND
 } from "../constants/constants";
 
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
+  baseURL: BACKEND
 });
 export default {
   data() {
@@ -61,11 +58,11 @@ export default {
       successDeleteHoliday: "",
       holidays: [],
       fields: ["Start Date", "End Date", "delete"],
-      items: [],
+      items: []
     };
   },
   //fetch all holidays and display them in a table
-  created: function () {
+  created: function() {
     this.getHolidays();
   },
   methods: {
@@ -88,22 +85,22 @@ export default {
         DELETE_HOLIDAY_ENDPOINT,
         {
           startDateTime: start,
-          endDateTime: end,
+          endDateTime: end
         },
         {
           headers: {
-            token: this.$root.$data.token,
-          },
+            token: this.$root.$data.token
+          }
         }
       )
-        .then((response) => {
+        .then(response => {
           this.items = [];
           this.getHolidays();
           console.log(response);
-          this.successDeleteHoliday = "The holiday has been deleted successfully ✓ ";
-
+          this.successDeleteHoliday =
+            "The holiday has been deleted successfully ✓ ";
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
           this.errorViewDeleteHolidays = e.response.data;
         });
@@ -112,18 +109,18 @@ export default {
     //fetches all holidays
     getHolidays() {
       AXIOS.get(ALL_HOLIDAYS_ENDPOINT)
-        .then((response) => {
+        .then(response => {
           this.holidays = response.data;
-          this.holidays.forEach((item) => {
+          this.holidays.forEach(item => {
             this.items.push({
               "Start Date": this.displayDateTime(item.startDateTime),
               "End Date": this.displayDateTime(item.endDateTime),
               startDateTime: item.startDateTime,
-              endDateTime: item.endDateTime,
+              endDateTime: item.endDateTime
             });
           });
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
           if (e.response.status == 400 || e.response.status == 404)
             this.errorViewDeleteHolidays = e.response.data;
@@ -133,6 +130,5 @@ export default {
   }
 };
 </script>
-    
-<style>
-</style>
+
+<style></style>

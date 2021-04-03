@@ -34,11 +34,13 @@
             <p v-else-if="errorAppointments" style="color: red">
               {{ errorAppointments }}
             </p>
-            <b-button type="submit" variant="primary" style="margin-top:15px">Get Schedule</b-button>
+            <b-button type="submit" variant="primary" style="margin-top:15px"
+              >Get Schedule</b-button
+            >
           </b-form>
         </div>
 
-        <div v-if="date && this.items.length!=0">
+        <div v-if="date && this.items.length != 0">
           <b-table
             :fields="fields"
             :items="items"
@@ -55,7 +57,7 @@
 </template>
 
 <script>
-import { LOCALHOST_BACKEND } from "../constants/constants";
+import { BACKEND } from "../constants/constants";
 import axios from "axios";
 
 export default {
@@ -67,22 +69,22 @@ export default {
       errorAppointments: "",
       date: "",
       fields: [{ key: "dayTime", label: "Day and Time" }],
-      items: [],
+      items: []
     };
   },
 
-  created: function () {
-    let url = LOCALHOST_BACKEND + "/api/technician/all";
+  created: function() {
+    let url = BACKEND + "/api/technician/all";
     axios
       .get(url, {
         headers: {
-          token: this.$root.$data.token,
-        },
+          token: this.$root.$data.token
+        }
       })
-      .then((response) => {
+      .then(response => {
         this.technicians = response.data;
       })
-      .catch((error) => {
+      .catch(error => {
         this.errorAppointments = error;
       });
   },
@@ -104,19 +106,18 @@ export default {
       }
 
       this.items = [];
-      var url =
-        LOCALHOST_BACKEND + "/api/technician/" + this.techEmail + "/schedule";
+      var url = BACKEND + "/api/technician/" + this.techEmail + "/schedule";
       var tempSchedule = [];
 
       axios
         .get(url, {
           headers: {
             weekStartDate: this.date,
-            token: this.$root.$data.token,
-          },
+            token: this.$root.$data.token
+          }
         })
         .then(
-          (response) => {
+          response => {
             var formattedSchedule = [];
             this.noAppointments = "";
             this.errorAppointments = "";
@@ -125,7 +126,7 @@ export default {
               this.noAppointments = response.data;
             } else {
               tempSchedule = response.data;
-              tempSchedule.forEach((thisDayTime) => {
+              tempSchedule.forEach(thisDayTime => {
                 var date = thisDayTime.startDateTime.substring(0, 10);
                 console.log(date);
 
@@ -137,7 +138,7 @@ export default {
                   "Wednesday",
                   "Thursday",
                   "Friday",
-                  "Saturday",
+                  "Saturday"
                 ][dayOfWeek];
 
                 var dayTime =
@@ -151,23 +152,22 @@ export default {
               this.items = formattedSchedule;
             }
           },
-          (error) => {
+          error => {
             console.log(error.response.data);
             this.errorAppointments = "Something went wrong. Please try again.";
           }
         );
-    },
+    }
   },
   watch: {
-    techEmail: function (val, oldVal) {
+    techEmail: function(val, oldVal) {
       this.date = "";
-      this.items=[];
-      this.errorAppointments="";
-      this.noAppointments="";
-    },
-  },
+      this.items = [];
+      this.errorAppointments = "";
+      this.noAppointments = "";
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

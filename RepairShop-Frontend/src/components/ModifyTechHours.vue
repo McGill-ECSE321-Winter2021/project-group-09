@@ -19,7 +19,9 @@
               </b-form-radio>
             </b-form-group>
 
-            <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
+            <p class="mt-3">
+              <b>Selected technician: </b>{{ technicianEmail }}
+            </p>
           </div>
 
           <p v-show="noTechnicians" class="text-danger">
@@ -72,10 +74,7 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-button
-            variant="secondary"
-            class="mt-3 mr-3"
-            @click="toPart1"
+          <b-button variant="secondary" class="mt-3 mr-3" @click="toPart1"
             >Back</b-button
           >
           <b-button variant="primary" class="mt-3" @click="toPart3"
@@ -84,25 +83,22 @@
         </div>
 
         <div v-if="formSection == 3" class="mt-4">
-          <p class="mb-3"> <b>Confirm your modification</b> </p>
+          <p class="mb-3"><b>Confirm your modification</b></p>
           <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
           <p class="mt-3">
             <b>Selected hours to add: </b>
             {{
               displayDay(startDate) +
-              " at " +
-              startTime +
-              " to " +
-              displayDay(endDate) +
-              " at " +
-              endTime
+                " at " +
+                startTime +
+                " to " +
+                displayDay(endDate) +
+                " at " +
+                endTime
             }}
           </p>
 
-          <b-button
-            variant="secondary"
-            class="mt-3 mr-3"
-            @click="toPart2"
+          <b-button variant="secondary" class="mt-3 mr-3" @click="toPart2"
             >Back</b-button
           >
           <b-button variant="danger" class="mt-3" @click="addHours"
@@ -112,9 +108,7 @@
 
         <div v-if="formSection == 4" class="text-center mt-4">
           <p class="mb-3 text-success">The selected hours have been added.</p>
-          <b-button variant="primary" class="mt-4" to="/"
-            >Homepage</b-button
-          >
+          <b-button variant="primary" class="mt-4" to="/">Homepage</b-button>
         </div>
 
         <p class="text-danger mt-4" v-if="error">{{ error }}</p>
@@ -125,7 +119,7 @@
 </template>
 
 <script>
-import { LOCALHOST_BACKEND, TECHNICIAN_ENDPOINT } from "../constants/constants";
+import { BACKEND, TECHNICIAN_ENDPOINT } from "../constants/constants";
 import axios from "axios";
 
 export default {
@@ -144,7 +138,7 @@ export default {
         { text: "Thursday", value: "2021-03-04" },
         { text: "Friday", value: "2021-03-05" },
         { text: "Saturday", value: "2021-03-06" },
-        { text: "Sunday", value: "2021-03-07" },
+        { text: "Sunday", value: "2021-03-07" }
       ],
       startDate: "2021-03-01", // Default is Monday
       endDate: "2021-03-01",
@@ -152,23 +146,23 @@ export default {
       endTime: "",
       startTimestamp: "",
       endTimestamp: "",
-      formSection: 1,
+      formSection: 1
     };
   },
 
-  created: function () {
+  created: function() {
     // get all technicians
     axios
-      .get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + "all", {
-        headers: { token: this.$root.$data.token },
+      .get(BACKEND + TECHNICIAN_ENDPOINT + "all", {
+        headers: { token: this.$root.$data.token }
       })
-      .then((r) => {
+      .then(r => {
         this.technicians = r.data;
         this.appError = "";
         if (this.technicians.length == 0) this.noTechnicians = true;
         else this.noTechnicians = false;
       })
-      .catch((e) => {
+      .catch(e => {
         this.appError = e;
       });
   },
@@ -176,11 +170,13 @@ export default {
   methods: {
     toPart1() {
       this.formSection = 1;
-      this.appError=""; this.error="";
+      this.appError = "";
+      this.error = "";
     },
 
     toPart2() {
-      this.appError=""; this.error="";
+      this.appError = "";
+      this.error = "";
       if (this.technicianEmail) {
         this.formSection = 2;
         this.appError = "";
@@ -188,7 +184,8 @@ export default {
     },
 
     toPart3() {
-      this.appError=""; this.error="";
+      this.appError = "";
+      this.error = "";
       if (this.validateTimes()) this.formSection = 3;
       else
         this.error =
@@ -220,41 +217,41 @@ export default {
       // Delete specific work hours
       axios
         .post(
-          LOCALHOST_BACKEND +
+          BACKEND +
             TECHNICIAN_ENDPOINT +
             this.technicianEmail +
             "/add_time_slot",
           {
             startDateTime: this.startTimestamp,
-            endDateTime: this.endTimestamp,
+            endDateTime: this.endTimestamp
           },
           {
-            headers: { token: this.$root.$data.token },
+            headers: { token: this.$root.$data.token }
           }
         )
-        .then((r) => {
+        .then(r => {
           this.formSection = 4;
           this.appError = "";
         })
-        .catch((e) => {
+        .catch(e => {
           if (e.response.status == 400) this.appError = e.response.data;
           else this.appError = e;
         });
-    },
+    }
   },
 
   watch: {
     // if a value is set, reset error
-    technicianEmail: function (val, oldVal) {
+    technicianEmail: function(val, oldVal) {
       if (oldVal === "") this.error = "";
     },
-    startTime: function (val, oldVal) {
+    startTime: function(val, oldVal) {
       this.error = "";
     },
-    endTime: function (val, oldVal) {
+    endTime: function(val, oldVal) {
       this.error = "";
-    },
-  },
+    }
+  }
 };
 </script>
 

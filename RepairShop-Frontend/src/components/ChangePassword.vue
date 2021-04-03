@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h1 v-bind:style="{ color: this.textColor }">{{ this.titleText }}</h1>
+    <h1 v-bind:style="{ color: this.textColor }">{{ this.titleText }}</h1>
 
     <div class="formContainer" id="changePassForm">
       <b-form @submit="onSubmit" v-if="show" class="inputWidth">
@@ -39,12 +39,11 @@
 </template>
 
 <script>
-
 import {
   CHANGE_PASS_TECH,
   CHANGE_PASS_ADMIN,
   CHANGE_PASS_CUS,
-  LOCALHOST_BACKEND
+  BACKEND
 } from "../constants/constants";
 import axios from "axios";
 export default {
@@ -84,7 +83,7 @@ export default {
       }
       axios
         .post(
-          LOCALHOST_BACKEND + apiurl + this.$root.$data.email,
+          BACKEND + apiurl + this.$root.$data.email,
           this.form.newPassword,
           {
             headers: {
@@ -110,12 +109,10 @@ export default {
         );
     }
   },
-  created: function(){
-    if(!this.$root.$data.userType) this.$router.push("/");
+  created: function() {
+    if (!this.$root.$data.userType) this.$router.push("/");
   }
-
 };
 </script>
 
-<style>
-</style>
+<style></style>

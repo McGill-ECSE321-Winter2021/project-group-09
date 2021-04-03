@@ -1,7 +1,7 @@
 <template>
-<div>
+  <div>
     <h1>View Appointments</h1>
-  <div class="formContainer" id="ViewAppointments">
+    <div class="formContainer" id="ViewAppointments">
       <div class="ourTable">
         <div v-if="errorViewServices">
           <span v-if="errorViewServices" style="color: red">
@@ -17,16 +17,16 @@
           />
         </div>
       </div>
-
-  </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { BACKEND } from "../constants/constants";
 import axios from "axios";
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort
+  baseURL: BACKEND
 });
 
 export default {
@@ -74,7 +74,6 @@ export default {
       })
         .then(response => {
           this.appointments = response.data;
-          
 
           this.appointments.forEach(item => {
             this.items.push({
@@ -96,5 +95,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

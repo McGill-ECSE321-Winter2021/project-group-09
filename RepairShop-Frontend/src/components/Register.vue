@@ -98,7 +98,7 @@
           id="techSchedule"
           v-if="
             this.$root.$data.userType === 'Admin' &&
-            form.userType === 'Technician'
+              form.userType === 'Technician'
           "
         >
           <div id="titleContainer">
@@ -198,7 +198,7 @@ import {
   REGISTER_CUSTOMER_ENDPOINT,
   REGISTER_ADMIN_ENDPOINT,
   REGISTER_TECHNICIAN_ENDPOINT,
-  LOCALHOST_BACKEND,
+  BACKEND
 } from "../constants/constants";
 import axios from "axios";
 export default {
@@ -218,21 +218,21 @@ export default {
           ["", ""],
           ["", ""],
           ["", ""],
-          ["", ""],
-        ],
+          ["", ""]
+        ]
       },
       userType: [
         { text: "Select One", value: null },
         "Admin",
         "Customer",
-        "Technician",
+        "Technician"
       ],
       userType2: [{ text: "Select One", value: null }, "Customer"],
       show: true,
       techMessageS: false,
       techMessageF: false,
       successfulMessage: "",
-      failureMessage: "",
+      failureMessage: ""
     };
   },
   methods: {
@@ -240,11 +240,11 @@ export default {
     createSchedule() {
       let timeSlotDtos = [];
       let idx = 0;
-      this.form.techSchedule.forEach((item) => {
+      this.form.techSchedule.forEach(item => {
         if (item[0] != "" && item[1] != "") {
           timeSlotDtos.push({
             startDateTime: this.formatTimeToTimestamp(item[0], idx),
-            endDateTime: this.formatTimeToTimestamp(item[1], idx),
+            endDateTime: this.formatTimeToTimestamp(item[1], idx)
           });
         }
         idx += 1;
@@ -267,23 +267,20 @@ export default {
       var data = JSON.stringify({ timeSlots: this.createSchedule() });
       var config = {
         method: "post",
-        url:
-          "http://localhost:8080/api/technician/" +
-          this.form.email +
-          "/add_work_hours",
+        url: BACKEND + "/api/technician/" + this.form.email + "/add_work_hours",
         headers: {
           token: this.$root.$data.token,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        data: data,
+        data: data
       };
       var that = this;
       axios(config)
-        .then(function (response) {
+        .then(function(response) {
           console.log(JSON.stringify(response.data));
           that.techMessageS = true;
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
           that.techMessageF = true;
         });
@@ -310,23 +307,23 @@ export default {
       }
       axios
         .post(
-          LOCALHOST_BACKEND + user_url,
+          BACKEND + user_url,
           {
             email: this.form.email,
             password: this.form.password,
             userType: this.form.userType,
             name: this.form.name,
             phoneNumber: this.form.phoneNumber,
-            address: this.form.address,
+            address: this.form.address
           },
           {
             headers: {
-              token: this.$root.$data.token,
-            },
+              token: this.$root.$data.token
+            }
           }
         )
         .then(
-          (response) => {
+          response => {
             if (
               this.$root.$data.userType === "Admin" &&
               this.form.userType === "Technician"
@@ -348,7 +345,7 @@ export default {
             }
             this.failureMessage = "";
           },
-          (error) => {
+          error => {
             console.log(error);
             if (error.response) {
               if (error.response.status === 400) {
@@ -358,8 +355,8 @@ export default {
             }
           }
         );
-    },
-  },
+    }
+  }
 };
 </script>
 

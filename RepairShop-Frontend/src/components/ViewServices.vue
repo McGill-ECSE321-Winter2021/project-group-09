@@ -1,31 +1,27 @@
-
 <template>
   <div>
     <h1>View Services</h1>
     <div class="formContainer" id="ViewServices">
-      
-        <div class="ourTable">
-          <div v-if="errorViewServices">
-            <span v-if="errorViewServices" style="color: red">
-              {{ errorViewServices }}
-            </span>
-          </div>
-          <div v-else>
-            <b-table :items="items" :fields="fields" :outlined="true" >
-            </b-table>
-          </div>
+      <div class="ourTable">
+        <div v-if="errorViewServices">
+          <span v-if="errorViewServices" style="color: red">
+            {{ errorViewServices }}
+          </span>
         </div>
-     
+        <div v-else>
+          <b-table :items="items" :fields="fields" :outlined="true"> </b-table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import { BACKEND } from "../constants/constants";
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
+  baseURL: BACKEND
 });
 
 export default {
@@ -34,29 +30,28 @@ export default {
       errorViewServices: "",
       services: [],
       fields: ["service", "duration", "price"],
-      items: [],
+      items: []
     };
   },
-  created: function () {
+  created: function() {
     AXIOS.get("/api/service/all")
-      .then((response) => {
+      .then(response => {
         this.services = response.data;
 
         this.services.forEach((item, index) => {
           this.items.push({
             service: item.name,
             duration: item.duration * 30 + " min.",
-            price: item.price + " $",
+            price: item.price + " $"
           });
         });
       })
-      .catch((e) => {
+      .catch(e => {
         this.errorViewServices = e.response.data;
       });
   },
-  methods: {},
+  methods: {}
 };
 </script>
 
-<style>
-</style>
+<style></style>

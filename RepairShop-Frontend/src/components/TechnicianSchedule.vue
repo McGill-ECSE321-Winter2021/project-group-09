@@ -18,7 +18,9 @@
             <p v-else-if="errorAppointments" style="color: red">
               {{ errorAppointments }}
             </p>
-            <b-button type="submit" variant="primary" style="margin-top:15px">Get Schedule</b-button>
+            <b-button type="submit" variant="primary" style="margin-top:15px"
+              >Get Schedule</b-button
+            >
           </b-form>
         </div>
 
@@ -39,7 +41,7 @@
 </template>
 
 <script>
-import { LOCALHOST_BACKEND } from "../constants/constants";
+import { BACKEND } from "../constants/constants";
 import axios from "axios";
 
 export default {
@@ -49,7 +51,7 @@ export default {
       errorAppointments: "",
       date: "",
       fields: [{ key: "dayTime", label: "Day and Time" }],
-      items: [],
+      items: []
     };
   },
 
@@ -65,10 +67,7 @@ export default {
       this.noAppointments = "";
 
       var url =
-        LOCALHOST_BACKEND +
-        "/api/technician/" +
-        this.$root.$data.email +
-        "/schedule";
+        BACKEND + "/api/technician/" + this.$root.$data.email + "/schedule";
       var tempSchedule = [];
 
       axios
@@ -78,19 +77,19 @@ export default {
           {
             headers: {
               weekStartDate: this.date,
-              token: this.$root.$data.token,
-            },
+              token: this.$root.$data.token
+            }
           }
         )
         .then(
-          (response) => {
+          response => {
             var formattedSchedule = [];
 
             if (response.data === "No upcoming appointments") {
               this.noAppointments = response.data;
             } else {
               tempSchedule = response.data;
-              tempSchedule.forEach((thisDayTime) => {
+              tempSchedule.forEach(thisDayTime => {
                 var date = thisDayTime.startDateTime.substring(0, 10);
                 console.log(date);
 
@@ -102,7 +101,7 @@ export default {
                   "Wednesday",
                   "Thursday",
                   "Friday",
-                  "Saturday",
+                  "Saturday"
                 ][dayOfWeek];
 
                 var dayTime =
@@ -116,22 +115,21 @@ export default {
               this.items = formattedSchedule;
             }
           },
-          (error) => {
+          error => {
             console.log(error.response.data);
             this.errorAppointments = "Something went wrong. Please try again.";
           }
         );
-    },
+    }
   },
   watch: {
     date: function(val, oldVal) {
-      this.items=[];
-      this.errorAppointments="";
-      this.noAppointments="";
-    },
+      this.items = [];
+      this.errorAppointments = "";
+      this.noAppointments = "";
+    }
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>

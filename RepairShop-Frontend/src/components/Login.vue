@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h1>Log In</h1>
+    <h1>Log In</h1>
     <div class="formContainer" id="loginForm">
       <b-form class="inputWidth" @submit="onSubmit" v-if="show">
         <b-form-group
@@ -35,9 +35,9 @@
             required
           ></b-form-select>
         </b-form-group>
-          <div v-if="errorLogin" style="color: red">
-              {{ errorLogin }}
-          </div>
+        <div v-if="errorLogin" style="color: red">
+          {{ errorLogin }}
+        </div>
 
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
@@ -46,7 +46,11 @@
 </template>
 
 <script>
-import { LOGIN_ENDPOINT, LOCALHOST_BACKEND,GET_BUSINESS_ENDPOINT } from "../constants/constants";
+import {
+  LOGIN_ENDPOINT,
+  BACKEND,
+  GET_BUSINESS_ENDPOINT
+} from "../constants/constants";
 import axios from "axios";
 export default {
   data() {
@@ -54,10 +58,10 @@ export default {
       form: {
         email: "",
         password: "",
-        userType: null,
-      },        
-      errorLogin:"",
-      businessName:"",
+        userType: null
+      },
+      errorLogin: "",
+      businessName: "",
       userType: [
         { text: "Select One", value: null },
         "Admin",
@@ -67,12 +71,13 @@ export default {
       show: true
     };
   },
-  created: function(){
-        axios.get(LOCALHOST_BACKEND + GET_BUSINESS_ENDPOINT)
-      .then((response) => {
+  created: function() {
+    axios
+      .get(BACKEND + GET_BUSINESS_ENDPOINT)
+      .then(response => {
         this.businessName = response.data.name;
       })
-      .catch((e) => {
+      .catch(e => {
         if (e.response.status == 404) this.errorLogin = e.response.data;
         else this.errorLogin = e;
       });
@@ -81,7 +86,7 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       axios
-        .post(LOCALHOST_BACKEND + LOGIN_ENDPOINT, {
+        .post(BACKEND + LOGIN_ENDPOINT, {
           email: this.form.email,
           password: this.form.password,
           userType: this.form.userType
@@ -93,23 +98,21 @@ export default {
             this.$root.$data.password = this.form.password;
             this.$root.$data.userType = this.form.userType;
             this.$root.$data.token = response.data;
-            this.errorLogin="Login Success";
+            this.errorLogin = "Login Success";
 
-            if(this.$root.$data.userType=="Admin" && !this.businessName){
-               
-              this.$router.push("/modify_business_info")
-            } else{
-            this.$router.push("/");
+            if (this.$root.$data.userType == "Admin" && !this.businessName) {
+              this.$router.push("/modify_business_info");
+            } else {
+              this.$router.push("/");
             }
-
           },
           error => {
             if (error.response) {
               if (error.response.status === 400) {
-               this.errorLogin="Invalid Password";
+                this.errorLogin = "Invalid Password";
               }
               if (error.response.status === 500) {
-                this.errorLogin="Email does not exist";
+                this.errorLogin = "Email does not exist";
               }
             }
           }
@@ -119,5 +122,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
