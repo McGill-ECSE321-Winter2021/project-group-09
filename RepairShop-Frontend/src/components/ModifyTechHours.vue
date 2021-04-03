@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Modify a Technician's Work Hours</h1>
+    <h1>Add Technician's Work Hours</h1>
     <main class="formContainer">
       <div class="inputWidth">
         <div v-if="formSection == 1" class="mt-4">
