@@ -232,12 +232,13 @@ public class TechnicianController {
                 return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
             }
             List<AppointmentDto> appDtos = techService.viewAppointments(email);
-            if(appDtos.size() > 0) {
+/*            if(appDtos.size() > 0) {
             	return new ResponseEntity<>(appDtos, HttpStatus.OK);
             }else {
             	return new ResponseEntity<>("No upcoming appointments", HttpStatus.OK);
-            }
-            
+            }*/
+
+            return new ResponseEntity<>(appDtos, HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
