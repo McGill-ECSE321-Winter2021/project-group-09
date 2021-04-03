@@ -27,7 +27,7 @@
           </p>
 
           <b-button
-            variant="outline-primary"
+            variant="primary"
             class="mt-3"
             :disabled="!technicianEmail"
             @click="toPart2"
@@ -73,12 +73,12 @@
           </b-form-group>
 
           <b-button
-            variant="outline-secondary"
+            variant="secondary"
             class="mt-3 mr-3"
             @click="toPart1"
             >Back</b-button
           >
-          <b-button variant="outline-primary" class="mt-3" @click="toPart3"
+          <b-button variant="primary" class="mt-3" @click="toPart3"
             >Next</b-button
           >
         </div>
@@ -100,19 +100,19 @@
           </p>
 
           <b-button
-            variant="outline-secondary"
+            variant="secondary"
             class="mt-3 mr-3"
             @click="toPart2"
             >Back</b-button
           >
-          <b-button variant="outline-danger" class="mt-3" @click="addHours"
+          <b-button variant="danger" class="mt-3" @click="addHours"
             >Confirm</b-button
           >
         </div>
 
         <div v-if="formSection == 4" class="text-center mt-4">
           <p class="mb-3 text-success">The selected hours have been added.</p>
-          <b-button variant="outline-primary" class="mt-4" to="/"
+          <b-button variant="primary" class="mt-4" to="/"
             >Homepage</b-button
           >
         </div>
@@ -173,9 +173,11 @@ export default {
   methods: {
     toPart1() {
       this.formSection = 1;
+      this.appError=""; this.error="";
     },
 
     toPart2() {
+      this.appError=""; this.error="";
       if (this.technicianEmail) {
         this.formSection = 2;
         this.appError = "";
@@ -183,6 +185,7 @@ export default {
     },
 
     toPart3() {
+      this.appError=""; this.error="";
       if (this.validateTimes()) this.formSection = 3;
       else
         this.error =

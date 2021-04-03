@@ -2,7 +2,7 @@
   <div>
       <h1>Log In</h1>
     <div class="formContainer" id="loginForm">
-      <b-form class="d-inline-block" @submit="onSubmit" v-if="show" style="width:560px">
+      <b-form class="inputWidth" @submit="onSubmit" v-if="show">
         <b-form-group
           id="input-group-1"
           label="Email address:"

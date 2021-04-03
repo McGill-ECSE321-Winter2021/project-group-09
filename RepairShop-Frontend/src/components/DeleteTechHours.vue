@@ -1,8 +1,8 @@
 <template>   
 <div>
   <h1>Delete a Technician's Work Hours</h1>
-      <main class="container py-4">
-        <div class="mx-auto my-4" style="max-width: 600px">
+      <main class="formContainer">
+        <div class="inputWidth">
 
 
           <div v-if="formSection == 1">
@@ -15,19 +15,19 @@
                   </b-form-radio>
               </b-form-group>
 
-              <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+              <p class="mt-3"> <b>Selected technician:</b> {{ technicianEmail }}</p>
 
             </div>
 
             <p v-else class="text-danger">There are currently no technicians available.</p>
 
-            <b-button variant="outline-primary" class="mt-3" :disabled="!technicianEmail" @click="toPart2">Next</b-button>
+            <b-button variant="primary" class="mt-3" :disabled="!technicianEmail" @click="toPart2">Next</b-button>
 
           </div>
 
           <div v-if="formSection == 2">
 
-            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+            <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
 
             <div v-if="workHours.length">
               <b-form-group label="Pick a time slot to remove" class="mt-4">
@@ -36,32 +36,32 @@
                   </b-form-radio>
               </b-form-group>
 
-              <p class="mt-3" v-show="hours.startDateTime">Selected hours: {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
+              <p class="mt-3" v-show="hours.startDateTime"><b>Selected hours:</b> {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
 
             </div>
 
             <p v-else class="mt-3 text-danger">There are currently no time slots available.</p>
 
-            <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
-            <b-button variant="outline-primary" class="mt-3" :disabled="!hours.startDateTime" @click="toPart3">Next</b-button>
+            <b-button variant="secondary" class="mt-3 mr-3" @click="toPart1">Back</b-button>
+            <b-button variant="primary" class="mt-3" :disabled="!hours.startDateTime" @click="toPart3">Next</b-button>
 
           </div>
 
           <div v-if="formSection == 3">
 
-            <p class="mb-3">Confirm your modification</p>
-            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
-            <p class="mt-3">Selected hours: {{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
-            <p class="mt-3">Please note that this cannot be undone.</p>
+            <p class="mb-3"><b>Confirm your modification</b></p>
+            <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
+            <p class="mt-3"><b>Selected hours: </b>{{ displayDayTime(hours.startDateTime) + " to " + displayDayTime(hours.endDateTime) }}</p>
+            <p class="mt-3 text-danger">Please note that this cannot be undone.</p>
 
-            <b-button variant="outline-secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
-            <b-button variant="outline-danger" class="mt-3" @click="deleteTargetHours">Confirm</b-button>
+            <b-button variant="secondary" class="mt-3 mr-3" @click="toPart2">Back</b-button>
+            <b-button variant="danger" class="mt-3" @click="deleteTargetHours">Confirm</b-button>
 
           </div>
 
           <div v-if="formSection == 4" class="text-center">
             <p class="mb-3 text-success">The selected hours have been deleted.</p>
-            <b-button variant="outline-primary" class="mt-4" to="/">Homepage</b-button>
+            <b-button variant="primary" class="mt-4" to="/">Homepage</b-button>
           </div>
 
           <p class="text-danger mt-4" v-if="error">{{ error }}</p>
@@ -109,9 +109,10 @@
 
     methods: {
 
-      toPart1() { this.formSection = 1; },
+      toPart1() { this.formSection = 1; this.appError=""; this.error="";},
       
       toPart2() {
+        this.appError=""; this.error="";
         if (this.technicianEmail) {
             // Get work hours
             axios.get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + this.technicianEmail + '/work_hours', {
@@ -128,6 +129,7 @@
       },
 
       toPart3() {
+        this.appError=""; this.error="";
         if (this.hours) this.formSection = 3;
         else this.error = 'Please select a time slot';
       },

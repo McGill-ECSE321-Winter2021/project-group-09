@@ -1,8 +1,6 @@
 <template>
-  <div v-if="errorGetBusiness">
-    <span v-if="errorGetBusiness" style="color: red">
+  <div v-if="errorGetBusiness" style="color: red">
       {{ errorGetBusiness }}
-    </span>
   </div>
 
   <div v-else>
