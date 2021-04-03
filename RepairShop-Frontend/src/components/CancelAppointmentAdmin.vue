@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import { LOCALHOST_BACKEND, TECHNICIAN_ENDPOINT } from "../constants/constants";
+import { BACKEND, TECHNICIAN_ENDPOINT } from "../constants/constants";
 import axios from "axios";
 
 export default {
@@ -167,7 +167,7 @@ export default {
   created: function () {
     // get all technicians
     axios
-      .get(LOCALHOST_BACKEND + TECHNICIAN_ENDPOINT + "all", {
+      .get(BACKEND + TECHNICIAN_ENDPOINT + "all", {
         headers: { token: this.$root.$data.token },
       })
       .then((r) => {
@@ -206,7 +206,7 @@ export default {
       // Get a technician's appointments
       axios
         .get(
-          LOCALHOST_BACKEND +
+          BACKEND +
             TECHNICIAN_ENDPOINT +
             this.technicianEmail +
             "/appointments",
@@ -229,7 +229,7 @@ export default {
       // Cancel appointment
       axios
         .delete(
-          LOCALHOST_BACKEND +
+          BACKEND +
             "/api/appointment/cancel/" +
             this.appointment.appointmentID,
           {
