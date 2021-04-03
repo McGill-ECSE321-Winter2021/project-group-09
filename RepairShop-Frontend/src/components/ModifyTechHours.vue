@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Modify a Technician's Work Hours</h1>
-    <main class="container py-4">
-      <div class="mx-auto my-4" style="max-width: 600px">
+    <main class="formContainer">
+      <div class="inputWidth">
         <div v-if="formSection == 1" class="mt-4">
           <b-link to="deleteHours" class="my-3">Delete hours</b-link>
 
@@ -19,7 +19,7 @@
               </b-form-radio>
             </b-form-group>
 
-            <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+            <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
           </div>
 
           <p v-else class="text-danger">
@@ -36,9 +36,9 @@
         </div>
 
         <div v-if="formSection == 2" class="mt-4">
-          <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+          <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
 
-          <p class="mt-3">Choose dates and times for the hours to add</p>
+          <p class="mt-3"><b>Choose dates and times for the hours to add</b></p>
 
           <b-form-group
             label="Start date and time"
@@ -84,10 +84,10 @@
         </div>
 
         <div v-if="formSection == 3" class="mt-4">
-          <p class="mb-3">Confirm your modification</p>
-          <p class="mt-3">Selected technician: {{ technicianEmail }}</p>
+          <p class="mb-3"> <b>Confirm your modification</b> </p>
+          <p class="mt-3"><b>Selected technician: </b>{{ technicianEmail }}</p>
           <p class="mt-3">
-            Selected hours to add:
+            <b>Selected hours to add: </b>
             {{
               displayDay(startDate) +
               " at " +

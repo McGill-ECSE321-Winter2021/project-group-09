@@ -2,7 +2,7 @@
   <div>
     <h1>Modify Business Information</h1>
     <div class="formContainer" id="modify_business">
-      <b-form @submit="onSubmit" style="width: 560px">
+      <b-form @submit="onSubmit" class="inputWidth">
         <b-form-group
           id="input-group-2"
           label="Business Name:"
