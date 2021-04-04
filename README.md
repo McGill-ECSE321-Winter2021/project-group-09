@@ -17,11 +17,11 @@ During the development of the RepairShop application software, the team will fol
 ## Overview Table
 | Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total <br/> Effort<br/> (hours)| 
 | :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
-| Sandy Lao              | Project Manager, Software Developer  | 40 | 45 | -- | -- | 85 |
+| Sandy Lao              | Project Manager, Software Developer  | 40 | 45 | 35 | -- | 85 |
 | Jacek Dziewonski       | Software Developer | 35 | 50 | -- | -- | 85 |
-| Shaswata Bhattacharyya | Software Developer | 30 | 50 | -- | -- | 80 |
-| Zhanna Klimanova       | Software Developer | 35 | 35 | -- | -- | 70 |
-| Tyler Syme             | Software Developer | 35 | 55 | -- | -- | 90 |
+| Shaswata Bhattacharyya | Software Developer | 30 | 50 | 25 | -- | 80 |
+| Zhanna Klimanova       | Software Developer | 35 | 35 | 20 | -- | 70 |
+| Tyler Syme             | Software Developer | 35 | 55 | 40 | -- | 90 |
 
 ## Sprint 1: Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
@@ -55,11 +55,11 @@ During the development of the RepairShop application software, the team will fol
 ## Sprint 3: Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       |TO BE UPDATED LATER, Code reviews, Fixing the team's bugs | 00 |
-| Shaswata Bhattacharyya |TO UPDATE LATER, Frontend Setups, Code reviews, Fixing the team's bugs| 00 |
-| Zhanna Klimanova       |TO UPDATE LATER, Code reviews,  | 00 |
-| Tyler Syme             |TO BE UPDATED LATER, Meeting planning, Code reviews, Modified Google Calendar, Create issues, Fixing the team's bugs, Meeting minutes | 00 |
-| Sandy Lao              |TO BE UPDATED LATER, Meeting planning, Meeting minutes, README.md, Create issues | 00 |
+| Jacek Dziewonski       |Code reviews, Fixing the team's bugs, Heroku Frontend, Frontend pages| 00 |
+| Shaswata Bhattacharyya |Frontend Setup, Code reviews, Fixing the team's bugs, Frontend pages| 25 |
+| Zhanna Klimanova       |Frontend pages, Architecture Model, Architecture Model description  | 20 |
+| Tyler Syme             |Code reviews, Modified Google Calendar, Create issues, Frontend pages, Fixing the team's bugs, make all pages uniform | 40 |
+| Sandy Lao              |Meeting planning, Meeting minutes, README.md, Frontend pages, Create issues, make all pages uniform| 35 |
 
 # Sprint 3: Project Report
 - [Sprint 3: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-3:-Project-Report)
