@@ -52,21 +52,6 @@
           ></b-form-select>
         </b-form-group>
 
-        <!-- render this block if user is not admin -->
-        <b-form-group
-          id="input-group-3.1"
-          label="User Type:"
-          label-for="input-3.1"
-          v-else
-        >
-          <b-form-select
-            id="input-3.1"
-            v-model="form.userType"
-            :options="userType2"
-            required
-          ></b-form-select>
-        </b-form-group>
-
         <b-form-group
           id="input-group-4"
           label="Phone Number:"
@@ -227,7 +212,6 @@ export default {
         "Customer",
         "Technician"
       ],
-      userType2: [{ text: "Select One", value: null }, "Customer"],
       show: true,
       techMessageS: false,
       techMessageF: false,
@@ -293,6 +277,9 @@ export default {
       event.preventDefault();
       this.techMessageS = false;
       this.techMessageF = false;
+      if(!this.$root.$data.email){
+          this.form.userType='Customer';
+      }
       let user_url = "";
       //determine which login endpoint to call based on usertype
       switch (this.form.userType) {
