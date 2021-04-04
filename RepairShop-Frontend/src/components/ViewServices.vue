@@ -42,7 +42,7 @@ export default {
           this.items.push({
             service: item.name,
             duration: item.duration * 30 + " min.",
-            price: item.price + " $"
+            price: "$ "+item.price.toFixed(2)
           });
         });
       })
