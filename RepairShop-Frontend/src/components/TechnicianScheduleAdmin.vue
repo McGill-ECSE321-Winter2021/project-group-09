@@ -93,6 +93,23 @@ export default {
     dateDisabled(ymd, date) {
       const weekday = date.getDay();
       return weekday != 1;
+    },    // Convert a Timestamp format (2021-03-02T15:00:00.000+00:00) to YYYY-MM-DD from HH:mm to HH::mm(in local timezone)
+    displayDateTime(startDateTime, endDateTime) {
+      let startDate = new Date(startDateTime).toString(); // Should output something like "Tue Mar 02 2021 10:00:00 GMT-0500 (Eastern Standard Time)"
+      let endDate = new Date(endDateTime).toString();
+      
+      if (startDate == "Invalid Date" || endDate == "Invalid Date") return "";
+
+      else
+        return (
+          startDate.slice(0, 10) +
+          ", " +
+          startDate.slice(11, 15) +
+          " from " +
+          startDate.slice(16, 21) +
+          " to " +
+          endDate.slice(16,21)
+        );
     },
 
     getSchedule(event) {
@@ -127,27 +144,8 @@ export default {
             } else {
               tempSchedule = response.data;
               tempSchedule.forEach(thisDayTime => {
-                var date = thisDayTime.startDateTime.substring(0, 10);
-                console.log(date);
-
-                const dayOfWeek = new Date(date).getDay();
-                var day = [
-                  "Sunday",
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday"
-                ][dayOfWeek];
-
-                var dayTime =
-                  day +
-                  " from " +
-                  thisDayTime.startDateTime.substring(11, 16) +
-                  " to " +
-                  thisDayTime.endDateTime.substring(11, 16);
-                formattedSchedule.push(dayTime);
+               var dayTime =this.displayDateTime(thisDayTime.startDateTime,thisDayTime.endDateTime );
+               formattedSchedule.push(dayTime);
               });
               this.items = formattedSchedule;
             }
