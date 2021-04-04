@@ -55,7 +55,7 @@ During the development of the RepairShop application software, the team will fol
 ## Sprint 3: Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       |Code reviews, Fixing the team's bugs, Heroku Frontend, Frontend pages| 00 |
+| Jacek Dziewonski       |Code reviews, Fixing the team's bugs, Heroku Frontend, Frontend pages| 30 |
 | Shaswata Bhattacharyya |Frontend Setup, Code reviews, Fixing the team's bugs, Frontend pages| 25 |
 | Zhanna Klimanova       |Frontend pages, Architecture Model, Architecture Model description  | 20 |
 | Tyler Syme             |Code reviews, Modified Google Calendar, Create issues, Frontend pages, Fixing the team's bugs, make all pages uniform | 40 |
