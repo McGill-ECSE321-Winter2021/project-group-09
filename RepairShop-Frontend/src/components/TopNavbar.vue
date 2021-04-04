@@ -56,10 +56,10 @@
 
 <script>
 import axios from "axios";
-import { GET_BUSINESS_ENDPOINT } from "../constants/constants";
+import { BACKEND, GET_BUSINESS_ENDPOINT } from "../constants/constants";
 var config = require("../../config");
 var AXIOS = axios.create({
-  baseURL: "http://" + config.dev.backendHost + ":" + config.dev.backendPort,
+  baseURL: BACKEND,
 });
 export default {
    data() {
