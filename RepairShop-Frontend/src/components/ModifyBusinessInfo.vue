@@ -103,6 +103,8 @@ export default {
   },
 
   created: function() {
+    if (this.$root.$data.userType!='Admin') this.$router.push("/");
+
     let url = BACKEND + "/api/business/info";
     axios.get(url).then(
       response => {
@@ -143,6 +145,7 @@ export default {
         .then(
           response => {
             this.successModifyBusinessInfo = "Business successfully updated.";
+            this.$root.$emit("updateName",this.form.name);
           },
           error => {
             console.log(error.response.data);
