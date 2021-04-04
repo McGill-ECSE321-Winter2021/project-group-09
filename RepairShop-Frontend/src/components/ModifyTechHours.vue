@@ -151,6 +151,8 @@ export default {
   },
 
   created: function() {
+        if (this.$root.$data.userType!='Admin') this.$router.push("/");
+
     // get all technicians
     axios
       .get(BACKEND + TECHNICIAN_ENDPOINT + "all", {

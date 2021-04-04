@@ -61,6 +61,8 @@ export default {
 
   //fetch all of this customer's appointments and display them in a table
   created: function() {
+  if (this.$root.$data.userType!='Customer') this.$router.push("/");
+
     this.getAppointments();
   },
   methods: {

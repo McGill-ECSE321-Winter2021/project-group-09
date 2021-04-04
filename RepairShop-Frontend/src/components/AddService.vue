@@ -74,6 +74,8 @@ export default {
       errorAddService: "",
       successAddService: ""
     };
+  },  created: function() {
+    if (this.$root.$data.userType != "Admin") this.$router.push("/");
   },
   methods: {
     onSubmit(event) {

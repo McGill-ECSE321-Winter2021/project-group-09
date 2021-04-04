@@ -74,6 +74,8 @@ export default {
   },
 
   created: function() {
+   if (this.$root.$data.userType!='Admin') this.$router.push("/");
+
     let url = BACKEND + "/api/technician/all";
     axios
       .get(url, {

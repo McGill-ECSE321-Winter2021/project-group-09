@@ -63,6 +63,8 @@ export default {
   },
   //fetch all holidays and display them in a table
   created: function() {
+    if (this.$root.$data.userType!='Admin') this.$router.push("/");
+
     this.getHolidays();
   },
   methods: {

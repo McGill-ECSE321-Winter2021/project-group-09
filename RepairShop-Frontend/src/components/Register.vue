@@ -235,6 +235,10 @@ export default {
       failureMessage: ""
     };
   },
+  created:function(){
+    if (this.$root.$data.userType==='Technician') this.$router.push("/");
+  },
+
   methods: {
     //builds a list of validly entered work hours
     createSchedule() {

@@ -140,9 +140,10 @@ export default {
       availableTimes: [],
       formSection: 1
     };
-  },
+  },  
 
   created: function() {
+    if (this.$root.$data.userType != "Customer") this.$router.push("/");
     // get all services
     axios
       .get(BACKEND + ALL_SERVICES_ENDPOINT)

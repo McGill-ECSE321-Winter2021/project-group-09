@@ -54,7 +54,9 @@ export default {
       items: []
     };
   },
-
+created: function(){
+    if (this.$root.$data.userType!='Technician') this.$router.push("/");
+},
   methods: {
     dateDisabled(ymd, date) {
       const weekday = date.getDay();

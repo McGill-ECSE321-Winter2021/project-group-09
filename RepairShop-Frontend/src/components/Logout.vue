@@ -16,7 +16,6 @@ export default {
   },
   mounted() {
     if (this.$root.$data.email === null) {
-      console.log(this.$root.$data.email);
       //user was not logged in
       this.success = false;
       this.$router.push("/login");

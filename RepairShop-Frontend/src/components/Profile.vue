@@ -38,6 +38,7 @@ export default {
     };
   },
   created: function() {
+        if (!this.$root.$data.email) this.$router.push("/");
 
       // get user info
     axios
