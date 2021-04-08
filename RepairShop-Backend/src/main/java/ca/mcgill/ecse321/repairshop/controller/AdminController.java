@@ -127,6 +127,13 @@ public class AdminController {
 	}
 
 
+	/**
+	 * POST request to change password
+	 * @param email
+	 * @param newPassword
+	 * @param token
+	 * @return
+	 */
 	@PostMapping("/changePassword/{email}")
 	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestBody String newPassword, @RequestHeader String token) {
 

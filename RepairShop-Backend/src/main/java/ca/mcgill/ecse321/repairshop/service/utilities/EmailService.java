@@ -19,6 +19,13 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    
+    /**
+     * Sends an email confirming account creation was successful
+     * @param recipientEmail
+     * @param name
+     * @param newPassword
+     */
     @Async
     public void accountCreationEmail(String recipientEmail, String name, String newPassword) {
         SimpleMailMessage msg = new SimpleMailMessage();
