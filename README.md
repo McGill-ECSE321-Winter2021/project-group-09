@@ -66,5 +66,17 @@ During the development of the RepairShop application software, the team will fol
 - [Sprint 3: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-3:-Project-Report#sprint-3-meeting-notes-)
 - [Architecture Model 🏛️📐](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Architecture-Model-%F0%9F%8F%9B%EF%B8%8F%F0%9F%93%90)
 
+# Sprint 4: Effort Table 🏋️ 
+| Name            | Contributions | Efforts (hours)|
+| :-------------         | ------------- | :-------------: |
+| Jacek Dziewonski       |Code reviews, TO BE UPDATED | 00 |
+| Shaswata Bhattacharyya |Android Setup, Code reviews, TO BE UPDATED | 00 |
+| Zhanna Klimanova       |TO BE UPDATED| 00 |
+| Tyler Syme             |Demo Script, presentation slides, Code reviews, Modified Google Calendar, Fixing the team's bugs, TO BE UPDATED  | 00 |
+| Sandy Lao              |Demo Script, presentation slides, Meeting planning, Meeting minutes, README.md, Create issues, Create wiki pages, TO BE UPDATED | 00 |
 
+# Sprint 4: Project Report
+- [Sprint 4: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-4:-Project-Report)
+- [Sprint 4: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-4:-Project-Report#sprint-4-meeting-notes-)
+- [User Documentation (Android & Web)📜](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/User-Documentation-(Android-&-Web)%F0%9F%93%9C)
 
