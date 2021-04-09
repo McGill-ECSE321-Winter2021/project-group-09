@@ -1,17 +1,12 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
-
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,15 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
@@ -46,11 +32,30 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menuContactUs) {
+            // Switch to Contact Us
             return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        } else if (id == R.id.menuViewServices) {
+            // Switch to View Services
+            return true;
+        } else if (id == R.id.menuBookAppointment) {
+            // Switch to Book Appointment
+            Intent intent = new Intent(this, BookAppointment.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.menuViewAppointments) {
+            // Switch to View Appointments
+            return true;
+        } else if (id == R.id.menuLogout) {
+            // Switch to Logout
+            return true;
+        } else if (id == R.id.menuRegister) {
+            // Switch to Register
+            return true;
+        } else if (id == R.id.menuLogin) {
+            // Switch to Login
+            return true;
+        } else return super.onOptionsItemSelected(item);
     }
+
 }

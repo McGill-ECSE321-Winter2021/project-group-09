@@ -2,9 +2,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ca.mcgill.ecse321.repairshop.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menuContactUs"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/contactUs"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuViewServices"
+        android:orderInCategory="100"
+        android:title="@string/viewServices"
+        app:showAsAction="never" />
+
+    <!-- TODO: Show when NOT logged in -->
+    <item
+        android:id="@+id/menuRegister"
+        android:orderInCategory="100"
+        android:title="@string/register"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuLogin"
+        android:orderInCategory="100"
+        android:title="@string/login"
+        app:showAsAction="never" />
+
+    <!-- TODO: Show when logged in -->
+    <item
+        android:id="@+id/menuBookAppointment"
+        android:orderInCategory="100"
+        android:title="@string/bookAppointment"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuViewAppointments"
+        android:orderInCategory="100"
+        android:title="@string/viewAppointments"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuLogout"
+        android:orderInCategory="100"
+        android:title="@string/logout"
+        app:showAsAction="never" />
+
 </menu>
