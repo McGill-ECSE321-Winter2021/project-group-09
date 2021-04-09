@@ -17,5 +17,6 @@
     <string name="bookAppointment">Book Appointment</string>
     <string name="viewAppointments">View Appointments</string>
     <string name="logout">Logout</string>
+    <string name="homepage">Homepage</string>
 
 </resources>

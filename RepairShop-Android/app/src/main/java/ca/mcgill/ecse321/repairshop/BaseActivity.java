@@ -22,7 +22,11 @@ public class BaseActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.menuContactUs) {
+        if (id == R.id.menuHomepage) {
+            // Switch to Homepage
+            startActivity(new Intent(this, MainActivity.class));
+            return true;
+        } else if (id == R.id.menuContactUs) {
             // Switch to Contact Us
             return true;
         } else if (id == R.id.menuViewServices) {
@@ -30,8 +34,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuBookAppointment) {
             // Switch to Book Appointment
-            Intent intent = new Intent(this, BookAppointment.class);
-            startActivity(intent);
+            startActivity(new Intent(this, BookAppointment.class));
             return true;
         } else if (id == R.id.menuViewAppointments) {
             // Switch to View Appointments

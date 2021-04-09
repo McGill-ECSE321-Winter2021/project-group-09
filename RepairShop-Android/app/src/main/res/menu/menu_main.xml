@@ -4,6 +4,12 @@
     tools:context="ca.mcgill.ecse321.repairshop.MainActivity">
 
     <item
+        android:id="@+id/menuHomepage"
+        android:orderInCategory="100"
+        android:title="@string/homepage"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menuContactUs"
         android:orderInCategory="100"
         android:title="@string/contactUs"
