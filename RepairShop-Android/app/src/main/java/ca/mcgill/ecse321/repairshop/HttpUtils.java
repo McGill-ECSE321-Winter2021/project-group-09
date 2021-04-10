@@ -1,13 +1,14 @@
 package ca.mcgill.ecse321.repairshop;
 
-import android.util.Log;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class HttpUtils {
-    public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com";
+
+    // This is the same as in the tutorial
+
+    public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/";
 
     private static String baseUrl;
     private static AsyncHttpClient client = new AsyncHttpClient();
@@ -29,7 +30,6 @@ public class HttpUtils {
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        Log.d("HttpUtils", "Here");
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
@@ -44,4 +44,5 @@ public class HttpUtils {
     private static String getAbsoluteUrl(String relativeUrl) {
         return baseUrl + relativeUrl;
     }
+
 }

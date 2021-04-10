@@ -90,7 +90,7 @@ public class Register extends AppCompatActivity {
 
         Log.d("SignUp", "Here");
 
-        HttpUtils.post("/api/customer/register", params, new JsonHttpResponseHandler() {
+        HttpUtils.post("api/customer/register", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("Success", "Here");

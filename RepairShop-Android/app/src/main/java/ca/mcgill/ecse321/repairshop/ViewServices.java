@@ -39,7 +39,7 @@ public class ViewServices extends AppCompatActivity {
 
 
     private void addAllServicesToTable() {
-        HttpUtils.get("/api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
