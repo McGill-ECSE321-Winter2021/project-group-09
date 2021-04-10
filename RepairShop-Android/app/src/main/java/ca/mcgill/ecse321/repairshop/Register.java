@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.repairshop;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -65,8 +66,8 @@ public class Register extends AppCompatActivity {
 
 
     public void signUp(View v) {
-        System.out.println("Here");
         error = "";
+
 
         TextView customerName = (TextView)findViewById(R.id.customerNameRegister);
         name = String.valueOf(customerName.getText());
@@ -87,9 +88,12 @@ public class Register extends AppCompatActivity {
         params.add("phoneNumber", phoneNumber);
         params.add("address", address);
 
+        Log.d("SignUp", "Here");
+
         HttpUtils.post("/api/customer/register", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("Success", "Here");
                 success = "Account Created";
                 refreshSuccessMessage();
                 customerName.setText("");
@@ -100,15 +104,21 @@ public class Register extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
                 try {
-                    error += errorResponse.get("message").toString();
+                    Log.d("Error Message", "message");
+                    error = errorResponse.get("message").toString();
+                    Log.d("Error ", error);
                 } catch (JSONException e) {
-                    error += e.getMessage();
-                    System.out.println(error);
+                    Log.d("Error catch", "message");
+                    error = e.getMessage();
+
                 }
                 refreshErrorMessage();
             }
         });
+
+
     }
 
 }

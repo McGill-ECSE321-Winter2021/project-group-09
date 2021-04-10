@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -27,6 +29,7 @@ public class HttpUtils {
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        Log.d("HttpUtils", "Here");
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
