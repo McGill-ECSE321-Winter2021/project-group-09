@@ -18,5 +18,7 @@
     <string name="viewAppointments">View Appointments</string>
     <string name="logout">Logout</string>
     <string name="homepage">Homepage</string>
+    <string name="select_a_service">Select a service</string>
+    <string name="select_a_time_slot">Select a time slot</string>
 
 </resources>
