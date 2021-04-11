@@ -100,11 +100,15 @@ public class BookAppointment extends BaseActivity {
         requestParams.add("startDate", targetDate);
         requestParams.add("serviceName", service.getString("name"));
 
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWNlQ3VzdG9tZXJAZ21haWwuY29tIiwiaWF0IjoxNjE4MTUzMDY5LCJleHAiOjE2MTgxOTYyNjl9.FR9iAVvaTHHyEfGyl6OiXr5qO3E6ppW5-Wpg25OuNC0";
+
         // Get possible appointment times
-        HttpUtils.get("api/appointment/possibilities", requestParams, new JsonHttpResponseHandler() {
+        HttpUtils.get(this, "api/appointment/possibilities", token, requestParams, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                System.out.println("Success: " + response);
 
                 findViewById(R.id.book1).setVisibility(View.GONE);
                 findViewById(R.id.book2).setVisibility(View.VISIBLE);
@@ -151,6 +155,9 @@ public class BookAppointment extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                System.out.println("Failure: " + errorResponse);
+
                 try {
                     errorText = errorResponse.get("message").toString();
                 } catch (JSONException e) {
@@ -176,10 +183,9 @@ public class BookAppointment extends BaseActivity {
         else return (duration / 2.0) + " hours";
     }
 
-    // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format Tue Mar 02, 2021 at HH:mm (in local timezone)
+    // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format 2021-03-02 15:00
     private String displayDateTime(String dateTime) {
-        Log.v("date time", dateTime);
-        return dateTime;
+        return dateTime.substring(0,10) + " at " + dateTime.substring(12, 16);
     }
 
 }

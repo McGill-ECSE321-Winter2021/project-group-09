@@ -1,8 +1,13 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.message.BasicHeader;
 
 public class HttpUtils {
 
@@ -11,7 +16,7 @@ public class HttpUtils {
     public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/";
 
     private static String baseUrl;
-    private static AsyncHttpClient client = new AsyncHttpClient();
+    private static final AsyncHttpClient client = new AsyncHttpClient();
 
     static {
         baseUrl = DEFAULT_BASE_URL;
@@ -27,6 +32,12 @@ public class HttpUtils {
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    // Get request with token in header
+    public static void get(Context context, String url, String token, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        BasicHeader[] headers = new BasicHeader[]{ new BasicHeader("token", token)};
+        client.get(context, getAbsoluteUrl(url), headers, params, responseHandler);
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
