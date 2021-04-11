@@ -72,11 +72,13 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String response) {
                 refreshErrorMessage();
-                email.setText("");
-                password.setText("");
                 State state = (State)getApplicationContext();
                 state.token = response;
+                state.email = email.getText().toString();
+                state.password = email.getText().toString();
                 System.out.println(state.token);
+                email.setText("");
+                password.setText("");
             }
 
             @Override

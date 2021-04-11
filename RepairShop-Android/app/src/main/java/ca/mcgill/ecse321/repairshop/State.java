@@ -4,4 +4,6 @@ import android.app.Application;
 
 public class State extends Application {
     public String token;
+    public String email;
+    public String password;
 }
