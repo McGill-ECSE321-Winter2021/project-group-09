@@ -54,7 +54,43 @@
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/bookSelectATimeSlot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16sp"
+                android:text="@string/search_future_date"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/futureDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/yyyy_mm_dd_format"
+                android:inputType="text"
+                android:text="" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="20sp">
+
+                <Button
+                    android:id="@+id/today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/today" />
+
+                <Button
+                    android:id="@+id/futureDateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20sp"
+                    android:text="@string/go" />
+
+            </LinearLayout>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16sp"

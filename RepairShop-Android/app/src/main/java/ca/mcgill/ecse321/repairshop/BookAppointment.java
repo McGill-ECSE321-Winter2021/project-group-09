@@ -2,10 +2,8 @@ package ca.mcgill.ecse321.repairshop;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,7 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -35,8 +36,36 @@ public class BookAppointment extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
+
+        // update target date to today
+        findViewById(R.id.today).setOnClickListener(view -> {
+            targetDate = "";
+            try {
+                System.out.println("today clicked");
+                toPart2();
+            } catch (JSONException e) {
+                errorText = e.getMessage();
+                refreshError();
+            }
+        });
+
+        // update target date
+        findViewById(R.id.futureDateBtn).setOnClickListener(view -> {
+            try {
+                System.out.println("future btn");
+                updateTargetDate();
+                System.out.println("updated to: " + targetDate);
+            } catch (JSONException e) {
+                errorText = e.getMessage();
+                refreshError();
+            }
+        });
+
+        // Button to go back home
+        findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointment.this, MainActivity.class)));
 
         // Get all services
         HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
@@ -81,7 +110,6 @@ public class BookAppointment extends BaseActivity {
                         errorText = e.getMessage();
                         refreshError();
                     }
-                    Log.v("service", service.toString());
                 });
             }
 
@@ -112,8 +140,6 @@ public class BookAppointment extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
-                System.out.println("Success: " + response);
 
                 findViewById(R.id.book1).setVisibility(View.GONE);
                 findViewById(R.id.book2).setVisibility(View.VISIBLE);
@@ -154,14 +180,11 @@ public class BookAppointment extends BaseActivity {
                         errorText = e.getMessage();
                         refreshError();
                     }
-                    Log.v("time slot", timeSlot.toString());
                 });
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
-                System.out.println("Failure: " + errorResponse);
 
                 try {
                     errorText = errorResponse.get("message").toString();
@@ -189,20 +212,13 @@ public class BookAppointment extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-                System.out.println("Success: " + response);
-
                 findViewById(R.id.book2).setVisibility(View.GONE);
                 findViewById(R.id.book3).setVisibility(View.VISIBLE);
-
-                // Button to go back home
-                findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointment.this, MainActivity.class)));
 
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
-                System.out.println("Failure: " + errorResponse);
 
                 try {
                     errorText = errorResponse.get("message").toString();
@@ -232,6 +248,29 @@ public class BookAppointment extends BaseActivity {
     // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format 2021-03-02 15:00
     private String displayDateTime(String dateTime) {
         return dateTime.substring(0,10) + " at " + dateTime.substring(12, 16);
+    }
+
+    // Helper to update the list of time slots
+    private void updateTargetDate() throws JSONException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        TextView dateInput = findViewById(R.id.futureDate);
+
+        try {
+            Date targetDateDate = simpleDateFormat.parse(dateInput.getText().toString());
+            if (targetDateDate != null && targetDateDate.before(new Date())) {
+                errorText = "Please enter a future date";
+                refreshError();
+            } else {
+                targetDate = dateInput.getText().toString();
+                errorText = "";
+                refreshError();
+                toPart2();
+            }
+        } catch (ParseException e) {
+            errorText = "Please select a valid date";
+            refreshError();
+        }
     }
 
 }
