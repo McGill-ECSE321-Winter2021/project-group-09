@@ -6,7 +6,13 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpHeaders;
+import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 
 public class HttpUtils {
@@ -42,6 +48,12 @@ public class HttpUtils {
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void post(Context context, String url, String token, JSONObject body, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
+        BasicHeader[] headers = new BasicHeader[]{ new BasicHeader("token", token)};
+        StringEntity stringEntity = new StringEntity(body.toString());
+        client.post(context, getAbsoluteUrl(url), headers, stringEntity, "application/json", responseHandler);
     }
 
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

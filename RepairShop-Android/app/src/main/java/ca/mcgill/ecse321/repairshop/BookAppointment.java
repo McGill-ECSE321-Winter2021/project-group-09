@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -25,6 +28,10 @@ public class BookAppointment extends BaseActivity {
     JSONObject service, timeSlot;
 
     String targetDate = "";
+
+    // TODO: replace with token from State
+    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWNlQ3VzdG9tZXJAZ21haWwuY29tIiwiaWF0IjoxNjE4MTY3MTc2LCJleHAiOjE2MTgyMTAzNzZ9.NoBHXUrJQQy6rapwjck3_4UacnP1SN9SlKP42ezTU3w";
+    private final String email = "niceCustomer@gmail.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +107,6 @@ public class BookAppointment extends BaseActivity {
         requestParams.add("startDate", targetDate);
         requestParams.add("serviceName", service.getString("name"));
 
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWNlQ3VzdG9tZXJAZ21haWwuY29tIiwiaWF0IjoxNjE4MTUzMDY5LCJleHAiOjE2MTgxOTYyNjl9.FR9iAVvaTHHyEfGyl6OiXr5qO3E6ppW5-Wpg25OuNC0";
-
         // Get possible appointment times
         HttpUtils.get(this, "api/appointment/possibilities", token, requestParams, new JsonHttpResponseHandler() {
 
@@ -142,15 +147,56 @@ public class BookAppointment extends BaseActivity {
                     try {
                         timeSlot = response.getJSONObject(i);
 
-                        // Show all available booking times
-//                        toPart2();
+                        // Book appointment and confirm with customer
+                        toPart3();
 
-                    } catch (JSONException e) {
+                    } catch (JSONException | UnsupportedEncodingException e) {
                         errorText = e.getMessage();
                         refreshError();
                     }
                     Log.v("time slot", timeSlot.toString());
                 });
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                System.out.println("Failure: " + errorResponse);
+
+                try {
+                    errorText = errorResponse.get("message").toString();
+                } catch (JSONException e) {
+                    errorText = e.getMessage();
+                }
+                refreshError();
+            }
+
+        });
+
+    }
+
+    // Set up the booking confirmation - book appointment + confirm
+    private void toPart3() throws JSONException, UnsupportedEncodingException {
+
+        JSONObject body = new JSONObject();
+        body.put("startTime", timeSlot.getString("startDateTime"));
+        body.put("serviceName", service.getString("name"));
+        body.put("customerEmail", email);
+
+        // Get possible appointment times
+        HttpUtils.post(this, "api/appointment/create", token, body, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                System.out.println("Success: " + response);
+
+                findViewById(R.id.book2).setVisibility(View.GONE);
+                findViewById(R.id.book3).setVisibility(View.VISIBLE);
+
+                // Button to go back home
+                findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointment.this, MainActivity.class)));
+
             }
 
             @Override

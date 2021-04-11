@@ -20,5 +20,6 @@
     <string name="homepage">Homepage</string>
     <string name="select_a_service">Select a service</string>
     <string name="select_a_time_slot">Select a time slot</string>
+    <string name="appointment_booked">Your appointment has been booked</string>
 
 </resources>
