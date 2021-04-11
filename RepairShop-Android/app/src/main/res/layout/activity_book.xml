@@ -25,6 +25,17 @@
             app:layout_anchor="@+id/textView3"
             app:layout_anchorGravity="center" />
 
+        <TextView
+            android:id="@+id/bookError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16sp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="?attr/colorError"
+            android:textSize="18sp"
+            tools:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/book1"
             android:layout_width="match_parent"
@@ -128,16 +139,6 @@
                 android:text="@string/homepage" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/bookError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16sp"
-            android:text=""
-            android:textColor="?attr/colorError"
-            android:textSize="18sp"
-            tools:visibility="gone" />
 
     </LinearLayout>
 

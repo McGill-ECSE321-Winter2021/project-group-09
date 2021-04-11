@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.content.Intent;
-import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,7 +24,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class BookAppointment extends BaseActivity {
 
-    String errorText = "";
     String targetDate = "";
     String token = "";
     String email = "";
@@ -42,24 +40,21 @@ public class BookAppointment extends BaseActivity {
         // update target date to today
         findViewById(R.id.today).setOnClickListener(view -> {
             targetDate = "";
+            TextView futureDateTextView = findViewById(R.id.futureDate);
+            futureDateTextView.setText("");
             try {
-                System.out.println("today clicked");
                 toPart2();
             } catch (JSONException e) {
-                errorText = e.getMessage();
-                refreshError();
+                setError(e.getMessage());
             }
         });
 
         // update target date
         findViewById(R.id.futureDateBtn).setOnClickListener(view -> {
             try {
-                System.out.println("future btn");
                 updateTargetDate();
-                System.out.println("updated to: " + targetDate);
             } catch (JSONException e) {
-                errorText = e.getMessage();
-                refreshError();
+                setError(e.getMessage());
             }
         });
 
@@ -77,8 +72,7 @@ public class BookAppointment extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
                 if (response.length() == 0) {
-                    errorText = "There are currently no services";
-                    refreshError();
+                    setError("There are currently no services");
                     return;
                 }
 
@@ -92,8 +86,7 @@ public class BookAppointment extends BaseActivity {
                         double currPrice = Math.round(currService.getDouble("price") * 100.0) / 100.0;
                         displayServices.add(currName + ", for " + currDuration + " ($" + currPrice + ")");
                     } catch (JSONException e) {
-                        errorText = e.getMessage();
-                        refreshError();
+                        setError(e.getMessage());
                         return;
                     }
                 }
@@ -110,8 +103,7 @@ public class BookAppointment extends BaseActivity {
                         toPart2();
 
                     } catch (JSONException e) {
-                        errorText = e.getMessage();
-                        refreshError();
+                        setError(e.getMessage());
                     }
                 });
             }
@@ -119,11 +111,10 @@ public class BookAppointment extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
-                    errorText = errorResponse.get("message").toString();
+                    setError(errorResponse.get("message").toString());
                 } catch (JSONException e) {
-                    errorText = e.getMessage();
+                    setError(e.getMessage());
                 }
-                refreshError();
             }
 
         });
@@ -148,8 +139,7 @@ public class BookAppointment extends BaseActivity {
                 findViewById(R.id.book2).setVisibility(View.VISIBLE);
 
                 if (response.length() == 0) {
-                    errorText = "There are currently no available time slots";
-                    refreshError();
+                    setError("There are currently no available time slots");
                     return;
                 }
 
@@ -162,8 +152,7 @@ public class BookAppointment extends BaseActivity {
                         String currEnd = displayDateTime(currTimeSlot.getString("endDateTime"));
                         displayPossibilities.add(currStart + " to " + currEnd);
                     } catch (JSONException e) {
-                        errorText = e.getMessage();
-                        refreshError();
+                        setError(e.getMessage());
                         return;
                     }
                 }
@@ -180,8 +169,7 @@ public class BookAppointment extends BaseActivity {
                         toPart3();
 
                     } catch (JSONException | UnsupportedEncodingException e) {
-                        errorText = e.getMessage();
-                        refreshError();
+                        setError(e.getMessage());
                     }
                 });
             }
@@ -190,11 +178,10 @@ public class BookAppointment extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
                 try {
-                    errorText = errorResponse.get("message").toString();
+                    setError(errorResponse.get("message").toString());
                 } catch (JSONException e) {
-                    errorText = e.getMessage();
+                    setError(e.getMessage());
                 }
-                refreshError();
             }
 
         });
@@ -224,11 +211,10 @@ public class BookAppointment extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
                 try {
-                    errorText = errorResponse.get("message").toString();
+                    setError(errorResponse.get("message").toString());
                 } catch (JSONException e) {
-                    errorText = e.getMessage();
+                    setError(e.getMessage());
                 }
-                refreshError();
             }
 
         });
@@ -236,10 +222,10 @@ public class BookAppointment extends BaseActivity {
     }
 
     // Helper to display or hide an error message
-    private void refreshError() {
+    private void setError(String errorMessage) {
         TextView error = findViewById(R.id.bookError);
-        error.setText(errorText);
-        error.setVisibility(errorText.equals("") ? View.GONE : View.VISIBLE);
+        error.setText(errorMessage);
+        error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
 
     // Helper to display service duration in hours
@@ -261,18 +247,14 @@ public class BookAppointment extends BaseActivity {
 
         try {
             Date targetDateDate = simpleDateFormat.parse(dateInput.getText().toString());
-            if (targetDateDate != null && targetDateDate.before(new Date())) {
-                errorText = "Please enter a future date";
-                refreshError();
-            } else {
+            if (targetDateDate != null && targetDateDate.before(new Date())) setError("Please enter a future date");
+            else {
                 targetDate = dateInput.getText().toString();
-                errorText = "";
-                refreshError();
+                setError("");
                 toPart2();
             }
         } catch (ParseException e) {
-            errorText = "Please select a valid date";
-            refreshError();
+            setError("Please select a valid date");
         }
     }
 
