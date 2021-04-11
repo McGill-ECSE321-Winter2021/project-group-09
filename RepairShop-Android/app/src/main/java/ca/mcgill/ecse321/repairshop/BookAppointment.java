@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.content.Intent;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,14 +26,12 @@ import cz.msebera.android.httpclient.Header;
 public class BookAppointment extends BaseActivity {
 
     String errorText = "";
+    String targetDate = "";
+    String token = "";
+    String email = "";
 
     JSONObject service, timeSlot;
 
-    String targetDate = "";
-
-    // TODO: replace with token from State
-    private final String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuaWNlQ3VzdG9tZXJAZ21haWwuY29tIiwiaWF0IjoxNjE4MTY3MTc2LCJleHAiOjE2MTgyMTAzNzZ9.NoBHXUrJQQy6rapwjck3_4UacnP1SN9SlKP42ezTU3w";
-    private final String email = "niceCustomer@gmail.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +65,10 @@ public class BookAppointment extends BaseActivity {
 
         // Button to go back home
         findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointment.this, MainActivity.class)));
+
+        State state = (State) getApplicationContext();
+        token = state.token;
+        email = state.email;
 
         // Get all services
         HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
