@@ -55,6 +55,11 @@ public class HttpUtils {
         StringEntity stringEntity = new StringEntity(body.toString());
         client.post(context, getAbsoluteUrl(url), headers, stringEntity, "application/json", responseHandler);
     }
+    
+    public static void postWithBody(Context context, String url, JSONObject body, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
+        StringEntity stringEntity = new StringEntity(body.toString());
+        client.post(context, getAbsoluteUrl(url), stringEntity, "application/json", responseHandler);
+    }
 
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(url, params, responseHandler);
