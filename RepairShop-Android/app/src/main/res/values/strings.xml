@@ -19,4 +19,9 @@
     <string name="logout">Logout</string>
     <string name="homepage">Homepage</string>
 
+    <!-- Login strings -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+
 </resources>
