@@ -51,10 +51,11 @@ public class ViewServices extends BaseActivity {
                     JSONObject thisService = null;
                     try {
                         thisService = response.getJSONObject(i);
+                        addServiceToTable(thisService);
                     } catch(Exception e) {
                         error += e.getMessage();
                     }
-                    addServiceToTable(thisService);
+
                 }
                 refreshErrorMessage();
             }
