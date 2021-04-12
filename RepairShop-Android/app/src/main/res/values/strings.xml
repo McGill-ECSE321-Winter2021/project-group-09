@@ -19,6 +19,15 @@
     <string name="logout">Logout</string>
     <string name="homepage">Homepage</string>
 
+    <!-- Book Appointment strings -->
+    <string name="select_a_service">Select a service</string>
+    <string name="select_a_time_slot">Select a time slot</string>
+    <string name="appointment_booked">Your appointment has been booked</string>
+    <string name="search_future_date">Search future date</string>
+    <string name="go">Go</string>
+    <string name="today">Today</string>
+    <string name="yyyy_mm_dd_format">YYYY-MM-DD</string>
+    
     <!-- Login strings -->
     <string name="email">Email</string>
     <string name="password">Password</string>
