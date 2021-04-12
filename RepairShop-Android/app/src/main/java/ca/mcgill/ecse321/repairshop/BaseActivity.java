@@ -8,10 +8,13 @@ import android.view.MenuItem;
 
 public class BaseActivity extends AppCompatActivity {
 
+    public Menu appMenu;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.appMenu = menu;
         return true;
     }
 
@@ -51,4 +54,46 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else return super.onOptionsItemSelected(item);
     }
+
+    // Update menu items since customer is logged IN
+    public static void updateMenuLogin(Menu menu) {
+
+        MenuItem register = menu.findItem(R.id.menuRegister);
+        register.setVisible(false);
+
+        MenuItem login = menu.findItem(R.id.menuLogin);
+        login.setVisible(false);
+
+        MenuItem bookAppointment = menu.findItem(R.id.menuBookAppointment);
+        bookAppointment.setVisible(true);
+
+        MenuItem viewAppointment = menu.findItem(R.id.menuViewAppointments);
+        viewAppointment.setVisible(true);
+
+        MenuItem logout = menu.findItem(R.id.menuLogout);
+        logout.setVisible(true);
+
+    }
+
+    // Update menu items since customer is logged OUT
+    public static void updateMenuLogout(Menu menu) {
+
+        MenuItem register = menu.findItem(R.id.menuRegister);
+        register.setVisible(true);
+
+        MenuItem login = menu.findItem(R.id.menuLogin);
+        login.setVisible(true);
+
+        MenuItem bookAppointment = menu.findItem(R.id.menuBookAppointment);
+        bookAppointment.setVisible(false);
+
+        MenuItem viewAppointment = menu.findItem(R.id.menuViewAppointments);
+        viewAppointment.setVisible(false);
+
+        MenuItem logout = menu.findItem(R.id.menuLogout);
+        logout.setVisible(false);
+
+    }
+
+
 }
