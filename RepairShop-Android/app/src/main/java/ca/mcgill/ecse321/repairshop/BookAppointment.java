@@ -236,7 +236,7 @@ public class BookAppointment extends BaseActivity {
 
     // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format 2021-03-02 15:00
     private String displayDateTime(String dateTime) {
-        return dateTime.substring(0,10) + " at " + dateTime.substring(12, 16);
+        return dateTime.substring(0,10) + " at " + dateTime.substring(11, 16);
     }
 
     // Helper to update the list of time slots
