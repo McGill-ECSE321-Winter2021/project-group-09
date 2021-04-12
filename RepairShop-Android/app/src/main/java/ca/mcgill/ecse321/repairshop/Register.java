@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +115,12 @@ public class Register extends BaseActivity {
 
         });
 
-
     }
+
+    public void signUpBack(View v){
+        Intent intent = new Intent(Register.this, MainActivity.class);
+        startActivity(intent);
+    }
+
 
 }

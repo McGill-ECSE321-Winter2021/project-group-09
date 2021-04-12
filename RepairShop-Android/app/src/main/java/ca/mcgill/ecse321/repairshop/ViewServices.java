@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -142,4 +144,6 @@ public class ViewServices extends BaseActivity {
         TextView tv = findViewById(R.id.servicesError);
         tv.setText(error);
     }
+
+
 }
