@@ -14,6 +14,8 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (State.loggedIn) updateMenuLogin(menu);
+        else updateMenuLogout(menu);
         this.appMenu = menu;
         return true;
     }
@@ -58,6 +60,8 @@ public class BaseActivity extends AppCompatActivity {
     // Update menu items since customer is logged IN
     public static void updateMenuLogin(Menu menu) {
 
+        State.loggedIn = true;
+
         MenuItem register = menu.findItem(R.id.menuRegister);
         register.setVisible(false);
 
@@ -77,6 +81,8 @@ public class BaseActivity extends AppCompatActivity {
 
     // Update menu items since customer is logged OUT
     public static void updateMenuLogout(Menu menu) {
+
+        State.loggedIn = false;
 
         MenuItem register = menu.findItem(R.id.menuRegister);
         register.setVisible(true);
