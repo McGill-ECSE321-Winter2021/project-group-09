@@ -19,7 +19,7 @@ public class HttpUtils {
     public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/";
 
     private static String baseUrl;
-    private static AsyncHttpClient client = new AsyncHttpClient();
+    private static final AsyncHttpClient client = new AsyncHttpClient();
 
     static {
         baseUrl = DEFAULT_BASE_URL;

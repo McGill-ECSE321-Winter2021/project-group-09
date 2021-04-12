@@ -49,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuLogin) {
             // Switch to Login
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         } else return super.onOptionsItemSelected(item);
     }
