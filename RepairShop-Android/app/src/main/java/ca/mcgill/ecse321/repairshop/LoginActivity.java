@@ -22,7 +22,6 @@ import cz.msebera.android.httpclient.Header;
 public class LoginActivity extends BaseActivity {
 
     private String error = null;
-    private String success = null;
 
     private void refreshErrorMessage() {
         // set the error message
@@ -36,18 +35,6 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void refreshSuccessMessage() {
-        // set the error message
-        TextView tvSuccess = findViewById(R.id.success);
-        tvSuccess.setText(success);
-
-        if (success == null || success.length() == 0) {
-            tvSuccess.setVisibility(View.GONE);
-        } else {
-            tvSuccess.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +44,6 @@ public class LoginActivity extends BaseActivity {
     public void logIn(View v) throws JSONException, UnsupportedEncodingException {
 
         error = "";
-        success = "";
 
         final TextView email = findViewById(R.id.login_email);
         final TextView password = findViewById(R.id.login_password);
@@ -71,6 +57,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String response) {
+
                 refreshErrorMessage();
                 State state = (State)getApplicationContext();
                 state.token = response;
@@ -79,6 +66,11 @@ public class LoginActivity extends BaseActivity {
                 System.out.println(state.token);
                 email.setText("");
                 password.setText("");
+
+                TextView successTextView = findViewById(R.id.success);
+                successTextView.setVisibility(View.VISIBLE);
+
+                updateMenuLogin(appMenu);
             }
 
             @Override
