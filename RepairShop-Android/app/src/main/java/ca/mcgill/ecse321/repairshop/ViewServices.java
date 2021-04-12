@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ViewServices extends AppCompatActivity {
+public class ViewServices extends BaseActivity {
     private String error = "";
     private TableLayout serviceTable;
 
@@ -113,13 +113,13 @@ public class ViewServices extends AppCompatActivity {
         subRow1.addView(nameView);
 
         TextView priceView = new TextView(ViewServices.this);
-        String sPrice = "Price: $" + price.toString();
+        String sPrice = "Price: $ " + price.toString();
         priceView.setTextColor(getResources().getColor(R.color.black));
         priceView.setText(sPrice);
         subRow2.addView(priceView);
 
         TextView durationView = new TextView(ViewServices.this);
-        String sDuration = "Duration: " + duration.toString() + "min.";
+        String sDuration = "Duration: " + duration.toString() + " min.";
         durationView.setTextColor(getResources().getColor(R.color.black));
         durationView.setText(sDuration);
         subRow3.addView(durationView);

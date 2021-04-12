@@ -14,14 +14,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 import cz.msebera.android.httpclient.Header;
 
 
-public class Register extends AppCompatActivity {
+public class Register extends BaseActivity {
     private Button registerButton;
     private String error = null;
     private String success = null;
@@ -57,43 +60,42 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        //set the onClick methods for the Sign Up button
-        registerButton = findViewById(R.id.signUpButton);
-        registerButton.setOnClickListener(this::signUp);
-
         refreshErrorMessage();
+        refreshSuccessMessage();
     }
 
 
-    public void signUp(View v) {
+    public void signUp(View v) throws JSONException, UnsupportedEncodingException {
         error = "";
-
+        success = "";
+        refreshErrorMessage();
+        refreshSuccessMessage();
 
         TextView customerName = (TextView)findViewById(R.id.customerNameRegister);
-        name = String.valueOf(customerName.getText());
+        name = customerName.getText().toString();
         TextView customerAddress = (TextView)findViewById(R.id.customerAddressRegister);
-        address = String.valueOf(customerAddress.getText());
+        address = customerAddress.getText().toString();
         TextView customerPassword = (TextView)findViewById(R.id.customerPasswordRegister);
-        password = String.valueOf(customerPassword.getText());
+        password = customerPassword.getText().toString();
         TextView customerPhone = (TextView)findViewById(R.id.customerPhoneRegister);
-        phoneNumber = String.valueOf(customerPhone.getText());
+        phoneNumber = customerPhone.getText().toString();
         TextView customerEmail = (TextView)findViewById(R.id.customerEmailRegister);
-        email = String.valueOf(customerEmail.getText());
+        email = customerEmail.getText().toString();
 
 
-        RequestParams params = new RequestParams();
-        params.add("name", name);
-        params.add("email", email);
-        params.add("password", password);
-        params.add("phoneNumber", phoneNumber);
-        params.add("address", address);
+        JSONObject body = new JSONObject();
+        body.put("name", name);
+        body.put("email", email);
+        body.put("password", password);
+        body.put("phoneNumber", phoneNumber);
+        body.put("address", address);
 
         Log.d("SignUp", "Here");
 
-        HttpUtils.post("api/customer/register", params, new JsonHttpResponseHandler() {
+        HttpUtils.postWithBody(getApplicationContext(),"api/customer/register", body, new TextHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("Success", "Here");
+            public void onSuccess(int statusCode, Header[] headers, String response) {
                 success = "Account Created";
                 refreshSuccessMessage();
                 customerName.setText("");
@@ -102,20 +104,14 @@ public class Register extends AppCompatActivity {
                 customerAddress.setText("");
                 customerPassword.setText("");
             }
+
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, String errorResponse, Throwable throwable) {
 
-                try {
-                    Log.d("Error Message", "message");
-                    error = errorResponse.get("message").toString();
-                    Log.d("Error ", error);
-                } catch (JSONException e) {
-                    Log.d("Error catch", "message");
-                    error = e.getMessage();
-
-                }
+                error = errorResponse;
                 refreshErrorMessage();
             }
+
         });
 
 

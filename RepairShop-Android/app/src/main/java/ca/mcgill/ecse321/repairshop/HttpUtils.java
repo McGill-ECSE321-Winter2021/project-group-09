@@ -1,8 +1,16 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class HttpUtils {
 
@@ -31,6 +39,11 @@ public class HttpUtils {
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void postWithBody(Context context, String url, JSONObject body, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
+        StringEntity stringEntity = new StringEntity(body.toString());
+        client.post(context, getAbsoluteUrl(url), stringEntity, "application/json", responseHandler);
     }
 
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
