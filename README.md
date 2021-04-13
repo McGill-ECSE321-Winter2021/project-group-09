@@ -78,5 +78,6 @@ During the development of the RepairShop application software, the team will fol
 # Sprint 4: Project Report
 - [Sprint 4: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-4:-Project-Report)
 - [Sprint 4: Meeting Notes 📝](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-4:-Project-Report#sprint-4-meeting-notes-)
-- [User Documentation (Android & Web)📜](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/User-Documentation-(Android-&-Web)%F0%9F%93%9C)
+- [User Documentation: Web 📜🕸️](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/User-Documentation:-Web-%F0%9F%93%9C%F0%9F%95%B8%EF%B8%8F)
+- [User Documentation: Android 📜📱](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/User-Documentation:-Android-%F0%9F%93%9C%F0%9F%93%B1)
 
