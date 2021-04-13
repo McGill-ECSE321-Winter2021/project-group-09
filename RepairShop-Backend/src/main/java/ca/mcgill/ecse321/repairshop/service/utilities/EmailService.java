@@ -37,6 +37,7 @@ public class EmailService {
                 "You are now ready to log in! \n\n Group 9 Repair Shop");
         javaMailSender.send(msg);
     }
+    
 
     /**
      * Sends a successful booking confirmation email to the recipient.
@@ -109,6 +110,7 @@ public class EmailService {
         javaMailSender.send(msg);
     }
 
+    
     /**
      * Sends a cancel confirmation email.
      *

@@ -18,8 +18,11 @@ public class ServiceController {
 
     @Autowired
     AuthenticationService authenticationService;
+    
+    
 
-    /** Get request for all services
+    /** 
+     * Get request for all services
      * @return a list of all services
      */
     @GetMapping("/all")
@@ -30,8 +33,10 @@ public class ServiceController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+    
 
-    /** Get a service by name
+    /**
+     *  Get a service by name
      * @param name unique service name
      * @return the requested service if found
      */
@@ -44,8 +49,11 @@ public class ServiceController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+    
+    
 
-    /** Create a new service
+    /**
+     *  Create a new service
      * @param  serviceDto (ServiceDto)
      * @param token of the admin
      * @return the new service if created successfully

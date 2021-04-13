@@ -39,6 +39,8 @@ public class ScheduledTasks {
     
     @Autowired
     private TechnicianRepository techRepository;
+    
+    
 
     /**
      * Everyday at 6 am, this method will be called to send all today's:<br/>

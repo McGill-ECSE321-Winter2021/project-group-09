@@ -10,17 +10,41 @@ import ca.mcgill.ecse321.repairshop.model.Service;
 
 public interface AppointmentRepository extends CrudRepository<Appointment, Long>{
 
-	//List of appointments the customer has booked
+	/**
+	 * Find all the appointments a customer has booked
+	 * @param customer
+	 * @return
+	 */
 	List<Appointment> findAppointmentByCustomer(Customer customer);
 
+	/**
+	 * Find all the appointments booked for a given service
+	 * @param service
+	 * @return
+	 */
 	List<Appointment> findByService(Service service);
 
+	/**
+	 * Find appointment by ID
+	 * @param appointmentID
+	 * @return
+	 */
 	Appointment findAppointmentByAppointmentID(Long appointmentID);
 	
+	/**
+	 * @return all the appointments booked
+	 */
 	List<Appointment> findAll();	
 	
+	/**
+	 * Delete an appointment by ID
+	 * @param appointmentID
+	 */
 	void deleteById(Long appointmentID);
 	
+	/**
+	 * Delete all appointments
+	 */
 	void deleteAll();
 	
 }

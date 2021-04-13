@@ -50,6 +50,7 @@ public class AppointmentService {
     @Autowired
     ReminderService reminderService;
 
+    
 
     /**
      * Helper method to determine if an appointment can be booked with certain parameters
@@ -113,6 +114,8 @@ public class AppointmentService {
         // Passed all checks, so can be booked
         return true;
     }
+    
+    
 
     /**
      * Helper method to convert Appointment to AppointmentDto
@@ -129,6 +132,8 @@ public class AppointmentService {
         appointmentDto.setCustomerDto(customerToDto(appointment.getCustomer()));
         return appointmentDto;
     }
+    
+    
 
     /**
      * Method to book an appointment given a valid timeslot
@@ -224,6 +229,9 @@ public class AppointmentService {
         return appointmentToDto(appointment);
 
     }
+    
+    
+    
 
     /** Method to return all times that an appointment for a given service can be created for one week
      * @param startDateString The date to start checking for possible appointments (uses YYYY-MM-DD format)
@@ -295,6 +303,8 @@ public class AppointmentService {
         return allTimeSlots;
 
     }
+    
+    
 
     /**
      * Deletes an appointment by ID
@@ -350,6 +360,8 @@ public class AppointmentService {
         }
 
     }
+    
+    
 
     /**
      * Deletes an appointment by ID for a customer (checks date)

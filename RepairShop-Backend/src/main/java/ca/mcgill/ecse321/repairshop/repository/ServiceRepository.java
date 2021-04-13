@@ -7,8 +7,16 @@ import java.util.List;
 
 public interface ServiceRepository extends CrudRepository<Service, String> {
 
+	/**
+	 * Find a service by name
+	 * @param name
+	 * @return
+	 */
     Service findServiceByName(String name);
 
+    /**
+     * @return all services
+     */
     List<Service> findAll();
 
 }

@@ -30,6 +30,8 @@ public class ReminderService {
 
     @Autowired
     private ServiceRepository serviceRepository;
+    
+    
 
     /**
      * Finds all reminders for a given customer and returns them as a list of reminderDtos
@@ -55,6 +57,7 @@ public class ReminderService {
         } else throw new Exception("Could not find reminders for the specified customer");
 
     }
+    
 
     /**
      * Creates a reminder object
@@ -96,6 +99,8 @@ public class ReminderService {
         return reminderToDTO(reminder);
 
     }
+    
+    
 
     /**
      * Gets all reminders from reminderRepository
@@ -111,6 +116,8 @@ public class ReminderService {
         }
         return reminderDtos;
     }
+    
+    
 
     /**
      * Delete a reminder by its ID from the reminderRepository
@@ -130,6 +137,8 @@ public class ReminderService {
             throw new Exception("Reminder not found...");
         }
     }
+    
+    
 
     /**
      * Helper method to convert Reminder to ReminderDto

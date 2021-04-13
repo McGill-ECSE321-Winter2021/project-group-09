@@ -76,7 +76,6 @@ public class TechnicianService {
 			throw new Exception("Email is already taken.");
 		}
 
-
 		List<TimeSlot> timeSlots = new ArrayList<>();
 		Technician tech = new Technician();
 		tech.setEmail(email);
@@ -85,7 +84,6 @@ public class TechnicianService {
 		tech.setName(name);
 		tech.setAddress(address);
 		tech.setTimeslots(timeSlots);
-
 		technicianRepository.save(tech);
 
 		// add a repair spot for the technician
@@ -166,7 +164,6 @@ public class TechnicianService {
 
 		// Delete schedule and cancel associated appointments
 		deleteSchedule(email);
-
 		technicianRepository.deleteTechnicianByEmail(email);
 
 		Business business = businessRepository.findAll().get(0); // should always be one business
@@ -237,10 +234,8 @@ public class TechnicianService {
 		if(email == null) {
 			throw new Exception("Email cannot be empty.");
 		}
-
 		Technician tech = technicianRepository.findTechnicianByEmail(email);
 		List<TimeSlotDto> dtos = new ArrayList<>();
-
 
 		if(tech == null) {
 			throw new Exception("Technician not found.");
@@ -322,6 +317,7 @@ public class TechnicianService {
 		return email + "'s schedule has been removed.";
 	}
 
+	
 	/**
 	 * Delete specific set of work hours from the technician's schedule (and their appointments within the work hours)
 	 * @param email of technician
@@ -399,6 +395,7 @@ public class TechnicianService {
 		technicianRepository.save(tech);
 		return "Work hours for technician " + email + " successfully added.";
 	}
+	
 
 	/** Add a new TimeSlot to a technician's work hours
 	 * @param email of the technician
@@ -426,7 +423,6 @@ public class TechnicianService {
 		}
 
 		workHours.add(TimeSlotService.DtoToTimeSlot(newWorkHours));
-
 		technicianRepository.save(technician);
 
 		return "Work hours for technician " + email + " successfully added.";

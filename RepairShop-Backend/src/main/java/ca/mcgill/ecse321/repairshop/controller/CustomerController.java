@@ -32,6 +32,10 @@ public class CustomerController {
 
     @Autowired
     EmailService emailService;
+    
+    
+    
+    
     /**
      * POST request to create a new customer
      * @param customerDto (CustomerDto)
@@ -49,7 +53,6 @@ public class CustomerController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
 
     }
 
@@ -98,7 +101,6 @@ public class CustomerController {
             if (cusToAuth == null || customer == null || !customer.getEmail().equals(cusToAuth.getEmail())) {
                 return new ResponseEntity<>("Must be logged in as the correct customer.", HttpStatus.BAD_REQUEST);
             }
-
             String message = customerService.deleteCustomer(email);
             return new ResponseEntity<>(message, HttpStatus.OK);
 
@@ -120,14 +122,12 @@ public class CustomerController {
     public ResponseEntity<?> getCustomer(@PathVariable("email") String email, @RequestHeader String token) {
 
         try {
-
             Customer customer = customerRepository.findCustomerByEmail(email);
             Customer cusToAuth = authenticationService.validateCustomerToken(token);
 
             if ((cusToAuth == null || customer == null || !customer.getEmail().equals(cusToAuth.getEmail())) && authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as the correct customer or admin.", HttpStatus.BAD_REQUEST);
             }
-
             CustomerDto customerDto = customerService.getCustomer(email);
             return new ResponseEntity<>(customerDto, HttpStatus.OK);
 
@@ -149,9 +149,6 @@ public class CustomerController {
             if (authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
-
-
-
             List<CustomerDto> customerDtos = customerService.getAllCustomers();
             return new ResponseEntity<>(customerDtos, HttpStatus.OK);
 
@@ -175,8 +172,6 @@ public class CustomerController {
         try {
             Customer customer = customerRepository.findCustomerByEmail(email);
             Customer cusToAuth = authenticationService.validateCustomerToken(token);
-
-
             if ((cusToAuth == null || customer == null || !customer.getEmail().equals(cusToAuth.getEmail())) && authenticationService.validateAdminToken(token) == null) {
                 return new ResponseEntity<>("Must be logged in as the correct customer or admin.", HttpStatus.BAD_REQUEST);
             }

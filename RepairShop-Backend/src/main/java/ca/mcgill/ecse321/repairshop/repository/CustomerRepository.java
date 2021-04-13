@@ -8,13 +8,29 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CustomerRepository extends CrudRepository<Customer, String> {
 
+	/**
+	 * Find a customer by email
+	 * @param email
+	 * @return
+	 */
     Customer findCustomerByEmail(String email);
-
     
+    /**
+     * @return all customers
+     */
     List<Customer> findAll();	
     
+    /**
+     * Delete a customer by email
+     * @param email
+     */
     void deleteByEmail(String email);
 
+    /**
+     * Find a customer by token
+     * @param token
+     * @return
+     */
     Customer findCustomerByToken(String token);
 
 }
