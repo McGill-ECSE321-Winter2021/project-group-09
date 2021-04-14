@@ -43,6 +43,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuViewAppointments) {
             // Switch to View Appointments
+            startActivity(new Intent(this, ViewAppointments.class));
             return true;
         } else if (id == R.id.menuLogout) {
             // Switch to Logout

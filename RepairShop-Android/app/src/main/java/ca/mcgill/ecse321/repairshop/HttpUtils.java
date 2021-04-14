@@ -61,6 +61,12 @@ public class HttpUtils {
         client.post(context, getAbsoluteUrl(url), stringEntity, "application/json", responseHandler);
     }
 
+    public static void delete(Context context, String url, String token, AsyncHttpResponseHandler responseHandler) {
+        BasicHeader[] headers = new BasicHeader[]{ new BasicHeader("token", token)};
+        client.delete(context, getAbsoluteUrl(url), headers, responseHandler);
+    }
+
+
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(url, params, responseHandler);
     }

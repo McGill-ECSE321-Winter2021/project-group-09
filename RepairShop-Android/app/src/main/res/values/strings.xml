@@ -27,7 +27,10 @@
     <string name="go">Go</string>
     <string name="today">Today</string>
     <string name="yyyy_mm_dd_format">YYYY-MM-DD</string>
-    
+
+    <!-- View Appointments strings -->
+    <string name="select_an_appointment_to_cancel">Select an appointment to cancel</string>
+
     <!-- Login strings -->
     <string name="email">Email</string>
     <string name="password">Password</string>
