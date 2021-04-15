@@ -13,8 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -76,45 +79,33 @@ public class ViewAppointments extends BaseActivity {
 
                         System.out.println("**************************************************************"); //TODO: remove this later
                         System.out.println("APPOINTMENT ID: " + appointment.getLong("appointmentID"));  //TODO: remove this later
+                        System.out.println("DATE: " + appointment.getJSONObject("timeSlotDto").getString("startDateTime")); //TODO: remove this later
                         System.out.println("**************************************************************"); //TODO: remove this later
 
-                        //cancel appointment
-                        HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/customer/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
-                                if (response.length() == 0) {
-                                    setError("Can only cancel 1 week in advance.");
-                                    setSuccess("");
-                                    return;
-                                } else {
+                        if (isWeekAhead(appointment.getJSONObject("timeSlotDto").getString("startDateTime"))) {
+                            setError("Can only cancel 1 week in advance.");
+                            setSuccess("");
+                        } else {
+                            //cancel appointment
+                            HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
                                     setError("");
                                 }
-                            }
 
-        /*                    @Override
-                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
-                                try {
-                                    setError(errorResponse.get("message").toString());
-                                } catch (JSONException e) {
-                                    setError(e.getMessage());
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    // super.onFailure(statusCode, headers, responseString, throwable);
+                                    setError(responseString);
+                                    System.out.println("****************************************************");
+                                    System.out.println("RESPONSE STRING: " + responseString);
+                                    System.out.println("THROWABLE: " + throwable);
+                                    System.out.println("****************************************************");
                                 }
-                            }*/
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                               // super.onFailure(statusCode, headers, responseString, throwable);
-                                setError(responseString);
-                                System.out.println("****************************************************");
-                                System.out.println("RESPONSE STRING: "+responseString);
-                                System.out.println("THROWABLE: "+throwable);
-                                System.out.println("****************************************************");
-
-                            }
-
-                        });
+                            });
+                        }
 
                     } catch (JSONException e) {
                         setError(e.getMessage());
@@ -122,25 +113,27 @@ public class ViewAppointments extends BaseActivity {
                 });
             }
 
-/*            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                try {
-                    setError(errorResponse.get("message").toString());
-                } catch (JSONException e) {
-                    setError(e.getMessage());
-                }
-            }*/
-
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 setError(responseString);
-                System.out.println("****************************************************");
-                System.out.println("SECOND ON FAILURE~~~~~~~~~~~");
-                System.out.println("****************************************************");
-
             }
         });
+    }
+
+
+    /**
+     * Checks if the cancellation date is at least one week ahead
+     * @param apptDateTime appointment's start date and time in form "2021-10-11T13:00:00.000+00:00" (String)
+     * @return true or false if today is a week ahead of the appointment's date (boolean)
+     */
+    private boolean isWeekAhead(String apptDateTime) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,7);
+        Date todayPlusSeven = new Date(cal.getTimeInMillis());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String  todayPlusSevenStr = formatter.format(todayPlusSeven);
+        return todayPlusSevenStr.compareTo(apptDateTime)>=0;
     }
 
     // Helper to display or hide successful message
@@ -162,4 +155,5 @@ public class ViewAppointments extends BaseActivity {
     private String displayDateTime(String startDateTime, String endDateTime) {
         return startDateTime.substring(0, 10) + " from " + startDateTime.substring(11, 16) + " to " + endDateTime.substring(11, 16);
     }
+
 }
