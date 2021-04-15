@@ -132,7 +132,7 @@ public class AdminController {
 	 * @param email
 	 * @param newPassword
 	 * @param token
-	 * @return
+	 * @return an admin dto
 	 */
 	@PostMapping("/changePassword/{email}")
 	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestBody String newPassword, @RequestHeader String token) {
@@ -157,7 +157,6 @@ public class AdminController {
 	
 	
 }
-
 
 
 
