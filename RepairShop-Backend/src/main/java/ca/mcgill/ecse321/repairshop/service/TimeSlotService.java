@@ -29,6 +29,7 @@ public class TimeSlotService {
         dto.setID(timeslot.getTimeSlotID());
         return dto;
     }
+    
 
     /**
      * creates a new timeslot and stores it in db
@@ -61,6 +62,7 @@ public class TimeSlotService {
             throw new Exception("Timeslot not found...");
         }
     }
+    
 
     /**
      * get all timeslots

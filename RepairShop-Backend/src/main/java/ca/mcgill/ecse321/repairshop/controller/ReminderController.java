@@ -18,6 +18,8 @@ public class ReminderController {
 
     @Autowired
     private AuthenticationService authenticationService;
+    
+    
 
     /**
      * Get a list of a customer's reminders
@@ -38,6 +40,7 @@ public class ReminderController {
         }
     }
 
+    
     /**
      * Create a new reminder
      *
@@ -57,6 +60,7 @@ public class ReminderController {
         }
     }
 
+    
     /**
      * GET request to get all reminders
      * @param token of the admin

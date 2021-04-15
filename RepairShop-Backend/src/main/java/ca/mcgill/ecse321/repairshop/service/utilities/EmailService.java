@@ -19,6 +19,13 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    
+    /**
+     * Sends an email confirming account creation was successful
+     * @param recipientEmail
+     * @param name
+     * @param newPassword
+     */
     @Async
     public void accountCreationEmail(String recipientEmail, String name, String newPassword) {
         SimpleMailMessage msg = new SimpleMailMessage();
@@ -30,6 +37,7 @@ public class EmailService {
                 "You are now ready to log in! \n\n Group 9 Repair Shop");
         javaMailSender.send(msg);
     }
+    
 
     /**
      * Sends a successful booking confirmation email to the recipient.
@@ -102,6 +110,7 @@ public class EmailService {
         javaMailSender.send(msg);
     }
 
+    
     /**
      * Sends a cancel confirmation email.
      *

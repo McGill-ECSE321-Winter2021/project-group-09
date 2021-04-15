@@ -50,6 +50,11 @@ public class AuthenticationService {
         }
     }
 
+    /**
+     * Checks the type of user and calls the corresponding method to logout the user
+     * @param credentials DTO containing login credentials and user type
+     * @throws Exception if user type is invalid
+     */
     public void logout(LoginDto credentials) throws Exception {
         switch (credentials.getUserType()) {
             case Technician:
@@ -66,6 +71,7 @@ public class AuthenticationService {
         }
     }
 
+    //Methods to validate token
     public Admin validateAdminToken(String token) {
         return adminRepository.findAdminByToken(token);
     }
@@ -78,6 +84,15 @@ public class AuthenticationService {
         return customerRepository.findCustomerByToken(token);
     }
 
+    
+    
+    /**
+     * Method to log in a technician
+     * @param email
+     * @param password
+     * @return technician's token or error message (String)
+     * @throws AuthenticationException
+     */
     private String authenticateTechnician(String email, String password) throws AuthenticationException {
         Technician tech = technicianRepository.findTechnicianByEmail(email);
         if (tech.getPassword().equals(password)) {
@@ -88,6 +103,13 @@ public class AuthenticationService {
         }
     }
 
+    /**
+     * Method to log in an admin
+     * @param email
+     * @param password
+     * @return admin's token or error message (String)
+     * @throws AuthenticationException
+     */
     private String authenticateAdmin(String email, String password) throws AuthenticationException {
         Admin admin = adminRepository.findAdminByEmail(email);
         if (admin.getPassword().equals(password)) {
@@ -98,6 +120,13 @@ public class AuthenticationService {
         }
     }
 
+    /**
+     * Method to log in a customer
+     * @param email
+     * @param password
+     * @return  customer's token or error message (String)
+     * @throws AuthenticationException
+     */
     private String authenticateCustomer(String email, String password) throws AuthenticationException {
         Customer customer = customerRepository.findCustomerByEmail(email);
         if (customer.getPassword().equals(password)) {
@@ -108,18 +137,31 @@ public class AuthenticationService {
         }
     }
 
+    
+    /**
+     * Method to log out technician
+     * @param email
+     */
     private void logoutTechnician(String email) {
         Technician tech = technicianRepository.findTechnicianByEmail(email);
         tech.setToken(null);
         technicianRepository.save(tech);
     }
 
+    /**
+     * Method to log out customer
+     * @param email
+     */
     private void logoutCustomer(String email) {
         Customer customer = customerRepository.findCustomerByEmail(email);
         customer.setToken(null);
         customerRepository.save(customer);
     }
 
+    /**
+     * Method to log out admin
+     * @param email
+     */
     private void logoutAdmin(String email) {
         Admin admin = adminRepository.findAdminByEmail(email);
         admin.setToken(null);

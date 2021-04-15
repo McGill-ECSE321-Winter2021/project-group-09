@@ -155,7 +155,6 @@ public class CustomerService {
 		customerRepository.deleteByEmail(email);
 		return "Customer account with email " + email + " deleted.";
 		
-		
 	}
 	
 	
@@ -194,12 +193,6 @@ public class CustomerService {
 		return customerDtos;
 	}
 	
-	
-	
-	
-	
-	
-	//USE CASES
 
 
 	/**

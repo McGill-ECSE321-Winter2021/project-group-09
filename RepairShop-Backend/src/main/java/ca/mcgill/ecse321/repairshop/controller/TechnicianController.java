@@ -39,7 +39,7 @@ public class TechnicianController {
      * POST request to create a new technician
      *
      * @param techDto (TechnicianDto)
-     * @param token   for the admin to register technician
+     * @param token (for the admin to register technician)
      * @return A technician Dto
      */
     @PostMapping("/register")
@@ -57,16 +57,15 @@ public class TechnicianController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-
     }
 
 
     /**
      * POST request to change a password for a technician
      *
-     * @param email       of technician
+     * @param email of technician
      * @param newPassword of technician
-     * @param token       of logged in technician making the request
+     * @param token (of the logged in technician making the request)
      * @return a technician dto
      */
     @PostMapping("/changePassword/{email}")
@@ -182,13 +181,14 @@ public class TechnicianController {
 
 
     }
+    
 
     /**
      * GET request to get all work schedule of a technician
      *
-     * @param email         of a technician
+     * @param email of a technician
      * @param weekStartDate StarDate of the work week
-     * @param token         of the admin or of the requested technician
+     * @param token of the admin or of the requested technician
      * @return list of timeslot Dtos
      */
     @GetMapping("/{email}/schedule")
@@ -214,6 +214,7 @@ public class TechnicianController {
 
 
     }
+    
 
     /**
      * GET request to get all appointments of a technician
@@ -232,25 +233,20 @@ public class TechnicianController {
                 return new ResponseEntity<>("Must be logged in as admin or as requested technician.", HttpStatus.BAD_REQUEST);
             }
             List<AppointmentDto> appDtos = techService.viewAppointments(email);
-/*            if(appDtos.size() > 0) {
-            	return new ResponseEntity<>(appDtos, HttpStatus.OK);
-            }else {
-            	return new ResponseEntity<>("No upcoming appointments", HttpStatus.OK);
-            }*/
-
             return new ResponseEntity<>(appDtos, HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
 
     /**
      * POST request to add a new technician work hours
      *
-     * @param email           of a technician
+     * @param email of a technician
      * @param timeSlotDtoList (List<TimeSlotDto>)
-     * @param token           of the admin
+     * @param token of the admin
      * @return http response with status or error message
      */
     @PostMapping("/{email}/add_work_hours")
@@ -267,6 +263,7 @@ public class TechnicianController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     /** Post request to add another time slot for new work hours
      * @param email of the technician
@@ -286,13 +283,14 @@ public class TechnicianController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     /**
      * DELETE request to delete a specific technician work hour
      *
-     * @param email         of technician
+     * @param email of technician
      * @param timeSlotDto work hours (TimeSlotDto)
-     * @param token         of the admin
+     * @param token of the admin
      * @return whether the specific work schedule was removed successfully
      */
     @PostMapping("/delete/hours/{email}")
@@ -309,6 +307,7 @@ public class TechnicianController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     /**
      * DELETE request to delete the entire technician work schedule
