@@ -37,13 +37,13 @@
             />
 
         <LinearLayout
-            android:id="@+id/cancelAppointment"
+            android:id="@+id/viewAppointments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/cancelSelectAnAppointment"
+                android:id="@+id/list_of_upcoming_appointments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16sp"

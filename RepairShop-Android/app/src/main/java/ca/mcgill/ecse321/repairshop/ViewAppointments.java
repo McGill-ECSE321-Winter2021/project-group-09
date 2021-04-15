@@ -45,11 +45,11 @@ public class ViewAppointments extends BaseActivity {
 
                 if (response.length() == 0) {
                     setError("There are no appointments");
-                    TextView selectAppointment = findViewById(R.id.cancelSelectAnAppointment);
+                    TextView selectAppointment = findViewById(R.id.list_of_upcoming_appointments);
                     selectAppointment.setVisibility(View.GONE);
                     return;
                 }
-                TextView selectAppointment = findViewById(R.id.cancelSelectAnAppointment);
+                TextView selectAppointment = findViewById(R.id.list_of_upcoming_appointments);
                 selectAppointment.setVisibility(View.VISIBLE);
                 ArrayList<String> displayAppointments = new ArrayList<>();
 
