@@ -105,8 +105,8 @@ public class ViewAppointments extends BaseActivity {
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                super.onFailure(statusCode, headers, responseString, throwable);
-                                    setError(responseString);
+                               // super.onFailure(statusCode, headers, responseString, throwable);
+                                setError(responseString);
                                 System.out.println("****************************************************");
                                 System.out.println("RESPONSE STRING: "+responseString);
                                 System.out.println("THROWABLE: "+throwable);
@@ -122,13 +122,23 @@ public class ViewAppointments extends BaseActivity {
                 });
             }
 
-            @Override
+/*            @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
                     setError(errorResponse.get("message").toString());
                 } catch (JSONException e) {
                     setError(e.getMessage());
                 }
+            }*/
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                setError(responseString);
+                System.out.println("****************************************************");
+                System.out.println("SECOND ON FAILURE~~~~~~~~~~~");
+                System.out.println("****************************************************");
+
             }
         });
     }
