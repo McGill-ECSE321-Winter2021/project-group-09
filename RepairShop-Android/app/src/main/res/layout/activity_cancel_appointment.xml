@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="20sp"
             android:paddingBottom="20sp"
-            android:text="@string/viewAppointments"
+            android:text="@string/cancelAppointment"
             android:textAlignment="center"
             android:textSize="24sp"
             app:layout_anchor="@+id/textView3"
@@ -49,7 +49,7 @@
 
             />
         <LinearLayout
-            android:id="@+id/viewAppointments"
+            android:id="@+id/cancelAppointment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

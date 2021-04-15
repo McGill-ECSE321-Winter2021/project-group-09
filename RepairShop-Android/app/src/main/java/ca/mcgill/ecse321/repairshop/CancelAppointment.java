@@ -20,7 +20,7 @@ import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ViewAppointments extends BaseActivity {
+public class CancelAppointment extends BaseActivity {
 
     String token = "";
     String email = "";
@@ -37,7 +37,7 @@ public class ViewAppointments extends BaseActivity {
         email = state.email;
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java
-        HttpUtils.get(ViewAppointments.this, "api/customer/" + email + "/appointments", token, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get(CancelAppointment.this, "api/customer/" + email + "/appointments", token, new RequestParams(), new JsonHttpResponseHandler() {
             // get(Context context, String url, String token, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
             @Override
@@ -68,7 +68,7 @@ public class ViewAppointments extends BaseActivity {
                 }
 
                 ListView appointmentsListView = findViewById(R.id.appointmentList);
-                ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(ViewAppointments.this, android.R.layout.simple_list_item_1, displayAppointments);
+                ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(CancelAppointment.this, android.R.layout.simple_list_item_1, displayAppointments);
 
                 appointmentsListView.setAdapter(appointmentArrayAdapter);
 
@@ -87,7 +87,7 @@ public class ViewAppointments extends BaseActivity {
                             setSuccess("");
                         } else {
                             //cancel appointment
-                            HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
+                            HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                                     setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
@@ -150,7 +150,7 @@ public class ViewAppointments extends BaseActivity {
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
 
-    // Helper to convert two timestamps format (2021-03-02T15:00:00.000+00:00) to format "2021-03-02 from 15:00 to endtime
+    // Helper to convert two timestamps format (2021-03-02T15:00:00.000+00:00) to format "2021-03-02 from 15:00 to end time
     private String displayDateTime(String startDateTime, String endDateTime) {
         return startDateTime.substring(0, 10) + " from " + startDateTime.substring(11, 16) + " to " + endDateTime.substring(11, 16);
     }
