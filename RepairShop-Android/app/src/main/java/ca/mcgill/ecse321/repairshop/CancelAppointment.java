@@ -36,9 +36,8 @@ public class CancelAppointment extends BaseActivity {
         token = state.token;
         email = state.email;
 
-        // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java
+        // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
         HttpUtils.get(CancelAppointment.this, "api/customer/" + email + "/appointments", token, new RequestParams(), new JsonHttpResponseHandler() {
-            // get(Context context, String url, String token, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -56,11 +55,10 @@ public class CancelAppointment extends BaseActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject currAppointment = response.getJSONObject(i);
-                        Long currApptID = currAppointment.getLong("appointmentID");
                         String currServiceName = currAppointment.getJSONObject("serviceDto").getString("name");
                         String currStart = currAppointment.getJSONObject("timeSlotDto").getString("startDateTime");
                         String currEnd = currAppointment.getJSONObject("timeSlotDto").getString("endDateTime");
-                        displayAppointments.add(currServiceName + "\n" + displayDateTime(currStart, currEnd));
+                        displayAppointments.add(currServiceName + "\n" + ViewAppointments.displayDateTime(currStart, currEnd));
                     } catch (JSONException e) {
                         setError(e.getMessage());
                         return;
@@ -153,9 +151,5 @@ public class CancelAppointment extends BaseActivity {
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
 
-    // Helper to convert two timestamps format (2021-03-02T15:00:00.000+00:00) to format "2021-03-02 from 15:00 to end time
-    private String displayDateTime(String startDateTime, String endDateTime) {
-        return startDateTime.substring(0, 10) + " from " + startDateTime.substring(11, 16) + " to " + endDateTime.substring(11, 16);
-    }
 
 }
