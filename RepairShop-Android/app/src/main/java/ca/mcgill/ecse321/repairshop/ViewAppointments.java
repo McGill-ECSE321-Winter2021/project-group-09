@@ -90,7 +90,7 @@ public class ViewAppointments extends BaseActivity {
                             //cancel appointment
                             HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
                                 @Override
-                                public void onSuccess(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                                     setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
                                     setError("");
                                 }
