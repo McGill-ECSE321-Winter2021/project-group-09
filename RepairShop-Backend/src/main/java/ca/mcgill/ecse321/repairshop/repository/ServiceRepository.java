@@ -10,7 +10,7 @@ public interface ServiceRepository extends CrudRepository<Service, String> {
 	/**
 	 * Find a service by name
 	 * @param name
-	 * @return
+	 * @return service (Service)
 	 */
     Service findServiceByName(String name);
 

@@ -13,21 +13,21 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
 	/**
 	 * Find all the appointments a customer has booked
 	 * @param customer
-	 * @return
+	 * @return list of customer's appointments (List<Appointment>)
 	 */
 	List<Appointment> findAppointmentByCustomer(Customer customer);
 
 	/**
 	 * Find all the appointments booked for a given service
 	 * @param service
-	 * @return
+	 * @return List of appointments (List<Appointment>)
 	 */
 	List<Appointment> findByService(Service service);
 
 	/**
 	 * Find appointment by ID
 	 * @param appointmentID
-	 * @return
+	 * @return appointment with matching ID (Appointment)
 	 */
 	Appointment findAppointmentByAppointmentID(Long appointmentID);
 	

@@ -12,7 +12,7 @@ public interface ReminderRepository extends CrudRepository<Reminder, Long> {
 	/**
 	 * Find all the reminders for a certain customer
 	 * @param customer
-	 * @return
+	 * @return list of a customer's reminders (List<Reminder>)
 	 */
 	List<Reminder> findByCustomer(Customer customer);
 	

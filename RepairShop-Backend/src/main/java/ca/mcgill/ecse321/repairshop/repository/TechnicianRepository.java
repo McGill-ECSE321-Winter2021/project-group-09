@@ -13,7 +13,7 @@ public interface TechnicianRepository extends CrudRepository<Technician, String>
 	/**
 	 * Find a technician by email
 	 * @param email
-	 * @return
+	 * @return technician found (Technician)
 	 */
 	Technician findTechnicianByEmail(String email);
 	
@@ -31,7 +31,7 @@ public interface TechnicianRepository extends CrudRepository<Technician, String>
 	/**
 	 * Find a technician by token
 	 * @param token
-	 * @return
+	 * @return technician found (Technician)
 	 */
 	Technician findTechnicianByToken(String token);
 }

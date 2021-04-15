@@ -90,7 +90,7 @@ public class AuthenticationService {
      * Method to log in a technician
      * @param email
      * @param password
-     * @return
+     * @return technician's token or error message (String)
      * @throws AuthenticationException
      */
     private String authenticateTechnician(String email, String password) throws AuthenticationException {
@@ -107,7 +107,7 @@ public class AuthenticationService {
      * Method to log in an admin
      * @param email
      * @param password
-     * @return
+     * @return admin's token or error message (String)
      * @throws AuthenticationException
      */
     private String authenticateAdmin(String email, String password) throws AuthenticationException {
@@ -124,7 +124,7 @@ public class AuthenticationService {
      * Method to log in a customer
      * @param email
      * @param password
-     * @return
+     * @return  customer's token or error message (String)
      * @throws AuthenticationException
      */
     private String authenticateCustomer(String email, String password) throws AuthenticationException {

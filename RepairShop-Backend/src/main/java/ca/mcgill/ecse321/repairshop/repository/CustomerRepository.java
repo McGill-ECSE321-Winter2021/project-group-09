@@ -11,7 +11,7 @@ public interface CustomerRepository extends CrudRepository<Customer, String> {
 	/**
 	 * Find a customer by email
 	 * @param email
-	 * @return
+	 * @return customer (Customer)
 	 */
     Customer findCustomerByEmail(String email);
     

@@ -10,7 +10,7 @@ public interface BusinessRepository extends CrudRepository<Business, Long> {
 	/**
 	 * Find a business by ID
 	 * @param businessID
-	 * @return
+	 * @return business (Business)
 	 */
     Business findBusinessByBusinessID(Long businessID);
 
