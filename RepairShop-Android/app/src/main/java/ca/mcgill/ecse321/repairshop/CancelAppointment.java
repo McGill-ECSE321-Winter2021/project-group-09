@@ -88,6 +88,7 @@ public class CancelAppointment extends BaseActivity {
                         } else {
                             //cancel appointment
                             HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
+
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                                     setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
@@ -103,12 +104,14 @@ public class CancelAppointment extends BaseActivity {
                                     System.out.println("THROWABLE: " + throwable);
                                     System.out.println("****************************************************");
                                 }
+
                             });
                         }
 
                     } catch (JSONException e) {
                         setError(e.getMessage());
                     }
+
                 });
             }
 

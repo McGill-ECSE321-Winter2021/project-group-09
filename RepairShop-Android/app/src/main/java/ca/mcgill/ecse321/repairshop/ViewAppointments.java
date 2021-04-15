@@ -30,7 +30,7 @@ public class ViewAppointments extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cancel_appointment);
+        setContentView(R.layout.activity_view_appointments);
 
         State state = (State) getApplicationContext();
         token = state.token;
@@ -56,7 +56,6 @@ public class ViewAppointments extends BaseActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject currAppointment = response.getJSONObject(i);
-                        Long currApptID = currAppointment.getLong("appointmentID");
                         String currServiceName = currAppointment.getJSONObject("serviceDto").getString("name");
                         String currStart = currAppointment.getJSONObject("timeSlotDto").getString("startDateTime");
                         String currEnd = currAppointment.getJSONObject("timeSlotDto").getString("endDateTime");
@@ -67,49 +66,15 @@ public class ViewAppointments extends BaseActivity {
                     }
                 }
 
-                ListView appointmentsListView = findViewById(R.id.appointmentList);
+                ListView appointmentsListView = findViewById(R.id.appointmentViewList);
+
                 ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(ViewAppointments.this, android.R.layout.simple_list_item_1, displayAppointments);
 
                 appointmentsListView.setAdapter(appointmentArrayAdapter);
 
-                appointmentsListView.setOnItemClickListener((adapterView, view, i, l) -> {
-                    try {
-                        appointment = response.getJSONObject(i);
+          /*      appointmentsListView.setOnItemClickListener((adapterView, view, i, l) -> {
 
-                        System.out.println("**************************************************************"); //TODO: remove this later
-                        System.out.println("APPOINTMENT ID: " + appointment.getLong("appointmentID"));  //TODO: remove this later
-                        System.out.println("DATE: " + appointment.getJSONObject("timeSlotDto").getString("startDateTime")); //TODO: remove this later
-                        System.out.println("**************************************************************"); //TODO: remove this later
-
-
-                        if (isWeekAhead(appointment.getJSONObject("timeSlotDto").getString("startDateTime"))) {
-                            setError("Can only cancel 1 week in advance.");
-                            setSuccess("");
-                        } else {
-                            //cancel appointment
-                            HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                                    setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
-                                    setError("");
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                    // super.onFailure(statusCode, headers, responseString, throwable);
-                                    setError(responseString);
-                                    System.out.println("****************************************************");
-                                    System.out.println("RESPONSE STRING: " + responseString);
-                                    System.out.println("THROWABLE: " + throwable);
-                                    System.out.println("****************************************************");
-                                }
-                            });
-                        }
-
-                    } catch (JSONException e) {
-                        setError(e.getMessage());
-                    }
-                });
+                });*/
             }
 
             @Override
@@ -145,7 +110,7 @@ public class ViewAppointments extends BaseActivity {
 
     // Helper to display or hide an error message
     private void setError(String errorMessage) {
-        TextView error = findViewById(R.id.cancelError);
+        TextView error = findViewById(R.id.viewError);
         error.setText(errorMessage);
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
