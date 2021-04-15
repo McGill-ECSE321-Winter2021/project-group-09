@@ -27,7 +27,7 @@ public class CancelAppointment extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
       /*  // Button to go to "View Appointments"
-       findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, MainActivity.class)));*/
+       findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));   */
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel_appointment);
@@ -92,20 +92,25 @@ public class CancelAppointment extends BaseActivity {
                                     setError("");
                                     //Show cancellation page 2
                                     findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
-                                    System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
                                     // Button to go to "View Appointments"
-                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, MainActivity.class)));
+                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
+                                    System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
 
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                    // super.onFailure(statusCode, headers, responseString, throwable);
                                     setError(responseString);
                                     System.out.println("****************************************************"); //TODO: remove this later
                                     System.out.println("RESPONSE STRING: " + responseString);
                                     System.out.println("THROWABLE: " + throwable);
                                     System.out.println("****************************************************"); //TODO: remove this later
+
+                                    //Show cancellation page 2
+                                    findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
+                                    // Button to go to "View Appointments"
+                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
+
                                 }
 
                             });
