@@ -19,7 +19,9 @@ public class HttpUtils {
 
     // This is the same as in the tutorial
 
-    public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/";
+    public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/"; //TODO: switch back to this
+    //public static final String DEFAULT_BASE_URL = "http://localhost:8080/";
+
 
     private static String baseUrl;
     private static final AsyncHttpClient client = new AsyncHttpClient();

@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.repairshop;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -20,7 +22,7 @@ public class ViewAppointments extends BaseActivity {
 
     String token = "";
     String email = "";
-   JSONObject appointment;
+    JSONObject appointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ViewAppointments extends BaseActivity {
                         String currServiceName = currAppointment.getJSONObject("serviceDto").getString("name");
                         String currStart = currAppointment.getJSONObject("timeSlotDto").getString("startDateTime");
                         String currEnd = currAppointment.getJSONObject("timeSlotDto").getString("endDateTime");
-                        displayAppointments.add(currServiceName + "\n"+displayDateTime(currStart,currEnd));
+                        displayAppointments.add(currServiceName + "\n" + displayDateTime(currStart, currEnd));
                     } catch (JSONException e) {
                         setError(e.getMessage());
                         return;
@@ -71,8 +73,13 @@ public class ViewAppointments extends BaseActivity {
                 appointmentsListView.setOnItemClickListener((adapterView, view, i, l) -> {
                     try {
                         appointment = response.getJSONObject(i);
+
+                        System.out.println("**************************************************************"); //TODO: remove this later
+                        System.out.println("APPOINTMENT ID: " + appointment.getLong("appointmentID"));  //TODO: remove this later
+                        System.out.println("**************************************************************"); //TODO: remove this later
+
                         //cancel appointment
-                        HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/customer/"+ appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler(){
+                        HttpUtils.delete(ViewAppointments.this, "api/appointment/cancel/customer/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
@@ -80,12 +87,13 @@ public class ViewAppointments extends BaseActivity {
                                     setError("Can only cancel 1 week in advance.");
                                     setSuccess("");
                                     return;
-                                }else{
+                                } else {
                                     setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
                                     setError("");
                                 }
                             }
-                            @Override
+
+        /*                    @Override
                             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
                                 try {
@@ -93,7 +101,19 @@ public class ViewAppointments extends BaseActivity {
                                 } catch (JSONException e) {
                                     setError(e.getMessage());
                                 }
+                            }*/
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                super.onFailure(statusCode, headers, responseString, throwable);
+                                    setError(responseString);
+                                System.out.println("****************************************************");
+                                System.out.println("RESPONSE STRING: "+responseString);
+                                System.out.println("THROWABLE: "+throwable);
+                                System.out.println("****************************************************");
+
                             }
+
                         });
 
                     } catch (JSONException e) {
