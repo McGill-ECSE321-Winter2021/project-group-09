@@ -31,6 +31,7 @@
 
     <!-- Cancel Appointment strings -->
     <string name="select_an_appointment_to_cancel">Select an appointment to cancel</string>
+    <string name="appointment_cancelled">The appointment has been cancelled successfully. A confirmation email  will be sent shortly. </string>
 
     <!-- View Appointments strings -->
     <string name="list_of_upcoming_appointments">List of upcoming appointments:</string>

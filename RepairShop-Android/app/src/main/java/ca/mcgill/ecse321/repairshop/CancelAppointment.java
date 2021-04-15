@@ -1,23 +1,20 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import cz.msebera.android.httpclient.Header;
 
 public class CancelAppointment extends BaseActivity {
@@ -28,6 +25,9 @@ public class CancelAppointment extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+      /*  // Button to go to "View Appointments"
+       findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, MainActivity.class)));*/
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel_appointment);
@@ -82,28 +82,35 @@ public class CancelAppointment extends BaseActivity {
 
                         if (isWeekAhead(appointment.getJSONObject("timeSlotDto").getString("startDateTime"))) {
                             setError("Can only cancel 1 week in advance.");
-                            setSuccess("");
                         } else {
+
                             //cancel appointment
                             HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
 
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                                    setSuccess("The appointment has been cancelled successfully. A cancellation email will be sent shortly.");
                                     setError("");
+                                    //Show cancellation page 2
+                                    findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
+                                    System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
+                                    // Button to go to "View Appointments"
+                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, MainActivity.class)));
+
                                 }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     // super.onFailure(statusCode, headers, responseString, throwable);
                                     setError(responseString);
-                                    System.out.println("****************************************************");
+                                    System.out.println("****************************************************"); //TODO: remove this later
                                     System.out.println("RESPONSE STRING: " + responseString);
                                     System.out.println("THROWABLE: " + throwable);
-                                    System.out.println("****************************************************");
+                                    System.out.println("****************************************************"); //TODO: remove this later
                                 }
 
                             });
+
+
                         }
 
                     } catch (JSONException e) {
@@ -122,6 +129,7 @@ public class CancelAppointment extends BaseActivity {
     }
 
 
+
     /**
      * Checks if the cancellation date is at least one week ahead
      * @param apptDateTime appointment's start date and time in form "2021-10-11T13:00:00.000+00:00" (String)
@@ -136,15 +144,10 @@ public class CancelAppointment extends BaseActivity {
         return todayPlusSevenStr.compareTo(apptDateTime)>=0;
     }
 
-    // Helper to display or hide successful message
-    private void setSuccess(String successMessage) {
-        TextView error = findViewById(R.id.cancelSuccess);
-        error.setText(successMessage);
-        error.setVisibility(successMessage.equals("") ? View.GONE : View.VISIBLE);
-    }
-
-
-    // Helper to display or hide an error message
+    /**
+     * Sets the error message of View Appointments page to the input. Can hide or display the error message
+     * @param errorMessage (String)
+     */
     private void setError(String errorMessage) {
         TextView error = findViewById(R.id.cancelError);
         error.setText(errorMessage);

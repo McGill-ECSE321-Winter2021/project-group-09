@@ -70,7 +70,7 @@ public class ViewAppointments extends BaseActivity {
     }
 
     /**
-     * Sets the error message of View Appointments page to the input. Can hide or show the error message
+     * Sets the error message of View Appointments page to the input. Can hide or display the error message
      * @param errorMessage (String)
      */
     private void setError(String errorMessage) {
