@@ -28,7 +28,6 @@ public class CancelAppointment extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel_appointment);
 
@@ -73,13 +72,6 @@ public class CancelAppointment extends BaseActivity {
                 appointmentsListView.setOnItemClickListener((adapterView, view, i, l) -> {
                     try {
                         appointment = response.getJSONObject(i);
-
-                        System.out.println("**************************************************************"); //TODO: remove this later
-                        System.out.println("APPOINTMENT ID: " + appointment.getLong("appointmentID"));  //TODO: remove this later
-                        System.out.println("DATE: " + appointment.getJSONObject("timeSlotDto").getString("startDateTime")); //TODO: remove this later
-                        System.out.println("**************************************************************"); //TODO: remove this later
-
-
                         if (isWeekAhead(appointment.getJSONObject("timeSlotDto").getString("startDateTime"))) {
                             setError("Can only cancel 1 week in advance.");
                         } else {
@@ -87,13 +79,7 @@ public class CancelAppointment extends BaseActivity {
                             //cancel appointment
                             HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new TextHttpResponseHandler() {
 
-                                /**
-                                 * Called when request succeeds
-                                 *
-                                 * @param statusCode     http response status line
-                                 * @param headers        response headers if any
-                                 * @param responseString string response of given charset
-                                 */
+
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                                     setError("");
@@ -103,17 +89,8 @@ public class CancelAppointment extends BaseActivity {
                                     findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
                                     // Button to go to "View Appointments"
                                     findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
-                                    System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
                                 }
 
-                                /**
-                                 * Called when request fails
-                                 *
-                                 * @param statusCode     http response status line
-                                 * @param headers        response headers if any
-                                 * @param responseString string response of given charset
-                                 * @param throwable      throwable returned when processing request
-                                 */
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     setError(responseString);
