@@ -8,6 +8,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,9 +85,43 @@ public class CancelAppointment extends BaseActivity {
                         } else {
 
                             //cancel appointment
-                            HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new JsonHttpResponseHandler() {
+                            HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new TextHttpResponseHandler() {
 
+                                /**
+                                 * Called when request succeeds
+                                 *
+                                 * @param statusCode     http response status line
+                                 * @param headers        response headers if any
+                                 * @param responseString string response of given charset
+                                 */
                                 @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    setError("");
+                                    //Hide 1st page
+                                    findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
+                                    //Show cancellation page 2
+                                    findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
+                                    // Button to go to "View Appointments"
+                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
+                                    System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
+                                }
+
+                                /**
+                                 * Called when request fails
+                                 *
+                                 * @param statusCode     http response status line
+                                 * @param headers        response headers if any
+                                 * @param responseString string response of given charset
+                                 * @param throwable      throwable returned when processing request
+                                 */
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    setError(responseString);
+                                }
+
+
+
+/*                                @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                                     setError("");
 
@@ -96,7 +132,6 @@ public class CancelAppointment extends BaseActivity {
                                     // Button to go to "View Appointments"
                                     findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
                                     System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
-
                                 }
 
                                 @Override
@@ -114,10 +149,9 @@ public class CancelAppointment extends BaseActivity {
                                     // Button to go to "View Appointments"
                                     findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
 
-                                }
+                                }*/
 
                             });
-
 
                         }
 
