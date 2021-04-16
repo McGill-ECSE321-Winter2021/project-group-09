@@ -46,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
             startActivity(new Intent(this, ViewAppointments.class));
             return true;
         } else if (id == R.id.menuCancelAppointment) {
-            // Switch to View Appointments
+            // Switch to Cancel Appointment
             startActivity(new Intent(this, CancelAppointment.class));
             return true;
         }else if (id == R.id.menuLogout) {
