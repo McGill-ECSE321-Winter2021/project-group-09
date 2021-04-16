@@ -38,23 +38,27 @@ public class ContactUs extends BaseActivity {
     private void addAllBusinessInfo() {
         HttpUtils.get("/api/business/info/", new RequestParams(), new JsonHttpResponseHandler() {
 
+
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 System.out.println("HERE!");
-                int n = response.length();
 
-                for(int i = 0; i < n; i++) {
                     JSONObject thisBusinessInfo = null;
                     try {
-                        thisBusinessInfo = response.getJSONObject(i);
+                        thisBusinessInfo = response;
                         addBusinessInfo(thisBusinessInfo);
+
+                        System.out.println("***************************************************************");
                         System.out.println("businessName" + thisBusinessInfo.getString("name"));
+                        System.out.println("***************************************************************");
+
                     } catch(Exception e) {
                         error += e.getMessage();
                         System.out.println("error???");
                     }
-                }
+
                 getBusinessName();
                 refreshErrorMessage();
             }
