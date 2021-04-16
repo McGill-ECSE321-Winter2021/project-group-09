@@ -58,7 +58,10 @@
             </intent-filter>
         </activity>
 
-
+        <activity
+            android:name=".ContactUs"
+            android:label="@string/contactUs">
+ </activity>
         <activity
             android:name=".Register"
             android:label="@string/register">

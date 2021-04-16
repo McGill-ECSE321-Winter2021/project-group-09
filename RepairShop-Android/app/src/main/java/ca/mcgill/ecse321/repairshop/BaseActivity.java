@@ -33,6 +33,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuContactUs) {
             // Switch to Contact Us
+            startActivity(new Intent(this, ContactUs.class));
             return true;
         } else if (id == R.id.menuViewServices) {
             // Switch to View Services
