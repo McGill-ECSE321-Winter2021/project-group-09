@@ -45,40 +45,69 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textSize="20dp"
+                android:textSize="30dp"
                 android:text=""/>
+
+            <TextView
+                android:id="@+id/blankSpaceSeparator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="20dp"
+                android:text="      "/>
 
             <TextView
                 android:id="@+id/business_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textSize="20dp"
-                android:text="blah blah"/>
+                android:textSize="17dp"
+                android:text=""/>
 
             <TextView
                 android:id="@+id/business_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textSize="20dp"
-                android:text="blah blah"/>
+                android:textSize="17dp"
+                android:text=""/>
 
             <TextView
                 android:id="@+id/business_phoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:textSize="20dp"
-                android:text="blah blah"/>
+                android:textSize="17dp"
+                android:text=""/>
 
             <TextView
-                android:id="@+id/business_numberRepairSpots"
+                android:id="@+id/blankSpace0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:textSize="20dp"
-                android:text="blah blah"/>
+                android:text="       "/>
+
+            <TextView
+                android:id="@+id/blankSpace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="20dp"
+                android:text="     "/>
+
+            <TextView
+                android:id="@+id/holidays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="20dp"
+                android:text="The repair shop will be closed on these days:"/>
+
+            <ListView
+                android:id="@+id/holidayList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>

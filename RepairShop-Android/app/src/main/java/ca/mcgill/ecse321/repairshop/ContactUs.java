@@ -1,25 +1,34 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import cz.msebera.android.httpclient.Header;
 
 public class ContactUs extends BaseActivity {
 
     private String error = "";
     private String businessName = "";
-    private TableLayout contactUsTable;
+    private String businessAddress = "";
+    private String businessEmail = "";
+    private String businessPhoneNumber = "";
+    private String holidayStartDateTime = "";
+    private String holidayEndDateTime = "";
+    ArrayList<String> holidays = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_us);
-
         addAllBusinessInfo();
 
     }
@@ -32,6 +41,30 @@ public class ContactUs extends BaseActivity {
     private void getBusinessName() {
         TextView tv = findViewById((R.id.business_name));
         tv.setText(businessName);
+    }
+
+    private void getBusinessAddress() {
+        TextView tv = findViewById((R.id.business_address));
+        tv.setText("Address: " + businessAddress);
+    }
+
+    private void getBusinessEmail() {
+        TextView tv = findViewById((R.id.business_email));
+        tv.setText("Email: " + businessEmail);
+    }
+
+    private void getBusinessPhoneNumber() {
+        TextView tv = findViewById((R.id.business_phoneNumber));
+        tv.setText("Phone Number: " + businessPhoneNumber);
+    }
+
+    private void getHolidays() {
+        for (String holiday: this.holidays) {
+            TextView newHoliday = new TextView(ContactUs.this);
+            newHoliday.setText(holiday);
+            newHoliday.setTextColor(getResources().getColor(R.color.black));
+            // TODO debug this , not displaying holidays
+        }
     }
 
 
@@ -56,10 +89,13 @@ public class ContactUs extends BaseActivity {
 
                     } catch(Exception e) {
                         error += e.getMessage();
-                        System.out.println("error???");
                     }
 
                 getBusinessName();
+                getBusinessAddress();
+                getBusinessEmail();
+                getBusinessPhoneNumber();
+                getHolidays();
                 refreshErrorMessage();
             }
 
@@ -77,57 +113,27 @@ public class ContactUs extends BaseActivity {
 
 
     private void addBusinessInfo(JSONObject businessInfo) {
-//        String name;
-//        String address;
-//        String email;
-//        String phoneNumber;
-//        int numberOfRepairSpots;
 
         try {
             this.businessName = businessInfo.getString("name");
-//            address = businessInfo.getString("address");
-//            email = businessInfo.getString("email");
-//            phoneNumber  = businessInfo.getString("phoneNumber");
-//            numberOfRepairSpots  = businessInfo.getInt("numberOfRepairSpots");
+            this.businessAddress = businessInfo.getString("address");
+            this.businessEmail = businessInfo.getString("email");
+            this.businessPhoneNumber = businessInfo.getString("phoneNumber");
+            // might need some try-catch here
+            JSONArray holidays = businessInfo.getJSONArray("holidays");
+            if (holidays != null) {
+                for (int i = 0; i < holidays.length(); i++) {
+                    String holidayStart = holidays.getJSONObject(i).getString("startDateTime");
+                    String holidayEnd = holidays.getJSONObject(i).getString("endDateTime");
+                    this.holidays.add(holidayStart + " to " + holidayEnd);
+                }
+            }
+
         } catch(Exception e) {
             error += e.getMessage();
             refreshErrorMessage();
             return;
         }
-
-
-//        TableRow row = initializeRow(ContactUs.this);
-//        contactUsTable.addView(row);
-
-//        LinearLayout rowVerticalLayout = new LinearLayout(ContactUs.this);
-//        rowVerticalLayout.setOrientation(LinearLayout.VERTICAL);
-//        row.addView(rowVerticalLayout);
-//
-//        LinearLayout subRow1 = new LinearLayout(ContactUs.this);
-//        subRow1.setOrientation(LinearLayout.HORIZONTAL);
-//        rowVerticalLayout.addView(subRow1);
-//
-//        LinearLayout subRow2 = new LinearLayout(ContactUs.this);
-//        subRow2.setOrientation(LinearLayout.HORIZONTAL);
-//        rowVerticalLayout.addView(subRow2);
-//
-//        LinearLayout subRow3 = new LinearLayout(ContactUs.this);
-//        subRow3.setOrientation(LinearLayout.HORIZONTAL);
-//        rowVerticalLayout.addView(subRow3);
-//
-//        TextView nameView = new TextView(ContactUs.this);
-//        String businessName = name;
-//        nameView.setText(businessName);
-//        nameView.setTextColor(getResources().getColor(R.color.black));
-//        nameView.setTypeface(Typeface.DEFAULT_BOLD);
-//        subRow1.addView(nameView);
-//
-//        TextView addressView = new TextView(ContactUs.this);
-//        String businessAddress = address;
-//        addressView.setText(businessAddress);
-//        addressView.setTextColor(getResources().getColor(R.color.black));
-//        addressView.setTypeface(Typeface.DEFAULT_BOLD);
-//        subRow1.addView(addressView);
 
     }
 
