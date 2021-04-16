@@ -20,8 +20,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class CancelAppointment extends BaseActivity {
 
-    String token = "";
-    String email = "";
     JSONObject appointment;
 
     @Override
@@ -31,11 +29,9 @@ public class CancelAppointment extends BaseActivity {
         setContentView(R.layout.activity_cancel_appointment);
 
         State state = (State) getApplicationContext();
-        token = state.token;
-        email = state.email;
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
-        HttpUtils.get(CancelAppointment.this, "api/customer/" + email + "/appointments", token, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get(CancelAppointment.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -76,7 +72,7 @@ public class CancelAppointment extends BaseActivity {
                         } else {
 
                             //cancel appointment
-                            HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), token, new TextHttpResponseHandler() {
+                            HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), State.token, new TextHttpResponseHandler() {
 
 
                                 @Override

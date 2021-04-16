@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
 public class ViewAppointments extends BaseActivity {
-    String token = "";
-    String email = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +22,9 @@ public class ViewAppointments extends BaseActivity {
         setContentView(R.layout.activity_view_appointments);
 
         State state = (State) getApplicationContext();
-        token = state.token;
-        email = state.email;
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
-        HttpUtils.get(ViewAppointments.this, "api/customer/" + email + "/appointments", token, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get(ViewAppointments.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

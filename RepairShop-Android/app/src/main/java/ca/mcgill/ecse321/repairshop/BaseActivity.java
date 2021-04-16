@@ -52,7 +52,9 @@ public class BaseActivity extends AppCompatActivity {
             startActivity(new Intent(this, CancelAppointment.class));
             return true;
         }else if (id == R.id.menuLogout) {
-            // Switch to Logout
+            // Log out the user
+            updateMenuLogout(appMenu);
+            startActivity(new Intent(this, MainActivity.class));
             return true;
         } else if (id == R.id.menuRegister) {
             // Switch to Register
@@ -94,6 +96,8 @@ public class BaseActivity extends AppCompatActivity {
     public static void updateMenuLogout(Menu menu) {
 
         State.loggedIn = false;
+        State.token = "";
+        State.email = "";
 
         MenuItem register = menu.findItem(R.id.menuRegister);
         register.setVisible(true);
