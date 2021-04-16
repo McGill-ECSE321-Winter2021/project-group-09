@@ -26,8 +26,6 @@ public class CancelAppointment extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-      /*  // Button to go to "View Appointments"
-       findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));   */
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel_appointment);
@@ -90,6 +88,9 @@ public class CancelAppointment extends BaseActivity {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                                     setError("");
+
+                                    //Hide 1st page
+                                    findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
                                     //Show cancellation page 2
                                     findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
                                     // Button to go to "View Appointments"
@@ -106,6 +107,8 @@ public class CancelAppointment extends BaseActivity {
                                     System.out.println("THROWABLE: " + throwable);
                                     System.out.println("****************************************************"); //TODO: remove this later
 
+                                    //Hide 1st page
+                                    findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
                                     //Show cancellation page 2
                                     findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
                                     // Button to go to "View Appointments"

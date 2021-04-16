@@ -29,6 +29,7 @@
             android:id="@+id/cancelError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="16sp"
             android:text=""
             android:textAlignment="center"
             android:textColor="?attr/colorError"
@@ -36,18 +37,6 @@
             tools:visibility="gone"
             />
 
-        <TextView
-            android:id="@+id/cancelSuccess"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16sp"
-            android:text=""
-            android:textAlignment="center"
-            android:textColor="#4CAF50"
-            android:textSize="18sp"
-            tools:visibility="gone"
-
-            />
         <LinearLayout
             android:id="@+id/cancelAppointment"
             android:layout_width="match_parent"
@@ -81,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="16sp"
                 android:text="@string/appointment_cancelled"
-                android:textAlignment="center"
+                android:justificationMode="inter_word"
                 android:textColor="#4CAF50"
                 android:textSize="18sp" />
 
