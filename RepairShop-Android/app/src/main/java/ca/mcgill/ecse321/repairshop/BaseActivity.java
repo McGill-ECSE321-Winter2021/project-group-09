@@ -36,6 +36,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuViewServices) {
             // Switch to View Services
+            startActivity(new Intent(this, ViewServices.class));
             return true;
         } else if (id == R.id.menuBookAppointment) {
             // Switch to Book Appointment
@@ -54,6 +55,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuRegister) {
             // Switch to Register
+            startActivity(new Intent(this, Register.class));
             return true;
         } else if (id == R.id.menuLogin) {
             // Switch to Login

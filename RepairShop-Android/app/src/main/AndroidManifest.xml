@@ -58,6 +58,27 @@
             </intent-filter>
         </activity>
 
+
+        <activity
+            android:name=".Register"
+            android:label="@string/register">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ViewServices"
+            android:label="@string/viewServices">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+
     </application>
 
 </manifest>
