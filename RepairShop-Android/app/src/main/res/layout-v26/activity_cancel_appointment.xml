@@ -59,6 +59,7 @@
                 android:paddingBottom="16sp"
                 android:paddingTop="16sp"
                 android:text="@string/appointment_cancelled"
+                android:justificationMode="inter_word"
                 android:textColor="#4CAF50"
                 android:textSize="18sp" />
 
@@ -69,5 +70,7 @@
                 android:text="@string/viewAppointments" />
 
         </LinearLayout>
+
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

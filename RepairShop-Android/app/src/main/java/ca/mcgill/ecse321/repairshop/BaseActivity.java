@@ -33,23 +33,23 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuContactUs) {
             // Switch to Contact Us
-            startActivity(new Intent(this, ContactUs.class));
+            startActivity(new Intent(this, ContactUsActivity.class));
             return true;
         } else if (id == R.id.menuViewServices) {
             // Switch to View Services
-            startActivity(new Intent(this, ViewServices.class));
+            startActivity(new Intent(this, ViewServicesActivity.class));
             return true;
         } else if (id == R.id.menuBookAppointment) {
             // Switch to Book Appointment
-            startActivity(new Intent(this, BookAppointment.class));
+            startActivity(new Intent(this, BookAppointmentActivity.class));
             return true;
         } else if (id == R.id.menuViewAppointments) {
             // Switch to View Appointments
-            startActivity(new Intent(this, ViewAppointments.class));
+            startActivity(new Intent(this, ViewAppointmentsActivity.class));
             return true;
         } else if (id == R.id.menuCancelAppointment) {
             // Switch to Cancel Appointment
-            startActivity(new Intent(this, CancelAppointment.class));
+            startActivity(new Intent(this, CancelAppointmentActivity.class));
             return true;
         }else if (id == R.id.menuLogout) {
             // Log out the user
@@ -58,7 +58,7 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuRegister) {
             // Switch to Register
-            startActivity(new Intent(this, Register.class));
+            startActivity(new Intent(this, RegisterActivity.class));
             return true;
         } else if (id == R.id.menuLogin) {
             // Switch to Login

@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
-public class ViewAppointments extends BaseActivity {
+public class ViewAppointmentsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class ViewAppointments extends BaseActivity {
         State state = (State) getApplicationContext();
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
-        HttpUtils.get(ViewAppointments.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get(ViewAppointmentsActivity.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -53,7 +53,7 @@ public class ViewAppointments extends BaseActivity {
                 }
 
                 ListView appointmentsListView = findViewById(R.id.appointmentViewList);
-                ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(ViewAppointments.this, android.R.layout.simple_list_item_1, displayAppointments);
+                ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(ViewAppointmentsActivity.this, android.R.layout.simple_list_item_1, displayAppointments);
                 appointmentsListView.setAdapter(appointmentArrayAdapter);
             }
 

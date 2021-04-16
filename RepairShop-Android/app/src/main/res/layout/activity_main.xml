@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
-            android:text="Welcome To"
+            android:text="@string/welcome_to"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="30sp" />
@@ -40,7 +40,5 @@
             android:textColor="@color/black"
             android:textSize="30sp" />
 
-
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

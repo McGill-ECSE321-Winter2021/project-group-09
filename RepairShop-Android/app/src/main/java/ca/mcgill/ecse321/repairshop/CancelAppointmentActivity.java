@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import cz.msebera.android.httpclient.Header;
 
-public class CancelAppointment extends BaseActivity {
+public class CancelAppointmentActivity extends BaseActivity {
 
     JSONObject appointment;
 
@@ -31,7 +31,7 @@ public class CancelAppointment extends BaseActivity {
         State state = (State) getApplicationContext();
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
-        HttpUtils.get(CancelAppointment.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get(CancelAppointmentActivity.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -52,7 +52,7 @@ public class CancelAppointment extends BaseActivity {
                         String currServiceName = currAppointment.getJSONObject("serviceDto").getString("name");
                         String currStart = currAppointment.getJSONObject("timeSlotDto").getString("startDateTime");
                         String currEnd = currAppointment.getJSONObject("timeSlotDto").getString("endDateTime");
-                        displayAppointments.add(currServiceName + "\n" + ViewAppointments.displayDateTime(currStart, currEnd));
+                        displayAppointments.add(currServiceName + "\n" + ViewAppointmentsActivity.displayDateTime(currStart, currEnd));
                     } catch (JSONException e) {
                         setError(e.getMessage());
                         return;
@@ -60,7 +60,7 @@ public class CancelAppointment extends BaseActivity {
                 }
 
                 ListView appointmentsListView = findViewById(R.id.appointmentList);
-                ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(CancelAppointment.this, android.R.layout.simple_list_item_1, displayAppointments);
+                ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(CancelAppointmentActivity.this, android.R.layout.simple_list_item_1, displayAppointments);
 
                 appointmentsListView.setAdapter(appointmentArrayAdapter);
 
@@ -72,7 +72,7 @@ public class CancelAppointment extends BaseActivity {
                         } else {
 
                             //cancel appointment
-                            HttpUtils.delete(CancelAppointment.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), State.token, new TextHttpResponseHandler() {
+                            HttpUtils.delete(CancelAppointmentActivity.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), State.token, new TextHttpResponseHandler() {
 
 
                                 @Override
@@ -83,7 +83,7 @@ public class CancelAppointment extends BaseActivity {
                                     //Show cancellation page 2
                                     findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
                                     // Button to go to "View Appointments"
-                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
+                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointmentActivity.this, ViewAppointmentsActivity.class)));
                                 }
 
                                 @Override

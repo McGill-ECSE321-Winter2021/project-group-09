@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".BookAppointment"
+            android:name=".BookAppointmentActivity"
             android:label="@string/bookAppointment">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".CancelAppointment"
+            android:name=".CancelAppointmentActivity"
             android:label="@string/cancelAppointment">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,7 @@
         </activity>
 
         <activity
-            android:name=".ViewAppointments"
+            android:name=".ViewAppointmentsActivity"
             android:label="@string/viewAppointments">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,11 +59,11 @@
         </activity>
 
         <activity
-            android:name=".ContactUs"
+            android:name=".ContactUsActivity"
             android:label="@string/contactUs">
  </activity>
         <activity
-            android:name=".Register"
+            android:name=".RegisterActivity"
             android:label="@string/register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -72,7 +72,7 @@
         </activity>
 
         <activity
-            android:name=".ViewServices"
+            android:name=".ViewServicesActivity"
             android:label="@string/viewServices">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

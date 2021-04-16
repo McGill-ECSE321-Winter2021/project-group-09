@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.repairshop;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,13 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONException;
@@ -25,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import cz.msebera.android.httpclient.Header;
 
 
-public class Register extends BaseActivity {
+public class RegisterActivity extends BaseActivity {
     private Button registerButton;
     private String error = null;
     private String success = null;
@@ -69,7 +61,7 @@ public class Register extends BaseActivity {
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register);
+        setContentView(R.layout.activty_register);
 
         refreshErrorMessage();
         refreshSuccessMessage();
@@ -138,7 +130,7 @@ public class Register extends BaseActivity {
      * @param v
      */
     public void signUpBack(View v){
-        Intent intent = new Intent(Register.this, MainActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
     }
 

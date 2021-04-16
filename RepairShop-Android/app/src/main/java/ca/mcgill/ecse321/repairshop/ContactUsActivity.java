@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ContactUs extends BaseActivity {
+public class ContactUsActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contact_us);
+        setContentView(R.layout.activity_contact_us);
         addAllBusinessInfo();
     }
 
@@ -93,7 +93,7 @@ public class ContactUs extends BaseActivity {
                     }
 
                     ListView holidaysListView = findViewById(R.id.holidayList);
-                    ArrayAdapter<String> holidaysArrayAdapter = new ArrayAdapter<>(ContactUs.this, android.R.layout.simple_list_item_1, displayHolidays);
+                    ArrayAdapter<String> holidaysArrayAdapter = new ArrayAdapter<>(ContactUsActivity.this, android.R.layout.simple_list_item_1, displayHolidays);
 
                     holidaysListView.setAdapter(holidaysArrayAdapter);
 

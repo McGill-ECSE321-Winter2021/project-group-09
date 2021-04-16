@@ -22,7 +22,7 @@ import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
-public class BookAppointment extends BaseActivity {
+public class BookAppointmentActivity extends BaseActivity {
 
     String targetDate = "";
 
@@ -57,7 +57,7 @@ public class BookAppointment extends BaseActivity {
         });
 
         // Button to go back home
-        findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointment.this, MainActivity.class)));
+        findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointmentActivity.this, MainActivity.class)));
 
         // Get all services
         HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
@@ -86,7 +86,7 @@ public class BookAppointment extends BaseActivity {
                 }
 
                 ListView servicesListView = findViewById(R.id.bookServiceList);
-                ArrayAdapter<String> servicesArrayAdapter = new ArrayAdapter<>(BookAppointment.this, android.R.layout.simple_list_item_1, displayServices);
+                ArrayAdapter<String> servicesArrayAdapter = new ArrayAdapter<>(BookAppointmentActivity.this, android.R.layout.simple_list_item_1, displayServices);
 
                 servicesListView.setAdapter(servicesArrayAdapter);
                 servicesListView.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -152,7 +152,7 @@ public class BookAppointment extends BaseActivity {
                 }
 
                 ListView timeSlotsListView = findViewById(R.id.possibleTimeSlotsList);
-                ArrayAdapter<String> timeSlotsArrayAdapter = new ArrayAdapter<>(BookAppointment.this, android.R.layout.simple_list_item_1, displayPossibilities);
+                ArrayAdapter<String> timeSlotsArrayAdapter = new ArrayAdapter<>(BookAppointmentActivity.this, android.R.layout.simple_list_item_1, displayPossibilities);
 
                 timeSlotsListView.setAdapter(timeSlotsArrayAdapter);
                 timeSlotsListView.setOnItemClickListener((adapterView, view, i, l) -> {

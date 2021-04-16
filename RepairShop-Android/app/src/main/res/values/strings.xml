@@ -43,5 +43,17 @@
     <string name="log_in">Log In</string>
     <string name="you_are_logged_in">You are logged in!</string>
     <string name="the_repair_shop_will_be_closed_on_these_days">The repair shop will be closed on these days:</string>
-
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="back">Back</string>
+    <string name="email_address">Email Address:</string>
+    <string name="password2">Password:</string>
+    <string name="name">Name:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="address">Address:</string>
+    <string name="welcome_to">Welcome To</string>
 </resources>
