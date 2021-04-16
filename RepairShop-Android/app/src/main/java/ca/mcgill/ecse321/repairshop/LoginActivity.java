@@ -1,46 +1,35 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
-
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 public class LoginActivity extends BaseActivity {
 
     private String error = null;
 
-    private void refreshErrorMessage() {
-        // set the error message
-        TextView tvError = findViewById(R.id.error);
-        tvError.setText(error);
-
-        if (error == null || error.length() == 0) {
-            tvError.setVisibility(View.GONE);
-        } else {
-            tvError.setVisibility(View.VISIBLE);
-        }
-    }
-
+    /**
+     * Initializes the page
+     * @param savedInstanceState (Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
 
+    /**
+     * Logs user in when the login button is clicked.
+     * @param v login button
+     * @throws JSONException if not valid JSON object
+     * @throws UnsupportedEncodingException if encoding is not supported
+     */
     public void logIn(View v) throws JSONException, UnsupportedEncodingException {
 
         error = "";
@@ -62,13 +51,11 @@ public class LoginActivity extends BaseActivity {
 
                 State.token = response;
                 State.email = email.getText().toString();
-
                 email.setText("");
                 password.setText("");
 
                 TextView successTextView = findViewById(R.id.success);
                 successTextView.setVisibility(View.VISIBLE);
-
                 updateMenuLogin(appMenu);
             }
 
@@ -80,4 +67,20 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
+    /**
+     * Helper to display an error message
+     */
+    private void refreshErrorMessage() {
+        // set the error message
+        TextView tvError = findViewById(R.id.error);
+        tvError.setText(error);
+
+        if (error == null || error.length() == 0) {
+            tvError.setVisibility(View.GONE);
+        } else {
+            tvError.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

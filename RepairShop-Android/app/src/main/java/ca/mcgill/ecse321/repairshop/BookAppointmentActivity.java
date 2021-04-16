@@ -1,34 +1,36 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.mcgill.ecse321.repairshop.Utils.HelperMethods;
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 public class BookAppointmentActivity extends BaseActivity {
 
     String targetDate = "";
-
     JSONObject service, timeSlot;
 
-
+    /**
+     * Initializes the page
+     * @param savedInstanceState (Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -56,10 +58,18 @@ public class BookAppointmentActivity extends BaseActivity {
             }
         });
 
-        // Button to go back home
+        // Button to go to Home Page
         findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointmentActivity.this, MainActivity.class)));
 
         // Get all services
+        getAllServices();
+
+    }
+
+    /**
+     * Get all the business services. If there are no services, an error message will be displayed.
+     */
+    private void getAllServices() {
         HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
@@ -76,7 +86,7 @@ public class BookAppointmentActivity extends BaseActivity {
                     try {
                         JSONObject currService = response.getJSONObject(i);
                         String currName = currService.getString("name");
-                        String currDuration = displayDuration(currService.getInt("duration"));
+                        String currDuration = HelperMethods.displayDuration(currService.getInt("duration"));
                         double currPrice = Math.round(currService.getDouble("price") * 100.0) / 100.0;
                         displayServices.add(currName + ", for " + currDuration + " ($" + currPrice + ")");
                     } catch (JSONException e) {
@@ -112,11 +122,12 @@ public class BookAppointmentActivity extends BaseActivity {
             }
 
         });
-
-
     }
 
-    // Set up the next part for booking - display all available appointment times
+    /**
+     * Set up the next part for booking - display all available appointment times
+     * @throws JSONException if not valid JSON object
+     */
     private void toPart2() throws JSONException {
 
         RequestParams requestParams = new RequestParams();
@@ -142,8 +153,8 @@ public class BookAppointmentActivity extends BaseActivity {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject currTimeSlot = response.getJSONObject(i);
-                        String currStart = displayDateTime(currTimeSlot.getString("startDateTime"));
-                        String currEnd = displayDateTime(currTimeSlot.getString("endDateTime"));
+                        String currStart = HelperMethods.displayDateTime(currTimeSlot.getString("startDateTime"));
+                        String currEnd = HelperMethods.displayDateTime(currTimeSlot.getString("endDateTime"));
                         displayPossibilities.add(currStart + " to " + currEnd);
                     } catch (JSONException e) {
                         setError(e.getMessage());
@@ -182,7 +193,11 @@ public class BookAppointmentActivity extends BaseActivity {
 
     }
 
-    // Set up the booking confirmation - book appointment + confirm
+    /**
+     * Set up the booking confirmation - book appointment + confirm
+     * @throws JSONException if not valid JSON object
+     * @throws UnsupportedEncodingException if encoding is not supported
+     */
     private void toPart3() throws JSONException, UnsupportedEncodingException {
 
         JSONObject body = new JSONObject();
@@ -203,40 +218,33 @@ public class BookAppointmentActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
                 try {
                     setError(errorResponse.get("message").toString());
                 } catch (JSONException e) {
                     setError(e.getMessage());
                 }
             }
-
         });
 
     }
 
-    // Helper to display or hide an error message
+    /**
+     * Helper to display or hide an error message
+     * @param errorMessage error message to display (String)
+     */
     private void setError(String errorMessage) {
         TextView error = findViewById(R.id.bookError);
         error.setText(errorMessage);
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
 
-    // Helper to display service duration in hours
-    private String displayDuration(int duration) {
-        if (duration == 2) return "1 hour";
-        else return (duration / 2.0) + " hours";
-    }
-
-    // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format 2021-03-02 15:00
-    private String displayDateTime(String dateTime) {
-        return dateTime.substring(0,10) + " at " + dateTime.substring(11, 16);
-    }
-
-    // Helper to update the list of time slots
+    /**
+     * Helper to update the list of time slots
+     * @throws JSONException if not valid JSON object
+     */
     private void updateTargetDate() throws JSONException {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         TextView dateInput = findViewById(R.id.futureDate);
 
         try {

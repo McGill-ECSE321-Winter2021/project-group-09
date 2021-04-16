@@ -11,7 +11,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 public class ViewServicesActivity extends BaseActivity {
@@ -20,7 +20,7 @@ public class ViewServicesActivity extends BaseActivity {
 
     /**
      * Initialize  the page
-     * @param savedInstanceState
+     * @param savedInstanceState (Bundle)
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +45,12 @@ public class ViewServicesActivity extends BaseActivity {
                 int n = response.length();
 
                 for(int i = 0; i < n; i++) {
-                    JSONObject thisService = null;
+                    JSONObject thisService;
                     try {
                         thisService = response.getJSONObject(i);
                         addServiceToTable(thisService);
                     } catch(Exception e) {
-                        error += e.getMessage();
+                        error = e.getMessage();
                     }
 
                 }
@@ -72,12 +72,12 @@ public class ViewServicesActivity extends BaseActivity {
 
     /**
      * Method to add a single service to the table
-     * @param service
+     * @param service Service (JSONObject)
      */
     private void addServiceToTable(JSONObject service) {
         String name;
-        Double price;
-        Integer duration;
+        double price;
+        int duration;
 
         try {
             name = service.getString("name");
@@ -117,13 +117,13 @@ public class ViewServicesActivity extends BaseActivity {
         subRow1.addView(nameView);
 
         TextView priceView = new TextView(ViewServicesActivity.this);
-        String sPrice = "Price: $ " + price.toString();
+        String sPrice = "Price: $ " +price;
         priceView.setTextColor(getResources().getColor(R.color.black));
         priceView.setText(sPrice);
         subRow2.addView(priceView);
 
         TextView durationView = new TextView(ViewServicesActivity.this);
-        String sDuration = "Duration: " + duration.toString() + " min.";
+        String sDuration = "Duration: " + duration + " min.";
         durationView.setTextColor(getResources().getColor(R.color.black));
         durationView.setText(sDuration);
         subRow3.addView(durationView);
@@ -133,8 +133,8 @@ public class ViewServicesActivity extends BaseActivity {
 
     /**
      * Initializes a table row
-     * @param context
-     * @return
+     * @param context (Context)
+     * @return row of the table (TableRow)
      */
     public static TableRow initializeRow(Context context) {
         TableRow row = new TableRow(context);
@@ -146,7 +146,6 @@ public class ViewServicesActivity extends BaseActivity {
         return row;
     }
 
-
     /**
      * Updates the error message
      */
@@ -154,6 +153,5 @@ public class ViewServicesActivity extends BaseActivity {
         TextView tv = findViewById(R.id.servicesError);
         tv.setText(error);
     }
-
 
 }

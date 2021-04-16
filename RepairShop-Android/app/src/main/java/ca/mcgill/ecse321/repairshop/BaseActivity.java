@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.repairshop;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +9,11 @@ public class BaseActivity extends AppCompatActivity {
 
     public Menu appMenu;
 
+    /**
+     * Creates the options menu on the top right corner according to the loggedIn state of the user.
+     * @param menu (Menu)
+     * @return true (boolean)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -20,11 +24,17 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handle action bar item clicks here.
+     * The action bar will automatically handle clicks on the Home/Up button,
+     * so long as you specify a parent activity in AndroidManifest.xml.
+     *
+     * @param item (Menu Item)
+     * @return true (boolean)
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         if (id == R.id.menuHomepage) {
@@ -67,7 +77,10 @@ public class BaseActivity extends AppCompatActivity {
         } else return super.onOptionsItemSelected(item);
     }
 
-    // Update menu items since customer is logged IN
+    /**
+     * Updates menu items since customer is logged IN
+     * @param menu (Menu)
+     */
     public static void updateMenuLogin(Menu menu) {
 
         State.loggedIn = true;
@@ -92,7 +105,10 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    // Update menu items since customer is logged OUT
+    /**
+     * Update menu items since customer is logged OUT.
+     * @param menu (Menu)
+     */
     public static void updateMenuLogout(Menu menu) {
 
         State.loggedIn = false;
@@ -118,6 +134,5 @@ public class BaseActivity extends AppCompatActivity {
         logout.setVisible(false);
 
     }
-
 
 }

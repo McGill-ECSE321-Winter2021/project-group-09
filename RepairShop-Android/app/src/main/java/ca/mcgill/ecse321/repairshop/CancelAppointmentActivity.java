@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.repairshop;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,19 +17,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import ca.mcgill.ecse321.repairshop.Utils.HelperMethods;
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 public class CancelAppointmentActivity extends BaseActivity {
 
     JSONObject appointment;
 
+    /**
+     * Initializes the page
+     * @param savedInstanceState (Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel_appointment);
-
-        State state = (State) getApplicationContext();
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
         HttpUtils.get(CancelAppointmentActivity.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
@@ -52,7 +57,7 @@ public class CancelAppointmentActivity extends BaseActivity {
                         String currServiceName = currAppointment.getJSONObject("serviceDto").getString("name");
                         String currStart = currAppointment.getJSONObject("timeSlotDto").getString("startDateTime");
                         String currEnd = currAppointment.getJSONObject("timeSlotDto").getString("endDateTime");
-                        displayAppointments.add(currServiceName + "\n" + ViewAppointmentsActivity.displayDateTime(currStart, currEnd));
+                        displayAppointments.add(currServiceName + "\n" + HelperMethods.displayDateTimeFromTo(currStart, currEnd));
                     } catch (JSONException e) {
                         setError(e.getMessage());
                         return;
@@ -61,44 +66,20 @@ public class CancelAppointmentActivity extends BaseActivity {
 
                 ListView appointmentsListView = findViewById(R.id.appointmentList);
                 ArrayAdapter<String> appointmentArrayAdapter = new ArrayAdapter<>(CancelAppointmentActivity.this, android.R.layout.simple_list_item_1, displayAppointments);
-
                 appointmentsListView.setAdapter(appointmentArrayAdapter);
-
                 appointmentsListView.setOnItemClickListener((adapterView, view, i, l) -> {
                     try {
                         appointment = response.getJSONObject(i);
                         if (isWeekAhead(appointment.getJSONObject("timeSlotDto").getString("startDateTime"))) {
                             setError("Can only cancel 1 week in advance.");
                         } else {
-
                             //cancel appointment
-                            HttpUtils.delete(CancelAppointmentActivity.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), State.token, new TextHttpResponseHandler() {
-
-
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                    setError("");
-                                    //Hide 1st page
-                                    findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
-                                    //Show cancellation page 2
-                                    findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
-                                    // Button to go to "View Appointments"
-                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointmentActivity.this, ViewAppointmentsActivity.class)));
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                    setError(responseString);
-                                }
-
-                            });
-
+                            cancelAppointment();
                         }
 
                     } catch (JSONException e) {
                         setError(e.getMessage());
                     }
-
                 });
             }
 
@@ -110,6 +91,30 @@ public class CancelAppointmentActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Cancels the selected appointment.
+     * @throws JSONException if not valid JSON object
+     */
+    private void cancelAppointment() throws JSONException {
+        HttpUtils.delete(CancelAppointmentActivity.this, "api/appointment/cancel/" + appointment.getLong("appointmentID"), State.token, new TextHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                setError("");
+                //Hide 1st page
+                findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
+                //Show cancellation page 2
+                findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
+                // Button to go to "View Appointments"
+                findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointmentActivity.this, ViewAppointmentsActivity.class)));
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                setError(responseString);
+            }
+
+        });
+    }
 
 
     /**
@@ -121,20 +126,20 @@ public class CancelAppointmentActivity extends BaseActivity {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE,7);
         Date todayPlusSeven = new Date(cal.getTimeInMillis());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String  todayPlusSevenStr = formatter.format(todayPlusSeven);
         return todayPlusSevenStr.compareTo(apptDateTime)>=0;
     }
 
     /**
-     * Sets the error message of View Appointments page to the input. Can hide or display the error message
-     * @param errorMessage (String)
+     * Sets the error message of Cancel Appointments page to the input.
+     * Can hide or display the error message
+     * @param errorMessage error message to display (String)
      */
     private void setError(String errorMessage) {
         TextView error = findViewById(R.id.cancelError);
         error.setText(errorMessage);
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
-
 
 }

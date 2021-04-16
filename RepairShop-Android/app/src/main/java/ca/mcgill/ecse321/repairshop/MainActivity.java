@@ -2,19 +2,20 @@ package ca.mcgill.ecse321.repairshop;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONObject;
-
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends BaseActivity {
     private String error = "";
     private String businessName;
 
-
+    /**
+     * Initializes the page
+     * @param savedInstanceState (Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,9 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * Displays the business name on the homepage
+     */
     private void getBusinessName(){
 
         HttpUtils.get("/api/business/info", new RequestParams(), new JsonHttpResponseHandler() {
@@ -53,12 +57,12 @@ public class MainActivity extends BaseActivity {
             }
 
         });
-
         refreshErrorMessage();
-
     }
 
-
+    /**
+     * Helper to display an error message
+     */
     private void refreshErrorMessage() {
         TextView tv = findViewById(R.id.homepageError);
         tv.setText(error);

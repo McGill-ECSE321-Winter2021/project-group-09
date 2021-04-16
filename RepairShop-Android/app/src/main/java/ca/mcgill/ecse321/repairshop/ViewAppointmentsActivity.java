@@ -11,17 +11,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import ca.mcgill.ecse321.repairshop.Utils.HelperMethods;
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 public class ViewAppointmentsActivity extends BaseActivity {
 
+    /**
+     * Initializes the page
+     * @param savedInstanceState (Bundle)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_appointments);
-
-        State state = (State) getApplicationContext();
 
         // Get all appointments of current customer by email (Calling ViewCustomerAppointments in CustomerController.java)
         HttpUtils.get(ViewAppointmentsActivity.this, "api/customer/" + State.email + "/appointments", State.token, new RequestParams(), new JsonHttpResponseHandler() {
@@ -45,7 +49,7 @@ public class ViewAppointmentsActivity extends BaseActivity {
                         String currServiceName = currAppointment.getJSONObject("serviceDto").getString("name");
                         String currStart = currAppointment.getJSONObject("timeSlotDto").getString("startDateTime");
                         String currEnd = currAppointment.getJSONObject("timeSlotDto").getString("endDateTime");
-                        displayAppointments.add(currServiceName + "\n" + displayDateTime(currStart, currEnd));
+                        displayAppointments.add(currServiceName + "\n" + HelperMethods.displayDateTimeFromTo(currStart, currEnd));
                     } catch (JSONException e) {
                         setError(e.getMessage());
                         return;
@@ -75,14 +79,4 @@ public class ViewAppointmentsActivity extends BaseActivity {
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
     }
 
-    /**
-     *  Converts two timestamps of format (2021-03-02T15:00:00.000+00:00) to format "2021-03-02 from 15:00 to 16:00"
-     *
-     * @param startDateTime format: 2021-03-02T15:00:00.000+00:00 (String)
-     * @param endDateTime format: 2021-03-02T16:00:00.000+00:00 (String)
-     * @return "start date" from "start time" to "end time" (String)
-     */
-    public static String displayDateTime(String startDateTime, String endDateTime) {
-        return startDateTime.substring(0, 10) + " from " + startDateTime.substring(11, 16) + " to " + endDateTime.substring(11, 16);
-    }
 }

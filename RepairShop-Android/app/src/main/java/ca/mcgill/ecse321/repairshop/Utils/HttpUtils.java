@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.repairshop;
+package ca.mcgill.ecse321.repairshop.Utils;
 
 import android.content.Context;
 
@@ -10,8 +10,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpHeaders;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 

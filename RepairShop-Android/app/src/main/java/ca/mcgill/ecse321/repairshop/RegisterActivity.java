@@ -2,62 +2,24 @@ package ca.mcgill.ecse321.repairshop;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
-
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
 
 
 public class RegisterActivity extends BaseActivity {
-    private Button registerButton;
+
     private String error = null;
     private String success = null;
-    private String name = null;
-    private String email = null;
-    private String phoneNumber = null;
-    private String address = null;
-    private String password = null;
-
-    /**
-     * Updates error message
-     */
-    private void refreshErrorMessage() {
-        // set the error message
-        TextView tvError = (TextView) findViewById(R.id.signUpError);
-        tvError.setText(error);
-        if (error == null || error.length() == 0) {
-            tvError.setVisibility(View.GONE);
-        } else {
-            tvError.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * Updates success message
-     */
-    private void refreshSuccessMessage() {
-        // set the error message
-        TextView tvError = (TextView) findViewById(R.id.signUpSuccess);
-        tvError.setText(success);
-        if (success == null || success.length() == 0) {
-            tvError.setVisibility(View.GONE);
-        } else {
-            tvError.setVisibility(View.VISIBLE);
-        }
-    }
 
     /**
      * Initializes the page
-     * @param savedInstanceState
+     * @param savedInstanceState (Bundle)
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +32,9 @@ public class RegisterActivity extends BaseActivity {
 
     /**
      * Method that sends POST request to the backend when the "Sign Up" button is clicked
-     * @param v
-     * @throws JSONException
-     * @throws UnsupportedEncodingException
+     * @param v Sign up button
+     * @throws JSONException if not valid JSON object
+     * @throws UnsupportedEncodingException if encoding is not supported
      */
     public void signUp(View v) throws JSONException, UnsupportedEncodingException {
         error = "";
@@ -81,15 +43,15 @@ public class RegisterActivity extends BaseActivity {
         refreshSuccessMessage();
 
         TextView customerName = (TextView)findViewById(R.id.customerNameRegister);
-        name = customerName.getText().toString();
+        String name = customerName.getText().toString();
         TextView customerAddress = (TextView)findViewById(R.id.customerAddressRegister);
-        address = customerAddress.getText().toString();
+        String address = customerAddress.getText().toString();
         TextView customerPassword = (TextView)findViewById(R.id.customerPasswordRegister);
-        password = customerPassword.getText().toString();
+        String password = customerPassword.getText().toString();
         TextView customerPhone = (TextView)findViewById(R.id.customerPhoneRegister);
-        phoneNumber = customerPhone.getText().toString();
+        String phoneNumber = customerPhone.getText().toString();
         TextView customerEmail = (TextView)findViewById(R.id.customerEmailRegister);
-        email = customerEmail.getText().toString();
+        String email = customerEmail.getText().toString();
 
 
         JSONObject body = new JSONObject();
@@ -98,8 +60,6 @@ public class RegisterActivity extends BaseActivity {
         body.put("password", password);
         body.put("phoneNumber", phoneNumber);
         body.put("address", address);
-
-        Log.d("SignUp", "Here");
 
         HttpUtils.postWithBody(getApplicationContext(),"api/customer/register", body, new TextHttpResponseHandler() {
 
@@ -127,12 +87,39 @@ public class RegisterActivity extends BaseActivity {
 
     /**
      * Takes the user back to the home page when "Back" button is clicked
-     * @param v
+     * @param v Back button
      */
     public void signUpBack(View v){
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Updates error message
+     */
+    private void refreshErrorMessage() {
+        // set the error message
+        TextView tvError = (TextView) findViewById(R.id.signUpError);
+        tvError.setText(error);
+        if (error == null || error.length() == 0) {
+            tvError.setVisibility(View.GONE);
+        } else {
+            tvError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Updates success message
+     */
+    private void refreshSuccessMessage() {
+        // set the success message
+        TextView tvError = (TextView) findViewById(R.id.signUpSuccess);
+        tvError.setText(success);
+        if (success == null || success.length() == 0) {
+            tvError.setVisibility(View.GONE);
+        } else {
+            tvError.setVisibility(View.VISIBLE);
+        }
+    }
 
 }

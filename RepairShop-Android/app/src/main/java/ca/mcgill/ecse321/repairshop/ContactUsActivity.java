@@ -7,23 +7,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
+import ca.mcgill.ecse321.repairshop.Utils.HttpUtils;
 import cz.msebera.android.httpclient.Header;
+
+import static ca.mcgill.ecse321.repairshop.Utils.HelperMethods.displayDateTime;
 
 public class ContactUsActivity extends BaseActivity {
 
+    /**
+     * Initializes the page
+     * @param savedInstanceState (Bundle)
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
         addAllBusinessInfo();
     }
 
+    /**
+     * Displays the business name, address, email and phone number
+     */
     private void addAllBusinessInfo() {
 
         // Get business info
@@ -33,7 +41,6 @@ public class ContactUsActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
-
                     TextView businessName = findViewById((R.id.business_name));
                     businessName.setText(response.getString("name"));
 
@@ -48,13 +55,10 @@ public class ContactUsActivity extends BaseActivity {
                     TextView phoneNumber = findViewById((R.id.business_phoneNumber));
                     String phoneString = "Phone Number: " + response.getString("phoneNumber");
                     phoneNumber.setText(phoneString);
-
                 } catch(Exception e) {
                     setError(e.getMessage());
                 }
-
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
@@ -66,6 +70,14 @@ public class ContactUsActivity extends BaseActivity {
         });
 
         // Get holidays
+        getHolidays();
+    }
+
+    /**
+     * Displays all the holidays.
+     * If there are no holidays, an error message will be displayed.
+     */
+    private void getHolidays() {
         HttpUtils.get("/api/business/holidays/", new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
@@ -115,16 +127,15 @@ public class ContactUsActivity extends BaseActivity {
     }
 
 
-    // Helper to display or hide an error message
+    /**
+     * Helper to display or hide an error message
+     * @param errorMessage error message to display (String)
+     *
+     */
     private void setError(String errorMessage) {
         TextView error = findViewById(R.id.contact_us_error);
         error.setText(errorMessage);
         error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
-    }
-
-    // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format 2021-03-02 15:00
-    private String displayDateTime(String dateTime) {
-        return dateTime.substring(0,10) + " at " + dateTime.substring(11, 16);
     }
 
 }
