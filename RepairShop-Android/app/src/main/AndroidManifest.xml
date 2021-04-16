@@ -32,6 +32,24 @@
         </activity>
 
         <activity
+            android:name=".CancelAppointment"
+            android:label="@string/cancelAppointment">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ViewAppointments"
+            android:label="@string/viewAppointments">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".LoginActivity"
             android:label="@string/login">
             <intent-filter>
@@ -43,11 +61,26 @@
         <activity
             android:name=".ContactUs"
             android:label="@string/contactUs">
+ </activity>
+        <activity
+            android:name=".Register"
+            android:label="@string/register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ViewServices"
+            android:label="@string/viewServices">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
 
     </application>
 

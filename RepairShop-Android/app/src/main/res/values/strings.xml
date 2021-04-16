@@ -16,8 +16,10 @@
     <string name="login">Login</string>
     <string name="bookAppointment">Book Appointment</string>
     <string name="viewAppointments">View Appointments</string>
+    <string name="cancelAppointment">Cancel Appointment</string>
     <string name="logout">Logout</string>
     <string name="homepage">Homepage</string>
+
 
     <!-- Book Appointment strings -->
     <string name="select_a_service">Select a service</string>
@@ -27,7 +29,14 @@
     <string name="go">Go</string>
     <string name="today">Today</string>
     <string name="yyyy_mm_dd_format">YYYY-MM-DD</string>
-    
+
+    <!-- Cancel Appointment strings -->
+    <string name="select_an_appointment_to_cancel">Select an appointment to cancel</string>
+    <string name="appointment_cancelled">The appointment has been cancelled successfully. A confirmation email  will be sent shortly. </string>
+
+    <!-- View Appointments strings -->
+    <string name="list_of_upcoming_appointments">List of upcoming appointments:</string>
+
     <!-- Login strings -->
     <string name="email">Email</string>
     <string name="password">Password</string>
