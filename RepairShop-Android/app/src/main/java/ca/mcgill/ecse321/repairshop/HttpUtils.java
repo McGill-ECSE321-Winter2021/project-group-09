@@ -19,9 +19,7 @@ public class HttpUtils {
 
     // This is the same as in the tutorial
 
-    public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/"; //TODO: switch back to this
-    //public static final String DEFAULT_BASE_URL = "http://localhost:8080/";
-
+    public static final String DEFAULT_BASE_URL = "https://repairshop-backend-ecse321-09.herokuapp.com/";
 
     private static String baseUrl;
     private static final AsyncHttpClient client = new AsyncHttpClient();
@@ -67,7 +65,6 @@ public class HttpUtils {
         BasicHeader[] headers = new BasicHeader[]{ new BasicHeader("token", token)};
         client.delete(context, getAbsoluteUrl(url), headers, responseHandler);
     }
-
 
     public static void getByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(url, params, responseHandler);
