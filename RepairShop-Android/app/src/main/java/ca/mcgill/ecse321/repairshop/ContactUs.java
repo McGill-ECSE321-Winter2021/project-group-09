@@ -1,8 +1,9 @@
 package ca.mcgill.ecse321.repairshop;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -17,124 +18,113 @@ import cz.msebera.android.httpclient.Header;
 
 public class ContactUs extends BaseActivity {
 
-    private String error = "";
-    private String businessName = "";
-    private String businessAddress = "";
-    private String businessEmail = "";
-    private String businessPhoneNumber = "";
-    private String holidayStartDateTime = "";
-    private String holidayEndDateTime = "";
-    ArrayList<String> holidays = new ArrayList<>();
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_us);
         addAllBusinessInfo();
-
     }
-
-    private void refreshErrorMessage() {
-        TextView tv = findViewById(R.id.contact_us_error);
-        tv.setText(error);
-    }
-
-    private void getBusinessName() {
-        TextView tv = findViewById((R.id.business_name));
-        tv.setText(businessName);
-    }
-
-    private void getBusinessAddress() {
-        TextView tv = findViewById((R.id.business_address));
-        tv.setText("Address: " + businessAddress);
-    }
-
-    private void getBusinessEmail() {
-        TextView tv = findViewById((R.id.business_email));
-        tv.setText("Email: " + businessEmail);
-    }
-
-    private void getBusinessPhoneNumber() {
-        TextView tv = findViewById((R.id.business_phoneNumber));
-        tv.setText("Phone Number: " + businessPhoneNumber);
-    }
-
-    private void getHolidays() {
-        for (String holiday: this.holidays) {
-            TextView newHoliday = new TextView(ContactUs.this);
-            newHoliday.setText(holiday);
-            newHoliday.setTextColor(getResources().getColor(R.color.black));
-            // TODO debug this , not displaying holidays
-        }
-    }
-
 
     private void addAllBusinessInfo() {
+
+        // Get business info
         HttpUtils.get("/api/business/info/", new RequestParams(), new JsonHttpResponseHandler() {
-
-
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-                System.out.println("HERE!");
+                try {
 
-                    JSONObject thisBusinessInfo = null;
-                    try {
-                        thisBusinessInfo = response;
-                        addBusinessInfo(thisBusinessInfo);
+                    TextView businessName = findViewById((R.id.business_name));
+                    businessName.setText(response.getString("name"));
 
-                        System.out.println("***************************************************************");
-                        System.out.println("businessName" + thisBusinessInfo.getString("name"));
-                        System.out.println("***************************************************************");
+                    TextView address = findViewById((R.id.business_address));
+                    String addressString = "Address: " + response.getString("address");
+                    address.setText(addressString);
 
-                    } catch(Exception e) {
-                        error += e.getMessage();
-                    }
+                    TextView email = findViewById((R.id.business_email));
+                    String emailString = "Email: " + response.getString("email");
+                    email.setText(emailString);
 
-                getBusinessName();
-                getBusinessAddress();
-                getBusinessEmail();
-                getBusinessPhoneNumber();
-                getHolidays();
-                refreshErrorMessage();
+                    TextView phoneNumber = findViewById((R.id.business_phoneNumber));
+                    String phoneString = "Phone Number: " + response.getString("phoneNumber");
+                    phoneNumber.setText(phoneString);
+
+                } catch(Exception e) {
+                    setError(e.getMessage());
+                }
+
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
-                    error += errorResponse.get("message").toString();
+                    setError(errorResponse.get("message").toString());
                 } catch(Exception e) {
-                    error += e.getMessage();
+                    setError(e.getMessage());
                 }
-                refreshErrorMessage();
+            }
+        });
+
+        // Get holidays
+        HttpUtils.get("/api/business/holidays/", new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                try {
+
+                    if (response.length() == 0) {
+                        setError("There are currently no holidays");
+                        return;
+                    }
+
+                    ArrayList<String> displayHolidays = new ArrayList<>();
+
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject currTimeSlot = response.getJSONObject(i);
+                            String currStart = displayDateTime(currTimeSlot.getString("startDateTime"));
+                            String currEnd = displayDateTime(currTimeSlot.getString("endDateTime"));
+                            displayHolidays.add(currStart + " to " + currEnd);
+                        } catch (JSONException e) {
+                            setError(e.getMessage());
+                            return;
+                        }
+                    }
+
+                    ListView holidaysListView = findViewById(R.id.holidayList);
+                    ArrayAdapter<String> holidaysArrayAdapter = new ArrayAdapter<>(ContactUs.this, android.R.layout.simple_list_item_1, displayHolidays);
+
+                    holidaysListView.setAdapter(holidaysArrayAdapter);
+
+                } catch(Exception e) {
+                    setError(e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    setError(errorResponse.get("message").toString());
+                } catch(Exception e) {
+                    setError(e.getMessage());
+                }
             }
         });
     }
 
 
-    private void addBusinessInfo(JSONObject businessInfo) {
+    // Helper to display or hide an error message
+    private void setError(String errorMessage) {
+        TextView error = findViewById(R.id.contact_us_error);
+        error.setText(errorMessage);
+        error.setVisibility(errorMessage.equals("") ? View.GONE : View.VISIBLE);
+    }
 
-        try {
-            this.businessName = businessInfo.getString("name");
-            this.businessAddress = businessInfo.getString("address");
-            this.businessEmail = businessInfo.getString("email");
-            this.businessPhoneNumber = businessInfo.getString("phoneNumber");
-            // might need some try-catch here
-            JSONArray holidays = businessInfo.getJSONArray("holidays");
-            if (holidays != null) {
-                for (int i = 0; i < holidays.length(); i++) {
-                    String holidayStart = holidays.getJSONObject(i).getString("startDateTime");
-                    String holidayEnd = holidays.getJSONObject(i).getString("endDateTime");
-                    this.holidays.add(holidayStart + " to " + holidayEnd);
-                }
-            }
-
-        } catch(Exception e) {
-            error += e.getMessage();
-            refreshErrorMessage();
-            return;
-        }
-
+    // Helper to convert a timestamp format (2021-03-02T15:00:00.000+00:00) to format 2021-03-02 15:00
+    private String displayDateTime(String dateTime) {
+        return dateTime.substring(0,10) + " at " + dateTime.substring(11, 16);
     }
 
 }
