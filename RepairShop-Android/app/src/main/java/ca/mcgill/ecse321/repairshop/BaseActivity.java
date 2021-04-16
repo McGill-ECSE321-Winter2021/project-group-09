@@ -44,8 +44,13 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.menuViewAppointments) {
             // Switch to View Appointments
+            startActivity(new Intent(this, ViewAppointments.class));
             return true;
-        } else if (id == R.id.menuLogout) {
+        } else if (id == R.id.menuCancelAppointment) {
+            // Switch to Cancel Appointment
+            startActivity(new Intent(this, CancelAppointment.class));
+            return true;
+        }else if (id == R.id.menuLogout) {
             // Switch to Logout
             return true;
         } else if (id == R.id.menuRegister) {
@@ -73,8 +78,11 @@ public class BaseActivity extends AppCompatActivity {
         MenuItem bookAppointment = menu.findItem(R.id.menuBookAppointment);
         bookAppointment.setVisible(true);
 
-        MenuItem viewAppointment = menu.findItem(R.id.menuViewAppointments);
-        viewAppointment.setVisible(true);
+        MenuItem viewAppointments = menu.findItem(R.id.menuViewAppointments);
+        viewAppointments.setVisible(true);
+
+        MenuItem cancelAppointment = menu.findItem(R.id.menuCancelAppointment);
+        cancelAppointment.setVisible(true);
 
         MenuItem logout = menu.findItem(R.id.menuLogout);
         logout.setVisible(true);
@@ -95,8 +103,11 @@ public class BaseActivity extends AppCompatActivity {
         MenuItem bookAppointment = menu.findItem(R.id.menuBookAppointment);
         bookAppointment.setVisible(false);
 
-        MenuItem viewAppointment = menu.findItem(R.id.menuViewAppointments);
-        viewAppointment.setVisible(false);
+        MenuItem viewAppointments = menu.findItem(R.id.menuViewAppointments);
+        viewAppointments.setVisible(false);
+
+        MenuItem cancelAppointment = menu.findItem(R.id.menuCancelAppointment);
+        cancelAppointment.setVisible(false);
 
         MenuItem logout = menu.findItem(R.id.menuLogout);
         logout.setVisible(false);

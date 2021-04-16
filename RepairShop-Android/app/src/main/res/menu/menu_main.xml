@@ -48,6 +48,13 @@
         android:visible="false" />
 
     <item
+        android:id="@+id/menuCancelAppointment"
+        android:orderInCategory="100"
+        android:title="@string/cancelAppointment"
+        app:showAsAction="never"
+        android:visible="false" />
+
+    <item
         android:id="@+id/menuLogout"
         android:orderInCategory="100"
         android:title="@string/logout"
