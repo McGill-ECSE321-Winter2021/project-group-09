@@ -119,38 +119,6 @@ public class CancelAppointment extends BaseActivity {
                                     setError(responseString);
                                 }
 
-
-
-/*                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                                    setError("");
-
-                                    //Hide 1st page
-                                    findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
-                                    //Show cancellation page 2
-                                    findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
-                                    // Button to go to "View Appointments"
-                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
-                                    System.out.println("ON SUCCESS !!!!!!!!!!!!!!!!!!!!!!!!!"); //TODO: Remove this later
-                                }
-
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                    setError(responseString);
-                                    System.out.println("****************************************************"); //TODO: remove this later
-                                    System.out.println("RESPONSE STRING: " + responseString);
-                                    System.out.println("THROWABLE: " + throwable);
-                                    System.out.println("****************************************************"); //TODO: remove this later
-
-                                    //Hide 1st page
-                                    findViewById(R.id.cancelAppointment).setVisibility(View.GONE);
-                                    //Show cancellation page 2
-                                    findViewById(R.id.cancelPage2).setVisibility(View.VISIBLE);
-                                    // Button to go to "View Appointments"
-                                    findViewById(R.id.viewAppointmentsButton).setOnClickListener((view) -> startActivity(new Intent(CancelAppointment.this, ViewAppointments.class)));
-
-                                }*/
-
                             });
 
                         }
