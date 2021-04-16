@@ -96,6 +96,8 @@ public class BaseActivity extends AppCompatActivity {
     public static void updateMenuLogout(Menu menu) {
 
         State.loggedIn = false;
+        State.token = "";
+        State.email = "";
 
         MenuItem register = menu.findItem(R.id.menuRegister);
         register.setVisible(true);

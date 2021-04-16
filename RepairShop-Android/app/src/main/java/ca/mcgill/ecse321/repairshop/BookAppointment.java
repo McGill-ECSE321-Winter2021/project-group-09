@@ -25,8 +25,6 @@ import cz.msebera.android.httpclient.Header;
 public class BookAppointment extends BaseActivity {
 
     String targetDate = "";
-    String token = "";
-    String email = "";
 
     JSONObject service, timeSlot;
 
@@ -60,10 +58,6 @@ public class BookAppointment extends BaseActivity {
 
         // Button to go back home
         findViewById(R.id.backHome).setOnClickListener((view) -> startActivity(new Intent(BookAppointment.this, MainActivity.class)));
-
-        State state = (State) getApplicationContext();
-        token = state.token;
-        email = state.email;
 
         // Get all services
         HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
@@ -130,7 +124,7 @@ public class BookAppointment extends BaseActivity {
         requestParams.add("serviceName", service.getString("name"));
 
         // Get possible appointment times
-        HttpUtils.get(this, "api/appointment/possibilities", token, requestParams, new JsonHttpResponseHandler() {
+        HttpUtils.get(this, "api/appointment/possibilities", State.token, requestParams, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -194,10 +188,10 @@ public class BookAppointment extends BaseActivity {
         JSONObject body = new JSONObject();
         body.put("startTime", timeSlot.getString("startDateTime"));
         body.put("serviceName", service.getString("name"));
-        body.put("customerEmail", email);
+        body.put("customerEmail", State.email);
 
         // Get possible appointment times
-        HttpUtils.post(this, "api/appointment/create", token, body, new JsonHttpResponseHandler() {
+        HttpUtils.post(this, "api/appointment/create", State.token, body, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

@@ -59,11 +59,10 @@ public class LoginActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, String response) {
 
                 refreshErrorMessage();
-                State state = (State)getApplicationContext();
-                state.token = response;
-                state.email = email.getText().toString();
-                state.password = email.getText().toString();
-                System.out.println(state.token);
+
+                State.token = response;
+                State.email = email.getText().toString();
+
                 email.setText("");
                 password.setText("");
 
