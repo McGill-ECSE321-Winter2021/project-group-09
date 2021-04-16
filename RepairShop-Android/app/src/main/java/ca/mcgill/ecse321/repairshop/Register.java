@@ -35,6 +35,9 @@ public class Register extends BaseActivity {
     private String address = null;
     private String password = null;
 
+    /**
+     * Updates error message
+     */
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) findViewById(R.id.signUpError);
@@ -46,6 +49,9 @@ public class Register extends BaseActivity {
         }
     }
 
+    /**
+     * Updates success message
+     */
     private void refreshSuccessMessage() {
         // set the error message
         TextView tvError = (TextView) findViewById(R.id.signUpSuccess);
@@ -57,6 +63,10 @@ public class Register extends BaseActivity {
         }
     }
 
+    /**
+     * Initializes the page
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
@@ -66,6 +76,12 @@ public class Register extends BaseActivity {
     }
 
 
+    /**
+     * Method that sends POST request to the backend when the "Sign Up" button is clicked
+     * @param v
+     * @throws JSONException
+     * @throws UnsupportedEncodingException
+     */
     public void signUp(View v) throws JSONException, UnsupportedEncodingException {
         error = "";
         success = "";
@@ -117,6 +133,10 @@ public class Register extends BaseActivity {
 
     }
 
+    /**
+     * Takes the user back to the home page when "Back" button is clicked
+     * @param v
+     */
     public void signUpBack(View v){
         Intent intent = new Intent(Register.this, MainActivity.class);
         startActivity(intent);

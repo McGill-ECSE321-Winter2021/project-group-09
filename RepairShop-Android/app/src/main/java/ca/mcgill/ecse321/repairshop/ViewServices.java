@@ -26,7 +26,10 @@ public class ViewServices extends BaseActivity {
     private String error = "";
     private TableLayout serviceTable;
 
-
+    /**
+     * Initialize  the page
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_service);
@@ -39,7 +42,9 @@ public class ViewServices extends BaseActivity {
     }
 
 
-
+    /**
+     * Retrieves service details from the backend and adds information to the table
+     */
     private void addAllServicesToTable() {
         HttpUtils.get("api/service/all", new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -73,6 +78,10 @@ public class ViewServices extends BaseActivity {
     }
 
 
+    /**
+     * Method to add a single service to the table
+     * @param service
+     */
     private void addServiceToTable(JSONObject service) {
         String name;
         Double price;
@@ -129,6 +138,12 @@ public class ViewServices extends BaseActivity {
 
     }
 
+
+    /**
+     * Initializes a table row
+     * @param context
+     * @return
+     */
     @NotNull
     public static TableRow initializeRow(Context context) {
         TableRow row = new TableRow(context);
@@ -141,6 +156,9 @@ public class ViewServices extends BaseActivity {
     }
 
 
+    /**
+     * Updates the error message
+     */
     private void refreshErrorMessage() {
         TextView tv = findViewById(R.id.servicesError);
         tv.setText(error);
