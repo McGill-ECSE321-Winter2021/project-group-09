@@ -13,6 +13,8 @@ public class ServiceService {
 
     @Autowired
     ServiceRepository serviceRepository;
+    
+    
 
     /** Finds a service by name and returns a serviceDto
      * @param name of the service to find
@@ -21,13 +23,14 @@ public class ServiceService {
      */
     @Transactional
     public ServiceDto getServiceByName(String name) throws Exception {
-
         Service service = serviceRepository.findServiceByName(name);
 
         // Make sure the service was found
         if (service != null) return serviceToDTO(service);
         else throw new Exception("Could not find service with name " + name);
     }
+    
+    
 
     /** Gets all services and returns them in a list
      * @return a list of serviceDto objects
@@ -41,6 +44,8 @@ public class ServiceService {
         return serviceDtos;
 
     }
+    
+    
 
     /** Creates a service object
      * @param name of the service (unique string)
@@ -64,8 +69,6 @@ public class ServiceService {
             throw new Exception("The price cannot be negative");
         }
 
-
-
         Service service = new Service();
         service.setName(name);
         service.setDuration(duration);
@@ -76,6 +79,8 @@ public class ServiceService {
         return serviceToDTO(service);
 
     }
+    
+    
 
     /** Helper method to convert Service to ServiceDto
      * @param service to convert to dto

@@ -23,7 +23,7 @@ public class BusinessController {
     AuthenticationService authenticationService;
 
     /**
-     * Get the business
+     * Endpoint to get the business info
      *
      * @return the business if found
      */
@@ -36,9 +36,10 @@ public class BusinessController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
 
     /**
-     * Create a new business
+     * Endpoint to create a new business
      *
      * @param businessDto The businessDto object from which to create the business
      * @param token of the admin
@@ -55,9 +56,10 @@ public class BusinessController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     /**
-     * Updates business information
+     * Endpoint to update business information
      *
      * @param businessDto the update to the existing business information
      * @param token of the admin
@@ -91,6 +93,7 @@ public class BusinessController {
         }
     }
 
+    
     /**
      * Add a new holiday to the business.
      * @param timeSlot Holiday time slot (TimeSlotDto)
@@ -111,6 +114,7 @@ public class BusinessController {
         }
     }
     
+    
     /**
      * Delete a holiday from the business.
      * @param timeSlot Holiday time slot to delete(TimeSlotDto)
@@ -124,14 +128,15 @@ public class BusinessController {
                 return new ResponseEntity<>("Must be logged in as admin.", HttpStatus.BAD_REQUEST);
             }
             String message =  businessService.deleteHoliday(timeSlot.getStartDateTime(), timeSlot.getEndDateTime());
-
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+    
 
-    /** Method to get the number of available repair spots at the current time
+    /**
+     *  Method to get the number of available repair spots at the current time
      * @return number of available repair spots
      */
     @GetMapping("/spots")

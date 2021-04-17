@@ -154,7 +154,6 @@ public class CustomerService {
 		customerRepository.deleteByEmail(email);
 		return "Customer account with email " + email + " deleted.";
 		
-		
 	}
 	
 	

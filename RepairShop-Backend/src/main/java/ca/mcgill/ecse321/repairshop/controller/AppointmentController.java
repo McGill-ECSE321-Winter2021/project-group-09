@@ -19,6 +19,8 @@ public class AppointmentController {
 
     @Autowired
     AuthenticationService authenticationService;
+    
+    
 
     /** Endpoint to create an appointment
      * @param appointmentInfoDto Contains the start time of the appointment, the service name and the customer email
@@ -36,6 +38,7 @@ public class AppointmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     /** Endpoint to get all possible appointment times for one week
      * @param startDate The initial date to start the search of form YYYY-MM-DD
@@ -54,6 +57,7 @@ public class AppointmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    
 
     /**
      * Controller method to cancel (delete) an appointment
@@ -76,6 +80,7 @@ public class AppointmentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
 
     /**
      * Controller method to cancel (delete) an appointment for a customer (checks date)

@@ -52,6 +52,7 @@ public class AdminService {
 		adminRepository.save(admin);
 		return adminToDto(admin);
 	}
+	
 
 	/**
 	 * Method to delete an admin by email
@@ -71,6 +72,7 @@ public class AdminService {
 		adminRepository.deleteAdminByEmail(email);
 		return "Admin account with email " + email + " was successfully deleted.";
 	}
+	
 	
 	/**
 	 * Method to get a admin by email
@@ -93,6 +95,7 @@ public class AdminService {
 		return adminToDto(admin);
 	}
 	
+	
 	/**
 	 * Method to get all existing admins
 	 * @return a list of all the existing admins as dtos
@@ -108,6 +111,7 @@ public class AdminService {
 		}
 		return adminDtos;
 	}
+	
 	
 	/**
 	 * Method to change address
@@ -132,6 +136,7 @@ public class AdminService {
 		adminRepository.save(admin);
 		return adminToDto(admin);
 	}
+	
 
 	/**
 	 * Method to change phone number of an admin
@@ -182,6 +187,7 @@ public class AdminService {
 		return adminToDto(admin);
 	}
 	
+	
 	/**
 	 * Method to change admin name
 	 * @param email of admin
@@ -205,6 +211,7 @@ public class AdminService {
 		adminRepository.save(admin);
 		return adminToDto(admin);
 	}
+	
 
 	/**
 	 * Convert Admin to AdminDto

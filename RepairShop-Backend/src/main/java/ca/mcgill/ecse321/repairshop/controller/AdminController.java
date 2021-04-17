@@ -32,7 +32,7 @@ public class AdminController {
 	/**
 	 * POST request to create a new administrator
 	 * @param adminDto (AdminDto)
-	 * @param token for the admin to create another admin
+	 * @param token        for the admin to create another admin
 	 * @return A administrator Dto
 	 */
 	@PostMapping("/register")
@@ -54,7 +54,7 @@ public class AdminController {
 	/**
 	 * DELETE request to delete a administrator account by email
 	 * @param email of admin
-	 * @param token for the admin
+	 * @param token      for the admin
 	 * @return an admin dto
 	 */
 	@DeleteMapping("/delete/{email}")

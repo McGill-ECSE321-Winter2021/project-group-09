@@ -39,6 +39,8 @@ public class ScheduledTasks {
     
     @Autowired
     private TechnicianRepository techRepository;
+    
+    
 
     /**
      * Everyday at 6 am, this method will be called to send all today's:<br/>
@@ -73,10 +75,10 @@ public class ScheduledTasks {
             }
         }
     }
-
-
+    
+    
     /**
-     * Deletes past appoitnments every day at 6 am
+     * At 6 am everyday all the past appointments are removed from the database
      */
     @Scheduled(cron = "0 0 6 * * ?")	//on 6 am every day
     public void deletePastAppointments() {
