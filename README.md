@@ -17,11 +17,11 @@ During the development of the RepairShop application software, the team will fol
 ## Overview Table
 | Name            | Team roles | Sprint 1<br/> Efforts<br/> (hours)| Sprint 2<br/> Efforts<br/> (hours)| Sprint 3<br/> Efforts<br/> (hours)| Sprint 4<br/> Efforts<br/> (hours)| Total <br/> Effort<br/> (hours)| 
 | :-------------         | ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
-| Sandy Lao              | Project Manager, Software Developer  | 40 | 45 | 35 | -- | 120 |
-| Jacek Dziewonski       | Software Developer | 35 | 50 | 30 | -- | 115 |
-| Shaswata Bhattacharyya | Software Developer | 30 | 50 | 25 | -- | 105 |
-| Zhanna Klimanova       | Software Developer | 35 | 35 | 20 | -- | 90 |
-| Tyler Syme             | Software Developer | 35 | 55 | 40 | -- | 130 |
+| Sandy Lao              | Project Manager, Software Developer  | 40 | 45 | 35 | 40 | 160 |
+| Jacek Dziewonski       | Software Developer | 35 | 50 | 30 | 30 | 145 |
+| Shaswata Bhattacharyya | Software Developer | 30 | 50 | 25 | 30 | 135 |
+| Zhanna Klimanova       | Software Developer | 35 | 35 | 20 | 25 | 105 |
+| Tyler Syme             | Software Developer | 35 | 55 | 40 | 35 | 165 |
 
 ## Sprint 1: Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
@@ -67,13 +67,14 @@ During the development of the RepairShop application software, the team will fol
 - [Architecture Model 🏛️📐](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Architecture-Model-%F0%9F%8F%9B%EF%B8%8F%F0%9F%93%90)
 
 # Sprint 4: Effort Table 🏋️ 
+# Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       |Code reviews, TO BE UPDATED | 00 |
-| Shaswata Bhattacharyya |Android Setup, Code reviews, TO BE UPDATED | 00 |
-| Zhanna Klimanova       |TO BE UPDATED| 00 |
-| Tyler Syme             |Demo Script, presentation slides, Code reviews, Modified Google Calendar, Fixing the team's bugs, TO BE UPDATED  | 00 |
-| Sandy Lao              |Demo Script, presentation slides, Meeting planning, Meeting minutes, README.md, Create issues, Create wiki pages, TO BE UPDATED | 00 |
+| Jacek Dziewonski       |Code reviews, Android Development, Fixing the team's bugs| 30 |
+| Shaswata Bhattacharyya |Android Setup, Code reviews, Fixing the team's bugs, Android Development, Web User Documentation | 30 |
+| Zhanna Klimanova       |Android Development, Code reviews, Web User Documentation, Android User Documentation | 25 |
+| Tyler Syme             |Demo Script, presentation slides, Code reviews, Modified Google Calendar, Android Development, Fixing the team's bugs,  Create Google Docs, Code Quality Review, Android User Documentation | 35 |
+| Sandy Lao              |Demo Script, presentation slides, Meeting planning, Meeting minutes, README.md, Create issues, Create wiki pages, Create Google Docs, Web User Documentation, Android User Documentation, Android Development, Fixing the team's bugs, Code Quality Review| 40 |
 
 # Sprint 4: Project Report
 - [Sprint 4: Project Report](https://github.com/McGill-ECSE321-Winter2021/project-group-09/wiki/Sprint-4:-Project-Report)
