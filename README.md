@@ -70,7 +70,7 @@ During the development of the RepairShop application software, the team will fol
 # Effort Table 🏋️ 
 | Name            | Contributions | Efforts (hours)|
 | :-------------         | ------------- | :-------------: |
-| Jacek Dziewonski       |Code reviews, Android Development, Fixing the team's bugs| 30 |
+| Jacek Dziewonski       |Code reviews, Android Development, Fixing the team's bugs| 25 |
 | Shaswata Bhattacharyya |Android Setup, Code reviews, Fixing the team's bugs, Android Development, Web User Documentation | 30 |
 | Zhanna Klimanova       |Android Development, Code reviews, Web User Documentation, Android User Documentation | 25 |
 | Tyler Syme             |Demo Script, presentation slides, Code reviews, Modified Google Calendar, Android Development, Fixing the team's bugs,  Create Google Docs, Code Quality Review, Android User Documentation | 35 |
