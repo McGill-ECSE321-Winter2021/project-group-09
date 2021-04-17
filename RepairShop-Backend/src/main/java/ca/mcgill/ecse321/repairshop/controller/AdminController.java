@@ -1,10 +1,7 @@
 package ca.mcgill.ecse321.repairshop.controller;
 
 import java.util.List;
-
-import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.model.Admin;
-import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import ca.mcgill.ecse321.repairshop.service.AuthenticationService;
 import ca.mcgill.ecse321.repairshop.service.utilities.EmailService;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import ca.mcgill.ecse321.repairshop.dto.AdminDto;
 import ca.mcgill.ecse321.repairshop.service.AdminService;
 
@@ -77,7 +73,6 @@ public class AdminController {
 		
 	}
 	
-	
 	/**
 	 * GET request to get an administrator account by email
 	 * @param email of admin
@@ -126,7 +121,13 @@ public class AdminController {
 		
 	}
 
-
+	/**
+	 * POST request to change the password
+	 * @param email of the user
+	 * @param newPassword of the user
+	 * @param token of the user
+	 * @return adminDto (AdminDto)
+	 */
 	@PostMapping("/changePassword/{email}")
 	public ResponseEntity<?> changePassword(@PathVariable("email") String email, @RequestBody String newPassword, @RequestHeader String token) {
 
@@ -144,13 +145,5 @@ public class AdminController {
 		}
 
 	}
-	
-	
-	
-	
-	
+
 }
-
-
-
-

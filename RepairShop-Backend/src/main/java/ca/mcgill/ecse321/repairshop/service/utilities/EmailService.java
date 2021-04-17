@@ -1,6 +1,4 @@
 
-
-
 package ca.mcgill.ecse321.repairshop.service.utilities;
 
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
@@ -19,6 +17,12 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    /**
+     * Sends registration confirmation email to user
+     * @param recipientEmail of the recipient
+     * @param name of the recipient
+     * @param newPassword of the recipient
+     */
     @Async
     public void accountCreationEmail(String recipientEmail, String name, String newPassword) {
         SimpleMailMessage msg = new SimpleMailMessage();

@@ -18,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-//SPRING_DATASOURCE_URL=jdbc:postgresql://ec2-18-204-74-74.compute-1.amazonaws.com:5432/d1m5i3iat1kupg?password=cda24c8de5f9716a759400e1e8726eaf7791c72b8fbe3b5f6515787dbe02d0da&sslmode=require&user=lecviquyprfidz
-
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -44,7 +42,7 @@ public class CustomerTest {
 		customerRepository.deleteAll();
 		appointmentRepository.deleteAll();
 		serviceRepository.deleteAll();
-		technicianRepository.deleteAll();;
+		technicianRepository.deleteAll();
 	}
 
 	
@@ -86,9 +84,7 @@ public class CustomerTest {
 		
 		// save is used to add/update an entry in the database 
 		customerRepository.save(customer); // persists the customer data types in DB
-		
-		customer = null;
-		
+
 		// load customer
 		customer = customerRepository.findCustomerByEmail(customerEmail);
 		assertNotNull(customer);
@@ -148,15 +144,13 @@ public class CustomerTest {
 		appointmentRepository.save(appointment3);
 
 		//update customer with appointments
-		ArrayList<Appointment> totalAppointments = new ArrayList<Appointment>();
+		ArrayList<Appointment> totalAppointments = new ArrayList<>();
 		totalAppointments.add(appointment1);
 		totalAppointments.add(appointment2);
 		totalAppointments.add(appointment3);
 		customer.setAppointments(totalAppointments);
 		customerRepository.save(customer);
 
-		customer = null;
-		
 		// load customer
 		customer = customerRepository.findCustomerByEmail(customerEmail);
 		

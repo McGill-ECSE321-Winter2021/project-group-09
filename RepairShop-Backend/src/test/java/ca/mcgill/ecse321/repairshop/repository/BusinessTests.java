@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -80,8 +79,6 @@ public class BusinessTests {
         business.setNumberOfRepairSpots(numberOfRepairSpots);
         business.setHolidays(holidaysList);
         Long newBusinessID = businessRepository.save(business).getBusinessID();
-
-        business = null;
 
         business = businessRepository.findBusinessByBusinessID(newBusinessID);
 

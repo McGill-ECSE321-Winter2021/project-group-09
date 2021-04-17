@@ -31,7 +31,7 @@ public class TestAppointmentService {
     // Test data - only using what is needed for the tests
 
     // Going to use times relative to 2021-03-01 00:00:00.0 to make them easier to understand
-    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-04-01T00:00:00.0"); // Monday
+    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2030-10-01T00:00:00.0"); // Monday
 
     // Target appointment start time
     private static final Timestamp APP_START_TIME = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(9)); // Monday
@@ -80,9 +80,9 @@ public class TestAppointmentService {
     @Mock
     private TimeSlotRepository timeSlotRepository;
     @Mock
-    private EmailService emailService;
+    private EmailService emailService; //We have to keep this
     @Mock
-    private ReminderService reminderService;
+    private ReminderService reminderService; //We have to keep this
     @InjectMocks
     private AppointmentService appointmentService;
 
@@ -648,7 +648,7 @@ public class TestAppointmentService {
         );
     }
 
-    private Appointment createAppointment(Long id) {
+    private Appointment createAppointment(Long id) {  //we know that the actual value is 1, we can't remove this warning thanks and have a good day
         Appointment appointment = new Appointment();
         appointment.setAppointmentID(id);
         appointment.setTimeSlot(createTimeSlot());

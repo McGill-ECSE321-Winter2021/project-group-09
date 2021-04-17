@@ -37,7 +37,7 @@ public class TestAuthenticationService {
     @Mock
     AdminRepository adminRepository;
     @Mock
-    TokenProvider tokenProvider;
+    TokenProvider tokenProvider;   //we need to keep this... can't remove it
     @InjectMocks
     AuthenticationService authenticationService;
 

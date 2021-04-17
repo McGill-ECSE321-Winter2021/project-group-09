@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.repairshop.service;
 
 import ca.mcgill.ecse321.repairshop.dto.BusinessDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
-import ca.mcgill.ecse321.repairshop.model.Appointment;
 import ca.mcgill.ecse321.repairshop.model.Business;
 import ca.mcgill.ecse321.repairshop.model.Technician;
 import ca.mcgill.ecse321.repairshop.model.TimeSlot;
@@ -12,14 +11,12 @@ import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
 import ca.mcgill.ecse321.repairshop.service.utilities.SystemTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.getUpdatedHours;
-import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.validateEmail;
+import static ca.mcgill.ecse321.repairshop.service.utilities.HelperMethods.validateEmail;
 
 @Service
 public class BusinessService {

@@ -21,7 +21,7 @@ import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDto
 import static ca.mcgill.ecse321.repairshop.service.ServiceService.serviceToDTO;
 import static ca.mcgill.ecse321.repairshop.service.TechnicianService.technicianToDto;
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
-import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.*;
+import static ca.mcgill.ecse321.repairshop.service.utilities.HelperMethods.*;
 
 @org.springframework.stereotype.Service
 public class AppointmentService {

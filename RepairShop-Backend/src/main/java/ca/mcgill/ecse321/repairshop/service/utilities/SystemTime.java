@@ -11,18 +11,26 @@ public class SystemTime {
     private static boolean isTest = false;
     private static Timestamp testTime = Timestamp.valueOf(LocalDateTime.now());
 
+    /**
+     * Return boolean value to indicate whether it is a test
+     * @return isTest (boolean)
+     */
     public static boolean isTest() {
         return isTest;
     }
 
+    /**
+     * Sets the value of isTest.
+     * @param test true or false (whether it is a test)
+     */
     public static void setTest(boolean test) {
         isTest = test;
     }
 
-    public static Timestamp getTestTime() {
-        return testTime;
-    }
-
+    /**
+     * Sets the testing time
+     * @param testTime (Timestamp)
+     */
     public static void setTestTime(Timestamp testTime) {
         SystemTime.testTime = testTime;
     }

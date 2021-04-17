@@ -48,13 +48,13 @@ public class TestTechnicianService {
 	private CustomerRepository customerRepository;
 
 	@Mock
-	private TimeSlotRepository timeSlotRepository;
+	private TimeSlotRepository timeSlotRepository;  // we need to keep these
 
 	@Mock
-	private AppointmentService appointmentService;
+	private AppointmentService appointmentService;// we need to keep these
 
 	@Mock
-	private EmailService emailService;
+	private EmailService emailService; // we need to keep these
 	
 	@InjectMocks
 	private TechnicianService service;

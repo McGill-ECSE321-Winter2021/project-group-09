@@ -21,7 +21,7 @@ import ca.mcgill.ecse321.repairshop.dto.TechnicianDto;
 import ca.mcgill.ecse321.repairshop.dto.TimeSlotDto;
 
 import static ca.mcgill.ecse321.repairshop.service.TimeSlotService.timeslotToDTO;
-import static ca.mcgill.ecse321.repairshop.service.utilities.ValidationHelperMethods.getUpdatedHours;
+import static ca.mcgill.ecse321.repairshop.service.utilities.HelperMethods.getUpdatedHours;
 
 @Service
 public class TechnicianService {
@@ -184,14 +184,15 @@ public class TechnicianService {
 	 */
 	public static TechnicianDto technicianToDto(Technician tech) {
 		TechnicianDto techDto = new TechnicianDto();
+
 		techDto.setAddress(tech.getAddress());
-		techDto.setPhoneNumber(tech.getPhoneNumber());
 		techDto.setName(tech.getName());
 		techDto.setEmail(tech.getEmail());
 		techDto.setSetPassword(tech.getPassword());
 		techDto.setToken(tech.getToken());
-
+		techDto.setPhoneNumber(tech.getPhoneNumber());
 		List<TimeSlot> timeSlots = tech.getTimeslots();
+
 		if(timeSlots != null) {
 			ArrayList<TimeSlotDto> timeDtos = new ArrayList<>();
 			for (TimeSlot timeSlot : timeSlots) {

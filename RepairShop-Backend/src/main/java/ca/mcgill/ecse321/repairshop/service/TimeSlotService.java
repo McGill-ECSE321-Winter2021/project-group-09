@@ -5,7 +5,6 @@ import ca.mcgill.ecse321.repairshop.model.TimeSlot;
 import ca.mcgill.ecse321.repairshop.repository.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class TimeSlotService {
     }
 
     /**
-     * creates a new timeslot and stores it in db
+     * Creates a new timeslot and stores it in db
      *
      * @param timeslot DTO describing new timeslot to associate
      */
@@ -45,7 +44,7 @@ public class TimeSlotService {
 
 
     /**
-     * return a single timeslot by id
+     * Gets a timeslot and returns a single timeslot by id
      *
      * @param id identifying the timeslot
      * @return a single timeslot

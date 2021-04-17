@@ -53,7 +53,7 @@ public class AdminTest {
 		// save is used to add/update an entry in the database 
 		administratorRepository.save(administrator); // persists the customer data types in DB
 		
-		administrator = null;
+		administrator = null; // we can't remove this or we'll get an error
 		
 		// load customer
 		administrator = administratorRepository.findAdminByEmail(adminEmail);

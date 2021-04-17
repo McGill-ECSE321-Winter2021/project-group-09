@@ -4,7 +4,6 @@ import ca.mcgill.ecse321.repairshop.model.Admin;
 import ca.mcgill.ecse321.repairshop.model.Business;
 import ca.mcgill.ecse321.repairshop.repository.AdminRepository;
 import ca.mcgill.ecse321.repairshop.repository.BusinessRepository;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class RepairShopApplication {
 
     @Value("${spring.mail.username}")
-    private String rootemail;
+    private String rootEmail;
 
     @Value("${spring.mail.password}")
-    private String rootpassword;
+    private String rootPassword;
 
     @Autowired
     AdminRepository adminRepository;
@@ -45,10 +44,10 @@ public class RepairShopApplication {
     @Bean
     InitializingBean sendDatabase() {
         return () -> {
-            if (!adminRepository.findById(rootemail).isPresent()) {
+            if (!adminRepository.findById(rootEmail).isPresent()) {
                 Admin rootAdmin = new Admin();
-                rootAdmin.setEmail(rootemail);
-                rootAdmin.setPassword(rootpassword);
+                rootAdmin.setEmail(rootEmail);
+                rootAdmin.setPassword(rootPassword);
                 rootAdmin.setName("root");
                 adminRepository.save(rootAdmin);
             }

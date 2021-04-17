@@ -9,14 +9,24 @@ public class BusinessDto {
     private String phoneNumber;
     private int numberOfRepairSpots;
     private List<TimeSlotDto> holidays;
-    
-    
-    //default constructor is needed for the controller
-    public BusinessDto() {
+
+
+    /**
+     * Default constructor
+     */
+    public BusinessDto() {   //default constructor is needed for the controller (ignore the warning)
     	
     }
 
-    
+    /**
+     * Constructor with parameters
+     * @param businessID of the business
+     * @param name of the business
+     * @param address of the business
+     * @param email of the business
+     * @param phoneNumber of the business
+     * @param numberOfRepairSpots of the business
+     */
     public BusinessDto(Long businessID, String name, String address, String email, String phoneNumber, int numberOfRepairSpots) {
         this.name = name;
         this.address = address;
@@ -64,7 +74,7 @@ public class BusinessDto {
         return numberOfRepairSpots;
     }
 
-    public void setNumberOfRepairSpots(int numberOfRepairSpots) {
+    public void setNumberOfRepairSpots(int numberOfRepairSpots) {  // ignore warning
         this.numberOfRepairSpots = numberOfRepairSpots;
     }
 

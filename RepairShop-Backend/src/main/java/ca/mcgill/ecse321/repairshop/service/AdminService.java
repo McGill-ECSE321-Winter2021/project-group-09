@@ -214,13 +214,13 @@ public class AdminService {
 	public static AdminDto adminToDto(Admin admin) {
 		AdminDto adminDTO = new AdminDto();
 		
-		adminDTO.setAddress(admin.getAddress());
 		adminDTO.setPhoneNumber(admin.getPhoneNumber());
 		adminDTO.setName(admin.getName());
 	    adminDTO.setEmail(admin.getEmail());
 		adminDTO.setPassword(admin.getPassword());
 		adminDTO.setToken(admin.getToken());
-		
+		adminDTO.setAddress(admin.getAddress());
+
 		return adminDTO;
 	}
 

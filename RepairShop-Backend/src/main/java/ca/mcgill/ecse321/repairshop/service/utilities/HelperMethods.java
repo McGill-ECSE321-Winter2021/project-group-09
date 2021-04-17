@@ -9,7 +9,7 @@ import java.time.temporal.TemporalAdjusters;
 
 import static java.util.regex.Pattern.matches;
 
-public class ValidationHelperMethods {
+public class HelperMethods {
     
     /**
      * Validate email using regex pattern

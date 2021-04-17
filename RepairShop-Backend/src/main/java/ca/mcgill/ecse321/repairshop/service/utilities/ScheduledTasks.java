@@ -73,9 +73,11 @@ public class ScheduledTasks {
             }
         }
     }
-    
-    
-    
+
+
+    /**
+     * Deletes past appoitnments every day at 6 am
+     */
     @Scheduled(cron = "0 0 6 * * ?")	//on 6 am every day
     public void deletePastAppointments() {
     	

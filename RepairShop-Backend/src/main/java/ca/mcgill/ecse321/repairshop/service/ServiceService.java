@@ -4,7 +4,6 @@ import ca.mcgill.ecse321.repairshop.dto.ServiceDto;
 import ca.mcgill.ecse321.repairshop.model.Service;
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

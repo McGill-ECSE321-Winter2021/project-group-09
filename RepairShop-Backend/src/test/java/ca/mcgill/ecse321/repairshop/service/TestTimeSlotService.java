@@ -95,7 +95,7 @@ public class TestTimeSlotService {
         timeslotDto.setStartDateTime(START_TIME);
         timeslotDto.setEndDateTime(END_TIME);
         try {
-            TimeSlotDto foundByID = timeSlotService.getTimeslotByID(6L);
+            timeSlotService.getTimeslotByID(6L);
             fail("Should not have found anything");
         } catch (Exception e) {
             assertEquals(e.getMessage(), "Timeslot not found...");

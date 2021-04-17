@@ -311,11 +311,10 @@ public class TestBusinessService {
 
     @Test
     public void testNullNameCreateBusiness() {
-        String nullBusinessName = null;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(nullBusinessName, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
+            business = businessService.createBusiness(null, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -325,11 +324,10 @@ public class TestBusinessService {
 
     @Test
     public void testNullAddressCreateBusiness() {
-        String nullAddress = null;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, nullAddress, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
+            business = businessService.createBusiness(BUSINESS_NAME, null, BUSINESS_PHONE_NUMBER, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -339,11 +337,10 @@ public class TestBusinessService {
 
     @Test
     public void testNullPhoneNumberCreateBusiness() {
-        String nullPhoneNumber = null;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, nullPhoneNumber, BUSINESS_EMAIL);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, null, BUSINESS_EMAIL);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -353,11 +350,10 @@ public class TestBusinessService {
 
     @Test
     public void testNullEmailCreateBusiness() {
-        String nullEmail = null;
         String error = null;
         BusinessDto business = null;
         try {
-            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, nullEmail);
+            business = businessService.createBusiness(BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_PHONE_NUMBER, null);
         } catch (Exception e) {
             error = e.getMessage();
         }
@@ -416,7 +412,7 @@ public class TestBusinessService {
         String newEmail = "niceEmail@mcgill.ca";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
             business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
             assertEquals(BUSINESS_NAME, business.getName());
@@ -428,6 +424,7 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNull(error);
         
     }
     
@@ -440,7 +437,7 @@ public class TestBusinessService {
         String newEmail = "niceEmail@mcgill.ca";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
             business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
             assertEquals(newName, business.getName());
@@ -452,6 +449,7 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNull(error);
     }
     
 
@@ -463,7 +461,7 @@ public class TestBusinessService {
         String newEmail = "niceEmail@mcgill.ca";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
             business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
             assertEquals(newName, business.getName());
@@ -475,6 +473,7 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNull(error);
     }
 
 
@@ -486,7 +485,7 @@ public class TestBusinessService {
         String newEmail = "";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
             business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
             assertEquals(newName, business.getName());
@@ -498,6 +497,8 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNull(error);
+
     }
     
     
@@ -556,7 +557,7 @@ public class TestBusinessService {
         String newEmail = "niceEmail@mcgill.ca";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
             business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
             assertEquals(BUSINESS_NAME, business.getName());
@@ -568,19 +569,20 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNull(error);
+
     }
 
     @Test
     public void testNullAddressUpdateBusiness() {
     	String newName = "New Name";
-        String newAddress = null;
         String newPhoneNumber = "Update phone number";
         String newEmail = "niceEmail@mcgill.ca";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
-            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            business = businessService.updateBusiness(newName, null, newPhoneNumber, newEmail, newNbRepairSpots);
             assertEquals(newName, business.getName());
             assertEquals(BUSINESS_ADDRESS, business.getAddress());
             assertEquals(newPhoneNumber, business.getPhoneNumber());
@@ -590,6 +592,8 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNotNull(error);
+
     }
 
     
@@ -597,13 +601,12 @@ public class TestBusinessService {
     public void testNullPhoneNumberUpdateBusiness() {
     	String newName = "New Name";
         String newAddress = "Update address";
-        String newPhoneNumber = null;
         String newEmail = "niceEmail@mcgill.ca";
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
-            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            business = businessService.updateBusiness(newName, newAddress, null, newEmail, newNbRepairSpots);
             assertEquals(newName, business.getName());
             assertEquals(newAddress, business.getAddress());
             assertEquals(BUSINESS_PHONE_NUMBER, business.getPhoneNumber());
@@ -613,6 +616,7 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNotNull(error);
     }
 
     @Test
@@ -620,12 +624,11 @@ public class TestBusinessService {
     	String newName = "New Name";
         String newAddress = "Update address";
         String newPhoneNumber = "Update phone number";
-        String newEmail = null;
         int newNbRepairSpots = 100;
         String error = null;
-        BusinessDto business = null;
+        BusinessDto business;
         try {
-            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, newEmail, newNbRepairSpots);
+            business = businessService.updateBusiness(newName, newAddress, newPhoneNumber, null, newNbRepairSpots);
             assertEquals(newName, business.getName());
             assertEquals(newAddress, business.getAddress());
             assertEquals(newPhoneNumber, business.getPhoneNumber());
@@ -635,6 +638,8 @@ public class TestBusinessService {
         } catch (Exception e) {
             error = e.getMessage();
         }
+        assertNotNull(error);
+
     }
     
 
@@ -691,7 +696,6 @@ public class TestBusinessService {
     @Test
     public void testDeleteHoliday() {
     	// first creating a holiday before proceeding to delete it
-        BusinessDto businessDto = null;
         Timestamp startTime = Timestamp.valueOf("2020-12-23 21:00:00");
         Timestamp endTime = Timestamp.valueOf("2020-12-26 07:00:00");
         TimeSlot newHoliday = new TimeSlot();

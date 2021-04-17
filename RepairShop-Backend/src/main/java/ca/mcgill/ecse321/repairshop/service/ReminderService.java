@@ -6,13 +6,10 @@ import ca.mcgill.ecse321.repairshop.model.Reminder;
 import ca.mcgill.ecse321.repairshop.model.ReminderType;
 import ca.mcgill.ecse321.repairshop.repository.CustomerRepository;
 import ca.mcgill.ecse321.repairshop.repository.ReminderRepository;
-
 import static ca.mcgill.ecse321.repairshop.service.CustomerService.customerToDto;
-
 import ca.mcgill.ecse321.repairshop.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;

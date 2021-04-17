@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import ca.mcgill.ecse321.repairshop.dto.AppointmentDto;
 import ca.mcgill.ecse321.repairshop.dto.CustomerDto;
 import ca.mcgill.ecse321.repairshop.model.Appointment;
@@ -193,13 +192,6 @@ public class CustomerService {
 		}
 		return customerDtos;
 	}
-	
-	
-	
-	
-	
-	
-	//USE CASES
 
 
 	/**

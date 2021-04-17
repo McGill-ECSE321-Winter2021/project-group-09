@@ -21,7 +21,7 @@ public class ReminderInfoDto {
         return dateTime;
     }
 
-    public void setDateTime(Timestamp dateTime) {
+    public void setDateTime(Timestamp dateTime) { //ignore this warning
         this.dateTime = dateTime;
     }
 
@@ -29,7 +29,7 @@ public class ReminderInfoDto {
         return appointmentDateTime;
     }
 
-    public void setAppointmentDateTime(Timestamp appointmentDateTime) {
+    public void setAppointmentDateTime(Timestamp appointmentDateTime) { //ignore this warning
         this.appointmentDateTime = appointmentDateTime;
     }
 
@@ -47,7 +47,7 @@ public class ReminderInfoDto {
 
     public void setType(String type) {
         this.type = type;
-    }
+    } //ignore this warning
 
     public String getEmail() {
         return email;

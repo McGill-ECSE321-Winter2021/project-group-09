@@ -20,7 +20,7 @@ public class TokenProvider {
     private String secretKey;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminRepository adminRepository; //ignore warning, it is being used
 
     @PostConstruct
     protected void init() {
