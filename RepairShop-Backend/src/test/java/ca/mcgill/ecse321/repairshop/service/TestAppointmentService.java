@@ -31,7 +31,7 @@ public class TestAppointmentService {
     // Test data - only using what is needed for the tests
 
     // Going to use times relative to 2021-03-01 00:00:00.0 to make them easier to understand
-    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-04-01T00:00:00.0"); // Monday
+    private static final LocalDateTime INITIAL_TIME = LocalDateTime.parse("2021-12-25T00:00:00.0"); // Monday
 
     // Target appointment start time
     private static final Timestamp APP_START_TIME = Timestamp.valueOf(INITIAL_TIME.plusDays(14).plusHours(9)); // Monday
